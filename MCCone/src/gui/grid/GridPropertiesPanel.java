@@ -30,6 +30,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.metal.MetalIconFactory.FolderIcon16;
 
@@ -53,10 +54,13 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	private ArrayList<SingleGridSize> gridSizes;
 	private JPanel gridPanel;
 	private JComboBox<String> gridComboBox;
+	private JSlider randomSlider;
 	private JPanel backGridExamplePanel;
 	private JLabel gridLabel;
 	private JLabel comboLabel;
 	private GridProperties templateGP=null; // GridProperty which data is used as template for selected markingLayer(s) 
+	private JLabel sliderLabel;
+	private JLabel sliderValueLabel;
 	
 
 
@@ -171,29 +175,8 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		centerBackPanel.setMinimumSize(new Dimension(panelWidth,300));
 		centerBackPanel.setPreferredSize(new Dimension(panelWidth,300));
 
-
-		JPanel comboBoxPanel=new JPanel();
-		comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.LINE_AXIS));
-		comboBoxPanel.setMaximumSize(new Dimension(panelWidth,50));
-		comboBoxPanel.setMinimumSize(new Dimension(panelWidth,50));
-		comboBoxPanel.setPreferredSize(new Dimension(panelWidth,50));
-		JPanel comboLabelPanel=new JPanel();
-		comboLabelPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
-		comboLabel = new JLabel("SELECT GRID DIMENSION:");
-		comboLabel.setFont(Fonts.b14);
-		comboLabelPanel.add(comboLabel);
-		comboBoxPanel.add(Box.createRigidArea(new Dimension(20,0)));
-		comboBoxPanel.add(comboLabel);
-		comboBoxPanel.add(Box.createRigidArea(new Dimension(20,0)));
-		comboBoxPanel.add(Box.createRigidArea(new Dimension(0,10)));
-		comboBoxPanel.add(setUpComboBox());
-
-		centerBackPanel.add(comboBoxPanel);
-		
-		
-		
-		
-
+		centerBackPanel.add(setUpComboBoxPanel());	
+		centerBackPanel.add(setupSliderPanel());
 		centerBackPanel.add(setUpGridExamplePanel());
 
 		return centerBackPanel;
@@ -202,7 +185,22 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	/**
 	 * @return JCombobox object
 	 */
-	private JComboBox<String> setUpComboBox(){
+	private JPanel setUpComboBoxPanel(){
+		JPanel comboBoxPanel=new JPanel();
+		comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.LINE_AXIS));
+		comboBoxPanel.setMaximumSize(new Dimension(panelWidth,36));
+		comboBoxPanel.setMinimumSize(new Dimension(panelWidth,36));
+		comboBoxPanel.setPreferredSize(new Dimension(panelWidth,36));
+		JPanel comboLabelPanel=new JPanel();
+		comboLabelPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
+		comboLabel = new JLabel("SELECT GRID DIMENSION:");
+		comboLabel.setFont(Fonts.b14);
+		comboLabelPanel.add(comboLabel);
+		comboBoxPanel.add(Box.createRigidArea(new Dimension(20,0)));
+		comboBoxPanel.add(comboLabel);
+		comboBoxPanel.add(Box.createRigidArea(new Dimension(20,0)));
+		comboBoxPanel.add(Box.createRigidArea(new Dimension(0,5)));
+		
 		gridComboBox = new JComboBox<String>();
 		gridComboBox.setMaximumSize(new Dimension(80,25));
 		gridComboBox.setPreferredSize(new Dimension(80,25));
@@ -253,9 +251,50 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 			}
 		});
-		return gridComboBox;
+		
+		comboBoxPanel.add(gridComboBox);
+		return comboBoxPanel;
 
 
+	}
+	
+	private JPanel setupSliderPanel(){
+		
+		JPanel prosentSliderPanel=new JPanel();
+		prosentSliderPanel.setLayout(new BoxLayout(prosentSliderPanel, BoxLayout.LINE_AXIS));
+		prosentSliderPanel.setMaximumSize(new Dimension(panelWidth,36));
+		prosentSliderPanel.setMinimumSize(new Dimension(panelWidth,36));
+		prosentSliderPanel.setPreferredSize(new Dimension(panelWidth,36));
+		JPanel pSliderLabelPanel=new JPanel();
+		pSliderLabelPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
+		sliderLabel = new JLabel("RANDOM FILL %:");
+		sliderLabel.setFont(Fonts.b14);
+		pSliderLabelPanel.add(sliderLabel);
+		prosentSliderPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		prosentSliderPanel.add(pSliderLabelPanel);
+		prosentSliderPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		prosentSliderPanel.add(Box.createRigidArea(new Dimension(0,5)));
+		//setup randow Slider
+		randomSlider=new JSlider(10, 100,50);
+		randomSlider.setMinimumSize(new Dimension(200,30));
+		randomSlider.setPreferredSize(new Dimension(200,30));
+		randomSlider.setMaximumSize(new Dimension(200,30));
+		
+		randomSlider.setMajorTickSpacing(20);
+		randomSlider.setMinorTickSpacing(10);
+		randomSlider.setPaintTicks(true);
+		
+		prosentSliderPanel.add(randomSlider);
+		
+		JPanel pSliderValueLabelPanel=new JPanel();
+		pSliderValueLabelPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 2));
+		sliderValueLabel = new JLabel(""+this.randomSlider.getValue());
+		sliderValueLabel.setFont(Fonts.b18);
+		pSliderValueLabelPanel.add(sliderValueLabel);
+		prosentSliderPanel.add(pSliderValueLabelPanel);
+		
+		return prosentSliderPanel;
+		
 	}
 
 	/**
@@ -275,12 +314,26 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				this.gridPanel.setBackground(Color_schema.grey_150);
 				this.gridLabel.setForeground(Color_schema.white_230);
 				this.comboLabel.setForeground(Color_schema.white_230);
+				this.sliderLabel.setForeground(Color_schema.white_230);
+				this.sliderValueLabel.setForeground(Color_schema.white_230);
+				this.randomSlider.setEnabled(true);
+				this.randomSlider.setForeground(Color_schema.white_230);
+				this.randomSlider.putClientProperty("JSlider.isFilled", Boolean.TRUE);
+				this.randomSlider.putClientProperty("Slider.focus", Color_schema.grey_100);
 			}
 			else{
 				this.gridPanel.setVisible(false);
 				this.gridPanel.setBackground(Color_schema.dark_40);
 				this.gridLabel.setForeground(Color_schema.grey_100);
 				this.comboLabel.setForeground(Color_schema.grey_100);
+				this.sliderLabel.setForeground(Color_schema.grey_100);
+				this.sliderValueLabel.setForeground(Color_schema.grey_100);
+				this.randomSlider.setEnabled(false);
+				this.randomSlider.setForeground(Color_schema.dark_40);
+				this.randomSlider.putClientProperty("JSlider.isFilled", Boolean.FALSE);
+				this.randomSlider.putClientProperty("Slider.focus", Color_schema.dark_40);
+				
+				
 			}
 			this.backGridExamplePanel.repaint();
 		//	updateGridDimensionFromComboBox();
