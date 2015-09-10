@@ -226,16 +226,10 @@ public class GridPropertiesPanel extends PropertiesDialog {
 					gridComboBox.setSelectedIndex(index);
 				else
 					gridComboBox.setSelectedIndex(0);
-
 			}
 			else{
 				gridComboBox.setSelectedIndex(0);
 			}
-
-
-		//	comboSelectedIndex=gridComboBox.getSelectedIndex();
-
-
 		}
 
 		gridComboBox.addItemListener(new ItemListener() {
@@ -334,44 +328,25 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * @param c int columns of grid
 	 */
 	private void setRandomGridShown(int r, int c){
-		
-		//GridProperties gp = getFirstGridPropertiesWithGridON();
-	//	GridProperties gp = getFirstGridPropertiesFromAllMarkingLayers();
 		int rows = r;
 		int columns = c;
 		
-	/*	if(gp != null && gp.getGridRowCount()==r && gp.getGridColumnCount()==c){
-			rows = gp.getGridRowCount();
-			columns = gp.getGridColumnCount();
-		}
-		else{
-			int[] rc = getRowAndColumnFromListByIndex();
-			if(rc != null && rc.length>1){
-				rows=rc[0];
-				columns=rc[1];
-				
-			}
-		}	
-	*/	
-			unselectAllCells(rows, columns);
-			int cellsCount = rows*columns;
-			int halfOfCellsCount = cellsCount/2;
-			
+		unselectAllCells(rows, columns); // set all cells unselected
+		int cellsCount = rows*columns;
+		int halfOfCellsCount = cellsCount/2;
 
-				for(int i=0;i<halfOfCellsCount;i++){
-					
-					// check that unselected grid rectangles number is smaller than selected ones.
-					if(countUnselectedGridRectangle(rows, columns) > countSelectedGridRectangle(rows, columns)){
-						GridRectangle gr = getRandomGridRectangle(rows, columns);
-						if(gr != null){
-							gr.setShown(true);
-							gr.updatePanel();
-						}
-					}
-				
+
+		for(int i=0;i<halfOfCellsCount;i++){
+			// check that unselected grid rectangles number is smaller than selected ones.
+			if(countUnselectedGridRectangle(rows, columns) > countSelectedGridRectangle(rows, columns)){
+				GridRectangle gr = getRandomGridRectangle(rows, columns);
+				if(gr != null){
+					gr.setShown(true);
+					gr.updatePanel();
 				}
-			
-		}
+			}
+		}		
+	}
 	
 	
 	private void unselectAllCells(int rowCount,int columnCount){
