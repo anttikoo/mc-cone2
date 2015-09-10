@@ -51,7 +51,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	private ArrayList<SingleGridSize> gridSizes;
 	private JPanel gridPanel;
 	private JComboBox<String> gridComboBox;
-	private Dimension presentImageDimension;
 	private JPanel backGridExamplePanel;
 	private JLabel gridLabel;
 	private JLabel comboLabel;
