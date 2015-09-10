@@ -119,6 +119,11 @@ public class PropertiesDialog extends JDialog {
 		return null;
 	}
 
+	/**
+	 * Creates lowest JPanel of dialog
+	 * @return JPanel lowest JPanel of dialog
+	 * @throws Exception
+	 */
 	protected JPanel initDownPanel() throws Exception{
 		// Setup buttons:
 		JPanel buttonPanel = new JPanel();
