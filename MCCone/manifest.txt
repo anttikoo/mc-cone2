@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Created-By: 9.5.14 (Antti Kurronen)
+Class-Path: .
+Main-Class: gui.StartMCcone
+Permissions: all-permissions
