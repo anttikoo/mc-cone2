@@ -326,45 +326,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		return backGridExamplePanel;
 
 	}
-/*
-	private void initUnSelectedGridCells(){
-		
-		boolean setGridSelected=false;
-	//	GridProperties gp = getFirstGridPropertiesWithGridON();
-		
-		if(this.templateGP != null){
-			if((this.gridComboBox.getSelectedIndex() == getIndexOfGridSizeList(this.templateGP.getGridRowCount(), this.templateGP.getGridColumnCount()))){
 
-				for(int r=1;r<=this.templateGP.getGridRowCount();r++){
-
-					for(int c=1; c<=this.templateGP.getGridColumnCount();c++){
-					//	int number=(r-1)*gp.getGridColumnCount()+c;
-						GridRectangle gr= getGridRectangle(r, c);
-						if(this.templateGP.isSelectedGridCellAt(r, c)){
-							gr.setShown(true);
-							setGridSelected=true;
-						}
-						else{
-							gr.setShown(false);
-						}
-											
-						gr.updatePanel();
-					}
-				}
-			}
-			
-			
-		
-		}
-		if(!setGridSelected) // not selected any -> use random selection
-		{
-			int[] rowColum = getRowAndColumnFromListByIndex();
-			setRandomGridShown(rowColum[0], rowColum[1]);
-							
-		}
-	}
-	
-*/
 	
 	private void setRandomGridShown(int r, int c){
 		
