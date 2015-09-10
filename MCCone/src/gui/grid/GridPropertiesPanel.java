@@ -90,21 +90,21 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		upperBackPanel.add(initTitlePanel("Set Grid for all MarkingLayers"), BorderLayout.PAGE_START);
 
 		JPanel buttonTitlePanel = new JPanel();
-		buttonTitlePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
+		buttonTitlePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 3));
 
 		buttonTitlePanel.setBackground(Color_schema.dark_30);
-		buttonTitlePanel.setMaximumSize(new Dimension(150,30));
-		buttonTitlePanel.setMinimumSize(new Dimension(150,30));
-		buttonTitlePanel.setPreferredSize(new Dimension(150,30));
+		buttonTitlePanel.setMaximumSize(new Dimension(150,36));
+		buttonTitlePanel.setMinimumSize(new Dimension(150,36));
+		buttonTitlePanel.setPreferredSize(new Dimension(150,36));
 		JLabel buttontitleJLabel= new JLabel("SET GRID ON/OFF:");
 		buttontitleJLabel.setFont(Fonts.b14);
 
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT,  20, 10));
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT,  20, 3));
 		buttonPanel.setBorder(BorderFactory.createLineBorder(Color_schema.grey_100, 1));
-		buttonPanel.setMaximumSize(new Dimension(150,50));
-		buttonPanel.setMinimumSize(new Dimension(150,50));
-		buttonPanel.setPreferredSize(new Dimension(150,50));
+		buttonPanel.setMaximumSize(new Dimension(150,36));
+		buttonPanel.setMinimumSize(new Dimension(150,36));
+		buttonPanel.setPreferredSize(new Dimension(150,36));
 		buttonPanel.setBackground(Color_schema.dark_30);
 		buttonPanel.add(buttontitleJLabel);
 
@@ -189,6 +189,10 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		comboBoxPanel.add(setUpComboBox());
 
 		centerBackPanel.add(comboBoxPanel);
+		
+		
+		
+		
 
 		centerBackPanel.add(setUpGridExamplePanel());
 
