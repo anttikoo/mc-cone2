@@ -328,6 +328,11 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	}
 
 	
+	/**
+	 * Selects randomly which grid cells are selected.
+	 * @param r int rows of grid
+	 * @param c int columns of grid
+	 */
 	private void setRandomGridShown(int r, int c){
 		
 		//GridProperties gp = getFirstGridPropertiesWithGridON();
