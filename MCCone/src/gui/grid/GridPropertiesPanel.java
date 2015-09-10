@@ -63,7 +63,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		super(frame, gui, point);
 		this.markingLayerList=markingLayerList;
 		this.gridON= isAnyGridON();
-		this.presentImageDimension=gui.getPresentImageDimension();
+
 		this.gridSizes=gridSizeList;
 		this.templateGP= getFirstGridPropertiesFromAllMarkingLayers(0, 0);
 		initDialog();
