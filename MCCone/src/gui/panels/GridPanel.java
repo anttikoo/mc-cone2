@@ -66,6 +66,10 @@ public class GridPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Draws a Grid lines and rectangles to Graphics2D object and return it.
+	 * @param g2 Graphics2D object
+	 */
 	public void drawGrid(Graphics2D g2){
 
 		g2.setPaint(thinLineColor);
@@ -119,6 +123,14 @@ public class GridPanel extends JPanel {
 		}
 	}
 
+	/**
+	 *  Draws a line.
+	 * @param x1 int start point vertical position
+	 * @param y1 int start point horizontal position
+	 * @param x2 int end point vertical position
+	 * @param y2 int end point horizontal position
+	 * @param g2 Graphics2D object
+	 */
 	private void drawLine(int x1, int y1, int x2, int y2, Graphics2D g2){
 
 		g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,used_transparency_soft));
