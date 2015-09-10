@@ -53,7 +53,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	private JComboBox<String> gridComboBox;
 	private Dimension presentImageDimension;
 	private JPanel backGridExamplePanel;
-//	private int comboSelectedIndex=0;
 	private JLabel gridLabel;
 	private JLabel comboLabel;
 	private GridProperties templateGP=null; // GridProperty which data is used as template for selected markingLayer(s) 
@@ -68,26 +67,11 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		this.presentImageDimension=gui.getPresentImageDimension();
 		this.gridSizes=gridSizeList;
 		this.templateGP= getFirstGridPropertiesFromAllMarkingLayers(0, 0);
-	//	this.topLeftPoint=point;
 		initDialog();
-		// TODO Auto-generated constructor stub
+	
 	}
-/*
-	protected void setPanelPosition(){
-		Rectangle rec= getGoodBounds(); // calculates is the dialog panel going over the screen
-		if(rec != null)
-			backPanel.setBounds(rec);
-		else
-			backPanel.setBounds((int)(this.topLeftPoint.getX()-((int)this.backGridExamplePanel.getPreferredSize().getWidth())), (int)this.topLeftPoint.getY(),
 
-		(int)this.backGridExamplePanel.getPreferredSize().getWidth(),500);
-	//	backPanel.setPreferredSize(new Dimension((int)colorChooser.getPreferredSize().getWidth(),(int)colorChooser.getPreferredSize().getHeight()+this.maxHeight));
-	//	comboBoxPanel.setMaximumSize(new Dimension((int)backPanel.getBounds().getWidth()-20,50));
-	//	comboBoxPanel.setPreferredSize(new Dimension((int)backPanel.getBounds().getWidth()-20,50));
-	}
-*/
 	protected JPanel initUPPanels() throws Exception{
-
 
 		JPanel upperBackPanel= new JPanel();
 		upperBackPanel.setLayout(new BorderLayout());
@@ -96,20 +80,12 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		JPanel buttonTitlePanel = new JPanel();
 		buttonTitlePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
 
-
-
 		buttonTitlePanel.setBackground(Color_schema.dark_30);
 		buttonTitlePanel.setMaximumSize(new Dimension(150,30));
 		buttonTitlePanel.setMinimumSize(new Dimension(150,30));
 		buttonTitlePanel.setPreferredSize(new Dimension(150,30));
 		JLabel buttontitleJLabel= new JLabel("SET GRID ON/OFF:");
 		buttontitleJLabel.setFont(Fonts.b14);
-	//	buttonTitlePanel.add(buttontitleJLabel);
-
-	//	JPanel buttonBackPanel = new JPanel();
-	//	buttonBackPanel.setLayout(new FlowLayout(FlowLayout.LEFT,30,10));
-	//	buttonBackPanel.add(buttontitleJLabel);
-
 
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT,  20, 10));
