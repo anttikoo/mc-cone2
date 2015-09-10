@@ -39,6 +39,8 @@ import gui.MouseListenerCreator;
 import gui.PropertiesDialog;
 
 /**
+ * 
+ * Dialog panel, which shows settings for selecting grid dimensions and visibility of grid and single cells of grid.
  * @author Antti Kurronen
  *
  */
@@ -59,6 +61,14 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 
 
+	/**
+	 * Constructor of class.
+	 * @param frame JFrame of owner
+	 * @param gui GUI object
+	 * @param point Point top left point location of window
+	 * @param markingLayerList ArrayList of MarkingLayers, which are modified
+	 * @param gridSizeList ArrayList of SingleGridSizes, determining the grid dimension.
+	 */
 	public GridPropertiesPanel(JFrame frame, GUI gui, Point point, ArrayList<MarkingLayer> markingLayerList, ArrayList<SingleGridSize> gridSizeList) {
 		super(frame, gui, point);
 		this.markingLayerList=markingLayerList;
@@ -70,6 +80,9 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.PropertiesDialog#initUPPanels()
+	 */
 	protected JPanel initUPPanels() throws Exception{
 
 		JPanel upperBackPanel= new JPanel();
@@ -148,6 +161,9 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.PropertiesDialog#initCenterPanels()
+	 */
 	protected JPanel initCenterPanels(){
 		JPanel centerBackPanel = new JPanel();
 		centerBackPanel.setLayout(new BoxLayout(centerBackPanel, BoxLayout.PAGE_AXIS));
@@ -179,6 +195,9 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		return centerBackPanel;
 	}
 
+	/**
+	 * @return JCombobox object
+	 */
 	private JComboBox<String> setUpComboBox(){
 		gridComboBox = new JComboBox<String>();
 		gridComboBox.setMaximumSize(new Dimension(80,25));
@@ -241,6 +260,10 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 	}
 
+	/**
+	 *  Setups the Preview Grid at startup: visible or invisible.
+	 *  
+	 */
 	private void enableComponents(){
 
 			this.gridComboBox.setEnabled(gridON);
@@ -265,6 +288,10 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		//	updateGridDimensionFromComboBox();
 	}
 
+	/**
+	 * Set ups the Grid example JPanel.
+	 * @return JPanel the Grid example panel.
+	 */
 	private JPanel setUpGridExamplePanel(){
 		backGridExamplePanel = new JPanel();
 		backGridExamplePanel.setLayout(new BoxLayout(backGridExamplePanel, BoxLayout.PAGE_AXIS));
