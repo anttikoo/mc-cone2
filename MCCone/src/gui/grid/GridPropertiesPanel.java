@@ -2,6 +2,7 @@ package gui.grid;
 
 import information.Fonts;
 import information.GridProperties;
+import information.ID;
 import information.ImageLayer;
 import information.MarkingLayer;
 import information.PositionedRectangle;
@@ -17,6 +18,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -32,6 +35,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.plaf.metal.MetalIconFactory.FolderIcon16;
 
 import gui.Color_schema;
@@ -243,7 +248,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 					@Override
 					public void run() {
-						updateGridDimensionFromComboBox(false);
+						updateGridDimensionFromComboBox(ID.GPANEL_GRID_SIZE_CHANGED);
 
 					}
 				});
@@ -275,7 +280,9 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		prosentSliderPanel.add(Box.createRigidArea(new Dimension(10,0)));
 		prosentSliderPanel.add(Box.createRigidArea(new Dimension(0,5)));
 		//setup randow Slider
-		randomSlider=new JSlider(10, 100,50);
+		randomSlider=new JSlider(10, 90,50);
+		
+
 		randomSlider.setMinimumSize(new Dimension(200,30));
 		randomSlider.setPreferredSize(new Dimension(200,30));
 		randomSlider.setMaximumSize(new Dimension(200,30));
@@ -283,13 +290,36 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		randomSlider.setMajorTickSpacing(20);
 		randomSlider.setMinorTickSpacing(10);
 		randomSlider.setPaintTicks(true);
+		randomSlider.setSnapToTicks(true);
+		
+		randomSlider.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				
+				SwingUtilities.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						sliderValueLabel.setText(""+randomSlider.getValue()+" %");
+						updateGridDimensionFromComboBox(ID.GPANEL_RANDOM_PROCENT_CHANGED);
+
+					}
+				});
+				
+			}
+		});
+		
+		if(this.templateGP != null && this.templateGP.getRandomProcent() >0)
+			randomSlider.setValue(this.templateGP.getRandomProcent());
 		
 		prosentSliderPanel.add(randomSlider);
 		
 		JPanel pSliderValueLabelPanel=new JPanel();
 		pSliderValueLabelPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 2));
-		sliderValueLabel = new JLabel(""+this.randomSlider.getValue());
+		sliderValueLabel = new JLabel(""+this.randomSlider.getValue()+" %");
 		sliderValueLabel.setFont(Fonts.b18);
+		
 		pSliderValueLabelPanel.add(sliderValueLabel);
 		prosentSliderPanel.add(pSliderValueLabelPanel);
 		
@@ -309,7 +339,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			if(gridON){
 				this.gridPanel.setVisible(true);
 			//	if(this.gridPanel.getComponentCount()==0){
-					updateGridDimensionFromComboBox(true);
+					updateGridDimensionFromComboBox(ID.GPANEL_STARTUP);
 			//	}
 				this.gridPanel.setBackground(Color_schema.grey_150);
 				this.gridLabel.setForeground(Color_schema.white_230);
@@ -319,7 +349,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				this.randomSlider.setEnabled(true);
 				this.randomSlider.setForeground(Color_schema.white_230);
 				this.randomSlider.putClientProperty("JSlider.isFilled", Boolean.TRUE);
-				this.randomSlider.putClientProperty("Slider.focus", Color_schema.grey_100);
+
 			}
 			else{
 				this.gridPanel.setVisible(false);
@@ -331,7 +361,8 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				this.randomSlider.setEnabled(false);
 				this.randomSlider.setForeground(Color_schema.dark_40);
 				this.randomSlider.putClientProperty("JSlider.isFilled", Boolean.FALSE);
-				this.randomSlider.putClientProperty("Slider.focus", Color_schema.dark_40);
+				
+				
 				
 				
 			}
@@ -390,12 +421,17 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		
 		unselectAllCells(rows, columns); // set all cells unselected
 		int cellsCount = rows*columns;
-		int halfOfCellsCount = cellsCount/2;
+		double value=((double)this.randomSlider.getValue())/100.0;
+		double selectedCells= ((double)cellsCount)*value;
+		int partOfCellsCount= (int)selectedCells;
+	//	int partOfCellsCount = cellsCount*(this.randomSlider.getValue()/100);
+		if(partOfCellsCount==0)
+			partOfCellsCount=1;
 
-
-		for(int i=0;i<halfOfCellsCount;i++){
+		for(int i=0;i<partOfCellsCount;i++){
 			// check that unselected grid rectangles number is smaller than selected ones.
-			if(countUnselectedGridRectangle(rows, columns) > countSelectedGridRectangle(rows, columns)){
+		//	if(countUnselectedGridRectangle(rows, columns) > countSelectedGridRectangle(rows, columns)){
+			if(countSelectedGridRectangle(rows, columns)<partOfCellsCount){
 				GridRectangle gr = getRandomGridRectangle(rows, columns);
 				if(gr != null){
 					gr.setShown(true);
@@ -479,19 +515,22 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * @return
 	 */
 	private GridProperties getFirstGridPropertiesFromAllMarkingLayers(int r, int c){
+		boolean checkRandomProcent=false;
+		if(r>0 && c>0)
+			checkRandomProcent=true;
 		
 		GridProperties returnGP=null;
 		
-			returnGP= getFirstGridProperties(r,c, true); // Just visible GridProperties from Markinglayers that are modified at the same time. 
+			returnGP= getFirstGridProperties(r,c, true, checkRandomProcent); // Just visible GridProperties from Markinglayers that are modified at the same time. 
 			
 			if(returnGP == null)
-				returnGP = getFirstGridProperties(r,c, false); // Unvisible GridProperties from Markinglayers that are modified at the same time. 
+				returnGP = getFirstGridProperties(r,c, false, checkRandomProcent); // Unvisible GridProperties from Markinglayers that are modified at the same time. 
 			if(returnGP == null){
 				// Get GridProperties from markingLayers that are under same ImageLayer (not needed to be modified)
 				// preferable visible, but returns also unvisible GridProperties
-				returnGP= getGPFromMarkingLayerList(this.markingLayerList, r, c); 
+				returnGP= getGPFromMarkingLayerList(this.markingLayerList, r, c, checkRandomProcent); 
 				if(returnGP == null){
-					returnGP= getGPFromMarkingLayerList(this.gui.getAllMarkingLayers(), r,c); 
+					returnGP= getGPFromMarkingLayerList(this.gui.getAllMarkingLayers(), r,c,checkRandomProcent); 
 					
 				}
 				
@@ -510,7 +549,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * @param c integer for columns in grid
 	 * @return GridProperties
 	 */
-	private GridProperties getGPFromMarkingLayerList(ArrayList<MarkingLayer> mLayerList, int r, int c){
+	private GridProperties getGPFromMarkingLayerList(ArrayList<MarkingLayer> mLayerList, int r, int c, boolean checkProcent){
 		try{
 	
 		if(mLayerList != null){
@@ -527,6 +566,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 							GridProperties gpSingle = mSingleILiterator.next().getGridProperties();
 							// c and r is zero when initializing panel. And they are something else, when user selects row and column in combobox.
 							if(gpSingle != null && gpSingle .isGridON() && ( (c==0 && r==0) || (gpSingle.getGridColumnCount() == c && gpSingle.getGridRowCount() == r) ) )
+								if(!checkProcent || checkProcent && gpSingle.getRandomProcent()== this.randomSlider.getValue()) // check that prosentSlider value is same
 								return gpSingle; // found Gridproperties that is visible (ON) and under same ImageLayer
 						}
 						// try to find unvisible Gridproperties here, because not found any visible ones.
@@ -535,6 +575,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 							GridProperties gpSingle = mSingleILiteratorUnvisible.next().getGridProperties();
 							// c and r is zero when initializing panel. And they are something else, when user selects row and column in combobox.
 							if(gpSingle != null && ( (c==0 && r==0) || (gpSingle.getGridColumnCount() == c && gpSingle.getGridRowCount() == r) ))
+								if(!checkProcent || checkProcent && gpSingle.getRandomProcent()== this.randomSlider.getValue()) // check that prosentSlider value is same								
 								return gpSingle; // found Gridproperties that is under same ImageLayer
 						}					
 					}
@@ -579,7 +620,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * 
 	 * @return GridProperties
 	 */
-	private GridProperties getFirstGridProperties(int r, int c, boolean findON){
+	private GridProperties getFirstGridProperties(int r, int c, boolean findON, boolean checkProcent){
 		if(this.markingLayerList != null && this.markingLayerList.size()>0){
 			Iterator<MarkingLayer> miterator=this.markingLayerList.iterator();
 			while(miterator.hasNext()){
@@ -590,7 +631,8 @@ public class GridPropertiesPanel extends PropertiesDialog {
 						//if r and c >0 has gp include same values of columns and rows.
 						if(gp != null && ((c==0 && r==0) || (gp.getGridColumnCount()==c && gp.getGridRowCount()==r) ) ){
 							if( (findON && gp.isGridON() ) || !findON) // if searching GRID which is ON (visible) then check that it is ON.
-								return gp;
+								if(!checkProcent || checkProcent && gp.getRandomProcent()== this.randomSlider.getValue()) // check that prosentSlider value is same
+									return gp;
 						}
 				}						
 			}
@@ -661,25 +703,41 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		return null;
 	}
 	
-	private void updateGridDimensionFromComboBox(boolean startingUP){
+	private void updateGridDimensionFromComboBox(int updateType){
 		int index=0;
 		SingleGridSize sgs=null;
-		if(startingUP){ 
-		
-			if(this.templateGP != null)
-				index = getIndexOfGridSizeList(this.templateGP.getGridRowCount(), this.templateGP.getGridColumnCount());
-		}
-		else{ // user pressed new index of combobox
-			index = this.gridComboBox.getSelectedIndex();
-			// get new template GP, because the column and row are changed
-			if(this.gridSizes != null && this.gridSizes.size()>index){
-				sgs= this.gridSizes.get(index);
-				if(sgs != null){
-					this.templateGP = getFirstGridPropertiesFromAllMarkingLayers(sgs.getRows(), sgs.getColumns());
+		switch(updateType){
+			case ID.GPANEL_STARTUP:
+				if(this.templateGP != null)
+					index = getIndexOfGridSizeList(this.templateGP.getGridRowCount(), this.templateGP.getGridColumnCount());
+				break;
+			case ID.GPANEL_GRID_SIZE_CHANGED:
+				 // user pressed new index of combobox
+				index = this.gridComboBox.getSelectedIndex();
+				// get new template GP, because the column and row are changed
+				if(this.gridSizes != null && this.gridSizes.size()>index){
+					sgs= this.gridSizes.get(index);
+					if(sgs != null){
+						this.templateGP = getFirstGridPropertiesFromAllMarkingLayers(sgs.getRows(), sgs.getColumns());
+					}
 				}
-			}
+				break;
+				
+			case ID.GPANEL_RANDOM_PROCENT_CHANGED:
+				index = this.gridComboBox.getSelectedIndex();
+				if(this.gridSizes != null && this.gridSizes.size()>index){
+					sgs= this.gridSizes.get(index);
+					if(sgs != null){
+						this.templateGP = getFirstGridPropertiesFromAllMarkingLayers(sgs.getRows(), sgs.getColumns());
+					}
+				}
+				break;
 			
+		
 		}
+		
+		
+		
 		
 		if(this.gridSizes != null && this.gridSizes.size()>index){
 			if(sgs==null)
@@ -822,6 +880,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			// create gridProperty
 			GridProperties gridProperty=new GridProperties(this.gui.getPresentImageDimension());
 			gridProperty.setGridON(this.gridON);
+			gridProperty.setRandomProcent(this.randomSlider.getValue()); // set random procent value
 			SingleGridSize sgs = this.gridSizes.get(this.gridComboBox.getSelectedIndex());
 			int x=sgs.getWidthAlign();
 			int y=sgs.getHeightAlign();
