@@ -1410,10 +1410,6 @@ private JButton exportJButton;
 
 	}
 
-	public int[] getMovingPosition() {
-		return movingPosition;
-	}
-
 	public void setMovingPosition(int[] movingPosition) {
 		this.movingPosition = movingPosition;
 		//System.out.println("setmoving: "+this.movingPosition[0] + " " +this.movingPosition[1]);
