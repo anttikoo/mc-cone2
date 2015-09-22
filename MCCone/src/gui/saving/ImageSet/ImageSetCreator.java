@@ -1217,7 +1217,7 @@ private JButton exportJButton;
 	}
 
 	/**
-	 * Sets selected font to all @see SingleDrawImagePanel.
+	 * Sets selected font to all SingleDrawImagePanel.
 	 */
 	private void updatePanelFonts(){
 		//get selected font and font size
@@ -1256,6 +1256,10 @@ private JButton exportJButton;
 	}
 
 
+	/**
+	 * Searches first SingleDrawImagePanel which is not positioned yet.
+	 * @return SingleDrawImagePanel which is not positioned yet.
+	 */
 	private SingleDrawImagePanel getFirstUnPositionedSDP(){
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
@@ -1266,6 +1270,12 @@ private JButton exportJButton;
 		return null;
 	}
 
+	/**
+	 * Returns SingleDrawImagePanel at position r,c. 
+	 * @param r int row
+	 * @param c int column
+	 * @return SingleDrawImagePanel at position r,c. If not found, null returned.
+	 */
 	private SingleDrawImagePanel getSDPatPosition(int r, int c){
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
@@ -1277,6 +1287,10 @@ private JButton exportJButton;
 	}
 
 
+	/**
+	 * Imports image files which user has selected and creates @see SingleDrawImagePanel (s) of them.
+	 * @param imageFiles list of image File-object
+	 */
 	private void importImagesFromFiles(File[] imageFiles) {
 		try {
 
@@ -1295,16 +1309,11 @@ private JButton exportJButton;
 							SingleDrawImagePanel sip=new SingleDrawImagePanel(image, imageFiles[i].getName(), taskManager, getSelectedFont());
 							sip.addMouseListener(this);
 							this.drawImagePanels.add(sip);
-
-
 						}
 					}
-
 				}
 				updatePanelFonts();
-
 			}
-
 		} catch (HeadlessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1339,6 +1348,11 @@ private JButton exportJButton;
 
 
 
+	/**
+	 * Returns a String folder path of the given file .
+	 * @param file File which folder is viewed
+	 * @return String folder path of the given file 
+	 */
 	private String getFolder(File file){
 		if(file.isDirectory()){
 			return file.getAbsolutePath();
@@ -1349,6 +1363,9 @@ private JButton exportJButton;
 		return null;
 	}
 
+	/**
+	 * Sets GridPositions of all DrawImagePanel to null.
+	 */
 	private void setGridPositionsToNull(){
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
@@ -1358,6 +1375,9 @@ private JButton exportJButton;
 				sdp.setGridPositionNull();
 		}
 	}
+	/**
+	 * Removes all SingleDrawImagePanels that has no image.
+	 */
 	private void removeEmptyPanels(){
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
@@ -1371,6 +1391,12 @@ private JButton exportJButton;
 	}
 
 
+	/**
+	 * Calculates has present grid enough cells for images and if not enough cells will method count new number for rows and columns.
+	 * @param rowColumn int[] present row and column number
+	 * @param itemNumber int number of overall items
+	 * @return int[] new row and column number (may be same as given value if there are enough cells for imagePanels)
+	 */
 	private int[] calculateEnoughGridPoints(int[] rowColumn, int itemNumber){
 
 		if(rowColumn[0]*rowColumn[1]< itemNumber){
