@@ -120,6 +120,12 @@ private JButton exportJButton;
 
 
 
+	/**
+	 * Class constructor. Opens window, where use can download Images from ImageLayers and image-files and export them to file.
+	 * @param frame JFrame parent frame
+	 * @param taskManager TaskManager-object used to connect core functions.
+	 * @param gui GUI-object to connect Graphical interface
+	 */
 	public ImageSetCreator(JFrame frame, TaskManager taskManager, GUI gui){
 		//super(frame, true);
 
@@ -135,13 +141,15 @@ private JButton exportJButton;
 		//	this.panelMoveListener=new PanelMoveListener(this);
 		//	this.image=this.taskManager.createImageFile(new File("/home/antti/4kuvaa/kolmas.jpg"));
 			this.createImageThread=new Thread(this, "CreateImage_"+threadNumber++);
-
-
-
 			initComponents();
 			this.progressBallsDialog = new ProgressBallsDialog(new JFrame(), "Creating set of Images", "", ID.CANCEL, this);
 			this.progressWihoutButtons = new ProgressBallsDialog(new JFrame(), "Opening images", "", ID.CANCEL, this);
 			this.addMouseListener(this);
+			
+			if(this.taskManager != null && this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size()>0){
+				createImagesForPresentImageLayers();
+				setImagesToGrid();
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
