@@ -146,10 +146,7 @@ private JButton exportJButton;
 			this.progressWihoutButtons = new ProgressBallsDialog(new JFrame(), "Opening images", "", ID.CANCEL, this);
 			this.addMouseListener(this);
 			
-			if(this.taskManager != null && this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size()>0){
-				createImagesForPresentImageLayers();
-				setImagesToGrid();
-			}
+			
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -157,8 +154,15 @@ private JButton exportJButton;
 		}
 
 		this.setVisible(true);
+		if(this.taskManager != null && this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size()>0){
+			createImagesFromPresentImageLayers();
+			setImagesToGrid();
+		}
 	}
 
+	/**
+	 * Initializes JPanels and other graphical components of this ImageSetCreator-object.
+	 */
 	private void initComponents(){
 
 		try {
@@ -327,6 +331,10 @@ private JButton exportJButton;
 
 
 
+	/**
+	 * Initializes the Browsing Panel at below of window.
+	 * @return JPanel BrowsingPanel
+	 */
 	public JPanel initBrowsingPanel(){
 		try {
 
@@ -804,7 +812,7 @@ private JButton exportJButton;
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						createImagesForPresentImageLayers();
+						createImagesFromPresentImageLayers();
 						setImagesToGrid();
 					}
 				});
@@ -1254,8 +1262,11 @@ private JButton exportJButton;
 		}
 	}
 
-	private void createImagesForPresentImageLayers(){
-		SelectAndCreateImageFiles saci = new SelectAndCreateImageFiles(new JFrame(), this.gui, taskManager.getImageLayerList(), ID.EXPORT_IMAGE_SET);
+	/**
+	 * Opens dialog window, where user can select ImageLayers and MarkingLayers to be shown in imageset.
+	 */
+	private void createImagesFromPresentImageLayers(){
+		SelectAndCreateImageFiles saci = new SelectAndCreateImageFiles(new JFrame(), this.gui, taskManager.getImageLayerList(), ID.EXPORT_PREVIEW_IMAGES);
 
 		if(saci.getCreatedBufferedImages() != null && saci.getCreatedBufferedImages().size()>0){
 			Iterator<BufferedImageWithName> imageIterator = saci.getCreatedBufferedImages().iterator();
