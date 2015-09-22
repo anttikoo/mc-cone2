@@ -511,6 +511,10 @@ private JButton exportJButton;
 		}
 	}
 
+	/**
+	 * Changes positions in GRID of two @see SingleDrawImagePanel-objects.
+	 * @param second int[] position of @see SingleDrawImagePanel-object that is moved.
+	 */
 	public void swithcSingleDrawPanels(int[] second){
 		SingleDrawImagePanel firstPanel= getSDPatPosition(this.movingPosition[0],this.movingPosition[1]);
 		SingleDrawImagePanel secondPanel = getSDPatPosition(second[0], second[1]);
@@ -532,6 +536,10 @@ private JButton exportJButton;
 	}
 
 
+	/**
+	 *  Open Dialog to select image files.
+	 * @throws Exception
+	 */
 	private void selectFile() throws Exception{
 		if(this.selectFileDialog==null){
 		String path = gui.getPresentFolder();
@@ -558,8 +566,11 @@ private JButton exportJButton;
 
 	}
 
+	/**
+	 * Opens Confirm dialog to close ImageSet window.
+	 */
 	private void closeWindow(){
-		ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "Closing image set creator window", "Close?", ID.YES_NO, this);
+		ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "Closing image set creator window", "Really want to close ImageSet window?", ID.YES_NO, this);
 		if(dialog.showDialog() == ID.YES){
 			this.setVisible(false);
 			this.dispose();
