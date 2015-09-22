@@ -824,6 +824,10 @@ private boolean imageNameAlreadyInList(String item){
 
 }
 
+/**
+ * Creates JPanel containing JButtons for accepting or cancelling managing layers.
+ * @return JPanel which contains JButtons
+ */
 private JPanel initDownPanel(){
 
 	try {
@@ -1221,7 +1225,7 @@ private JPanel initDownPanel(){
 				closeJButton.setBorder(BorderFactory.createLineBorder(Color_schema.dark_40, 1));
 				closeJButton.setContentAreaFilled(false);
 				closeJButton.setFocusable(false);
-				closeJButton.setToolTipText("Remove image: " +iPathLabel.getText());
+				closeJButton.setToolTipText("Remove image: " +imageLayer.getImageFileName());
 
 				// set up listener for closeButton
 				addMouseListenerToButtons(closeJButton, ID.BUTTON_CLOSE_25);
@@ -1237,7 +1241,7 @@ private JPanel initDownPanel(){
 			//	browseJButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color_schema.color_grey_100, Color_schema.color_dark_50_bg));
 				browseJButton.setContentAreaFilled(false);
 				browseJButton.setFocusable(false);
-				browseJButton.setToolTipText("Import Marking");
+				browseJButton.setToolTipText("Import Markings for image "+imageLayer.getImageFileName());
 				addMouseListenerToButtons(browseJButton, ID.BUTTON_IMPORT_MARKINGS);
 				initActionsToButtons(browseJButton, ID.OPEN_MARKING_FILE);
 
@@ -1279,7 +1283,7 @@ private JPanel initDownPanel(){
 
 			} catch (Exception e) {
 				LOGGER.severe("Error in construction of Marking list " +e.getClass().toString() + " :" +e.getMessage());
-
+				
 			}
 		}
 
