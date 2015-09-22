@@ -149,8 +149,10 @@ private JButton exportJButton;
 			
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			LOGGER.severe("Error in initializing ImageSetCreator: "+e.getMessage());
 			e.printStackTrace();
+			this.setVisible(false);
+			this.dispose();
 		}
 
 		this.setVisible(true);
@@ -163,9 +165,9 @@ private JButton exportJButton;
 	/**
 	 * Initializes JPanels and other graphical components of this ImageSetCreator-object.
 	 */
-	private void initComponents(){
+	private void initComponents() throws Exception{
 
-		try {
+	
 			this.setBounds(gui.getBounds());
 			this.setUndecorated(true);
 			this.setBackground(new Color(0,0,0,0));
@@ -323,10 +325,7 @@ private JButton exportJButton;
 			this.add(backPanel,c);
 			this.addMouseListener(this);
 			this.repaint();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 
 
@@ -578,6 +577,10 @@ private JButton exportJButton;
 
 	}
 
+	/**
+	 * Exports ImageSet to file. Show progress by @see ShadyMessageDialog.
+	 * @throws InterruptedException
+	 */
 	private void createImage() throws InterruptedException{
 		if(this.savingPathJLabel.getText() != null){
 			int imageWidth=Integer.parseInt(this.widthField.getText().trim());
@@ -587,12 +590,12 @@ private JButton exportJButton;
 			double multiplier= ((double)imageWidth)/((double)panelwidth);
 			ImageCreator imageCreator=new ImageCreator(multiplier, this.gui.taskManager);
 			imageCreator.initImageSetProperties(this.gap, this.presentRowNumber, this.presentColumnNumber,this.drawImagePanels, imageDimension, this.savingPathJLabel.getText());
-	//	progressBallsDialog.showDialog();
+	
 			if(imageCreator.startImageSetCreatorThread());
-			//	LOGGER.fine("imageCreator started");
+			
 			while(imageCreator.isContinueCreating() && progressBallsDialog.isShowON()){
 				createImageThread.sleep(1000);
-			//	System.out.println("creating");
+			
 			}
 
 			if(progressBallsDialog.isShowON())
@@ -626,6 +629,14 @@ private JButton exportJButton;
 
 
 
+	/**
+	 * 
+	 * Creates Arrowbuttons to bottom of ImageSetCreator-window. Increases and decreases value of export image size.
+	 * @param field Textfield where arrowbuttons actions are performed
+	 * @param fieldID Textfield ID where arrowbuttons actions are performed
+	 * @return JPanel where arrowbuttons are added.
+	 * @throws Exception
+	 */
 	private JPanel createBasicArrowButtons(JTextField field, int fieldID) throws Exception{
 		this.arrowMouseListener = new ArrowMouseListener(this.widthField, this.heigthField);
 		JPanel arrowPanel = new JPanel();
@@ -634,17 +645,18 @@ private JButton exportJButton;
 		arrowPanel.setPreferredSize(new Dimension(20,30));
 		arrowPanel.setMinimumSize(new Dimension(20,30));
 
+		//nortbutton - the upper button 
 		BasicArrowButton northButton = new BasicArrowButton(BasicArrowButton.NORTH);
 		if(fieldID== ID.TEXTFIELD_WIDTH)
 			northButton.setActionCommand(this.arrowMouseListener.widthUp);
 		else
 			northButton.setActionCommand(this.arrowMouseListener.heighthUp);
 
-
+		// add listener
 		MouseListenerCreator.addMouseListenerToNormalButtons(northButton);
 
 
-
+		//southbutton - a button below
 		BasicArrowButton southButton = new BasicArrowButton(BasicArrowButton.SOUTH);
 		if(fieldID==ID.TEXTFIELD_WIDTH)
 			southButton.setActionCommand(this.arrowMouseListener.widthDown);
@@ -665,14 +677,16 @@ private JButton exportJButton;
 
 
 
+	/**
+	 * Initializes JComboboxes, showing the grid dimension: how many vertically and horizontally.
+	 */
 	private void setUpRowAndColumnBoxes(){
-
+		
 		Integer[] iArray=new Integer[10];
 		for (int i = 1; i <= 10; i++) {
 				iArray[i-1]=i;
-
 		}
-
+		//rows
 		rowBox=new JComboBox<Integer>(iArray);
 		rowBox.setSelectedItem(1);
 		rowBox.setMaximumSize(new Dimension(50,50));
@@ -691,9 +705,7 @@ private JButton exportJButton;
 
 			}
 		});
-
-
-
+		//columns
 		columnBox=new JComboBox<Integer>(iArray);
 		columnBox.setSelectedItem(1);
 		columnBox.setMaximumSize(new Dimension(50,50));
