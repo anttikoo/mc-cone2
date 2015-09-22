@@ -334,8 +334,8 @@ private JButton exportJButton;
 	 * Initializes the Browsing Panel at below of window.
 	 * @return JPanel BrowsingPanel
 	 */
-	public JPanel initBrowsingPanel(){
-		try {
+	public JPanel initBrowsingPanel() throws Exception{
+		
 
 			browsingBackPanel = new JPanel();
 	//		browsingBackPanel.setLayout(new BoxLayout(browsingBackPanel, BoxLayout.PAGE_AXIS));
@@ -502,12 +502,7 @@ private JButton exportJButton;
 
 				return browsingBackPanel;
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			LOGGER.fine("Error initializing BrowsingPanel: "+ e.getMessage());
-			e.printStackTrace();
-			return null;
-		}
+		
 	}
 
 	/**
