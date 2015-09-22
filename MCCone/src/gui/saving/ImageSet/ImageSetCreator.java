@@ -176,8 +176,6 @@ private JButton exportJButton;
 			this.getContentPane().setLayout(new GridBagLayout());
 			GridBagConstraints c = new GridBagConstraints();
 
-
-//	this.setOpacity(0.5f);
 			backPanel = new JPanel();
 			backPanel.setOpaque(true);
 			backPanel.setBackground(Color_schema.grey_100);
@@ -255,14 +253,9 @@ private JButton exportJButton;
 			menuBar.add(fontSizeLabel);
 			menuBar.add(Box.createRigidArea(new Dimension(10,0)));
 			setUpFontSizeBox();
-		//	JLabel fontSizeValueLabel=new JLabel(""+fontSize);
-		//	fontSizeValueLabel.setFont(Fonts.b16);
-		//	fontSizeValueLabel.setForeground(Color_schema.color_orange_medium);
 			menuBar.add(fontSizeBox);
 			menuBar.add(Box.createHorizontalGlue());
-
 			JPanel closeImageSetCreator = new JPanel();
-			//	closeImageSetCreator.setLayout(new BoxLayout(closeImageSetCreator, BoxLayout.LINE_AXIS));
 			closeImageSetCreator.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			closeImageSetCreator.setMaximumSize(new Dimension(25,40));
 			closeImageSetCreator.setPreferredSize(new Dimension(25,40));
@@ -310,16 +303,16 @@ private JButton exportJButton;
 			gridPanel.setBackground(Color_schema.white_230);
 			gridPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
-		//	gridPanel.add(new JLabel(new ImageIcon(image)));
+
 
 			whiteGridBackPanel.add(gridPanel);
 			gridBackPanel.add(whiteGridBackPanel);
 
 			backPanel.add(gridBackPanel, BorderLayout.CENTER);
 			backPanel.add(initBrowsingPanel(), BorderLayout.PAGE_END);
-		//	this.validate();
+
 			c.gridx=0;
-			c.gridy=1;
+			c.gridy=1; 
 			c.fill = GridBagConstraints.HORIZONTAL;
 			c.gridwidth = 1;
 			this.add(backPanel,c);
@@ -356,11 +349,9 @@ private JButton exportJButton;
 			JLabel saveToLabel = new JLabel("Save to file: ");
 			saveToLabel.setFont(Fonts.b18);
 
-			this.savingPathJLabel = new JLabel(""); // /home/antti/testaus.jpg");
+			this.savingPathJLabel = new JLabel(""); 
 			savingPathJLabel.setFont(Fonts.p16);
 			savingPathJLabel.setMinimumSize(new Dimension(200, 30));
-
-
 
 			// Select file path for all ImageLayers
 			JButton selectFileJButton = new JButton("Browse");
@@ -383,11 +374,6 @@ private JButton exportJButton;
 			});
 			selectFileJButton.setFocusable(false);
 			MouseListenerCreator.addMouseListenerToNormalButtons(selectFileJButton);
-
-
-		//	browsingJPanel.add(downBrowsingPanel, BorderLayout.PAGE_END);
-		//	browsingJPanel.validate();
-
 
 			JPanel resolutionPanel = new JPanel();
 			resolutionPanel.setLayout(new BoxLayout(resolutionPanel, BoxLayout.LINE_AXIS));
@@ -413,8 +399,9 @@ private JButton exportJButton;
 			widthField.setPreferredSize(new Dimension(70,30));
 			widthField.setColumns(4);
 			widthField.setBorder(BorderFactory.createLineBorder(Color_schema.grey_100,  1));
+			//set DocumentFileter to widthField
 			PlainDocument w_doc = (PlainDocument) widthField.getDocument();
-		      w_doc.setDocumentFilter(new ResolutionIntFilter());
+		    w_doc.setDocumentFilter(new ResolutionIntFilter());
 
 		    widthField.setToolTipText("Set imagewidth between 1-5000 pixels");
 
@@ -434,6 +421,7 @@ private JButton exportJButton;
 			heigthField.setPreferredSize(new Dimension(70,30));
 			heigthField.setColumns(4);
 			heigthField.setBorder(BorderFactory.createLineBorder(Color_schema.grey_100,  1));
+			//set DocumentFileter to heightField
 			PlainDocument h_doc = (PlainDocument) heigthField.getDocument();
 		      h_doc.setDocumentFilter(new ResolutionIntFilter());
 		      heigthField.setToolTipText("Set image height between 1-5000 pixels.");
@@ -453,54 +441,41 @@ private JButton exportJButton;
 			resolutionPanel.add(heigthField);
 			resolutionPanel.add(createBasicArrowButtons(heigthField, ID.TEXTFIELD_HEIGHT));
 			resolutionPanel.add(Box.createRigidArea(new Dimension(5,0)));
-			 resolutionPanel.add(pixelLabel2);
-	//		resolutionPanel.add(Box.createHorizontalGlue());
+			resolutionPanel.add(pixelLabel2);
 
-			 exportJButton = new JButton("Export");
-			 exportJButton.setPreferredSize(new Dimension(100,30));
-				exportJButton.setMaximumSize(new Dimension(150,30));
-				exportJButton.setContentAreaFilled(false);
-				exportJButton.setBackground(Color_schema.dark_20);
-				exportJButton.setFont(Fonts.b18);
-				exportJButton.setEnabled(false);
-			//	initActionsToButtons(exportJButton, ID.OPEN_MARKING_FILE);
-				exportJButton.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						try {
-							exportImageSet();
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+			exportJButton = new JButton("Export");
+			exportJButton.setPreferredSize(new Dimension(100,30));
+			exportJButton.setMaximumSize(new Dimension(150,30));
+			exportJButton.setContentAreaFilled(false);
+			exportJButton.setBackground(Color_schema.dark_20);
+			exportJButton.setFont(Fonts.b18);
+			exportJButton.setEnabled(false);
+		
+			exportJButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						exportImageSet();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
-				});
-				exportJButton.setFocusable(false);
-				MouseListenerCreator.addMouseListenerToNormalButtons(exportJButton);
-
-
+				}
+			});
+			exportJButton.setFocusable(false);
+			MouseListenerCreator.addMouseListenerToNormalButtons(exportJButton);
 			browsingPanel.add(resolutionPanel);
-
-		//	browsingPanel.add(Box.createHorizontalGlue());
-
 			browsingPanel.add(saveToLabel);
 			browsingPanel.add(Box.createRigidArea(new Dimension(20,0)));
-			browsingPanel.add(savingPathJLabel);
-		//	browsingPanel.add(Box.createHorizontalGlue());
+			browsingPanel.add(savingPathJLabel);	
 			browsingPanel.add(Box.createRigidArea(new Dimension(20,0)));
 			browsingPanel.add(selectFileJButton);
 			browsingPanel.add(Box.createRigidArea(new Dimension(20,0)));
 			browsingPanel.add(exportJButton);
 			browsingPanel.add(Box.createRigidArea(new Dimension(20,0)));
-
-
-
 			browsingBackPanel.add(browsingPanel, BorderLayout.PAGE_START);
 
-		//	browsingBackPanel.add(initDownPanel(),BorderLayout.PAGE_END);
-
-
-				return browsingBackPanel;
+			return browsingBackPanel;
 
 		
 	}
@@ -576,6 +551,7 @@ private JButton exportJButton;
 	 * Exports ImageSet to file. Show progress by @see ShadyMessageDialog.
 	 * @throws InterruptedException
 	 */
+	@SuppressWarnings("static-access")
 	private void createImage() throws InterruptedException{
 		if(this.savingPathJLabel.getText() != null){
 			int imageWidth=Integer.parseInt(this.widthField.getText().trim());
@@ -602,27 +578,17 @@ private JButton exportJButton;
 			ShadyMessageDialog dialog;
 			if(imageCreator.isImageSetCreatedSuccessfully())
 			{
-
-
 				dialog = new ShadyMessageDialog(new JFrame(), "Exporting succesfull", "Exported successfully the set of images.  ", ID.OK, this);
 				dialog.showDialog();
 				dialog=null;
 			}
 			else{
-	//
-
 				dialog = new ShadyMessageDialog(new JFrame(), "Exporting not succesfull", "Could not export set of Images. Read Log for errors or try again.", ID.OK, this);
 				dialog.showDialog();
 				dialog= null;
-
 			}
-
 		}
-
 	}
-
-
-
 
 	/**
 	 * 
@@ -861,6 +827,9 @@ private JButton exportJButton;
 
 	}
 
+	/**
+	 * Starts a Thread for exporting ImageSet if images found.
+	 */
 	private void exportImageSet(){
 		if(drawImagePanels != null && drawImagePanels.size()>0){
 			SwingUtilities.invokeLater(new Runnable() {
@@ -886,11 +855,19 @@ private JButton exportJButton;
 
 	}
 
+	/**
+	 * Refreshes Threads for saving ImageSet and showing progress.
+	 */
 	private void initThreads(){
-		this.progressBallsDialog.refreshDialog();//=new ProgressBallsDialog(new JFrame(), "Creating set of Images_"+threadNumber++, "", ID.CANCEL, this);
+		this.progressBallsDialog.refreshDialog();
 		this.createImageThread=new Thread(this, "CreateImage_"+threadNumber++);
 	}
 
+	/**
+	 * Opens ImagefileDialog and sets selected image files to grid.
+	 * 
+	 * @throws InterruptedException
+	 */
 	private void selectAndGetImagesFromFiles() throws InterruptedException{
 
 		OpenImageFilesDialog openDialog=new OpenImageFilesDialog(new JFrame(), this.getBounds(), this.backPanel.getBounds(), this.presentFolder);
@@ -905,8 +882,13 @@ private JButton exportJButton;
 
 
 
+	/**
+	 * returns a row width of given row number.
+	 * @param row int the row number of grid.
+	 * @return int the row width
+	 */
 	private int getPanelsRowWidth(int row){
-
+		try{
 		int rowWidth=0;
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
@@ -918,10 +900,19 @@ private JButton exportJButton;
 
 		}
 		return rowWidth;
+		}catch(Exception e){
+			LOGGER.severe("Error ImageSetCreator in getting grid row width: "+e.getMessage());
+			return 0;
+		}
 	}
 
+	/**
+	 * returns a column height of given column number.
+	 * @param row int the column number of grid.
+	 * @return int the column height
+	 */
 	private int getPanelsColumnHeight(int column){
-
+		try{
 		int columnHeight=0;
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
@@ -935,17 +926,24 @@ private JButton exportJButton;
 		}
 
 		return columnHeight;
+		}catch(Exception e){
+			LOGGER.severe("Error ImageSetCreator in getting grid column height: "+e.getMessage());
+			return 0;
+		}
 	}
 
+	/**
+	 *  Updates the grid dimension by given row and column number. Updates also the default export size dimension shown at downbar.
+	 */
 	private void updateGridSize(){
 		int maxWidth =0 , maxHeigth = 0;
-
+		//get maximum width from panels
 		for (int i = 1; i <= presentRowNumber; i++) {
 			int width=getPanelsRowWidth(i);
 			if(width > maxWidth)
 				maxWidth=width;
 		}
-
+		//get maximum height from panels
 		for (int i = 1; i <= presentColumnNumber; i++) {
 			int height=getPanelsColumnHeight(i);
 			if(height > maxHeigth)
@@ -971,6 +969,9 @@ private JButton exportJButton;
 
 	}
 
+	/**
+	 * Adds ImagePanels to grid cells. This happens when all ImagePanels are same size and no need to scale cell sizes.
+	 */
 	private void onlyAddPanelsToGrid(){
 		this.gridPanel.removeAll();
 		this.gridPanel.revalidate();
@@ -987,6 +988,11 @@ private JButton exportJButton;
 		this.gridPanel.repaint();
 	}
 
+	
+	/**
+	 *  Calculates new sizes for panels of Grid (Cells). This happen when ImagePanels are unequal sizes or whole grid is reformed.
+	 *  Repaints the Grid.
+	 */
 	private void refreshGridPanelSizes(){
 		try {
 			int titlePanelHeight = getMaximumTitlePanelHeightByFontSize();
@@ -1008,10 +1014,10 @@ private JButton exportJButton;
 				}
 			}
 */
-
+			//go through all rows and columns
 			for (int r = 1; r <= presentRowNumber; r++) {
 				for (int c = 1; c <= presentColumnNumber; c++) {
-
+					//get SingleDrawImagePanel and set new dimension and font
 					SingleDrawImagePanel sdp=getSDPatPosition(r, c);
 					if(sdp != null){
 						if(sdp.getImage() != null){
@@ -1019,6 +1025,7 @@ private JButton exportJButton;
 							sdp.updateFont(sdp.getFont());
 							this.gridPanel.add(sdp);
 						}
+						//scale image if panel has any
 						if(sdp.getImage() == null){
 							int w = getMaximumPanelWidthAtColumn(c);
 							int h = getMaximumPanelHeightAtRow(r);
@@ -1045,41 +1052,46 @@ private JButton exportJButton;
 
 
 
+	/**
+	 * Refreshes the ImagePanels shown in Grid.
+	 */
 	public void setImagesToGrid(){
 		try {
 			if(drawImagePanels != null && drawImagePanels.size()>0){
 
-					int titlePanelHeight = getMaximumTitlePanelHeightByFontSize();
-					// sort panels with present order
-					Collections.sort(this.drawImagePanels, new GridComparator());
-					// set all gridPositions to null in SingleDrawPanels
-					setGridPositionsToNull();
-					removeEmptyPanels();
+				int titlePanelHeight = getMaximumTitlePanelHeightByFontSize();
+				// sort panels with present order
+				Collections.sort(this.drawImagePanels, new GridComparator());
+				// set all gridPositions to null in SingleDrawPanels
+				setGridPositionsToNull();
+				removeEmptyPanels();
+				// remove all components from Grid
+				this.gridPanel.removeAll();
+				this.gridPanel.revalidate();
 
-					this.gridPanel.removeAll();
-					this.gridPanel.revalidate();
-
-					// calculate has enough gridpositions for images
-					int[] enougGridPoints=calculateEnoughGridPoints(new int[]{this.presentRowNumber, this.presentColumnNumber},this.drawImagePanels.size());
-					this.presentRowNumber=enougGridPoints[0];
-					this.presentColumnNumber=enougGridPoints[1];
-					updateGridCompoBoxItems();
-					setUpGrid();
+				// calculate has enough gridpositions for images
+				int[] enougGridPoints=calculateEnoughGridPoints(new int[]{this.presentRowNumber, this.presentColumnNumber},this.drawImagePanels.size());
+				this.presentRowNumber=enougGridPoints[0];
+				this.presentColumnNumber=enougGridPoints[1];
+				updateGridComboBoxItems();
+				// setup GridLayout
+				this.gridLayout=new GridLayout(this.presentRowNumber, this.presentColumnNumber,this.gap,this.gap);
+				this.gridPanel.setLayout(gridLayout);
 
 
 
 					// calculate dimension for SingleDrawImagePanels
-
 				Dimension panelDimension=calculateDrawPanelDimension();
 				Dimension maxImageDimension=null;
-				rowloop:
+		//		rowloop:
 				for (int r = 1; r <= presentRowNumber; r++) {
 					for (int c = 1; c <= presentColumnNumber; c++) {
 				/*		if(importing && this.cancelImageImport.isCancelled()){ // user has cancelled importing files
 
 							break rowloop;
 						}
-				 */
+				 */	
+						//get,set and add SingleDrawImagePanel to GRID (may be empty Panel -> added in different way)
 						SingleDrawImagePanel sdp=getFirstUnPositionedSDP();
 						if(sdp != null){
 							sdp.setGridPosition(r, c);
@@ -1105,18 +1117,22 @@ private JButton exportJButton;
 					}
 				}
 				updateGridSize();
-
 				this.revalidate();
 				this.repaint();
-			//	this.setVisible(true);
+			
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			LOGGER.severe("Error in ImageSetCreator: refreshing ImagePanels in GRID:"+e.getMessage());
 			e.printStackTrace();
 		}
 
 	}
 
+	/**
+	 * Returns a maximum width of column.
+	 * @param c int column index
+	 * @return int maximum column width
+	 */
 	private int getMaximumPanelWidthAtColumn(int c){
 		int maxWidth=0;
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
@@ -1140,8 +1156,8 @@ private JButton exportJButton;
 	}
 
 	/**
-	 * @param r The row number which maximum panel height is looking for. The r < 1 means searching max panel height of all panels.
-	 * @return
+	 * Returns a maximum height of the title of panel.
+	 * @return int maximum height of Title panel.
 	 */
 
 	private int getMaximumTitlePanelHeightByFontSize(){
@@ -1154,14 +1170,16 @@ private JButton exportJButton;
 					if(sdp.getFont().getSize()+6 > maxHeight)
 						maxHeight=sdp.getFont().getSize()+6;
 			}
-
 		}
-
 		return maxHeight;
 
 
 	}
-
+	/**
+	 * Returns a maximum height row at grid.
+	 * @param r int row number which maximum panel height is looking for. The r < 1 means searching max panel height of all panels.
+	 * @return int maximum height of row.
+	 */
 	private int getMaximumPanelHeightAtRow(int r){
 		int maxHeight=0;
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
@@ -1189,27 +1207,35 @@ private JButton exportJButton;
 
 
 
-	private void updateGridCompoBoxItems(){
+	/**
+	 * Refreshes selected index of comboboxes showing column and row values.
+	 */
+	private void updateGridComboBoxItems(){
 		this.rowBox.setSelectedItem(this.presentRowNumber);
 
 		this.columnBox.setSelectedItem(this.presentColumnNumber);
 	}
 
+	/**
+	 * Sets selected font to all @see SingleDrawImagePanel.
+	 */
 	private void updatePanelFonts(){
+		//get selected font and font size
 		String fontName = fontsBox.getSelectedItem().toString();
 		int fSize=(int)fontSizeBox.getSelectedItem();
         Font font= new Font(fontName, Font.BOLD, fSize);
+        
+        //set font to all panels
 		Iterator<SingleDrawImagePanel> sIterator=drawImagePanels.iterator();
 		while(sIterator.hasNext()){
 			SingleDrawImagePanel sdp=(SingleDrawImagePanel)sIterator.next();
 			sdp.updateFont(font);
-
 		}
-
-
-		//this.repaint();
 	}
 
+	/**
+	 * @return Font the selected font
+	 */
 	private Font getSelectedFont(){
 		String fontName = fontsBox.getSelectedItem().toString();
 		int fSize=(int)fontSizeBox.getSelectedItem();
@@ -1217,6 +1243,10 @@ private JButton exportJButton;
 
 	}
 
+	/**
+	 * Calculates how much window has space for ImagePanels. 
+	 * @return Dimension overall space left for ImagePanels.
+	 */
 	private Dimension calculateDrawPanelDimension(){
 
 		int width=(int)((this.backPanel.getWidth()-this.gap*(this.presentColumnNumber+1))/this.presentColumnNumber);
@@ -1225,11 +1255,6 @@ private JButton exportJButton;
 		return new Dimension(width,height);
 	}
 
-	private void setUpGrid(){
-		this.gridLayout=new GridLayout(this.presentRowNumber, this.presentColumnNumber,this.gap,this.gap);
-
-		this.gridPanel.setLayout(gridLayout);
-	}
 
 	private SingleDrawImagePanel getFirstUnPositionedSDP(){
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
@@ -1492,7 +1517,7 @@ private JButton exportJButton;
 				if((sdp.getGridPosition()[0] == this.movingPosition[0] && sdp.getGridPosition()[1] == this.movingPosition[1])){
 					if(sdp.getImage() == null){
 						this.presentRowNumber-=1;
-						updateGridCompoBoxItems();
+						updateGridComboBoxItems();
 					}
 
 					ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "Removing ImagePanel", "Remove ImagePanel from ImageSet.", ID.YES_NO, this);
