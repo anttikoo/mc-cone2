@@ -722,6 +722,9 @@ private JButton exportJButton;
 
 
 
+	/**
+	 *  Initializes the JCombobox showning available fonts for imageNames.
+	 */
 	private void  setUpFontBox(){
 
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -748,6 +751,9 @@ private JButton exportJButton;
 
 	}
 
+	/**
+	 * Initializes the JCombobox showning available font sizes for imageNames.
+	 */
 	private void setUpFontSizeBox(){
 
 		Integer[] iArray=new Integer[35];
@@ -787,6 +793,11 @@ private JButton exportJButton;
 
 
 
+	/**
+	 * Sets actions to JMenuItems.
+	 * @param item JMenuItem where action is added
+	 * @param itemType int type of action
+	 */
 	private void addActionsToMenuItems(JMenuItem item, int itemType){
 		switch (itemType){
 			case ID.MENU_ITEM_FILE_QUIT:
