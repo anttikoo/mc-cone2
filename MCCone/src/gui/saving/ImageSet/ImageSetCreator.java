@@ -136,15 +136,24 @@ private JButton exportJButton;
 		//	this.image=this.taskManager.createImageFile(new File("/home/antti/4kuvaa/kolmas.jpg"));
 			this.createImageThread=new Thread(this, "CreateImage_"+threadNumber++);
 
-
-
 			initComponents();
 			this.progressBallsDialog = new ProgressBallsDialog(new JFrame(), "Creating set of Images", "", ID.CANCEL, this);
 			this.progressWihoutButtons = new ProgressBallsDialog(new JFrame(), "Opening images", "", ID.CANCEL, this);
 			this.addMouseListener(this);
+			
+	/*		try {
 
+				createImagesForPresentImageLayers();
+				setImagesToGrid();
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+*/
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			LOGGER.severe("Error in initializing ImageSet Creator. "+e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -313,6 +322,7 @@ private JButton exportJButton;
 			this.repaint();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			LOGGER.severe("Error in initializing ImageSet Creator window. "+ e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -688,30 +698,37 @@ private JButton exportJButton;
 
 
 
+	/**
+	 * Initializes available fonts from operation system.
+	 */
 	private void  setUpFontBox(){
-
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        String[] fontFamilyNames = ge.getAvailableFontFamilyNames();
-        fontsBox = new JComboBox<String>(fontFamilyNames);
-        fontsBox.setSelectedItem(0);
-        fontsBox.setRenderer(new ComboRenderer(fontsBox));
-        fontsBox.addItemListener(new ItemListener() {
-
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (drawImagePanels != null && drawImagePanels.size()>0  && e.getStateChange() == ItemEvent.SELECTED) {
-                    final String fontName = fontsBox.getSelectedItem().toString();
-                 //   fontsBox.setFont(new Font(fontName, Font.PLAIN, 16));
-                    updatePanelFonts();
-                    refreshGridPanelSizes();
-                }
-            }
-        });
-        fontsBox.setSelectedItem(0);
-        fontsBox.getEditor().selectAll();
-        fontsBox.setMaximumSize(new Dimension(300,50));
-
-
+		try{
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	        String[] fontFamilyNames = ge.getAvailableFontFamilyNames();
+	        fontsBox = new JComboBox<String>(fontFamilyNames);
+	        fontsBox.setSelectedItem(0);
+	        fontsBox.setRenderer(new ComboRenderer(fontsBox));
+	        fontsBox.addItemListener(new ItemListener() {
+	
+	            @Override
+	            public void itemStateChanged(ItemEvent e) {
+	                if (drawImagePanels != null && drawImagePanels.size()>0  && e.getStateChange() == ItemEvent.SELECTED) {
+	                    final String fontName = fontsBox.getSelectedItem().toString();
+	                 //   fontsBox.setFont(new Font(fontName, Font.PLAIN, 16));
+	                    updatePanelFonts();
+	                    refreshGridPanelSizes();
+	                }
+	            }
+	        });
+	        fontsBox.setSelectedItem(0);
+	        fontsBox.getEditor().selectAll();
+	        fontsBox.setMaximumSize(new Dimension(300,50));
+	
+		}
+		catch(Exception e){
+			LOGGER.severe("Error in ImageSetCreator. Can't initialize fonts: "+e.getMessage());
+		
+		}
 	}
 
 	private void setUpFontSizeBox(){
@@ -1150,8 +1167,11 @@ private JButton exportJButton;
 		this.columnBox.setSelectedItem(this.presentColumnNumber);
 	}
 
-	private void updatePanelFonts(){
+	/**
+	 * Sets font sizes of panels to fit in panel.
+	 */
 		String fontName = fontsBox.getSelectedItem().toString();
+		private void updatePanelFonts(){
 		int fSize=(int)fontSizeBox.getSelectedItem();
         Font font= new Font(fontName, Font.BOLD, fSize);
 		Iterator<SingleDrawImagePanel> sIterator=drawImagePanels.iterator();
@@ -1247,6 +1267,7 @@ private JButton exportJButton;
 	}
 
 	private void createImagesForPresentImageLayers(){
+		try{
 		SelectAndCreateImageFiles saci = new SelectAndCreateImageFiles(new JFrame(), this.gui, taskManager.getImageLayerList(), ID.EXPORT_IMAGE_SET);
 
 		if(saci.getCreatedBufferedImages() != null && saci.getCreatedBufferedImages().size()>0){
@@ -1260,9 +1281,15 @@ private JButton exportJButton;
 
 			updatePanelFonts();
 		}
+		
+		}catch(Exception e){
+		LOGGER.severe("Error in uploading ImageLayers for creating imageSet. "+e.getMessage());
+		}
 
 
 	}
+	
+	
 
 
 
