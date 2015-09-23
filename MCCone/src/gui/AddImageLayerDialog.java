@@ -202,10 +202,19 @@ private Dimension importAllowedImageDimension=null;
 		return gui.getPresentFolder();
 	}
 
+	/**
+	 * Sets the folder that is previously used.
+	 * @param folder String path of used folder
+	 */
 	public void setPresentFolder(String folder){
 		gui.setPresentFolder(folder);
 	}
 
+	/**
+	 * Gets a list ImageLayers and creates a full copy of all of them (not references to objects).
+	 * @param iLayer @see ArrayList<ImageLayer> of ImageLayers 
+	 * @return @see ArrayList<ImageLayer> of ImageLayers 
+	 */
 	private ArrayList<ImageLayer> makeCopyOfList(ArrayList<ImageLayer> iLayer){
 
 		try {
@@ -215,6 +224,7 @@ private Dimension importAllowedImageDimension=null;
 				while(iterator.hasNext()){
 					ImageLayer im = (ImageLayer)iterator.next();
 					if(im != null){
+						// make full copy of ImageLayer
 						ImageLayer copyImageLayer = im.makeCopy();
 						if(copyImageLayer != null)
 							copyList.add(copyImageLayer);
