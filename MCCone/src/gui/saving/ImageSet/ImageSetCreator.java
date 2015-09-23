@@ -974,24 +974,12 @@ private ProgressBallsDialog progressBallsDialog;
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-	/*	// TODO Auto-generated method stub
-		if(e.getButton()== MouseEvent.BUTTON2){
-			// remove
-			Point point = e.getLocationOnScreen();
-			System.out.println(point.toString());
-			int[] gridPoint=getGridPositionAtLocation(point);
-			if(gridPoint != null){
-				removePanel(gridPoint);
-
-
-			}
-
-		} */
+	//do nothing
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// do nothing
 
 	}
 
