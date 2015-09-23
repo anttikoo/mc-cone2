@@ -66,6 +66,13 @@ import operators.GridComparator;
 import operators.ImageCreator;
 import managers.TaskManager;
 
+/**
+ * Class ImageSetCreator opens new window where user can import images from ImageLayers 
+ * or image files and they are positioned to grid. User can select the grid size and order of images.
+ * The grid can be exported to image file (jpg, png, tiff) with desired resolution.
+ * @author Antti Kurronen
+ *
+ */
 public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 private TaskManager taskManager;
@@ -81,15 +88,11 @@ private int gap;
 public JComboBox<String>fontsBox;
 public JComboBox<Integer>fontSizeBox;
 private JComboBox<Integer> rowBox;
-
-
 private JComboBox<Integer> columnBox;
-//private BufferedImage image;
 private JPanel gridBackPanel;
 private JPanel whiteGridBackPanel;
 private JMenuBar menuBar;
 private int savingImageWidth=2000;
-private int savingImageHeight=1500;
 private ArrowMouseListener arrowMouseListener;
 private JTextField widthField;
 private JTextField heigthField;
@@ -97,16 +100,11 @@ private JPanel browsingBackPanel;
 private SelectFileDialog selectFileDialog;
 private JLabel savingPathJLabel;
 private String presentFolder;
-private JButton cancelJButton;
-//public static PanelMoveListener panelMoveListener;
 private int[] movingPosition=null;
 private Thread createImageThread;
-
 private int threadNumber=1;
-//private ImageImportCancelerThread cancelImageImport;
-//private boolean importing=false;
 private ProgressBallsDialog progressBallsDialog;
-private ProgressBallsDialog progressWihoutButtons;
+//private ProgressBallsDialog progressWihoutButtons; //adding this later to work
 
 
 
@@ -119,8 +117,6 @@ private ProgressBallsDialog progressWihoutButtons;
 	 * @param gui GUI-object to connect Graphical interface
 	 */
 	public ImageSetCreator(JFrame frame, TaskManager taskManager, GUI gui){
-		//super(frame, true);
-
 		try {
 			this.taskManager=taskManager;
 			this.gui=gui;
@@ -130,12 +126,11 @@ private ProgressBallsDialog progressWihoutButtons;
 			this.presentRowNumber=1;
 			this.gap=15;
 			this.presentFolder=gui.getPresentFolder();
-		//	this.panelMoveListener=new PanelMoveListener(this);
-		//	this.image=this.taskManager.createImageFile(new File("/home/antti/4kuvaa/kolmas.jpg"));
 			this.createImageThread=new Thread(this, "CreateImage_"+threadNumber++);
 			initComponents();
 			this.progressBallsDialog = new ProgressBallsDialog(new JFrame(), "Creating set of Images", "", ID.CANCEL, this);
-			this.progressWihoutButtons = new ProgressBallsDialog(new JFrame(), "Opening images", "", ID.CANCEL, this);
+			// adding this progressWithoutButtons in later versions to work
+			//this.progressWihoutButtons = new ProgressBallsDialog(new JFrame(), "Opening images", "", ID.CANCEL, this); 
 			this.addMouseListener(this);
 			
 			
@@ -184,14 +179,11 @@ private ProgressBallsDialog progressWihoutButtons;
 							selectAndGetImagesFromFiles();
 
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
+							LOGGER.info("Interrupted importing files in ImageSetCreator "+e.getMessage());
 							e.printStackTrace();
+							
 						}
-					//	importImagesFromFiles();
-				//		ProgressBallsDialog pbd = new ProgressBallsDialog(new JFrame(), "ImageSet", "Creating set of Images", ID.NO_BUTTONS, backPanel);
-				//		pbd.showDialog();
-				//		setImagesToGrid();
-				//		pbd.stopPaintingAndClose();
+			
 
 					}
 				});
