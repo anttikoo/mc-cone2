@@ -647,13 +647,10 @@ private ProgressBallsDialog progressBallsDialog;
 				}
 				updatePanelFonts();
 			}
-		} catch (HeadlessException e) {
-			// TODO Auto-generated catch block
+		} catch (HeadlessException e) {	
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOGGER.severe("Could not import all images from files");
-
 			e.printStackTrace();
 		}
 	}
@@ -664,9 +661,7 @@ private ProgressBallsDialog progressBallsDialog;
 	 */
 	public JPanel initBrowsingPanel() throws Exception{
 		
-
 			browsingBackPanel = new JPanel();
-	//		browsingBackPanel.setLayout(new BoxLayout(browsingBackPanel, BoxLayout.PAGE_AXIS));
 			browsingBackPanel.setLayout(new BorderLayout());
 			browsingBackPanel.setBackground(Color_schema.dark_30);
 			browsingBackPanel.setMaximumSize(new Dimension(5000, 40));
@@ -695,14 +690,12 @@ private ProgressBallsDialog progressBallsDialog;
 			selectFileJButton.setContentAreaFilled(false);
 			selectFileJButton.setBackground(Color_schema.dark_20);
 			selectFileJButton.setFont(Fonts.b18);
-		//	initActionsToButtons(selectFileJButton, ID.OPEN_MARKING_FILE);
 			selectFileJButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
 						selectFile();
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -792,7 +785,6 @@ private ProgressBallsDialog progressBallsDialog;
 					try {
 						exportImageSet();
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -809,7 +801,6 @@ private ProgressBallsDialog progressBallsDialog;
 			browsingPanel.add(exportJButton);
 			browsingPanel.add(Box.createRigidArea(new Dimension(20,0)));
 			browsingBackPanel.add(browsingPanel, BorderLayout.PAGE_START);
-
 			return browsingBackPanel;
 
 		
@@ -818,17 +809,15 @@ private ProgressBallsDialog progressBallsDialog;
 	/**
 	 * Initializes JPanels and other graphical components of this ImageSetCreator-object.
 	 */
-	private void initComponents() throws Exception{
-
-	
+	private void initComponents() throws Exception{	
 			this.setBounds(gui.getBounds());
 			this.setUndecorated(true);
 			this.setBackground(new Color(0,0,0,0));
 			this.setContentPane(new ContentPane());
 			this.getContentPane().setBackground(Color_schema.dark_30);
 			this.getContentPane().setLayout(new GridBagLayout());
+			
 			GridBagConstraints c = new GridBagConstraints();
-
 			backPanel = new JPanel();
 			backPanel.setOpaque(true);
 			backPanel.setBackground(Color_schema.grey_100);
