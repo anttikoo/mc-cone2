@@ -167,7 +167,7 @@ private ProgressBallsDialog progressBallsDialog;
 					}
 				});
 				break;
-
+				// open images from image files
 			case ID.ADD_IMAGES_FROM_FILES:
 				item.addActionListener(new ActionListener() {
 
@@ -190,7 +190,7 @@ private ProgressBallsDialog progressBallsDialog;
 				break;
 
 
-
+				// get images from ImageLayers that are open at main program
 			case ID.ADD_IMAGES_FROM_IMAGE_LAYERS:
 				item.addActionListener(new ActionListener() {
 
@@ -307,7 +307,7 @@ private ProgressBallsDialog progressBallsDialog;
 	}
 
 	/**
-	 * Exports ImageSet to file. Show progress by @see ShadyMessageDialog.
+	 * Exports ImageSet to file. Show progress by ShadyMessageDialog.
 	 * @throws InterruptedException
 	 */
 	@SuppressWarnings("static-access")
@@ -320,9 +320,11 @@ private ProgressBallsDialog progressBallsDialog;
 			double multiplier= ((double)imageWidth)/((double)panelwidth);
 			ImageCreator imageCreator=new ImageCreator(multiplier, this.gui.taskManager);
 			imageCreator.initImageSetProperties(this.gap, this.presentRowNumber, this.presentColumnNumber,this.drawImagePanels, imageDimension, this.savingPathJLabel.getText());
-	
+			
+			//start saving Thread
 			if(imageCreator.startImageSetCreatorThread());
 			
+			// wait until image saved or saving is cancelled in progressBallsDialog
 			while(imageCreator.isContinueCreating() && progressBallsDialog.isShowON()){
 				createImageThread.sleep(1000);
 			
@@ -334,6 +336,7 @@ private ProgressBallsDialog progressBallsDialog;
 			if(imageCreator.isContinueCreating())
 				imageCreator.setContinueCreating(false);
 
+			//show dialog for successfull/unsuccessfull saving
 			ShadyMessageDialog dialog;
 			if(imageCreator.isImageSetCreatedSuccessfully())
 			{
@@ -352,11 +355,13 @@ private ProgressBallsDialog progressBallsDialog;
 
 
 	/**
-	 * Opens dialog window, where user can select ImageLayers and MarkingLayers to be shown in imageset.
+	 * Opens dialog window, where user can select ImageLayers and MarkingLayers to be shown in imageSet.
+	 * Creates SingleDrawImagePanels from selected images
 	 */
 	private void createImagesFromPresentImageLayers(){
 		SelectAndCreateImageFiles saci = new SelectAndCreateImageFiles(new JFrame(), this.gui, taskManager.getImageLayerList(), ID.EXPORT_PREVIEW_IMAGES);
 
+		// create SingleDrawImagePanels of all images
 		if(saci.getCreatedBufferedImages() != null && saci.getCreatedBufferedImages().size()>0){
 			Iterator<BufferedImageWithName> imageIterator = saci.getCreatedBufferedImages().iterator();
 			while(imageIterator.hasNext()){
@@ -444,7 +449,6 @@ private ProgressBallsDialog progressBallsDialog;
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
 			SingleDrawImagePanel sdp =sdpIterator.next();
-		//	System.out.println("Point: "+p.x +" "+p.y+" at: " +sdp.getBounds().toString());
 			Rectangle location = new Rectangle(sdp.getLocationOnScreen(), sdp.getPreferredSize());
 			if(location.contains(p))
 
@@ -492,6 +496,7 @@ private ProgressBallsDialog progressBallsDialog;
 	 */
 	private int getMaximumPanelWidthAtColumn(int c){
 		int maxWidth=0;
+		// go through all SingleDrawImagePanels
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
 			SingleDrawImagePanel sdp=(SingleDrawImagePanel)sdpIterator.next();
@@ -521,6 +526,7 @@ private ProgressBallsDialog progressBallsDialog;
 
 	private int getMaximumTitlePanelHeightByFontSize(){
 		int maxHeight=0;
+		// go through all SingleDrawImagePanels
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
 			SingleDrawImagePanel sdp=(SingleDrawImagePanel)sdpIterator.next();
@@ -543,6 +549,7 @@ private ProgressBallsDialog progressBallsDialog;
 	private int getPanelsColumnHeight(int column){
 		try{
 		int columnHeight=0;
+		// go through all SingleDrawImagePanels
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
 			SingleDrawImagePanel sdp=sdpIterator.next();
@@ -569,14 +576,13 @@ private ProgressBallsDialog progressBallsDialog;
 	private int getPanelsRowWidth(int row){
 		try{
 		int rowWidth=0;
+		// go through all SingleDrawImagePanels
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
 			SingleDrawImagePanel sdp=sdpIterator.next();
 			if(sdp.getGridPosition().length>0 && sdp.getGridPosition()[0] == row){
 				rowWidth+=sdp.getPanelSize().width;
-
 			}
-
 		}
 		return rowWidth;
 		}catch(Exception e){
@@ -592,6 +598,7 @@ private ProgressBallsDialog progressBallsDialog;
 	 * @return SingleDrawImagePanel at position r,c. If not found, null returned.
 	 */
 	private SingleDrawImagePanel getSDPatPosition(int r, int c){
+		// go through all SingleDrawImagePanels
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
 			SingleDrawImagePanel sdp=(SingleDrawImagePanel)sdpIterator.next();
@@ -628,9 +635,7 @@ private ProgressBallsDialog progressBallsDialog;
 					this.presentFolder=path;
 
 				for (int i = 0; i < imageFiles.length; i++) {
-				/*	if(this.cancelImageImport.isCancelled())
-						return;
-				 */
+			
 					if(imageFiles[i] != null){
 						BufferedImage image= this.taskManager.createImageFile(imageFiles[i]);
 						if(image != null){
