@@ -1410,11 +1410,21 @@ private JButton exportJButton;
 
 	}
 
+	/**
+	 * Sets variable of position where ImagePanel is moved to other grid position.
+	 * @param movingPosition int[] Position in grid wherefrom panel is moved.
+	 */
 	public void setMovingPosition(int[] movingPosition) {
 		this.movingPosition = movingPosition;
 		//System.out.println("setmoving: "+this.movingPosition[0] + " " +this.movingPosition[1]);
 	}
 
+	/**
+	 * 
+	 * Class ComboRenderer for rendering available fonts in Combobox. Shows font name in font style.
+	 * @author Antti Kurronen
+	 *
+	 */
 	private class ComboRenderer extends BasicComboBoxRenderer {
 
         private static final long serialVersionUID = 1L;
@@ -1426,6 +1436,9 @@ private JButton exportJButton;
             comboBox = fontsBox;
         }
 
+        /**
+         * Determines the Scrollpane list and selected row for JCombobox.
+         */
         private void manItemInCombo() {
             if (comboBox.getItemCount() > 0) {
                 final Object comp = comboBox.getUI().getAccessibleChild(comboBox, 0);
@@ -1531,6 +1544,10 @@ private JButton exportJButton;
 */
 	}
 
+	/**
+	 *  Removes SingleDrawImagePanel from panel list. This happens when user drags the panel outside of grid. 
+	 *  Starting point position of dragging shows which panel is removed.
+	 */
 	private void removePanel(){
 			int selection=ID.UNDEFINED;
 			Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
