@@ -1092,7 +1092,6 @@ private ProgressBallsDialog progressBallsDialog;
 			this.revalidate();
 			this.repaint();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -1103,8 +1102,6 @@ private ProgressBallsDialog progressBallsDialog;
 	private void removeEmptyPanels(){
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
-
-
 			if(sdpIterator.next().getImage() == null){
 				sdpIterator.remove();
 			}
@@ -1149,7 +1146,6 @@ private ProgressBallsDialog progressBallsDialog;
 		try {
 				createImage();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -1433,7 +1429,7 @@ private ProgressBallsDialog progressBallsDialog;
 		this.movingPosition=null;
 		if(firstPanel.getPanelSize().width == secondPanel.getPanelSize().width && firstPanel.getPanelSize().height == secondPanel.getPanelSize().height){
 			onlyAddPanelsToGrid();
-			LOGGER.fine("only adding panels");
+			
 		}
 		else
 		refreshGridPanelSizes();
