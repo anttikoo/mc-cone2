@@ -5,6 +5,11 @@ import gui.saving.ImageSet.SingleDrawImagePanel;
 import java.awt.Point;
 import java.util.Comparator;
 
+/**
+ * Class GridComparator compares two SingleDrawImagePanel by row and column number and which has smaller is returned to be smaller (before).
+ * @author Antti Kurronen
+ *
+ */
 public class GridComparator implements Comparator<SingleDrawImagePanel>{
 
 
