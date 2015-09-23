@@ -153,31 +153,28 @@ private Dimension importAllowedImageDimension=null;
 		}
 	}
 
-	private void initComponents(){
-		//consolas15= new Font("Consolas", Font.PLAIN,15);
-		//consolas16= new Font("Consolas", Font.BOLD,16);
+	/**
+	 * Initializes components of window.
+	 */
+	private void initComponents(){	
+		//init whole window to dim it
 		this.setBounds(gui.getBounds());
-	//	LOGGER.fine("this class: "+this.getClass().toString()+ "this bounds: " +this.getBounds());
 		this.setUndecorated(true);
 		this.setBackground(new Color(0,0,0,0));
 		this.setContentPane(new ContentPane());
 		this.getContentPane().setBackground(Color_schema.dark_30);
 		this.getContentPane().setLayout(new GridBagLayout());
-
-
-	//	this.setOpacity(0.5f);
+		//init backpanel where all funtions are shown.
 		backPanel = new JPanel();
-		//backPanel.setOpaque(false);
 		backPanel.setBackground(new Color(0,0,0));
 		backPanel.setLayout(new BorderLayout());
-
 		backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 5));
 		backPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		backPanel.setAlignmentY(JComponent.CENTER_ALIGNMENT);
 		backPanel.setMaximumSize(new Dimension((int)(this.getBounds().getWidth()*0.95), (int)(this.getBounds().getHeight()*0.95)));
 		backPanel.setMinimumSize(new Dimension((int)(this.getBounds().getWidth()*0.5), (int)(this.getBounds().getHeight()*0.5)));
 		backPanel.setPreferredSize(new Dimension((int)(this.getBounds().getWidth()*0.6), (int)(this.getBounds().getHeight()*0.6)));
-	//	LOGGER.fine("backpanel width pref: " +backPanel.getPreferredSize().getWidth());
+		//if backpanel size too small -> use more space of whole screen.
 		if(backPanel.getPreferredSize().getWidth()<800 || backPanel.getPreferredSize().getHeight() <500)
 			backPanel.setPreferredSize(new Dimension((int)(this.getBounds().getWidth()*0.95), (int)(this.getBounds().getHeight()*0.95)));
 
@@ -189,11 +186,18 @@ private Dimension importAllowedImageDimension=null;
 		this.repaint();
 	}
 
+	/**
+	 * Returns the size of BackPanel.
+	 * @return @see Rectangle size of BackPanel
+	 */
 	public Rectangle getBackPanelSize(){
-	//	LOGGER.fine("bacckkioanel"+this.backPanel.getBounds().toString()+ " "+this.backPanel.getX());
 		return this.backPanel.getBounds();
 	}
 
+	/**
+	 * Returns  path of previously used folder.
+	 * @return String path of previously used folder
+	 */
 	public String getPresentFolder(){
 		return gui.getPresentFolder();
 	}
