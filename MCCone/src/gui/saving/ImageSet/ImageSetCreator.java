@@ -985,27 +985,20 @@ private ProgressBallsDialog progressBallsDialog;
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-/*
-		if(e.getSource() instanceof ImageSetCreator){
-			System.out.println("exited imagesetcreator");
-			if(this.movingPosition != null){
-				removePanel();
-			}
-		}
-*/
+		// do nothing
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 
-		//	System.out.println("pressedMouse");
-			// TODO Auto-generated method stub
+			//get point where pressed
 			Point startPoint = e.getLocationOnScreen();
+			//get position at grid -> row, column
 			int[] gridPoint=getGridPositionAtLocation(startPoint);
 			if(gridPoint != null){
 				this.movingPosition=gridPoint;
 
-			//	System.out.println("pressedMouse: "+this.movingPosition[0] + " " +this.movingPosition[1]);
+	
 				this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			}
 				else
@@ -1018,10 +1011,10 @@ private ProgressBallsDialog progressBallsDialog;
 	public void mouseReleased(MouseEvent e) {
 
 			Point endPoint = e.getLocationOnScreen();
-		//	System.out.println(endPoint.toString());
+			//get position at grid -> row, column
 			int[] gridPoint=getGridPositionAtLocation(endPoint);
 			if(gridPoint != null && this.movingPosition != null){
-				//System.out.println("swithc points: "+this.movingPosition[0] + "" +this.movingPosition[1]);
+			
 				swithcSingleDrawPanels(gridPoint);
 
 			}
@@ -1043,6 +1036,7 @@ private ProgressBallsDialog progressBallsDialog;
 	private void onlyAddPanelsToGrid(){
 		this.gridPanel.removeAll();
 		this.gridPanel.revalidate();
+		// sort SingleDrawImagePanels in list with GridComparator -> by rows and then by columns
 		Collections.sort(this.drawImagePanels, new GridComparator());
 		for (int r = 1; r <= presentRowNumber; r++) {
 			for (int c = 1; c <= presentColumnNumber; c++) {
@@ -1067,21 +1061,7 @@ private ProgressBallsDialog progressBallsDialog;
 			this.gridPanel.removeAll();
 			this.gridPanel.revalidate();
 			Dimension panelDimension=calculateDrawPanelDimension();
-/*
-			// setup panels which has images -> has to these first to know the maximum panel sizes
-			for (int r = 1; r <= presentRowNumber; r++) {
-				for (int c = 1; c <= presentColumnNumber; c++) {
 
-					SingleDrawImagePanel sdp=getSDPatPosition(r, c);
-					if(sdp != null && sdp.getImage() != null){
-						sdp.setDimension(panelDimension, titlePanelHeight);
-						sdp.updateFont(sdp.getFont());
-						this.gridPanel.add(sdp);
-					}
-
-				}
-			}
-*/
 			//go through all rows and columns
 			for (int r = 1; r <= presentRowNumber; r++) {
 				for (int c = 1; c <= presentColumnNumber; c++) {
