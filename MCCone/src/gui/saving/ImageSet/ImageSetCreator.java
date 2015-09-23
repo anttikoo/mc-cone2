@@ -1574,6 +1574,11 @@ private JButton exportJButton;
 
 	}
 
+	/**
+	 * Determines which grid cell (row,column) is in point where mouse was pressed.
+	 * @param p @see Point position in grid (x,y)
+	 * @return int[] the cell position in grid (row,column) 
+	 */
 	private int[] getGridPositionAtLocation(Point p){
 
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
