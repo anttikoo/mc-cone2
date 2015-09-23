@@ -1574,6 +1574,10 @@ private JButton exportJButton;
 
 	}
 
+	/**
+	 * @param p
+	 * @return
+	 */
 	private int[] getGridPositionAtLocation(Point p){
 
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
