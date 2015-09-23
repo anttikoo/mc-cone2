@@ -285,7 +285,6 @@ private Dimension importAllowedImageDimension=null;
 							@Override
 							public void actionPerformed(ActionEvent arg0) {
 								// activate filechooser to open markings. Gives the image path of ImageLayer as parameter
-							//	openFileDialog(ID.OPEN_MARKING_FILE,((ImageAndMarkingPanel)((JPanel)((JPanel)((JButton)arg0.getSource()).getParent()).getParent()).getParent()).getPath());
 								selectAndAddMarkings(((ImageAndMarkingPanel)((JPanel)((JPanel)((JButton)arg0.getSource()).getParent()).getParent()).getParent()).getPath(), false);
 								// update visible list of window
 								updateImageList();
@@ -402,6 +401,13 @@ private Dimension importAllowedImageDimension=null;
 
 	}
 
+	/**
+	 * Determines the dimension of given image file and compares it to present used  dimension of images. 
+	 * If there is no present dimension is new dimension saved using dimension of given image and true returned.
+	 * If there is present dimension and dimension of given image is same -> true; otherwise false.
+	 * @param file @see File a image file which dimension is determined
+	 * @return boolean true if dimension of given image file is accepted otherwise false
+	 */
 	private boolean isImportingAllowedImageDimension(File file) {
 		try {
 			Dimension iDimension=this.gui.taskManager.getImageDimension(file);
@@ -422,6 +428,10 @@ private Dimension importAllowedImageDimension=null;
 
 	}
 
+	/**
+	 * @param button JButton
+	 * @return
+	 */
 	private JButton addKeyListenerToButton(final JButton button){
 
 		InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
