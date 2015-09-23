@@ -47,11 +47,12 @@ import javax.swing.SwingUtilities;
 import information.*;
 
 /**
+ * Class AddImageLayerDialog is a window where user can import image files as ImageLayers and import previously saved MarkingLayers.
+ * Also deleting ImageLayers is possible in this window.
  * @author Antti Kurronen
  *
  */
 public class AddImageLayerDialog extends JDialog{
-
 
 private GUI gui;
 private JPanel backPanel;
@@ -64,10 +65,6 @@ private JButton addImageJButton;
 private int typeOfDialog;
 private Dimension importAllowedImageDimension=null;
 
-
-
-
-	// private JPanel markingChooserBiggerPanel;
 
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
@@ -825,7 +822,7 @@ private boolean imageNameAlreadyInList(String item){
 }
 
 /**
- * Creates JPanel containing JButtons for accepting or cancelling managing layers.
+ * Creates JPanel containing JButtons for accept or cancel managing layers.
  * @return JPanel which contains JButtons
  */
 private JPanel initDownPanel(){
@@ -1056,6 +1053,8 @@ private JPanel initDownPanel(){
 			if(dialogImageLayerList.size()>0){
 				// set buttons able to use if at least one image path is selected
 				this.createImageLayersJButton.setEnabled(true);
+				this.createImageLayersJButton.setSelected(true);
+				
 
 
 				String longestPathString="";
@@ -1098,6 +1097,7 @@ private JPanel initDownPanel(){
 			else{
 				// set button unable to use if no no image paths selected
 				this.createImageLayersJButton.setEnabled(false);
+				this.createImageLayersJButton.setSelected(false);
 				setImportAllowedImageDimension(null);
 
 
