@@ -516,6 +516,12 @@ private Dimension importAllowedImageDimension=null;
 		}
 	}
 
+	/**
+	 * Saves imported markingLayers from copied ImageLayer to originalImageLayer. Before saving removes MarkingLayer with same name if found.
+	 * @param originalIL @see ImageLayer the original ImageLayer, which is in list of present ImageLayers (shown in LAYERS-panel in GUI).
+	 * @param copyIL @see ImageLayer the copyed Imagelayer where imported MarkingLayers are added in import part.
+	 * @return boolean true if saved MarkingLayer to ImageLayer, otherwise false.
+	 */
 	private boolean addMarkingLayerIfNotExists(ImageLayer originalIL, ImageLayer copyIL){
 		try {
 			boolean madeSave=false; // is any markings saved
