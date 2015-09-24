@@ -429,8 +429,9 @@ private Dimension importAllowedImageDimension=null;
 	}
 
 	/**
-	 * @param button JButton
-	 * @return
+	 * Adds a KeyListener to a given JButton.
+	 * @param button JButton where to add action
+	 * @return JButton where added action
 	 */
 	private JButton addKeyListenerToButton(final JButton button){
 
