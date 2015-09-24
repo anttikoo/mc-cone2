@@ -53,19 +53,16 @@ import information.*;
  *
  */
 public class AddImageLayerDialog extends JDialog{
-
-private GUI gui;
-private JPanel backPanel;
-private JButton cancelJButton;
-private JPanel imageScrollPanel;
-private ArrayList<ImageLayer> dialogImageLayerList;
-private JScrollPane imageScrollingPane;
-private JButton createImageLayersJButton;
-private JButton addImageJButton;
-private int typeOfDialog;
-private Dimension importAllowedImageDimension=null;
-
-
+	private GUI gui;
+	private JPanel backPanel;
+	private JButton cancelJButton;
+	private JPanel imageScrollPanel;
+	private ArrayList<ImageLayer> dialogImageLayerList;
+	private JScrollPane imageScrollingPane;
+	private JButton createImageLayersJButton;
+	private JButton addImageJButton;
+	private int typeOfDialog;
+	private Dimension importAllowedImageDimension=null;
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	/**
@@ -101,34 +98,6 @@ private Dimension importAllowedImageDimension=null;
 		}
 	}
 
-
-
-
-	/**
-	 * Class constructor for creating new ImageLayers from given image files.
-	 * @param frame Owner JFrame
-	 * @param gui GUI object where from this class is called.
-	 */
-	public AddImageLayerDialog(JFrame frame, GUI gui, File[] imageFiles){
-
-			super(frame, true);
-			try{
-				typeOfDialog=ID.CREATE_NEW_IMAGELAYERS;
-				dialogImageLayerList = new ArrayList<ImageLayer>();
-				this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-				this.gui=gui;
-				initComponents();
-				if(imageFiles != null && imageFiles.length>0)
-					addImagesToImageLayerList(imageFiles);
-				this.setVisible(true);
-
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			LOGGER.severe("Error in adding new ImageLayer:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-		}
-	}
-
 	/**
 	 * Class constructor which shows already open ImageLayers enabling managing markings
 	 * @param frame Owner JFrame
@@ -154,173 +123,28 @@ private Dimension importAllowedImageDimension=null;
 	}
 
 	/**
-	 * Initializes components of window.
+	 * Class constructor for creating new ImageLayers from given image files.
+	 * @param frame Owner JFrame
+	 * @param gui GUI object where from this class is called.
 	 */
-	private void initComponents(){	
-		//init whole window to dim it
-		this.setBounds(gui.getBounds());
-		this.setUndecorated(true);
-		this.setBackground(new Color(0,0,0,0));
-		this.setContentPane(new ContentPane());
-		this.getContentPane().setBackground(Color_schema.dark_30);
-		this.getContentPane().setLayout(new GridBagLayout());
-		//init backpanel where all funtions are shown.
-		backPanel = new JPanel();
-		backPanel.setBackground(new Color(0,0,0));
-		backPanel.setLayout(new BorderLayout());
-		backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 5));
-		backPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		backPanel.setAlignmentY(JComponent.CENTER_ALIGNMENT);
-		backPanel.setMaximumSize(new Dimension((int)(this.getBounds().getWidth()*0.95), (int)(this.getBounds().getHeight()*0.95)));
-		backPanel.setMinimumSize(new Dimension((int)(this.getBounds().getWidth()*0.5), (int)(this.getBounds().getHeight()*0.5)));
-		backPanel.setPreferredSize(new Dimension((int)(this.getBounds().getWidth()*0.6), (int)(this.getBounds().getHeight()*0.6)));
-		//if backpanel size too small -> use more space of whole screen.
-		if(backPanel.getPreferredSize().getWidth()<800 || backPanel.getPreferredSize().getHeight() <500)
-			backPanel.setPreferredSize(new Dimension((int)(this.getBounds().getWidth()*0.95), (int)(this.getBounds().getHeight()*0.95)));
+	public AddImageLayerDialog(JFrame frame, GUI gui, File[] imageFiles){
 
-		backPanel.add(initImageViewPanel(), BorderLayout.CENTER);
-		backPanel.add(initDownPanel(),BorderLayout.PAGE_END);
-
-		this.add(backPanel);
-		this.validate();
-		this.repaint();
-	}
-
-	/**
-	 * Returns the size of BackPanel.
-	 * @return @see Rectangle size of BackPanel
-	 */
-	public Rectangle getBackPanelSize(){
-		return this.backPanel.getBounds();
-	}
-
-	/**
-	 * Returns  path of previously used folder.
-	 * @return String path of previously used folder
-	 */
-	public String getPresentFolder(){
-		return gui.getPresentFolder();
-	}
-
-	/**
-	 * Sets the folder that is previously used.
-	 * @param folder String path of used folder
-	 */
-	public void setPresentFolder(String folder){
-		gui.setPresentFolder(folder);
-	}
-
-	/**
-	 * Gets a list ImageLayers and creates a full copy of all of them (not references to objects).
-	 * @param iLayer @see ArrayList<ImageLayer> of ImageLayers 
-	 * @return @see ArrayList<ImageLayer> of ImageLayers 
-	 */
-	private ArrayList<ImageLayer> makeCopyOfList(ArrayList<ImageLayer> iLayer){
-
-		try {
-			ArrayList<ImageLayer> copyList = new ArrayList<ImageLayer>();
-			if(iLayer != null && iLayer.size()>0){
-				Iterator<ImageLayer> iterator = iLayer.iterator();
-				while(iterator.hasNext()){
-					ImageLayer im = (ImageLayer)iterator.next();
-					if(im != null){
-						// make full copy of ImageLayer
-						ImageLayer copyImageLayer = im.makeCopy();
-						if(copyImageLayer != null)
-							copyList.add(copyImageLayer);
-					}
-				}
+			super(frame, true);
+			try{
+				typeOfDialog=ID.CREATE_NEW_IMAGELAYERS;
+				dialogImageLayerList = new ArrayList<ImageLayer>();
+				this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+				this.gui=gui;
+				initComponents();
+				if(imageFiles != null && imageFiles.length>0)
+					addImagesToImageLayerList(imageFiles);
+				this.setVisible(true);
 
 
-			}
-			return copyList;
 		} catch (Exception e) {
-			LOGGER.severe("Error in creating copy of imageLayerList " +e.getClass().toString() + " :" +e.getMessage());
-			return null;
+			// TODO Auto-generated catch block
+			LOGGER.severe("Error in adding new ImageLayer:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
 		}
-
-	}
-
-
-
-
-	/**
-	 * Initializes an action for a JButton.
-	 * @param button JButton where the action is added
-	 * @param typeOfItem int type of action  @see information.ID
-	 * @throws Exception
-	 */
-	private void initActionsToButtons(JButton button, int typeOfItem) throws Exception{
-		// deleting ImageLayer
-		if(typeOfItem == ID.DELETE_IMAGELAYER)
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				deleteImageLayer(((ImageAndMarkingPanel)((JPanel)((JPanel)((JButton)arg0.getSource()).getParent()).getParent()).getParent()).getPath());
-				updateImageList();
-			}
-		});
-
-
-		// deleting MarkingLayer
-			if(typeOfItem == ID.DELETE_MARKINGLAYER){
-				button.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						//remove markinglayer and update panels
-						String imagelayerPath =((SingleMarking)((JButton)arg0.getSource()).getParent()).getImageLayerPath();
-						String markingLayerName =((SingleMarking)((JButton)arg0.getSource()).getParent()).getMarkingName();
-						// deletes the MarkingLayer of the ImageLayer
-						deleteMarkingLayer(imagelayerPath, markingLayerName);
-						// update visible list of window
-						updateImageList();
-					}
-				});
-			}
-			else
-
-			// Browsing xml-file for adding new markinglayer to selected ImageLayer.
-					if(typeOfItem == ID.OPEN_MARKING_FILE){
-						button.addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent arg0) {
-								// activate filechooser to open markings. Gives the image path of ImageLayer as parameter
-								selectAndAddMarkings(((ImageAndMarkingPanel)((JPanel)((JPanel)((JButton)arg0.getSource()).getParent()).getParent()).getParent()).getPath(), false);
-								// update visible list of window
-								updateImageList();
-							}
-						});
-					}
-					else
-					// CREATE IMAGELAYERS -button
-					if(typeOfItem == ID.CREATE_NEW_IMAGELAYERS){
-						button.addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent arg0) {
-								continueCreatingImageLayers(); // closes dialog and adds imagelayers to InformationCenter
-							}
-						});
-					}
-					else
-						// UPDATE IMAGELAYERS -button
-						if(typeOfItem == ID.MANAGE_IMAGE_LAYERS){
-							button.addActionListener(new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent arg0) {
-									continueUpdatingImageLayers();
-								}
-							});
-						}
-						else
-							// CANCEL -button
-							if(typeOfItem == ID.CANCEL){
-								button.addActionListener(new ActionListener() {
-									@Override
-									public void actionPerformed(ActionEvent arg0) {
-										cancelSelected();
-									}
-								});
-							}
 	}
 
 	/**
@@ -358,76 +182,6 @@ private Dimension importAllowedImageDimension=null;
 
 	}
 
-	/** Checks is the given file proper image file (supported images : tiff, jpg, png...)
-	 *  and is the image size same as already imported images. ONLY IMAGES WITH SAME PIXEL SIZE ARE ALLOWED TO OPEN!
-	 *
-	 * @param file the file to be checked
-	 * @return boolean value is file proper image file
-	 */
-	private boolean isImageFile(File file){
-		ShadyMessageDialog dialog;
-		try {
-			ImageFilter filterImage=new ImageFilter();
-			if(filterImage.accept(file)){
-				if(this.gui.isAllowedImageDimension(file) && isImportingAllowedImageDimension(file)){
-					LOGGER.fine("image file has allowed dimension");
-					return true;
-				}
-				else{
-					LOGGER.warning("Dimension of selected file "+file.getName()+" differs from other images! Not imported!");
-					dialog = new ShadyMessageDialog(new JFrame(), "Refused opening image", " Dimension of selected file "+file.getName()+" differs from other images! Not imported!", ID.OK, this);
-					dialog.showDialog();
-					dialog=null;
-
-					return false;
-				}
-			}
-			else{
-				LOGGER.warning("The image format of selected file "+file.getName()+" is not acceptable! Not imported");
-				dialog = new ShadyMessageDialog(new JFrame(), "Refused opening image", "The image format of selected file "+file.getName()+" is not acceptable! Not imported", ID.OK, this);
-				dialog.showDialog();
-
-				return false;
-			}
-		} catch (Exception e) {
-			LOGGER.severe("Error in adding Markings to ImageLayer :" +e.getMessage());
-
-			dialog = new ShadyMessageDialog(new JFrame(), "Refused opening image", "The image  "+file.getName()+" may be broken! Not imported", ID.OK, this);
-			dialog.showDialog();
-
-			return false;
-		}
-		finally{dialog=null;}
-
-	}
-
-	/**
-	 * Determines the dimension of given image file and compares it to present used  dimension of images. 
-	 * If there is no present dimension is new dimension saved using dimension of given image and true returned.
-	 * If there is present dimension and dimension of given image is same -> true; otherwise false.
-	 * @param file @see File a image file which dimension is determined
-	 * @return boolean true if dimension of given image file is accepted otherwise false
-	 */
-	private boolean isImportingAllowedImageDimension(File file) {
-		try {
-			Dimension iDimension=this.gui.taskManager.getImageDimension(file);
-
-			if(this.importAllowedImageDimension == null){
-				this.importAllowedImageDimension=iDimension;
-				return true;
-			}
-			if(iDimension != null && this.importAllowedImageDimension.width == iDimension.width && this.importAllowedImageDimension.height == iDimension.height)
-				return true;
-
-			return false;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-
-	}
-
 	/**
 	 * Adds a KeyListener to a given JButton.
 	 * @param button JButton where to add action
@@ -450,6 +204,53 @@ private Dimension importAllowedImageDimension=null;
 
 		return button;
 	}
+
+	/**
+	 * Saves imported markingLayers from copied ImageLayer to originalImageLayer. Before saving removes MarkingLayer with same name if found.
+	 * @param originalIL @see ImageLayer the original ImageLayer, which is in list of present ImageLayers (shown in LAYERS-panel in GUI).
+	 * @param copyIL @see ImageLayer the copyed Imagelayer where imported MarkingLayers are added in import part.
+	 * @return boolean true if saved MarkingLayer to ImageLayer, otherwise false.
+	 */
+	private boolean addMarkingLayerIfNotExists(ImageLayer originalIL, ImageLayer copyIL){
+		try {
+			boolean madeSave=false; // is any markings saved
+			if(originalIL!= null && originalIL.getMarkingLayers() != null
+					&& copyIL != null && copyIL.getMarkingLayers() != null && copyIL.getMarkingLayers().size() >0){
+				// go through all MarkingLayer objects of copyIL
+				Iterator<MarkingLayer> mIterator = copyIL.getMarkingLayers().iterator();
+				while(mIterator.hasNext()){
+					MarkingLayer maCopy = (MarkingLayer)mIterator.next();
+					// Check is MarkingLayer already in original ImageLayer
+					if(originalIL.isMarkingLayerInList(maCopy)){
+						// found same MarkingLayer (name) from both ImageLayers -> confirm overwrite
+						JFrame frame = new JFrame();
+						ShadyMessageDialog dialog = new ShadyMessageDialog(frame, "Imported MarkingLayer "+ maCopy.getLayerName()+ " already exists!", "OVERWRITE?", ID.YES_NO, this);
+						if(dialog.showDialog() == ID.YES){
+							LOGGER.fine("overwriting markingLayer: " + maCopy.getLayerName());
+							//remove original
+							originalIL.removeMarkingLayer(maCopy); // this method compares names of MarkingLayers and if same -> removed
+							// add new one
+							originalIL.addMarkingLayer(maCopy); // add new one
+							madeSave=true;
+						}
+						dialog=null;
+
+					}
+					else{ // not found -> add MarkingLayer to original ImageLayer
+						originalIL.addMarkingLayer(maCopy.makeCopy()); // for safety add copy of Markinglayer
+						madeSave=true;
+					}
+				}
+			}
+			return madeSave;
+		} catch (HeadlessException e) {
+			LOGGER.severe("Error in adding Markings to ImageLayer " +e.getClass().toString() + " :" +e.getMessage());
+			return false;
+		}
+	}
+
+
+
 
 	/** Adds markings from XML-file to wanted ImageLayer
 	 * @param xmlFile External file containing markings for selected imageLayer
@@ -515,51 +316,6 @@ private Dimension importAllowedImageDimension=null;
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * Saves imported markingLayers from copied ImageLayer to originalImageLayer. Before saving removes MarkingLayer with same name if found.
-	 * @param originalIL @see ImageLayer the original ImageLayer, which is in list of present ImageLayers (shown in LAYERS-panel in GUI).
-	 * @param copyIL @see ImageLayer the copyed Imagelayer where imported MarkingLayers are added in import part.
-	 * @return boolean true if saved MarkingLayer to ImageLayer, otherwise false.
-	 */
-	private boolean addMarkingLayerIfNotExists(ImageLayer originalIL, ImageLayer copyIL){
-		try {
-			boolean madeSave=false; // is any markings saved
-			if(originalIL!= null && originalIL.getMarkingLayers() != null
-					&& copyIL != null && copyIL.getMarkingLayers() != null && copyIL.getMarkingLayers().size() >0){
-				// go through all MarkingLayer objects of copyIL
-				Iterator<MarkingLayer> mIterator = copyIL.getMarkingLayers().iterator();
-				while(mIterator.hasNext()){
-					MarkingLayer maCopy = (MarkingLayer)mIterator.next();
-					// Check is MarkingLayer already in original ImageLayer
-					if(originalIL.isMarkingLayerInList(maCopy)){
-						// found same MarkingLayer (name) from both ImageLayers -> confirm overwrite
-						JFrame frame = new JFrame();
-						ShadyMessageDialog dialog = new ShadyMessageDialog(frame, "Imported MarkingLayer "+ maCopy.getLayerName()+ " already exists!", "OVERWRITE?", ID.YES_NO, this);
-						if(dialog.showDialog() == ID.YES){
-							LOGGER.fine("overwriting markingLayer: " + maCopy.getLayerName());
-							//remove original
-							originalIL.removeMarkingLayer(maCopy); // this method compares names of MarkingLayers and if same -> removed
-							// add new one
-							originalIL.addMarkingLayer(maCopy); // add new one
-							madeSave=true;
-						}
-						dialog=null;
-
-					}
-					else{ // not found -> add MarkingLayer to original ImageLayer
-						originalIL.addMarkingLayer(maCopy.makeCopy()); // for safety add copy of Markinglayer
-						madeSave=true;
-					}
-				}
-			}
-			return madeSave;
-		} catch (HeadlessException e) {
-			LOGGER.severe("Error in adding Markings to ImageLayer " +e.getClass().toString() + " :" +e.getMessage());
-			return false;
-		}
-	}
-
 
 	/**
 	 * Adds MouseListener to given JButton.
@@ -715,11 +471,6 @@ private Dimension importAllowedImageDimension=null;
 		}
 	}
 
-
-
-
-
-
 	/**
 	 * Hides window.
 	 */
@@ -728,100 +479,140 @@ private Dimension importAllowedImageDimension=null;
 
 	}
 
-
-
-/**
- *  When closing the window this method sets window invisible and adds newly created ImageLayers to list of ImageLayers.
- */
-private void continueCreatingImageLayers(){
-	this.setVisible(false);
-	gui.addImageLayerList(this.dialogImageLayerList);
-
-	this.dispose();
-
-}
-
-/**
- * When closing the window this method sets window invisible and updates modified ImageLayers to list of ImageLayers.
- */
-private void continueUpdatingImageLayers(){
-	this.setVisible(false);
-	this.gui.setImageLayerList(this.dialogImageLayerList);
-	this.dispose();
-}
-
-
-
-
-
-/**
- * Creates ImageAndMarkingPanel from given ImageLayer and it's MarkingLayers.
- * @param layer @see ImageLayer which data is used.
- * @return @see ImageAndMarkingPanel a Panel showing information of given ImageLayer and it's MarkingLayers. 
- */
-private ImageAndMarkingPanel createImagePanel(ImageLayer layer){
-	return new ImageAndMarkingPanel(layer);
-}
-
-/**
- * Removes temporary ImageLayer from list in AddImageLayerDialog.
- * @param path String image path in ImageLayer to be deleted from list.
- */
-private void deleteImageLayer(String path){
-	try {
-		LOGGER.fine("delete: " +path);
-		Iterator<ImageLayer> iIterator = dialogImageLayerList.iterator();
-		while(iIterator.hasNext()){
-			ImageLayer im = (ImageLayer)iIterator.next();
-			if(im.getImageFilePath().equals(path)){
-
-				// ask the user should the ImageLayer being deleted
-
-				ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "DELETE", "Delete ImageLayer:  "+im.getImageFileName(), ID.YES_NO, this);
-				if(dialog.showDialog() == ID.YES){
-					LOGGER.fine("deleted imageLayer: " + im.getImageFilePath());
-					iIterator.remove();
-				}
-				dialog=null;
-			}
-		}
-	} catch (Exception e) {
-		LOGGER.severe("Error in deleting imageLayer from IMAGE LIST " +e.getClass().toString() + " :" +e.getMessage());
-
+	/**
+	 *  When closing the window this method sets window invisible and adds newly created ImageLayers to list of ImageLayers.
+	 */
+	private void continueCreatingImageLayers(){
+		this.setVisible(false);
+		gui.addImageLayerList(this.dialogImageLayerList);
+	
+		this.dispose();
+	
 	}
-}
 
+	/**
+	 * When closing the window this method sets window invisible and updates modified ImageLayers to list of ImageLayers.
+	 */
+	private void continueUpdatingImageLayers(){
+		this.setVisible(false);
+		this.gui.setImageLayerList(this.dialogImageLayerList);
+		this.dispose();
+	}
 
+	/**
+	 * Creates ImageAndMarkingPanel from given ImageLayer and it's MarkingLayers.
+	 * @param layer @see ImageLayer which data is used.
+	 * @return @see ImageAndMarkingPanel a Panel showing information of given ImageLayer and it's MarkingLayers. 
+	 */
+	private ImageAndMarkingPanel createImagePanel(ImageLayer layer){
+		return new ImageAndMarkingPanel(layer);
+	}
 
-/**
- * Removes MarkingLayer from ImageLayer that is is in list of AddImageLayerDialog-object.
- * @param imagePath String image path of ImageLayer
- * @param markingName String name of MarkingLayer to be deleted.
- */
-private void deleteMarkingLayer(String imagePath, String markingName){
-	try {
-		LOGGER.fine("delete: " +markingName);
-		ImageLayer im = getImageLayer(imagePath);
-		if(im != null && im.getMarkingLayers() != null && im.getMarkingLayers().size() >0){
-
-			Iterator<MarkingLayer> mIterator = im.getMarkingLayers().iterator();
-			while(mIterator.hasNext()){
-				MarkingLayer ma = (MarkingLayer)mIterator.next();
-				if(ma.getLayerName().equals(markingName)){
+	/**
+	 * Removes temporary ImageLayer from list in AddImageLayerDialog.
+	 * @param path String image path in ImageLayer to be deleted from list.
+	 */
+	private void deleteImageLayer(String path){
+		try {
+			LOGGER.fine("delete: " +path);
+			Iterator<ImageLayer> iIterator = dialogImageLayerList.iterator();
+			while(iIterator.hasNext()){
+				ImageLayer im = (ImageLayer)iIterator.next();
+				if(im.getImageFilePath().equals(path)){
+	
 					// ask the user should the ImageLayer being deleted
-					ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "DELETE", "Delete MarkingLayer:  "+ma.getLayerName(), ID.YES_NO, this);
+	
+					ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "DELETE", "Delete ImageLayer:  "+im.getImageFileName(), ID.YES_NO, this);
 					if(dialog.showDialog() == ID.YES){
-						LOGGER.fine("deleted markingLayer: " + ma.getLayerName());
-						mIterator.remove();
+						LOGGER.fine("deleted imageLayer: " + im.getImageFilePath());
+						iIterator.remove();
 					}
 					dialog=null;
 				}
 			}
+		} catch (Exception e) {
+			LOGGER.severe("Error in deleting imageLayer from IMAGE LIST " +e.getClass().toString() + " :" +e.getMessage());
+	
 		}
+	}
 
+
+	/**
+	 * Removes MarkingLayer from ImageLayer that is is in list of AddImageLayerDialog-object.
+	 * @param imagePath String image path of ImageLayer
+	 * @param markingName String name of MarkingLayer to be deleted.
+	 */
+	private void deleteMarkingLayer(String imagePath, String markingName){
+		try {
+			LOGGER.fine("delete: " +markingName);
+			ImageLayer im = getImageLayer(imagePath);
+			if(im != null && im.getMarkingLayers() != null && im.getMarkingLayers().size() >0){
+	
+				Iterator<MarkingLayer> mIterator = im.getMarkingLayers().iterator();
+				while(mIterator.hasNext()){
+					MarkingLayer ma = (MarkingLayer)mIterator.next();
+					if(ma.getLayerName().equals(markingName)){
+						// ask the user should the ImageLayer being deleted
+						ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "DELETE", "Delete MarkingLayer:  "+ma.getLayerName(), ID.YES_NO, this);
+						if(dialog.showDialog() == ID.YES){
+							LOGGER.fine("deleted markingLayer: " + ma.getLayerName());
+							mIterator.remove();
+						}
+						dialog=null;
+					}
+				}
+			}
+	
+		} catch (Exception e) {
+			LOGGER.severe("Error in deleting imageLayer from IMAGE LIST " +e.getClass().toString() + " :" +e.getMessage());
+	
+		}
+	}
+
+
+
+
+
+
+	/**
+	 * Returns the size of BackPanel.
+	 * @return @see Rectangle size of BackPanel
+	 */
+	public Rectangle getBackPanelSize(){
+		return this.backPanel.getBounds();
+	}
+
+
+
+/**
+ * Counts and returns an overall sum of height of all ImagePanels and MarkingPanels.
+ * @return int overall sum of height of all ImagePanels and MarkingPanels.
+ */
+private int getHeightOfAllImageAndMarkingPanels(){
+	try {
+		int heightValue=0;
+		Iterator<ImageLayer> iIterator = dialogImageLayerList.iterator();
+		while(iIterator.hasNext()){
+			ImageLayer im = (ImageLayer)iIterator.next();
+			if(im != null && im.getImageFileName().length()>0){
+				heightValue+=45;
+			}
+			if(im.getMarkingLayers() != null && im.getMarkingLayers().size()>0){
+			//	foundMarkingLayer=true;
+				Iterator<MarkingLayer> mIterator = im.getMarkingLayers().iterator();
+				while(mIterator.hasNext()){
+					MarkingLayer ma= (MarkingLayer)mIterator.next();
+					if(ma != null && ma.getLayerName().length() > 0){
+						heightValue+=40;
+					}
+				}
+			}
+
+		}
+		return heightValue;
 	} catch (Exception e) {
-		LOGGER.severe("Error in deleting imageLayer from IMAGE LIST " +e.getClass().toString() + " :" +e.getMessage());
-
+		LOGGER.severe("Error in calculating height of ImageAndMarkingPanel " +e.getClass().toString() + " :" +e.getMessage());
+		return -1;
 	}
 }
 
@@ -841,6 +632,10 @@ private ImageIcon getImageIcon(String path) {
 			return null;
 		}
 }
+
+
+
+
 
 /**
  * Return ImageLayer searched by image path of ImageLayer.
@@ -867,6 +662,16 @@ private ImageLayer getImageLayer(String path){
 }
 
 /**
+ * Returns  path of previously used folder.
+ * @return String path of previously used folder
+ */
+public String getPresentFolder(){
+	return gui.getPresentFolder();
+}
+
+
+
+/**
  *  Method for checking is image path already in an ImageLayer
  * @param item a path String which is searched from imageLayerList
  * @return boolean value true if path is already in an ImageLayer of imageLayerList
@@ -888,6 +693,118 @@ private boolean imageNameAlreadyInList(String item){
 		return true;
 	}
 
+}
+
+/**
+ * Initializes an action for a JButton.
+ * @param button JButton where the action is added
+ * @param typeOfItem int type of action  @see information.ID
+ * @throws Exception
+ */
+private void initActionsToButtons(JButton button, int typeOfItem) throws Exception{
+	// deleting ImageLayer
+	if(typeOfItem == ID.DELETE_IMAGELAYER)
+	button.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			deleteImageLayer(((ImageAndMarkingPanel)((JPanel)((JPanel)((JButton)arg0.getSource()).getParent()).getParent()).getParent()).getPath());
+			updateImageList();
+		}
+	});
+
+
+	// deleting MarkingLayer
+		if(typeOfItem == ID.DELETE_MARKINGLAYER){
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					//remove markinglayer and update panels
+					String imagelayerPath =((SingleMarking)((JButton)arg0.getSource()).getParent()).getImageLayerPath();
+					String markingLayerName =((SingleMarking)((JButton)arg0.getSource()).getParent()).getMarkingName();
+					// deletes the MarkingLayer of the ImageLayer
+					deleteMarkingLayer(imagelayerPath, markingLayerName);
+					// update visible list of window
+					updateImageList();
+				}
+			});
+		}
+		else
+
+		// Browsing xml-file for adding new markinglayer to selected ImageLayer.
+				if(typeOfItem == ID.OPEN_MARKING_FILE){
+					button.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							// activate filechooser to open markings. Gives the image path of ImageLayer as parameter
+							selectAndAddMarkings(((ImageAndMarkingPanel)((JPanel)((JPanel)((JButton)arg0.getSource()).getParent()).getParent()).getParent()).getPath(), false);
+							// update visible list of window
+							updateImageList();
+						}
+					});
+				}
+				else
+				// CREATE IMAGELAYERS -button
+				if(typeOfItem == ID.CREATE_NEW_IMAGELAYERS){
+					button.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							continueCreatingImageLayers(); // closes dialog and adds imagelayers to InformationCenter
+						}
+					});
+				}
+				else
+					// UPDATE IMAGELAYERS -button
+					if(typeOfItem == ID.MANAGE_IMAGE_LAYERS){
+						button.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent arg0) {
+								continueUpdatingImageLayers();
+							}
+						});
+					}
+					else
+						// CANCEL -button
+						if(typeOfItem == ID.CANCEL){
+							button.addActionListener(new ActionListener() {
+								@Override
+								public void actionPerformed(ActionEvent arg0) {
+									cancelSelected();
+								}
+							});
+						}
+}
+
+/**
+ * Initializes components of window.
+ */
+private void initComponents(){	
+	//init whole window to dim it
+	this.setBounds(gui.getBounds());
+	this.setUndecorated(true);
+	this.setBackground(new Color(0,0,0,0));
+	this.setContentPane(new ContentPane());
+	this.getContentPane().setBackground(Color_schema.dark_30);
+	this.getContentPane().setLayout(new GridBagLayout());
+	//init backpanel where all funtions are shown.
+	backPanel = new JPanel();
+	backPanel.setBackground(new Color(0,0,0));
+	backPanel.setLayout(new BorderLayout());
+	backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 5));
+	backPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+	backPanel.setAlignmentY(JComponent.CENTER_ALIGNMENT);
+	backPanel.setMaximumSize(new Dimension((int)(this.getBounds().getWidth()*0.95), (int)(this.getBounds().getHeight()*0.95)));
+	backPanel.setMinimumSize(new Dimension((int)(this.getBounds().getWidth()*0.5), (int)(this.getBounds().getHeight()*0.5)));
+	backPanel.setPreferredSize(new Dimension((int)(this.getBounds().getWidth()*0.6), (int)(this.getBounds().getHeight()*0.6)));
+	//if backpanel size too small -> use more space of whole screen.
+	if(backPanel.getPreferredSize().getWidth()<800 || backPanel.getPreferredSize().getHeight() <500)
+		backPanel.setPreferredSize(new Dimension((int)(this.getBounds().getWidth()*0.95), (int)(this.getBounds().getHeight()*0.95)));
+
+	backPanel.add(initImageViewPanel(), BorderLayout.CENTER);
+	backPanel.add(initDownPanel(),BorderLayout.PAGE_END);
+
+	this.add(backPanel);
+	this.validate();
+	this.repaint();
 }
 
 /**
@@ -955,109 +872,210 @@ private JPanel initDownPanel(){
 
 }
 
+/**
+ * Initializes ImageViewPanel,where all ImageLayers and MarkingLayers are shown.
+ * @return JPanel where components added.
+ */
+private JPanel initImageViewPanel(){
+	// SETUP THE Panel which shows the list of images and markings
+				try {
 
+					JPanel iBackPanel = new JPanel();
+				//	iBackPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+					iBackPanel.setLayout(new BorderLayout());
+					iBackPanel.setBackground(new Color(0,0,0));
+					iBackPanel.setLayout(new BorderLayout());
+					iBackPanel.setMaximumSize(this.getMaximumSize());
+					iBackPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 1));
+
+					JPanel upPanel = new JPanel();
+					upPanel.setBackground(Color_schema.dark_30);
+					upPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+					upPanel.setMaximumSize(new Dimension(200,40));
+					upPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+					upPanel.setBorder(BorderFactory.createEmptyBorder());
+					JLabel titleLabel = new JLabel("OPEN IMAGES");
+					if(this.typeOfDialog == ID.MANAGE_IMAGE_LAYERS)
+						titleLabel.setText("Manage ImageLayers and MarkingLayers");
+					titleLabel.setFont(new Font("Consolas", Font.BOLD,20));
+					titleLabel.setForeground(Color_schema.white_230);
+					upPanel.add(titleLabel);
+					iBackPanel.add(upPanel, BorderLayout.PAGE_START);
+
+					// CENTER PANEL
+					JPanel centerPanel=new JPanel();
+					centerPanel.setBackground(Color_schema.dark_40);
+					centerPanel.setLayout(new BorderLayout());
+					centerPanel.setBorder(BorderFactory.createEmptyBorder());
+					JPanel scrollBiggerPanel = new JPanel();
+					scrollBiggerPanel.setLayout(new BorderLayout());
+					scrollBiggerPanel.setBorder(BorderFactory.createEmptyBorder());
+					scrollBiggerPanel.setBackground(Color_schema.dark_40);
+
+					imageScrollPanel = new JPanel();
+					imageScrollPanel.setBackground(Color_schema.dark_40);
+					imageScrollPanel.setMinimumSize(new Dimension(((int)(backPanel.getMinimumSize().getWidth()*0.4)), ((int)(backPanel.getMinimumSize().getHeight()*0.7)-40)));
+					imageScrollPanel.setLayout(new BoxLayout(imageScrollPanel, BoxLayout.PAGE_AXIS));
+					imageScrollingPane = new JScrollPane(imageScrollPanel);
+					imageScrollingPane.setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
+					imageScrollingPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+					imageScrollingPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+					imageScrollingPane.setPreferredSize(new Dimension((int)backPanel.getPreferredSize().getWidth()-20,(int)backPanel.getPreferredSize().getHeight()-140));
+					imageScrollingPane.setMaximumSize(new Dimension((int)backPanel.getPreferredSize().getWidth()-20,(int)backPanel.getPreferredSize().getHeight()-140));
+					
+					// SETUP Button and it's JPanel for adding selected pahths to list
+					JPanel imageButtonJPanel = new JPanel();
+					imageButtonJPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+					imageButtonJPanel.setBackground(Color_schema.dark_30);
+					imageButtonJPanel.setMinimumSize(new Dimension(200,50));
+					imageButtonJPanel.setMaximumSize(new Dimension(200,50));
+
+					addImageJButton = new JButton("ADD IMAGE");
+					addImageJButton.setPreferredSize(new Dimension(150,30));
+					addImageJButton.setBackground(Color_schema.dark_20);
+					addImageJButton.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							selectAndAddImages();
+						}
+					});
+					addImageJButton.setFocusable(false);
+					addMouseListenerToButtons(addImageJButton, ID.BUTTON_NORMAL);
+					imageButtonJPanel.add(addImageJButton);
+
+
+					JButton addMarkingsForAll = new JButton("Import Markings For All ImageLayers");
+					addMarkingsForAll.setPreferredSize(new Dimension(350,30));
+					addMarkingsForAll.setBackground(Color_schema.dark_20);
+					addMarkingsForAll.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							if(dialogImageLayerList != null && dialogImageLayerList.size()>0)
+								selectAndAddMarkings(dialogImageLayerList.get(0).getImageFilePath(),true);
+							else{
+								showMessage("No ImageLayers", "Not found ImageLayers where to add markings");
+
+							}
+						}
+					});
+					addMarkingsForAll.setFocusable(false);
+					addMouseListenerToButtons(addMarkingsForAll, ID.BUTTON_NORMAL);
+					imageButtonJPanel.add(addMarkingsForAll);
+
+
+					scrollBiggerPanel.add(imageScrollingPane, BorderLayout.CENTER);
+					centerPanel.add(scrollBiggerPanel, BorderLayout.CENTER);
+					centerPanel.add(imageButtonJPanel, BorderLayout.PAGE_END);
+					iBackPanel.add(centerPanel, BorderLayout.CENTER);
+
+					return iBackPanel;
+				} catch (Exception e) {
+					LOGGER.severe("Error in creating imageViewPanel:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+					return null;
+				}
+
+}
+
+
+
+	/** Checks is the given file proper image file (supported images : tiff, jpg, png...)
+	 *  and is the image size same as already imported images. ONLY IMAGES WITH SAME PIXEL SIZE ARE ALLOWED TO OPEN!
+	 *
+	 * @param file the file to be checked
+	 * @return boolean value is file proper image file
+	 */
+	private boolean isImageFile(File file){
+		ShadyMessageDialog dialog;
+		try {
+			ImageFilter filterImage=new ImageFilter();
+			if(filterImage.accept(file)){
+				if(this.gui.isAllowedImageDimension(file) && isImportingAllowedImageDimension(file)){
+					LOGGER.fine("image file has allowed dimension");
+					return true;
+				}
+				else{
+					LOGGER.warning("Dimension of selected file "+file.getName()+" differs from other images! Not imported!");
+					dialog = new ShadyMessageDialog(new JFrame(), "Refused opening image", " Dimension of selected file "+file.getName()+" differs from other images! Not imported!", ID.OK, this);
+					dialog.showDialog();
+					dialog=null;
+
+					return false;
+				}
+			}
+			else{
+				LOGGER.warning("The image format of selected file "+file.getName()+" is not acceptable! Not imported");
+				dialog = new ShadyMessageDialog(new JFrame(), "Refused opening image", "The image format of selected file "+file.getName()+" is not acceptable! Not imported", ID.OK, this);
+				dialog.showDialog();
+
+				return false;
+			}
+		} catch (Exception e) {
+			LOGGER.severe("Error in adding Markings to ImageLayer :" +e.getMessage());
+
+			dialog = new ShadyMessageDialog(new JFrame(), "Refused opening image", "The image  "+file.getName()+" may be broken! Not imported", ID.OK, this);
+			dialog.showDialog();
+
+			return false;
+		}
+		finally{dialog=null;}
+
+	}
 
 	/**
-	 * Initializes ImageViewPanel,where all ImageLayers and MarkingLayers are shown.
-	 * @return JPanel where components added.
+	 * Determines the dimension of given image file and compares it to present used  dimension of images. 
+	 * If there is no present dimension is new dimension saved using dimension of given image and true returned.
+	 * If there is present dimension and dimension of given image is same -> true; otherwise false.
+	 * @param file @see File a image file which dimension is determined
+	 * @return boolean true if dimension of given image file is accepted otherwise false
 	 */
-	private JPanel initImageViewPanel(){
-		// SETUP THE Panel which shows the list of images and markings
-					try {
+	private boolean isImportingAllowedImageDimension(File file) {
+		try {
+			Dimension iDimension=this.gui.taskManager.getImageDimension(file);
 
-						JPanel iBackPanel = new JPanel();
-					//	iBackPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-						iBackPanel.setLayout(new BorderLayout());
-						iBackPanel.setBackground(new Color(0,0,0));
-						iBackPanel.setLayout(new BorderLayout());
-						iBackPanel.setMaximumSize(this.getMaximumSize());
-						iBackPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 1));
+			if(this.importAllowedImageDimension == null){
+				this.importAllowedImageDimension=iDimension;
+				return true;
+			}
+			if(iDimension != null && this.importAllowedImageDimension.width == iDimension.width && this.importAllowedImageDimension.height == iDimension.height)
+				return true;
 
-						JPanel upPanel = new JPanel();
-						upPanel.setBackground(Color_schema.dark_30);
-						upPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-						upPanel.setMaximumSize(new Dimension(200,40));
-						upPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-						upPanel.setBorder(BorderFactory.createEmptyBorder());
-						JLabel titleLabel = new JLabel("OPEN IMAGES");
-						if(this.typeOfDialog == ID.MANAGE_IMAGE_LAYERS)
-							titleLabel.setText("Manage ImageLayers and MarkingLayers");
-						titleLabel.setFont(new Font("Consolas", Font.BOLD,20));
-						titleLabel.setForeground(Color_schema.white_230);
-						upPanel.add(titleLabel);
-						iBackPanel.add(upPanel, BorderLayout.PAGE_START);
+			return false;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 
-						// CENTER PANEL
-						JPanel centerPanel=new JPanel();
-						centerPanel.setBackground(Color_schema.dark_40);
-						centerPanel.setLayout(new BorderLayout());
-						centerPanel.setBorder(BorderFactory.createEmptyBorder());
-						JPanel scrollBiggerPanel = new JPanel();
-						scrollBiggerPanel.setLayout(new BorderLayout());
-						scrollBiggerPanel.setBorder(BorderFactory.createEmptyBorder());
-						scrollBiggerPanel.setBackground(Color_schema.dark_40);
+	}
 
-						imageScrollPanel = new JPanel();
-						imageScrollPanel.setBackground(Color_schema.dark_40);
-						imageScrollPanel.setMinimumSize(new Dimension(((int)(backPanel.getMinimumSize().getWidth()*0.4)), ((int)(backPanel.getMinimumSize().getHeight()*0.7)-40)));
-						imageScrollPanel.setLayout(new BoxLayout(imageScrollPanel, BoxLayout.PAGE_AXIS));
-						imageScrollingPane = new JScrollPane(imageScrollPanel);
-						imageScrollingPane.setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
-						imageScrollingPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-						imageScrollingPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-						imageScrollingPane.setPreferredSize(new Dimension((int)backPanel.getPreferredSize().getWidth()-20,(int)backPanel.getPreferredSize().getHeight()-140));
-						imageScrollingPane.setMaximumSize(new Dimension((int)backPanel.getPreferredSize().getWidth()-20,(int)backPanel.getPreferredSize().getHeight()-140));
-						
-						// SETUP Button and it's JPanel for adding selected pahths to list
-						JPanel imageButtonJPanel = new JPanel();
-						imageButtonJPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-						imageButtonJPanel.setBackground(Color_schema.dark_30);
-						imageButtonJPanel.setMinimumSize(new Dimension(200,50));
-						imageButtonJPanel.setMaximumSize(new Dimension(200,50));
+	/**
+	 * Gets a list ImageLayers and creates a full copy of all of them (not references to objects).
+	 * @param iLayer @see ArrayList<ImageLayer> of ImageLayers 
+	 * @return @see ArrayList<ImageLayer> of ImageLayers 
+	 */
+	private ArrayList<ImageLayer> makeCopyOfList(ArrayList<ImageLayer> iLayer){
 
-						addImageJButton = new JButton("ADD IMAGE");
-						addImageJButton.setPreferredSize(new Dimension(150,30));
-						addImageJButton.setBackground(Color_schema.dark_20);
-						addImageJButton.addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								selectAndAddImages();
-							}
-						});
-						addImageJButton.setFocusable(false);
-						addMouseListenerToButtons(addImageJButton, ID.BUTTON_NORMAL);
-						imageButtonJPanel.add(addImageJButton);
-
-
-						JButton addMarkingsForAll = new JButton("Import Markings For All ImageLayers");
-						addMarkingsForAll.setPreferredSize(new Dimension(350,30));
-						addMarkingsForAll.setBackground(Color_schema.dark_20);
-						addMarkingsForAll.addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								if(dialogImageLayerList != null && dialogImageLayerList.size()>0)
-									selectAndAddMarkings(dialogImageLayerList.get(0).getImageFilePath(),true);
-								else{
-									showMessage("No ImageLayers", "Not found ImageLayers where to add markings");
-
-								}
-							}
-						});
-						addMarkingsForAll.setFocusable(false);
-						addMouseListenerToButtons(addMarkingsForAll, ID.BUTTON_NORMAL);
-						imageButtonJPanel.add(addMarkingsForAll);
-
-
-						scrollBiggerPanel.add(imageScrollingPane, BorderLayout.CENTER);
-						centerPanel.add(scrollBiggerPanel, BorderLayout.CENTER);
-						centerPanel.add(imageButtonJPanel, BorderLayout.PAGE_END);
-						iBackPanel.add(centerPanel, BorderLayout.CENTER);
-	
-						return iBackPanel;
-					} catch (Exception e) {
-						LOGGER.severe("Error in creating imageViewPanel:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-						return null;
+		try {
+			ArrayList<ImageLayer> copyList = new ArrayList<ImageLayer>();
+			if(iLayer != null && iLayer.size()>0){
+				Iterator<ImageLayer> iterator = iLayer.iterator();
+				while(iterator.hasNext()){
+					ImageLayer im = (ImageLayer)iterator.next();
+					if(im != null){
+						// make full copy of ImageLayer
+						ImageLayer copyImageLayer = im.makeCopy();
+						if(copyImageLayer != null)
+							copyList.add(copyImageLayer);
 					}
+				}
+
+
+			}
+			return copyList;
+		} catch (Exception e) {
+			LOGGER.severe("Error in creating copy of imageLayerList " +e.getClass().toString() + " :" +e.getMessage());
+			return null;
+		}
 
 	}
 
@@ -1078,16 +1096,7 @@ private JPanel initDownPanel(){
 		addImagesToImageLayerList(imagefiles);
 	}
 
-	/**
-	 * Opens message dialog with ok-button.
-	 * @param title String title of message
-	 * @param message String message
-	 */
-	private void showMessage(String title, String message){
-		ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), title, message, ID.OK, this);
-		dialog.showDialog();
-		dialog=null;
-	}
+
 
 	/**
 	 * Opens window where user can open xml-file for importing MarkingLayers to given ImageLayer or for all ImageLayers in list of AddImageLayersDialog-object.
@@ -1109,6 +1118,36 @@ private JPanel initDownPanel(){
 		}
 	}
 
+
+	/**
+	 * Sets the allowed ImageDimension = present dimension of image(s) in main GUI.
+	 * @param importAllowedImageDimension @see Dimension allowed dimension
+	 */
+	public void setImportAllowedImageDimension(Dimension importAllowedImageDimension) {
+		this.importAllowedImageDimension = importAllowedImageDimension;
+	}
+
+
+
+
+	/**
+	 * Sets the folder that is previously used.
+	 * @param folder String path of used folder
+	 */
+	public void setPresentFolder(String folder){
+		gui.setPresentFolder(folder);
+	}
+
+	/**
+	 * Opens message dialog with ok-button.
+	 * @param title String title of message
+	 * @param message String message
+	 */
+	private void showMessage(String title, String message){
+		ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), title, message, ID.OK, this);
+		dialog.showDialog();
+		dialog=null;
+	}
 
 
 	/**
@@ -1187,51 +1226,7 @@ private JPanel initDownPanel(){
 		}
 
 	}
-
-
-	/**
-	 * Sets the allowed ImageDimension = present dimension of image(s) in main GUI.
-	 * @param importAllowedImageDimension @see Dimension allowed dimension
-	 */
-	public void setImportAllowedImageDimension(Dimension importAllowedImageDimension) {
-		this.importAllowedImageDimension = importAllowedImageDimension;
-	}
-
-
-
-
-	/**
-	 * Counts and returns an overall sum of height of all ImagePanels and MarkingPanels.
-	 * @return int overall sum of height of all ImagePanels and MarkingPanels.
-	 */
-	private int getHeightOfAllImageAndMarkingPanels(){
-		try {
-			int heightValue=0;
-			Iterator<ImageLayer> iIterator = dialogImageLayerList.iterator();
-			while(iIterator.hasNext()){
-				ImageLayer im = (ImageLayer)iIterator.next();
-				if(im != null && im.getImageFileName().length()>0){
-					heightValue+=45;
-				}
-				if(im.getMarkingLayers() != null && im.getMarkingLayers().size()>0){
-				//	foundMarkingLayer=true;
-					Iterator<MarkingLayer> mIterator = im.getMarkingLayers().iterator();
-					while(mIterator.hasNext()){
-						MarkingLayer ma= (MarkingLayer)mIterator.next();
-						if(ma != null && ma.getLayerName().length() > 0){
-							heightValue+=40;
-						}
-					}
-				}
-
-			}
-			return heightValue;
-		} catch (Exception e) {
-			LOGGER.severe("Error in calculating height of ImageAndMarkingPanel " +e.getClass().toString() + " :" +e.getMessage());
-			return -1;
-		}
-	}
-
+	
 	/**
 	 * MarkingPanel is a JPanel which contains title of ImageLayer and list of titles of MarkingLayers. This panel is added to MarkingPanelList.
 	 * @author Antti Kurronen
@@ -1365,8 +1360,6 @@ private JPanel initDownPanel(){
 
 
 	}
-
-
 	/**
 	 * 
 	 * Class SingleMarking is a JPanel containing information of a  MarkingPanel.
