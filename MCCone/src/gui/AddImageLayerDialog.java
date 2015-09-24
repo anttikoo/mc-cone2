@@ -561,6 +561,12 @@ private Dimension importAllowedImageDimension=null;
 	}
 
 
+	/**
+	 * Adds MouseListener to given JButton.
+	 * @param button JButton where to add MouseListener
+	 * @param id int type of button
+	 * @throws Exception
+	 */
 	private void addMouseListenerToButtons(JButton button, int id) throws Exception{
 		if(id == ID.BUTTON_CLOSE_SMALL){
 		button.addMouseListener(new MouseListener() {
