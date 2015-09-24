@@ -793,6 +793,11 @@ private void deleteImageLayer(String path){
 
 
 
+/**
+ * Removes MarkingLayer from ImageLayer that is is in list of AddImageLayerDialog-object.
+ * @param imagePath String image path of ImageLayer
+ * @param markingName String name of MarkingLayer to be deleted.
+ */
 private void deleteMarkingLayer(String imagePath, String markingName){
 	try {
 		LOGGER.fine("delete: " +markingName);
@@ -820,6 +825,11 @@ private void deleteMarkingLayer(String imagePath, String markingName){
 	}
 }
 
+/**
+ * Creates ImageIcon from given image path.
+ * @param path String image path
+ * @return @see ImageIcon
+ */
 private ImageIcon getImageIcon(String path) {
 
 		try {
@@ -827,12 +837,16 @@ private ImageIcon getImageIcon(String path) {
 			ImageIcon img = new ImageIcon(url);
 			return img;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOGGER.severe("Error in getting imageIcon" +e.getClass().toString() + " :" +e.getMessage());
 			return null;
 		}
 }
 
+/**
+ * Return ImageLayer searched by image path of ImageLayer.
+ * @param path String image path of ImageLayer
+ * @return @see ImageLayer found ImageLayer if found; otherwise null;
+ */
 private ImageLayer getImageLayer(String path){
 	try {
 		LOGGER.fine("get: " +path);
@@ -900,7 +914,6 @@ private JPanel initDownPanel(){
 		createImageLayersJButton.setPreferredSize(new Dimension(220,30));
 		createImageLayersJButton.setFocusable(false);
 
-		//createImageLayersJButton.setContentAreaFilled(false);
 		if(this.typeOfDialog == ID.CREATE_NEW_IMAGELAYERS){
 			initActionsToButtons(createImageLayersJButton, ID.CREATE_NEW_IMAGELAYERS);
 		}
@@ -920,7 +933,6 @@ private JPanel initDownPanel(){
 		cancelJpanel.setPreferredSize(new Dimension(150,50));
 		cancelJpanel.setMaximumSize(new Dimension(100,30));
 		cancelJButton = new JButton("CANCEL");
-//		cancelJButton.setContentAreaFilled(false);
 		cancelJButton.setFocusable(false);
 		cancelJButton.setForeground(Color_schema.orange_dark);
 		initActionsToButtons(cancelJButton, ID.CANCEL);	// the action
