@@ -754,10 +754,19 @@ private void continueUpdatingImageLayers(){
 
 
 
+/**
+ * Creates ImageAndMarkingPanel from given ImageLayer and it's MarkingLayers.
+ * @param layer @see ImageLayer which data is used.
+ * @return @see ImageAndMarkingPanel a Panel showing information of given ImageLayer and it's MarkingLayers. 
+ */
 private ImageAndMarkingPanel createImagePanel(ImageLayer layer){
 	return new ImageAndMarkingPanel(layer);
 }
 
+/**
+ * Removes temporary ImageLayer from list in AddImageLayerDialog.
+ * @param path String image path in ImageLayer to be deleted from list.
+ */
 private void deleteImageLayer(String path){
 	try {
 		LOGGER.fine("delete: " +path);
