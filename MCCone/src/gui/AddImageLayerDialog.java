@@ -720,6 +720,9 @@ private Dimension importAllowedImageDimension=null;
 
 
 
+	/**
+	 * Hides window.
+	 */
 	private void cancelSelected(){
 		this.setVisible(false);
 
@@ -727,6 +730,9 @@ private Dimension importAllowedImageDimension=null;
 
 
 
+/**
+ *  When closing the window this method sets window invisible and adds newly created ImageLayers to list of ImageLayers.
+ */
 private void continueCreatingImageLayers(){
 	this.setVisible(false);
 	gui.addImageLayerList(this.dialogImageLayerList);
@@ -735,6 +741,9 @@ private void continueCreatingImageLayers(){
 
 }
 
+/**
+ * When closing the window this method sets window invisible and updates modified ImageLayers to list of ImageLayers.
+ */
 private void continueUpdatingImageLayers(){
 	this.setVisible(false);
 	this.gui.setImageLayerList(this.dialogImageLayerList);
