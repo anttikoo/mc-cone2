@@ -22,15 +22,27 @@ import javax.swing.event.ChangeListener;
 
 import managers.TaskManager;
 
+/**
+ * 
+ * Class GlobalMarkingProperties shows window, where user can set MarkingLayer Properties: Marking color, shape, size, thickness and transparency.
+ * Given settings will affect to all MarkingLayers in all ImageLayers.
+ * @author Antti Kurronen
+ *
+ */
 public class GlobalMarkingProperties extends MarkingProperties{
 //private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 //protected int panelHeight=300;
 //protected ArrayList<MarkingLayer> markingLayerList;
 
+	/**
+	 * Class constructor.
+	 * @param frame JFrame parent frame
+	 * @param gui GUI main window of program
+	 * @param point Point where mouse pressed button to open this window
+	 * @param markingLayerList ArrayList of MarkingLayers, which settings will be modified.
+	 */
 	public GlobalMarkingProperties(JFrame frame, GUI gui, Point point, ArrayList<MarkingLayer> markingLayerList) {
 		super(frame, gui, point, markingLayerList);
-		//this.markingLayerList= markingLayerList;
-		// TODO Auto-generated constructor stub
 	}
 	protected void initMarkingPropertiesPanel(){
 
