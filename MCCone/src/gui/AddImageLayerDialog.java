@@ -957,6 +957,10 @@ private JPanel initDownPanel(){
 
 
 
+	/**
+	 * Initializes ImageViewPanel,where all ImageLayers and MarkingLayers are shown.
+	 * @return JPanel where components added.
+	 */
 	private JPanel initImageViewPanel(){
 		// SETUP THE Panel which shows the list of images and markings
 					try {
@@ -996,7 +1000,6 @@ private JPanel initDownPanel(){
 						imageScrollPanel = new JPanel();
 						imageScrollPanel.setBackground(Color_schema.dark_40);
 						imageScrollPanel.setMinimumSize(new Dimension(((int)(backPanel.getMinimumSize().getWidth()*0.4)), ((int)(backPanel.getMinimumSize().getHeight()*0.7)-40)));
-					//	imageScrollPanel.setPreferredSize(preferredSize);
 						imageScrollPanel.setLayout(new BoxLayout(imageScrollPanel, BoxLayout.PAGE_AXIS));
 						imageScrollingPane = new JScrollPane(imageScrollPanel);
 						imageScrollingPane.setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
@@ -1004,14 +1007,13 @@ private JPanel initDownPanel(){
 						imageScrollingPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 						imageScrollingPane.setPreferredSize(new Dimension((int)backPanel.getPreferredSize().getWidth()-20,(int)backPanel.getPreferredSize().getHeight()-140));
 						imageScrollingPane.setMaximumSize(new Dimension((int)backPanel.getPreferredSize().getWidth()-20,(int)backPanel.getPreferredSize().getHeight()-140));
+						
 						// SETUP Button and it's JPanel for adding selected pahths to list
 						JPanel imageButtonJPanel = new JPanel();
 						imageButtonJPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-					//	addFilePathsJPanel.setLayout(new BoxLayout(addFilePathsJPanel, BoxLayout.LINE_AXIS));
 						imageButtonJPanel.setBackground(Color_schema.dark_30);
 						imageButtonJPanel.setMinimumSize(new Dimension(200,50));
 						imageButtonJPanel.setMaximumSize(new Dimension(200,50));
-					//	addImagesJPanel.setMaximumSize(new Dimension(400,40));
 
 						addImageJButton = new JButton("ADD IMAGE");
 						addImageJButton.setPreferredSize(new Dimension(150,30));
@@ -1049,11 +1051,8 @@ private JPanel initDownPanel(){
 						scrollBiggerPanel.add(imageScrollingPane, BorderLayout.CENTER);
 						centerPanel.add(scrollBiggerPanel, BorderLayout.CENTER);
 						centerPanel.add(imageButtonJPanel, BorderLayout.PAGE_END);
-
-
 						iBackPanel.add(centerPanel, BorderLayout.CENTER);
-					//	iBackPanel.add(centerPanel);
-
+	
 						return iBackPanel;
 					} catch (Exception e) {
 						LOGGER.severe("Error in creating imageViewPanel:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
@@ -1079,6 +1078,11 @@ private JPanel initDownPanel(){
 		addImagesToImageLayerList(imagefiles);
 	}
 
+	/**
+	 * Opens message dialog with ok-button.
+	 * @param title String title of message
+	 * @param message String message
+	 */
 	private void showMessage(String title, String message){
 		ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), title, message, ID.OK, this);
 		dialog.showDialog();
@@ -1086,8 +1090,9 @@ private JPanel initDownPanel(){
 	}
 
 	/**
+	 * Opens window where user can open xml-file for importing MarkingLayers to given ImageLayer or for all ImageLayers in list of AddImageLayersDialog-object.
 	 * @param imageLayerPath Path for selected imageLayer or first ImageLayer of list
-	 * @param isMarkingsForAll Boolean should add MarkingLayers to all ImageLayers if found.
+	 * @param isMarkingsForAll Boolean should add MarkingLayers to all ImageLayers if found any.
 	 */
 	private void selectAndAddMarkings(String imageLayerPath, boolean isMarkingsForAll){
 		JFrame openfileFrame = new JFrame();
@@ -1096,7 +1101,7 @@ private JPanel initDownPanel(){
 		od.setVisible(true);
 
 		File[] markingFile = od.getSelectedFiles();
-		if(markingFile != null && markingFile.length==1) {// onlyy 1 marking file is allowed
+		if(markingFile != null && markingFile.length==1) {// only 1 marking file is allowed
 			if(isMarkingsForAll)
 				addMarkingsToSelectedImageLayer(markingFile[0], null); // setting markins to all ImageLayers
 			else
@@ -1184,6 +1189,10 @@ private JPanel initDownPanel(){
 	}
 
 
+	/**
+	 * Sets the allowed ImageDimension = present dimension of image(s) in main GUI.
+	 * @param importAllowedImageDimension @see Dimension allowed dimension
+	 */
 	public void setImportAllowedImageDimension(Dimension importAllowedImageDimension) {
 		this.importAllowedImageDimension = importAllowedImageDimension;
 	}
@@ -1191,6 +1200,10 @@ private JPanel initDownPanel(){
 
 
 
+	/**
+	 * Counts and returns an overall sum of height of all ImagePanels and MarkingPanels.
+	 * @return int overall sum of height of all ImagePanels and MarkingPanels.
+	 */
 	private int getHeightOfAllImageAndMarkingPanels(){
 		try {
 			int heightValue=0;
@@ -1236,7 +1249,7 @@ private JPanel initDownPanel(){
 			this.path = imageLayer.getImageFilePath();
 			this.markingLayerList=imageLayer.getMarkingLayers();
 			try {
-	//			LOGGER.fine("markinglayerlist: " +this.markingLayerList.size());
+
 				int markingListHeight =0;
 				if(this.markingLayerList !=null && this.markingLayerList.size()>0)
 					markingListHeight = oneMarkingHeight*this.markingLayerList.size();
@@ -1261,7 +1274,6 @@ private JPanel initDownPanel(){
 				iPathLabel.setFont(consolas16);
 				iPathLabel.setForeground(Color_schema.white_230);
 				int labelwidth=iPathLabel.getFontMetrics(consolas16).stringWidth(iPathLabel.getText());
-			//	LOGGER.fine("font metricz" + labelwidth );
 				titlePanel.setPreferredSize(new Dimension(labelwidth+100,oneImageTitleHeight));
 				iPathLabelPanel.setPreferredSize(new Dimension(labelwidth+20,oneImageTitleHeight));
 
@@ -1282,7 +1294,6 @@ private JPanel initDownPanel(){
 				buttonsImagePanel.setPreferredSize(new Dimension(60,40));
 				buttonsImagePanel.setMinimumSize(new Dimension(60,40));
 				buttonsImagePanel.setBackground(Color_schema.dark_40);
-		//		closeJButton = new JButton(getImageIcon("/images/close_25.png"));
 				closeJButton = new JButton(new BigCloseIcon(false));
 				closeJButton.setAlignmentY(Component.CENTER_ALIGNMENT);
 				closeJButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -1305,7 +1316,6 @@ private JPanel initDownPanel(){
 				browseJButton.setMaximumSize(new Dimension(25,25));
 				browseJButton.setMargin(new Insets(0, 0,0, 0));
 				browseJButton.setBorder(BorderFactory.createLineBorder(Color_schema.dark_40, 1));
-			//	browseJButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color_schema.color_grey_100, Color_schema.color_dark_50_bg));
 				browseJButton.setContentAreaFilled(false);
 				browseJButton.setFocusable(false);
 				browseJButton.setToolTipText("Import Markings for image "+imageLayer.getImageFileName());
@@ -1319,9 +1329,7 @@ private JPanel initDownPanel(){
 				iPathLabel.validate();
 				titlePanel.add(buttonsImagePanel);
 
-
 				// add panels containing marking titles
-
 				JPanel markingTableJPanel = new JPanel();
 				markingTableJPanel.setLayout(new BoxLayout(markingTableJPanel, BoxLayout.PAGE_AXIS));
 				markingTableJPanel.setMaximumSize(new Dimension(2000,oneMarkingHeight*markingLayerList.size()));
@@ -1338,16 +1346,12 @@ private JPanel initDownPanel(){
 							// add markingTitles to markingTable
 							markingTableJPanel.add(new SingleMarking(this.path, ml.getLayerName()));
 						}
-
 					}
 				}
-
-
 				this.add(titlePanel,BorderLayout.PAGE_START);
 				this.add(markingTableJPanel,BorderLayout.CENTER);
 				this.validate();
-
-
+				
 			} catch (Exception e) {
 				LOGGER.severe("Error in construction of Marking list " +e.getClass().toString() + " :" +e.getMessage());
 				
@@ -1363,6 +1367,12 @@ private JPanel initDownPanel(){
 	}
 
 
+	/**
+	 * 
+	 * Class SingleMarking is a JPanel containing information of a  MarkingPanel.
+	 * @author Antti Kurronen
+	 *
+	 */
 	private class SingleMarking extends JPanel{
 		private String markingName;
 		private String imageLayerPath;
@@ -1415,8 +1425,7 @@ private JPanel initDownPanel(){
 				deleteMarkingJButton.setFocusable(false);
 				deleteMarkingJButton.setToolTipText("Remove MarkingLayer: " +markingLabel.getText());
 
-				// set up listener for closeButton
-			//	addMouseListenerToButtons(deleteMarkingJButton, ID.BUTTON_CLOSE_BIG);
+				// set up listener for closeButton	
 				MouseListenerCreator.addMouseListenerToMediumCloseButtons(deleteMarkingJButton);
 				initActionsToButtons(deleteMarkingJButton, ID.DELETE_MARKINGLAYER);
 
@@ -1424,24 +1433,39 @@ private JPanel initDownPanel(){
 
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				LOGGER.severe("Error in construction of SingleMarking " +e.getClass().toString() + " :" +e.getMessage());
 		}
 
 	}
 
+		/**
+		 * Returns a String path of image of the ImageLayer.
+		 * @return String path of image of the ImageLayer
+		 */
 		public String getImageLayerPath() {
 			return imageLayerPath;
 		}
 
+		/**
+		 * Returns a String name of MarkingLayer.
+		 * @return String name of MarkingLayer
+		 */
 		public String getMarkingName() {
 			return markingName;
 		}
 
+		/**
+		 * Sets a path of image of the ImageLayer.
+		 * @param imageLayerPath String path of image of the ImageLayer
+		 */
 		public void setImageLayerPath(String imageLayerPath) {
 			this.imageLayerPath = imageLayerPath;
 		}
 
+		/**
+		 *  Sets a String name of MarkingLayer.
+		 * @param markingName String name of MarkingLayer
+		 */
 		public void setMarkingName(String markingName) {
 			this.markingName = markingName;
 		}
