@@ -18,7 +18,7 @@ public class ContentPane extends JPanel{
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	 /**
-	 * Class constructor
+	 * Class constructor.
 	 */
 	public ContentPane() {
 	        setOpaque(false);
