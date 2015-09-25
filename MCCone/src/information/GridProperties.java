@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 
 
@@ -16,7 +17,7 @@ import java.util.Iterator;
  */
 public class GridProperties {
 	private boolean gridON;
-
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private ArrayList<Integer> rowLineY;
 
 	private ArrayList<Integer> columnLineX;
@@ -26,8 +27,17 @@ public class GridProperties {
 	private int verticalLineLength=0; // used for restrict the vertical line length
 	private int horizontalLineLength=0; // used for restrict the horizontal line length
 	private Dimension presentImageDimension=null;
+	private int randomProcent=50;
 //	private ArrayList<Integer> unselectedGridCellNumbers;
 
+
+	public int getRandomProcent() {
+		return randomProcent;
+	}
+
+	public void setRandomProcent(int randomProcent) {
+		this.randomProcent = randomProcent;
+	}
 
 	public GridProperties(Dimension iDimension){
 		setGridON(false);
@@ -252,7 +262,13 @@ public class GridProperties {
 			return 0;
 	}
 */
+	/**
+	 *  Counts
+	 * @return double value multiplyer
+	 */
 	public double calculateSelectedRectangleAreaRelation(){
+		
+		try{
 		if(this.positionedRectangleList != null && this.positionedRectangleList.size()>0){
 			int count_selected=0;
 			int count_unselected=0;
@@ -286,6 +302,10 @@ public class GridProperties {
 		}
 		else
 			return 0;
+		}catch(Exception e){
+			LOGGER.severe("Error in counting gridResults!" +e.getMessage());
+			return 0;
+		}
 	}
 
 	public void changeSelectionOfPositionedRectangle(Point imagePoint){
@@ -299,6 +319,10 @@ public class GridProperties {
 
 			}
 		}
+	}
+	
+	private void changePercentAfterManualSelection(){
+		
 	}
 
 	private int countSelectedRectangles(){
