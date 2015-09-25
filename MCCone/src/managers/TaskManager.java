@@ -457,7 +457,7 @@ public class TaskManager {
 
 	public void changeGridCellSelection(Point p){
 		if(this.informationCenter.getSelectedMarkingLayer() != null &&
-				this.informationCenter.getSelectedMarkingLayer().getGridProperties() != null){
+				this.informationCenter.getSelectedMarkingLayer().getGridProperties() != null && this.informationCenter.getSelectedMarkingLayer().getGridProperties().isGridON()){
 			this.layerVisualManager.changeSelectedRectangleOfGridProperty(this.informationCenter.getSelectedMarkingLayer().getGridProperties(), p);
 		}
 	}
