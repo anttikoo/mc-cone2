@@ -468,11 +468,18 @@ private int rightPanelWidth=0;
 
 
 
+	/**
+	 * Returns width of rightpanel.
+	 * @return int width of rightpanel
+	 */
 	public int getRightPanelWidth(){
-
 		return this.rightPanelWidth;
 	}
 
+	/**
+	 * Highlights a single marking if found close the Point p.
+	 * @param p Point where mouse was hovered
+	 */
 	public void updateHighlight(Point p){
 
 		Point panelPoint =getClosestMarkingPointAtScreen(p, SharedVariables.DISTANCE_TO_REMOVE);
@@ -482,12 +489,14 @@ private int rightPanelWidth=0;
 
 				@Override
 				public void run() {
-					// TODO Auto-generated method stub
 					highlightPanel.repaint();
 				}
 			});
 	}
 
+	/**
+	 *  Refreshes GridPanel if selected MarkingLayer has Grid set as visible
+	 */
 	public void updateGridPanel(){
 		this.gridPanel.setGridProperties(taskManager.getConvertedGridProperties());
 		if(this.taskManager.getSelectedMarkingLayer() != null &&
@@ -497,6 +506,11 @@ private int rightPanelWidth=0;
 		this.gridPanel.repaint();
 	}
 
+	/**
+	 * Adds a single marking to Point p, if no any marking found too close. 
+	 * @param p Point at screen where mouse was pressed
+	 * @return boolean true if marking was added; otherwise false
+	 */
 	public boolean addSingleMarking(Point p){
 		Point panelPoint =getClosestMarkingPointAtScreen(p, SharedVariables.DISTANCE_TO_ADD);
 		if(panelPoint == null)
@@ -504,6 +518,10 @@ private int rightPanelWidth=0;
 		return false;
 	}
 
+	/**
+	 * When user presses mouse on a Grid cell (SHIFT key pressed down at same time) this method sets the Grid cell as selected or unselected.
+	 * @param p Point where mouse was pressed 
+	 */
 	public void setGridSelectedRectangle(Point p){
 		this.taskManager.changeGridCellSelection(p);
 		updateGridPanel();
@@ -512,6 +530,11 @@ private int rightPanelWidth=0;
 		removeHighLightPoint();
 	}
 
+	/**
+	 * Removes a single marking closest to Point p. If no any marking found close enough, no any removed. 
+	 * @param p Point at screen where right mouse button was pressed
+	 * @return boolean true if marking was removed; otherwise false
+	 */
 	public boolean removeSingleMarking(Point p){
 		Point panelPoint =getClosestMarkingPointAtScreen(p, SharedVariables.DISTANCE_TO_REMOVE);
 		if(panelPoint != null)
@@ -519,17 +542,28 @@ private int rightPanelWidth=0;
 		return false;
 	}
 
+	/**
+	 * Finds from selected MarkingPanel a marking closest to point where mouse was pressed. 
+	 * If (Manhattan) distance between them is shorter than given limit the point is returned.
+	 * @param p Point at screen where mouse button was pressed
+	 * @param minDistance int minimum distance between single marking and where mouse was pressed
+	 * @return Point if closed any close enough. Otherwise null;
+	 */
 	private Point getClosestMarkingPointAtScreen(Point p, int minDistance){
 		MarkingLayer selectedMarkingLayer= taskManager.getSelectedMarkingLayer();
 		if(selectedMarkingLayer != null){
+			//is any marking coordinates in  selected MarkingPanel 
 			MarkingPanel selectedMarkingPanel = getMarkingPanelByLayerID(selectedMarkingLayer.getLayerID());
 			if(selectedMarkingPanel != null && selectedMarkingPanel.getCoordinateList() != null)
-				return selectedMarkingPanel.getClosestMarkingPoint(p, minDistance);
+				return selectedMarkingPanel.getClosestMarkingPoint(p, minDistance); // get the closest point
 		}
 		return null;
 
 	}
 
+	/**
+	 * @return
+	 */
 	public ArrayList<SingleGridSize> getSingleGridSizeList() {
 		return this.taskManager.getSingleGridSizeList();
 	}
