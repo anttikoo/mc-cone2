@@ -106,15 +106,7 @@ public class GUI extends JFrame{
 public TaskManager taskManager;
 private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 public static LogFrame logFrame;
-//private boolean is_CTRL_pressed = false;
-//private boolean is_SPACE_pressed = false;
-//private boolean is_ALT_pressed = false;
-//private boolean isDragging=false;
-//private boolean isPrecountingON=false;
-//private Point previousDraggingPoint=null;
 private Dimension screenSize;
-
-
 private JMenuBar menubar;
 private JSplitPane doublePanel;
 private JPanel leftPanel;
@@ -124,19 +116,13 @@ private JLayeredPane layers;
 private ImagePanel imagePanel;
 private JPanel rightPanel;
 private JPanel layersLabelJPanel;
-//private JLabel layersJLabel;
 private JPanel layerInfoListJPanel;
-//private JPanel addRemoveLayerJPanel;
 private JPanel addImageLayerJPanel;
 private JButton preCountButton;
-//private JPanel glassPanel;
 private JMenuItem menu_show_all_markings;
 private JMenuItem menu_edit_set_marking_properties;
 private JSlider zoomSlider;
 private JLabel zoomValueLabel;
-
-//private Timer timerSPACEactivate;
-//private Timer timerSPACEinactivate;
 private GUIListener guiListener;
 private PrecountGlassPane glassPane;
 private JPanel sliderPanel;
@@ -145,7 +131,6 @@ private SliderListener sliderListener;
 private HighlightPanel highlightPanel;
 private GridPanel gridPanel;
 private int rightPanelWidth=0;
-
 
 	/**
 	 * Class constructor.
@@ -161,27 +146,32 @@ private int rightPanelWidth=0;
 			try {
 			// create a object of TaskManager, which mediates the commands to classes containing the functionality
 			this.taskManager=new TaskManager(this);
-			//initialize color scheme of GUI
-			screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			
+			//initialize size, colors and listeners of GUI		
 			initWindowPropertiesAndListeners();
 
 			//initialize menubar
 			initMenubar();
 
+			//init SplitPane containing two divided panels.
 			initSplitPane();
 
 			this.setVisible(true);
 
+			// setup window sizes
 			initializeSizes();
 
+			//init GlassPane used in precounting part
 			initGlassPane();
 
-			LOGGER.info("Started MCcone! All OK.");
-		//addImageLayer();
-		//createGlassPane();
-		//	printUI();
-			testing();
-			updateImageLayerInfos();
+			LOGGER.info("Started MCcone! All OK.");		
+			/*
+			 * FOR TESTING PURPOSES -> open two images automatically -> path of images given by hand.
+			 *	testing();
+			 *  updateImageLayerInfos();
+			 * 
+			 * 
+			 */
 			this.guiListener.setComponents(this, this.taskManager, this.getContentPane(), glassPane, this.imagePanel, this.preCountButton, this.layers, this.downBarPanel, this.zoomSlider, this.sliderPanel);
 			this.repaint();
 
@@ -230,8 +220,6 @@ private int rightPanelWidth=0;
 
 	private void testing(){
 		ImageLayer l = new ImageLayer("/home/antti/4kuvaa/kuusiSolua.jpg");
-		//l.addMarkingLayer(new MarkingLayer("celltype 3s"));
-		//l.addMarkingLayer(new MarkingLayer("Celltype 23"));
 		ArrayList<ImageLayer> list = new ArrayList<ImageLayer>();
 		list.add(l);
 		addImageLayerList(list);
@@ -244,11 +232,20 @@ private int rightPanelWidth=0;
 		}
 	}
 
-	private void setDefaultCursorToPanels(){
-		this.imagePanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
-
+	public void setCursorOverLeftPanel(int typeOfCursor){
+		switch(typeOfCursor){
+			case ID.CURSOR_DEFAULT:
+				this.imagePanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				break;
+			case ID.CURSOR_HAND:
+				System.out.println("hand show");
+				this.imagePanel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+				
+				break;
+		}
+		
 	}
+	
 
 	private void setCursorToAllMarkingPanels(Cursor cursor){
 		 Component[] comps= layers.getComponents();
@@ -433,7 +430,7 @@ private int rightPanelWidth=0;
 
 			// create imagePanel which has no any image in startup
 			imagePanel = new ImagePanel();
-			setDefaultCursorToPanels();
+			setCursorOverLeftPanel(ID.CURSOR_DEFAULT);
 			this.imagePanel.addMouseListener(guiListener);
 			this.imagePanel.addMouseMotionListener(guiListener);
 			this.imagePanel.addMouseWheelListener(guiListener);
@@ -2264,11 +2261,13 @@ private void showWebInstructions(){
 	private void initWindowPropertiesAndListeners() throws Exception{
 
 		try {
+			screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			// change colors of menus and tooltips
 			UIManager.put("Button.background", Color_schema.dark_20);
 			UIManager.put("Button.border", BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
 			UIManager.put("Button.font", new Font("Consolas", Font.BOLD,16));
 			UIManager.put("Button.foreground", Color_schema.white_230);
+			
 			UIManager.put("RadioButton.background", Color_schema.dark_30);
 			UIManager.put("RadioButton.font", new Font("Consolas", Font.BOLD,16));
 			UIManager.put("RadioButton.foreground", Color_schema.white_230);
