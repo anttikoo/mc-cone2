@@ -26,14 +26,11 @@ import managers.TaskManager;
  * 
  * Class GlobalMarkingProperties shows window, where user can set MarkingLayer Properties: Marking color, shape, size, thickness and transparency.
  * Given settings will affect to all MarkingLayers in all ImageLayers.
+ * This Class extends the Class @see gui.MarkingProperties.
  * @author Antti Kurronen
  *
  */
 public class GlobalMarkingProperties extends MarkingProperties{
-//private final static Logger LOGGER = Logger.getLogger("MCCLogger");
-//protected int panelHeight=300;
-//protected ArrayList<MarkingLayer> markingLayerList;
-
 	/**
 	 * Class constructor.
 	 * @param frame JFrame parent frame
@@ -62,7 +59,6 @@ public class GlobalMarkingProperties extends MarkingProperties{
 			}
 		}
 		else{
-
 			gui.showMessage("Could not set ImageLayer Properties", "Not any MarkingLayers found. Not changed properties.",ID.OK);
 			hideDialog(false);
 		}
@@ -75,6 +71,9 @@ public class GlobalMarkingProperties extends MarkingProperties{
 
 
 
+	/* (non-Javadoc)
+	 * @see gui.MarkingProperties#initUPPanels()
+	 */
 	protected JPanel initUPPanels(){
 		// contains title and colorchooser panels
 					JPanel upperBackPanel= new JPanel();
@@ -129,12 +128,10 @@ public class GlobalMarkingProperties extends MarkingProperties{
 		dispose();
 	}
 	
+	/* (non-Javadoc)
+	 * @see gui.MarkingProperties#saveChanges(information.MarkingLayer)
+	 */
 	protected void saveChanges(MarkingLayer mLayer){
-		// save changes to markinglayer
-		// set color from colorchooser
-	//	mLayer.setColor(this.getSelectedColor());
-		// set shape id
-	//	mLayer.setShapeID(this.getSelectedShapeID());
 		if(this.getSelectedSize()>0){
 			// set size value
 			mLayer.setSize(this.getSelectedSize());
