@@ -263,13 +263,6 @@ private int rightPanelWidth=0;
 		this.setGlassPane(glassPane);
 	}
 
-
-
-
-
-
-
-
 	/**
 	 * Initializes dimension of all panels in main window.
 	 * @throws Exception
@@ -289,8 +282,6 @@ private int rightPanelWidth=0;
 		leftPanel.setBounds((int)doublePanelLeftBounds.getX(), (int)doublePanelLeftBounds.getY(), (int)doublePanelLeftBounds.getWidth(), (int)doublePanelLeftBounds.getHeight());
 		leftPanel.revalidate();
 		downBarPanel.setBounds(0, 0, (int)leftPanel.getBounds().getWidth(), 40);
-
-
 		downBarPanel.revalidate();
 		visualPanel.setBounds((int)leftPanel.getBounds().getX(),(int)leftPanel.getBounds().getY(),(int)leftPanel.getBounds().getWidth(), (int)(leftPanel.getBounds().getHeight()- downBarPanel.getBounds().getHeight()));
 		visualPanel.revalidate();
@@ -317,12 +308,7 @@ private int rightPanelWidth=0;
 			//create JSplitPane
 			doublePanel = new JSplitPane();
 			doublePanel.setResizeWeight(0.80);
-			
-
 			guiListener.addKeyInputMap(this.doublePanel, ID.WHOLE_GUI_FRAME);
-
-
-		//	doublePanel.setMinimumSize(new Dimension(this.getMinimumSize().width,this.getMinimumSize().height-100));
 			doublePanel.setMaximumSize(new Dimension(screenSize.width, screenSize.height));
 			doublePanel.setBorder(BorderFactory.createEmptyBorder());
 
@@ -332,13 +318,11 @@ private int rightPanelWidth=0;
 			        String propertyName = changeEvent.getPropertyName();
 			        if (propertyName.equals(JSplitPane.DIVIDER_LOCATION_PROPERTY)) {	     
 			          Integer last = (Integer) changeEvent.getNewValue();	         
-
 			          visualPanel.setBounds(0, 0, (int)last, (int)(leftPanel.getBounds().getHeight()-downBarPanel.getBounds().getHeight()));
 			          visualPanel.revalidate();
 			          resizeLayerComponents();
 			          rightPanelWidth=doublePanel.getSize().width-(int)last;
 			          updateImageLayerInfos();
-			      //    updateImagePanelSize();
 			          doublePanel.revalidate();
 			          doublePanel.repaint();
 			        }
@@ -353,7 +337,6 @@ private int rightPanelWidth=0;
 
 			leftPanel.setBorder(BorderFactory.createEmptyBorder());
 			leftPanel.setMinimumSize(new Dimension((int)(this.screenSize.width/4),75));
-
 
 			// panel which visualizes the image and markings
 			visualPanel = new JPanel();
@@ -409,21 +392,13 @@ private int rightPanelWidth=0;
 			this.imagePanel.addMouseMotionListener(guiListener);
 			this.imagePanel.addMouseWheelListener(guiListener);
 			guiListener.addKeyInputMap(this.imagePanel, ID.IMAGE_PANEL);
-	//		addMouseListenerToComponents(imagePanel, ID.IMAGE_PANEL);
-
 			// markingPanels are added dynamically when user adds new marking layers + markingPanels
-
 			// add ImagePanel to layers
 			layers.add(imagePanel,JLayeredPane.DEFAULT_LAYER);
-
 			gridPanel = new GridPanel();
 			layers.add(gridPanel, JLayeredPane.DRAG_LAYER);
-
-
 			highlightPanel = new HighlightPanel();
 			layers.add(highlightPanel, JLayeredPane.DRAG_LAYER);
-
-
 
 			// attach panels
 			visualPanel.add(layers);
@@ -459,7 +434,6 @@ private int rightPanelWidth=0;
 			  JLabel layersJLabel = new JLabel("LAYERS");
 			  layersJLabel.setFont(new Font("Consolas", Font.PLAIN,20));
 			  layersJLabel.setForeground(Color_schema.white_230);
-			//  layersJLabel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 			 layersLabelJPanel.add(layersJLabel);
 
 			// create JPanel for LayerInfos
@@ -523,9 +497,6 @@ private int rightPanelWidth=0;
 		this.gridPanel.repaint();
 	}
 
-
-
-
 	public boolean addSingleMarking(Point p){
 		Point panelPoint =getClosestMarkingPointAtScreen(p, SharedVariables.DISTANCE_TO_ADD);
 		if(panelPoint == null)
@@ -539,8 +510,6 @@ private int rightPanelWidth=0;
 
 		updateCoordinatesOfSelectedMarkingPanel();
 		removeHighLightPoint();
-
-
 	}
 
 	public boolean removeSingleMarking(Point p){
@@ -560,8 +529,6 @@ private int rightPanelWidth=0;
 		return null;
 
 	}
-
-
 
 	public ArrayList<SingleGridSize> getSingleGridSizeList() {
 		return this.taskManager.getSingleGridSizeList();
