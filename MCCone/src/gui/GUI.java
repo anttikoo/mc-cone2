@@ -134,13 +134,16 @@ private int rightPanelWidth=0;
 
 	/**
 	 * Class constructor.
-	 * Initializes Logging and components of GUI.
+	 * Initializes Logging, fonts, sizes, listeners and components of the GUI.
 	 */
 
 	public GUI()
 	{		super("gui");
+			//initialize LOGGING 
 			initLogging(Level.INFO);
-			setUpFont();
+			
+			// initialize fonts
+			Fonts.initFonts();
 			setUpOSsharedVariables();
 
 			try {
@@ -156,7 +159,7 @@ private int rightPanelWidth=0;
 			//init SplitPane containing two divided panels.
 			initSplitPane();
 
-			this.setVisible(true);
+			this.setVisible(true); // has to be done before initializing sizes!
 
 			// setup window sizes
 			initializeSizes();
@@ -164,15 +167,18 @@ private int rightPanelWidth=0;
 			//init GlassPane used in precounting part
 			initGlassPane();
 
-			LOGGER.info("Started MCcone! All OK.");		
-			/*
-			 * FOR TESTING PURPOSES -> open two images automatically -> path of images given by hand.
-			 *	testing();
-			 *  updateImageLayerInfos();
-			 * 
-			 * 
-			 */
+			// insert listeners
 			this.guiListener.setComponents(this, this.taskManager, this.getContentPane(), glassPane, this.imagePanel, this.preCountButton, this.layers, this.downBarPanel, this.zoomSlider, this.sliderPanel);
+			
+			/*
+			 * FOR TESTING PURPOSES -> opens an image automatically -> path of image hard coded.
+			 *	testing();
+			 *  updateImageLayerInfos(); 
+			 */
+			
+			LOGGER.info("Started MCcone! All OK.");	
+			
+			//refresh window
 			this.repaint();
 
 		} catch (Exception e) {
