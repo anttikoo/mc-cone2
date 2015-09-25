@@ -102,6 +102,14 @@ import managers.ProgramLogger;
  * "author Antti Kurronen
  */
 
+/**
+ * @author Antti Kurronen
+ *
+ */
+/**
+ * @author Antti Kurronen
+ *
+ */
 public class GUI extends JFrame{
 public TaskManager taskManager;
 private final static Logger LOGGER = Logger.getLogger("MCCLogger");
@@ -188,22 +196,10 @@ private int rightPanelWidth=0;
 
 	}
 
-	private void setUpFont(){
-	/*	InputStream stream= this.getClass().getResourceAsStream("/information/fonts/Inconsolata.otf");
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		try {
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, stream));
-		} catch (FontFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
-		Fonts.initFonts();
-	}
-
+	
+	/**
+	 *  Determines which operation system is running and sets Graphical parameters accordingly.
+	 */
 	private void setUpOSsharedVariables(){
 
 		String osString=System.getProperty("os.name").toLowerCase();
@@ -224,6 +220,9 @@ private int rightPanelWidth=0;
 		}
 	}
 
+	/**
+	 * For testing purposes opens one image at launch-> one ImageLayer and MarkingLayer created.
+	 */
 	private void testing(){
 		ImageLayer l = new ImageLayer("/home/antti/4kuvaa/kuusiSolua.jpg");
 		ArrayList<ImageLayer> list = new ArrayList<ImageLayer>();
@@ -238,6 +237,10 @@ private int rightPanelWidth=0;
 		}
 	}
 
+	/**
+	 * Sets Cursor type when hovering over ImagePanel.
+	 * @param typeOfCursor int ID of type of Cursor
+	 */
 	public void setCursorOverLeftPanel(int typeOfCursor){
 		switch(typeOfCursor){
 			case ID.CURSOR_DEFAULT:
@@ -252,17 +255,9 @@ private int rightPanelWidth=0;
 		
 	}
 	
-
-	private void setCursorToAllMarkingPanels(Cursor cursor){
-		 Component[] comps= layers.getComponents();
-		 for(int i=0;i<comps.length;i++){
-			 if(comps[i] instanceof MarkingPanel){
-				 LOGGER.fine("updated MarkingPanel cursor");
-				 ((MarkingPanel)comps[i]).setCursor(cursor);
-			 }
-		 }
-	}
-
+	/**
+	 *  Initializes GlassPane, which is used in precounting cells.
+	 */
 	private void initGlassPane(){
 		glassPane = new PrecountGlassPane(this, this.doublePanel, this.menubar, guiListener);
 		this.setGlassPane(glassPane);
@@ -275,9 +270,14 @@ private int rightPanelWidth=0;
 
 
 
+	/**
+	 * Initializes dimension of all panels in main window.
+	 * @throws Exception
+	 */
 	private void initializeSizes() throws Exception{
 
 		this.revalidate();
+		// the size of doublepanel is already painted -> set preferred, maximum and minimum dimensions.
 		doublePanel.setPreferredSize(doublePanel.getSize());
 		doublePanel.setMinimumSize(new Dimension(doublePanel.getPreferredSize().width/2,doublePanel.getPreferredSize().height/2));
 		if(doublePanel.getRightComponent().getWidth() <200){
@@ -286,22 +286,16 @@ private int rightPanelWidth=0;
 		this.revalidate();
 
 		Rectangle doublePanelLeftBounds= doublePanel.getLeftComponent().getBounds();
-	//	leftPanel.setPreferredSize(doublePanel.getPreferredSize());
 		leftPanel.setBounds((int)doublePanelLeftBounds.getX(), (int)doublePanelLeftBounds.getY(), (int)doublePanelLeftBounds.getWidth(), (int)doublePanelLeftBounds.getHeight());
-	//	leftPanel.setMinimumSize(new Dimension(doublePanel.getMinimumSize().width/2,doublePanel.getMinimumSize().height));
 		leftPanel.revalidate();
-	//	downBarPanel.setPreferredSize(new Dimension(leftPanel.getPreferredSize().width,40));
-	//	downBarPanel.setSize(new Dimension((int)leftPanel.getSize().getWidth(),30));
 		downBarPanel.setBounds(0, 0, (int)leftPanel.getBounds().getWidth(), 40);
 
-	//	visualPanel.setPreferredSize(leftPanel.getPreferredSize());
+
 		downBarPanel.revalidate();
 		visualPanel.setBounds((int)leftPanel.getBounds().getX(),(int)leftPanel.getBounds().getY(),(int)leftPanel.getBounds().getWidth(), (int)(leftPanel.getBounds().getHeight()- downBarPanel.getBounds().getHeight()));
-	//	layers.setPreferredSize(visualPanel.getPreferredSize());
 		visualPanel.revalidate();
 		layers.setBounds(5,5,(int)visualPanel.getBounds().getWidth()-10,(int)visualPanel.getBounds().getHeight()-10);
 		this.revalidate();
-	//	imagePanel.setPreferredSize(visualPanel.getPreferredSize());
 		imagePanel.setBounds(0,0,(int)layers.getBounds().getWidth(),(int)layers.getBounds().getHeight());
 		this.highlightPanel.setBounds(this.imagePanel.getBounds());
 		this.gridPanel.setBounds(this.imagePanel.getBounds());
@@ -309,15 +303,6 @@ private int rightPanelWidth=0;
 		LOGGER.fine("vp "+visualPanel.getWidth() + " " + visualPanel.getHeight());
 		LOGGER.fine("ip "+imagePanel.getWidth() + " " + imagePanel.getHeight());
 		this.rightPanelWidth=doublePanel.getSize().width- doublePanel.getRightComponent().getSize().width;
-
-	//	rightPanel.setMinimumSize(new Dimension(10,doublePanel.getMinimumSize().height));
-	//	rightPanel.setPreferredSize(doublePanel.getPreferredSize());
-
-	//	layersJLabel.setBounds(0,0,rightPanel.getPreferredSize().width, 30);
-
-	//	addRemoveLayerJPanel.setMinimumSize(new Dimension(rightPanel.getMinimumSize().width,30));
-	//	addRemoveLayerJPanel.setMinimumSize(new Dimension(rightPanel.getPreferredSize().width,30));
-		//downBarPanel.setPreferredSize(new Dimension(leftPanel.getPreferredSize().width,30));
 		this.updateImagePanelSize();
 		this.repaint();
 
@@ -345,19 +330,11 @@ private int rightPanelWidth=0;
 			      public void propertyChange(PropertyChangeEvent changeEvent) {
 			        JSplitPane sourceSplitPane = (JSplitPane) changeEvent.getSource();
 			        String propertyName = changeEvent.getPropertyName();
-			        if (propertyName.equals(JSplitPane.DIVIDER_LOCATION_PROPERTY)) {
-			       //   int current = sourceSplitPane.getDividerLocation();		     
+			        if (propertyName.equals(JSplitPane.DIVIDER_LOCATION_PROPERTY)) {	     
 			          Integer last = (Integer) changeEvent.getNewValue();	         
-			       //   Integer priorLast = (Integer) changeEvent.getOldValue();	         
-			   //       LOGGER.fine("visualPanel width: "+visualPanel.getWidth() + " last:" +last + " leftPanelHeights: " +(int)(leftPanel.getBounds().getHeight()-downBarPanel.getBounds().getHeight()));
-			    //      leftPanel.setBounds(0, 0, (int)last, (int)leftPanel.getBounds().getHeight());
+
 			          visualPanel.setBounds(0, 0, (int)last, (int)(leftPanel.getBounds().getHeight()-downBarPanel.getBounds().getHeight()));
 			          visualPanel.revalidate();
-			        //  layers.setBounds(5, 5, (int)last-10, (int)visualPanel.getBounds().getHeight()-10);
-			        //  layers.revalidate();
-			        //  imagePanel.setBounds(0,0,(int)layers.getBounds().getWidth(),(int)layers.getBounds().getHeight());
-			      //    LOGGER.fine("visualPanel width: "+visualPanel.getWidth() + " last:" +last);
-			      //    LOGGER.fine("visualPanel width: "+visualPanel.getWidth() + " last:" +last + " leftPanelHeights: " +(int)(leftPanel.getBounds().getHeight()-downBarPanel.getBounds().getHeight()));
 			          resizeLayerComponents();
 			          rightPanelWidth=doublePanel.getSize().width-(int)last;
 			          updateImageLayerInfos();
@@ -395,26 +372,17 @@ private int rightPanelWidth=0;
 			downBarPanel.add(setUpSLiderPanel(-200, 200, 0, 50, 100));
 			JLabel zoomscrollProcent=new JLabel("%");
 			zoomscrollProcent.setFont(new Font("Consolas", Font.BOLD,16));
-			//downBarPanel.add(Box.createRigidArea(new Dimension(10,0)));
-		//	downBarPanel.add(zoomscrollProcent);
 			downBarPanel.add(Box.createHorizontalGlue());
 			JLabel precountJLabel=new JLabel("PRECOUNTING:");
-		//	precountJLabel.setFont(new Font("Consolas", Font.BOLD,16));
 			precountJLabel.setFont(Fonts.b16);
-
 			downBarPanel.add(precountJLabel);
 			downBarPanel.add(Box.createRigidArea(new Dimension(10,0)));
-
 			preCountButton = new JButton("Pick A New Cell");
-		//	preCountButton.setFont(new Font("Consolas", Font.BOLD,16));
 			preCountButton.setFont(Fonts.b16);
-		//	LOGGER.fine("font incon: "+preCountButton.getFont().getFamily().toString());
 			preCountButton.setMaximumSize(new Dimension(180, 28));
 			preCountButton.setMinimumSize(new Dimension(180, 28));
 			preCountButton.setPreferredSize(new Dimension(180, 28));
-			//preCountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 			preCountButton.setToolTipText("Precount cells for selected markinglayer" );
-//			preCountButton.setEnabled(false);
 			preCountButton.setFocusable(false);
 			preCountButton.setEnabled(false);
 			preCountButton.addActionListener(new ActionListener() {
