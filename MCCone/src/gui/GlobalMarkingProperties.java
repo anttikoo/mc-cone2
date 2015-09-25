@@ -40,6 +40,36 @@ public class GlobalMarkingProperties extends MarkingProperties{
 	public GlobalMarkingProperties(JFrame frame, GUI gui, Point point, ArrayList<MarkingLayer> markingLayerList) {
 		super(frame, gui, point, markingLayerList);
 	}
+	/**
+	 * Hides Dialog window and saves the changes made to MarkingLayer.
+	 * @param saveChanges boolean value should the changes be saved to MarkingLayer
+	 */
+	protected void hideDialog(boolean saveChanges){
+		//LOGGER.fine("color selected: " +colorChooser.getColor().toString());
+		if(this.markingLayerList != null && this.markingLayerList.size()>0 && saveChanges){
+				try {
+					Iterator<MarkingLayer> mIterator = this.markingLayerList.iterator();
+					while(mIterator.hasNext()){
+	
+						saveChanges(mIterator.next());
+					}
+	
+				} catch (Exception e) {
+					LOGGER.severe("Error in saving marking properties to MarkingLayer " +e.getClass().toString() + " :" +e.getMessage());
+	
+				}
+				// update the GUI ImageLayerInfo JPanel
+				gui.updateAllMarkingPanelProperties();
+			//	gui.updateImageLayerInfos();
+				gui.setMadeChanges(true);
+			}
+		this.setVisible(false);
+		dispose();
+	}
+
+
+
+
 	protected void initMarkingPropertiesPanel(){
 
 		if(this.markingLayerList != null && this.markingLayerList.size()>0){
@@ -66,9 +96,6 @@ public class GlobalMarkingProperties extends MarkingProperties{
 		this.revalidate();
 		this.repaint();
 	}
-
-
-
 
 	/* (non-Javadoc)
 	 * @see gui.MarkingProperties#initUPPanels()
@@ -97,40 +124,6 @@ public class GlobalMarkingProperties extends MarkingProperties{
 	}
 
 	/* (non-Javadoc)
-	 * @see gui.MarkingProperties#setUpComboBoXPanel()
-	 */
-	protected void setUpComboBoXPanel(){
-		comboBoxPanel=null;
-	}
-
-	/**
-	 * Hides Dialog window and saves the changes made to MarkingLayer.
-	 * @param saveChanges boolean value should the changes be saved to MarkingLayer
-	 */
-	protected void hideDialog(boolean saveChanges){
-		//LOGGER.fine("color selected: " +colorChooser.getColor().toString());
-		if(this.markingLayerList != null && this.markingLayerList.size()>0 && saveChanges){
-				try {
-					Iterator<MarkingLayer> mIterator = this.markingLayerList.iterator();
-					while(mIterator.hasNext()){
-	
-						saveChanges(mIterator.next());
-					}
-	
-				} catch (Exception e) {
-					LOGGER.severe("Error in saving marking properties to MarkingLayer " +e.getClass().toString() + " :" +e.getMessage());
-	
-				}
-				// update the GUI ImageLayerInfo JPanel
-				gui.updateAllMarkingPanelProperties();
-			//	gui.updateImageLayerInfos();
-				gui.setMadeChanges(true);
-			}
-		this.setVisible(false);
-		dispose();
-	}
-	
-	/* (non-Javadoc)
 	 * @see gui.MarkingProperties#saveChanges(information.MarkingLayer)
 	 */
 	protected void saveChanges(MarkingLayer mLayer){
@@ -148,6 +141,13 @@ public class GlobalMarkingProperties extends MarkingProperties{
 			// set opacity value
 			mLayer.setOpacity(changeIntToFloat(this.getSelectedOpacity()));
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see gui.MarkingProperties#setUpComboBoXPanel()
+	 */
+	protected void setUpComboBoXPanel(){
+		comboBoxPanel=null;
 	}
 
 }
