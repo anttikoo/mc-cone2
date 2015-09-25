@@ -26,7 +26,6 @@ import managers.TaskManager;
  * 
  * Class GlobalMarkingProperties shows window, where user can set MarkingLayer Properties: Marking color, shape, size, thickness and transparency.
  * Given settings will affect to all MarkingLayers in all ImageLayers.
- * This Class extends the Class @see gui.MarkingProperties.
  * @author Antti Kurronen
  *
  */
@@ -97,6 +96,9 @@ public class GlobalMarkingProperties extends MarkingProperties{
 					return upperBackPanel;
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.MarkingProperties#setUpComboBoXPanel()
+	 */
 	protected void setUpComboBoXPanel(){
 		comboBoxPanel=null;
 	}
