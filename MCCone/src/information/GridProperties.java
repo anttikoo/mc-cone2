@@ -308,22 +308,27 @@ public class GridProperties {
 		}
 	}
 
+	/**
+	 * Changes the selection of rectangle at given imagePoint. If rectangle is originally unselected it will be selected vice versa.
+	 * If there are only one selected rectangle in grid, it can't be unselected, because always has to be at least one rectangle selected.
+	 * @param imagePoint Point at image
+	 */
 	public void changeSelectionOfPositionedRectangle(Point imagePoint){
 		Iterator<PositionedRectangle> recIterator = positionedRectangleList.iterator();
 		while(recIterator.hasNext()){
 			PositionedRectangle rec =recIterator.next();
 			if(rec.contains(imagePoint)){
-				// move rectangle to selectedRectangles
+				// set rectangle as selected or unselected
 				if(!rec.isSelected() || countSelectedRectangles() > 1)
 				rec.setSelected(!rec.isSelected());
+				
+				//update the percentValue
+				this.randomProcent= (int)(Math.ceil(((double)countSelectedRectangles())/ ((double)this.positionedRectangleList.size())*100));
 
 			}
 		}
 	}
 	
-	private void changePercentAfterManualSelection(){
-		
-	}
 
 	private int countSelectedRectangles(){
 		if(this.positionedRectangleList != null && this.positionedRectangleList.size()>0){
