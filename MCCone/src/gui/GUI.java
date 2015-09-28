@@ -1149,8 +1149,8 @@ private int rightPanelWidth=0;
 			setSelectedMarkingPanelToFront();
 			updateCoordinatesOfVisibleMarkingPanels();
 			updateCoordinatesOfSelectedMarkingPanel();
+			
 			//paint layers
-
 			this.layers.repaint();
 
 
@@ -1160,6 +1160,9 @@ private int rightPanelWidth=0;
 
 	}
 
+	/**
+	 * Updates the coordinates of markings in MarkingPanels by calculating the points at image to the points at screen.
+	 */
 	public void updateCoordinatesOfVisibleMarkingPanels(){
 		// the size or position of viewed area may have changed -> calculate new positions of visible markings
 		if(layers.getComponentCount()>1){
@@ -1174,15 +1177,13 @@ private int rightPanelWidth=0;
 						mp.setCoordinateList(singleScreenCoordinates.getCoordinates()); // set the updated coordinates to MarkingPanel
 					}
 				}
-				//layers.repaint();
-
 			}
-
 		}
-
-
 	}
 
+	/**
+	 * Sets the selected MarkingLayer to highlightPanel -> HighlightPanel uses information of that MarkingLayer for highlighting. 
+	 */
 	private void setMarkingsOfHighlightLayer(){
 		MarkingLayer selectedMarkingLayer= taskManager.getSelectedMarkingLayer();
 		this.highlightPanel.setLayer(selectedMarkingLayer);
