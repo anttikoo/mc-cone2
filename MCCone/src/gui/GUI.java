@@ -715,6 +715,10 @@ private int rightPanelWidth=0;
 
 	}
 
+	/**
+	 * Initializes the JPanel and it's AddImage -JButton.
+	 * @throws Exception
+	 */
 	private void initAddImageLayerButton() throws Exception{
 		addImageLayerJPanel = new JPanel();
 		addImageLayerJPanel.setLayout(new BoxLayout(addImageLayerJPanel, BoxLayout.PAGE_AXIS));
@@ -728,11 +732,7 @@ private int rightPanelWidth=0;
 		addImageLayerJButton.setPreferredSize(new Dimension(220, 35));
 		addImageLayerJButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		addImageLayerJButton.setToolTipText("Create new Image Layer" );
-	//	addImageLayerJButton.setBackground(Color_schema.color_dark_30_bg);
-	//	addImageLayerJButton.setForeground(Color_schema.color_Button_light_border);
-	//	addImageLayerJButton.setBorder(BorderFactory.createLineBorder(Color_schema.color_Button_grey_border, 2));
 		addImageLayerJButton.setFocusable(false);
-	//	addImageLayerJButton.setContentAreaFilled(false);
 		addMouseListenerForJButton(addImageLayerJButton);
 		addImageLayerJButton.addActionListener(new ActionListener() {
 
