@@ -86,12 +86,6 @@ public class GUIListener extends MouseInputAdapter {
 		Point preCountButtonPoint = SwingUtilities.convertPoint(downBarPanel, downBarPoint, precountButton);
 
 
-		Point zoomSliderPoint = SwingUtilities.convertPoint(sliderPanel, SwingUtilities.convertPoint(downBarPanel, downBarPoint, sliderPanel), zoomSlider);
-
-
-	//	if(imagePanel.contains(imagePanelPoint))
-	//	LOGGER.fine("cPoint: "+containerPoint.x + " "+imagePanelPoint.x+ " y;"+containerPoint.y + " "+imagePanelPoint.y);
-
 		if(containerPoint.y >=0){
 			//Component guiComponent = SwingUtilities.getDeepestComponentAt(container, containerPoint.x, containerPoint.y);
 			Component guiComponent=null;
