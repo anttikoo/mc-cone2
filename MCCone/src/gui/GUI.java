@@ -2142,6 +2142,9 @@ private void showWebInstructions(){
 	}
 
 
+	/**
+	 *  Opens dialog for selecting which markings to save.
+	 */
 	public void saveMarkings(){
 
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
@@ -2156,6 +2159,10 @@ private void showWebInstructions(){
 
 	}
 
+	/**
+	 * Opens a dialog to export results.
+	 * @param id int ID type of saving type (ID.FILE_TYPE_TEXT_FILE, ID.FILE_TYPE_CSV or ID.CLIPBOARD).
+	 */
 	public void exportResults(int id){
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
 
@@ -2167,6 +2174,9 @@ private void showWebInstructions(){
 		}
 	}
 
+	/**
+	 *  Opens a dialog to export image(s).
+	 */
 	public void exportImages(){
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
 
@@ -2178,6 +2188,9 @@ private void showWebInstructions(){
 		}
 	}
 
+	/**
+	 *  Opens a new dialog for selecting images and organizing images to create set of images.
+	 */
 	private void exportImageSet(){
 
 			JFrame dialogFrame = new JFrame("DialogFrame");
@@ -2185,19 +2198,29 @@ private void showWebInstructions(){
 
 	}
 
+	/**
+	 * Returns a relation value between dimension of image and dimension of visible part of image.
+	 * @return double size multiplier which is relation between dimension of image and dimension of visible part of image.
+	 */
 	public double getSizeMultiplier(){
 		return this.taskManager.getShapeSizeMultiplier();
 	}
 
+	/**
+	 * Organizes the dragging of image and visible markings at screen.
+	 * @param e MouseEvent whic has triggered the dragging.
+	 */
 	public void dragLayers(MouseEvent e){
 		int x= e.getX();
 		int y= e.getY();
-
+		// if dragging was started
 		if(this.guiListener.getPreviousDraggingPoint() == null){
 			this.guiListener.setPreviousDraggingPoint(new Point(x,y));
 		}
 		else{
+			//count movement compared to previous point.
 			Point movementXY= new Point(this.guiListener.getPreviousDraggingPoint().x -x,this.guiListener.getPreviousDraggingPoint().y - y);
+			//get part of image to print to screen
 			PositionedImage pi = this.taskManager.dragLayers(movementXY, ID.IMAGE_PROCESSING_FAST);
 			if(pi != null && pi.getImage() != null){
 				this.imagePanel.setImage(pi);
@@ -2206,7 +2229,7 @@ private void showWebInstructions(){
 				removeHighLightPoint();
 				this.layers.repaint();
 			}
-			this.guiListener.setPreviousDraggingPoint(new Point(x,y));
+			this.guiListener.setPreviousDraggingPoint(new Point(x,y)); // set the previous dragging point to this one.
 		}
 
 
