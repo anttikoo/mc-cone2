@@ -1934,29 +1934,42 @@ private int rightPanelWidth=0;
 		}
 	}
 
+	/**
+	 * Sets Grid visible if the Grid is selected as ON.
+	 */
 	private void showGrid(){
 
 		this.gridPanel.setBasicTransparency();
 		this.gridPanel.repaint();
 	}
 
+	/**
+	 * Sets Grid to transparent.
+	 */
 	private void diminishGrid(){
 		this.gridPanel.setExtraDimTransparency();
 		this.gridPanel.repaint();
 	}
 
+/**
+ * Opens a dialog to set size, thickness and transparency of all MarkingLayers if any MarkingLayers found. 
+ * @param guiPoint Point where mouse was pressed to menuitem.
+ */
 private void setPropertiesOfAllMarkinglayers(Point guiPoint){
 	ArrayList<MarkingLayer> mLayerList=taskManager.getAllMarkingLayers();
 	if(mLayerList != null && mLayerList.size()>0){
 		GlobalMarkingProperties dialog = new GlobalMarkingProperties(new JFrame(), getGUI(), guiPoint, mLayerList);
-
 		dialog.showDialog();
 	}
 	else
 		showMessage("No MarkingLayers", "No any MarkingLayer found for changing properties.", ID.OK);
 }
 
-private void setVisibilityOfAllMarkingLayers(boolean visible){
+/**
+ * Sets visibility of all MarkingLayers.
+ * @param visible boolean true/false to set visibility
+ */
+public void setVisibilityOfAllMarkingLayers(boolean visible){
 	ArrayList<MarkingLayer> allMarkingLayers=this.taskManager.getAllMarkingLayers();
 	if(allMarkingLayers != null && allMarkingLayers.size()>0){
 		for (Iterator<MarkingLayer> iterator = allMarkingLayers.iterator(); iterator.hasNext();) {
