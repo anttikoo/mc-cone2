@@ -2238,15 +2238,27 @@ private void showWebInstructions(){
 
 
 
+	/**
+	 *  Repaints the layers: ImagePanel, MarkingPanels, HightlightPanel, GridPanel, GlassPanel.
+	 */
 	public void paintLayers(){
 		this.layers.repaint();
 	}
 
+	/**
+	 * Sets the PositionedImage to ImagePanel, which is painted.
+	 * @param pi @see PositionedImage the image to set to ImagePanel.
+	 */
 	public void setImage(PositionedImage pi){
 		this.imagePanel.setImage(pi);
 	}
 
 
+	/**
+	 * @param midPoint
+	 * @param zoomValue
+	 * @param processinID
+	 */
 	public void zoomAndUpdateImage(Point midPoint, double zoomValue, int processinID){
 		PositionedImage im = taskManager.getZoomedImage(midPoint, zoomValue, processinID);
 		if(im != null && im.getImage() != null){
