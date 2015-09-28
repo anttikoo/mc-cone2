@@ -1201,8 +1201,9 @@ private int rightPanelWidth=0;
 	}
 
 	/**
-	 * 
+	 * Updates properties (size, color, thickness ...) of all MarkingPanels by fetching updated properties from ImageLayer at InformationCenter.
 	 */
+	
 	private void setPropertiesOfAllMarkingPanels(){
 		// gothrough all markingPanels
 		Component[] panelList=this.layers.getComponents();
@@ -1224,6 +1225,9 @@ private int rightPanelWidth=0;
 
 	}
 
+	/**
+	 *  Updates the coordinates of markings of selected MarkingPanel. Gets the coordinatelist formatted to screen and sets to markingPanel.
+	 */
 	public void updateCoordinatesOfSelectedMarkingPanel(){
 		try {
 			MarkingLayer selectedMarkingLayer = taskManager.getSelectedMarkingLayer();
