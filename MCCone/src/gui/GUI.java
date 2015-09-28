@@ -2063,7 +2063,7 @@ private void showWebInstructions(){
 
 
 	/**
-	 * Opens a GridPropertiesDialog for modifying the Grid Properties of Single MarkingLayer.
+	 * Organizes opening a GridPropertiesDialog for modifying the Grid Properties of Single MarkingLayer.
 	 * Updates ImageLayerInfos and MarkingPanels.
 	 * @param point Point where mouse was pressed the JButton to call this method.
 	 * @param mLayerID int ID of MarkingLayer which GridProperty is modified. 
@@ -2089,17 +2089,21 @@ private void showWebInstructions(){
 
 
 
+	/**
+	 * Organizes opening a GridPropertiesDialog for modifying the Grid Properties of all MarkingLayers under Single ImageLayer.
+	 * Updates ImageLayerInfos and MarkingPanels.
+	 * @param point Point where mouse was pressed the JButton to call this method.
+	 * @param iLayerID int ID of ImageLayer which MarkingLayers (GridProperties) are modified.
+	 */
 	public void showGridPropertiesPanelForMarkingLayersOfImageLayer(Point point, int iLayerID){
 		ImageLayer iLayer= this.taskManager.getImageLayerByID(iLayerID);
 		if(iLayer!= null){
 			ArrayList<MarkingLayer> mLayerList=iLayer.getMarkingLayers();
 			if(mLayerList != null && mLayerList.size()>0){
 				showGridPropertiesPanel(point, mLayerList);
-
 			}
 			else{
 				showMessage("No MarkingLayer!", "No any MarkingLayer were found for changing properties of grid", ID.OK);
-
 			}
 		}
 		iLayer=null;
@@ -2108,12 +2112,23 @@ private void showWebInstructions(){
 
 	}
 
+	/**
+	 * Organizes opening a GridPropertiesDialog for modifying the Grid Properties of all MarkingLayers.
+	 * Updates ImageLayerInfos and MarkingPanels.
+	 * @param point Point where mouse was pressed the JButton to call this method.
+	 * @param mLayerList ArrayList<MarkingLayer> of all MarkingLayers.
+	 */
 	public void showGridPropertiesPanelForAllMarkingLayers(Point point, ArrayList<MarkingLayer> mLayerList){
 		showGridPropertiesPanel(point, mLayerList);
 		updateImageLayerInfos();
 		refreshMarkingPanels();
 	}
 
+	/**
+	 * Opens a GridProperties Panel Dialog for modifying the Grid Properties of all MarkingLayers in given list of MarkingLayers.
+	 * @param point Point where mouse was pressed the JButton to call this method.
+	 * @param mLayerList ArrayList<MarkingLayer> of all MarkingLayers.
+	 */
 	public void showGridPropertiesPanel(Point point, ArrayList<MarkingLayer> mLayerList){
 		if(mLayerList != null && mLayerList.size()>0){
 			GridPropertiesPanel dialog =new GridPropertiesPanel(new JFrame(), this, point, mLayerList, taskManager.getSingleGridSizeList());
