@@ -2062,6 +2062,12 @@ private void showWebInstructions(){
 
 
 
+	/**
+	 * Opens a GridPropertiesDialog for modifying the Grid Properties of Single MarkingLayer.
+	 * Updates ImageLayerInfos and MarkingPanels.
+	 * @param point Point where mouse was pressed the JButton to call this method.
+	 * @param mLayerID int ID of MarkingLayer which GridProperty is modified. 
+	 */
 	public void showGridPropertiesPanelForSingleMarkingLayer(Point point, int mLayerID){
 		ArrayList<MarkingLayer> mLayerList = new ArrayList<MarkingLayer>();
 		MarkingLayer mlayer=taskManager.getMarkingLayer(mLayerID);
