@@ -1984,9 +1984,6 @@ public void setVisibilityOfAllMarkingLayers(boolean visible){
 
 }
 
-public void setMadeChanges(boolean mc){
-	this.taskManager.setMadeChange();
-}
 
 private void clearMarkingsOfSelectedMarkingLayer(){
 	MarkingLayer sMlayer=this.taskManager.getSelectedMarkingLayer();
