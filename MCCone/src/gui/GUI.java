@@ -1984,6 +1984,9 @@ public void setVisibilityOfAllMarkingLayers(boolean visible){
 
 }
 
+public void setMadeChanges(boolean mc){
+	this.taskManager.setMadeChange();
+}
 
 /**
  *  Removes all markings of selected MarkingLayer. Refreshes the selected MarkingPanel and ImageLayerInfos.
