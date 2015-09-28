@@ -1189,8 +1189,7 @@ private int rightPanelWidth=0;
 			doublePanel.setBorder(BorderFactory.createEmptyBorder());
 
 			 PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
-			      public void propertyChange(PropertyChangeEvent changeEvent) {
-			        JSplitPane sourceSplitPane = (JSplitPane) changeEvent.getSource();
+			      public void propertyChange(PropertyChangeEvent changeEvent) {			        
 			        String propertyName = changeEvent.getPropertyName();
 			        if (propertyName.equals(JSplitPane.DIVIDER_LOCATION_PROPERTY)) {	     
 			          Integer last = (Integer) changeEvent.getNewValue();	         
