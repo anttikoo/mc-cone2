@@ -33,9 +33,6 @@ public class GUIListener extends MouseInputAdapter {
 	private boolean is_CTRL_pressed = false;
 	private boolean is_SPACE_pressed = false;
 	private boolean is_SHIFT_pressed=false;
-
-
-
 	private boolean isCellPickingON=false;
 	private Point previousDraggingPoint=null;
 	private GUI gui;
@@ -47,17 +44,16 @@ public class GUIListener extends MouseInputAdapter {
 	private Container contentPane;
 	private PrecountGlassPane glassPane;
 	private AbstractButton precountButton;
-
 	private ImagePanel imagePanel;
 	private JLayeredPane layers;
 	private JPanel downBarPanel;
 	private JSlider zoomSlider;
 	private JPanel sliderPanel;
-	private Toolkit toolkit;
+
 
 	public GUIListener(GUI gui){
 		this.gui=gui;
-		this.toolkit=Toolkit.getDefaultToolkit();
+
 		initSPACEactions();
 		initHighlightTimer();
 		initZoomTimer();
