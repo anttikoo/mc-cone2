@@ -76,15 +76,11 @@ public class GUIListener extends MouseInputAdapter {
 
 	private void forwardGlassPaneEvent(MouseEvent e){
 
-
 		Point glassPanePoint = e.getPoint();
-		//Container container = contentPane;
 		Point containerPoint = SwingUtilities.convertPoint(glassPane, glassPanePoint, contentPane);
-
 		Point imagePanelPoint = SwingUtilities.convertPoint(contentPane, containerPoint, layers);
 		Point downBarPoint = SwingUtilities.convertPoint(contentPane, containerPoint, downBarPanel);
 		Point preCountButtonPoint = SwingUtilities.convertPoint(downBarPanel, downBarPoint, precountButton);
-
 
 		if(containerPoint.y >=0){
 			//Component guiComponent = SwingUtilities.getDeepestComponentAt(container, containerPoint.x, containerPoint.y);
@@ -125,35 +121,13 @@ public class GUIListener extends MouseInputAdapter {
 				}
 
 			}
-			/*
-			else if(precountButton.contains(preCountButtonPoint)){
-				guiComponent=precountButton;
-				if(e.getID() == MouseEvent.MOUSE_RELEASED){
-				//	LOGGER.fine("adding cells for counting");
-					// redirect for button
-					//redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
-					gui.startStopCellPicking();
-
-				}
-
-
-			}
-			else if(zoomSlider.contains(zoomSliderPoint)){
-				guiComponent=zoomSlider;
-
-				// redirect for slider
-				redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
-			}
-				*/
+			
 				else if(downBarPanel.contains(downBarPoint)){
 					if(precountButton.contains(preCountButtonPoint)){
 						guiComponent=precountButton;
-						if(e.getID() == MouseEvent.MOUSE_RELEASED){
-						//	LOGGER.fine("adding cells for counting");
-							// redirect for button
-							//redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
+						if(e.getID() == MouseEvent.MOUSE_RELEASED){			
+							// redirect for button					
 							gui.startStopCellPicking();
-
 						}
 					}
 					else {
