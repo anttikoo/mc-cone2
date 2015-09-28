@@ -998,33 +998,32 @@ private int rightPanelWidth=0;
 
 		setPropertiesOfAllMarkingPanels();
 		layers.repaint();
-	//	updateImageLayerInfos();
 
 	}
 
-
-
-
+	/**
+	 * Refreshes the Info Panel at right of main GUI where information of LAYERS are shown. 
+	 * Removes all panels of information and recreates them
+	 */
 	public void updateImageLayerInfos(){
 		try {
 			// update LayerInfos
 			layerInfoListJPanel.removeAll(); // remove all ImageLayerPanels
-
-
+			
 			ArrayList<ImageLayer> finalizedImageLayers = taskManager.getImageLayerList();
 			// Go through ImageLayer list
 			if (finalizedImageLayers != null && finalizedImageLayers.size() > 0) {
 				Iterator<ImageLayer> iterator = finalizedImageLayers.iterator();
 				while (iterator.hasNext()) {
 					ImageLayer im = (ImageLayer) iterator.next();
+					// check that image file path is not null or too short. These may not be necessary, but better to keep it here.
 					if(im != null && im.getImageFilePath() != null && im.getImageFilePath().length()>2){
 						layerInfoListJPanel.add(new ImageLayerInfo(im ,this));
 						layerInfoListJPanel.add(Box.createRigidArea(new Dimension(0,5)));
 					}
 				}
 			}
-			layerInfoListJPanel.add(addImageLayerJPanel); // add the removed JButton back to panel
-
+			layerInfoListJPanel.add(addImageLayerJPanel); // add the removed ADD IMAGE JButton back to panel
 
 			rightPanel.validate();
 			rightPanel.repaint();
