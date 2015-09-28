@@ -982,7 +982,7 @@ private int rightPanelWidth=0;
 	}
 
 	/**
-	 * Updates properties (color, size thickness, etc.) of MarkingPanel.
+	 * Updates properties (color, size thickness, etc.) of MarkingPanel, which id is given.
 	 * @param mLayerID int ID of the MarkingLayer which information is used.
 	 */
 	public void updateMarkingPanelProperties(int mLayerID){		
@@ -991,12 +991,14 @@ private int rightPanelWidth=0;
 		layers.repaint();
 
 	}
-
+	/**
+	 * Updates properties (color, size thickness, etc.) of all MarkingPanels.
+	 */
 	public void updateAllMarkingPanelProperties(){
 
 		setPropertiesOfAllMarkingPanels();
 		layers.repaint();
-		updateImageLayerInfos();
+	//	updateImageLayerInfos();
 
 	}
 
