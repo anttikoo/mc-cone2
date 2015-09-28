@@ -681,6 +681,7 @@ private int rightPanelWidth=0;
 	public void exportImages(){
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
 
+			@SuppressWarnings("unused")
 			ExportImage exportImage = new ExportImage(new JFrame(), this, taskManager.getImageLayerList());
 		}
 		else{
@@ -697,6 +698,7 @@ private int rightPanelWidth=0;
 	private void exportImageSet(){
 
 			JFrame dialogFrame = new JFrame("DialogFrame");
+			@SuppressWarnings("unused")
 			ImageSetCreator iCreator=new ImageSetCreator(dialogFrame, this.taskManager, this);
 
 	}
@@ -708,6 +710,7 @@ private int rightPanelWidth=0;
 	public void exportResults(int id){
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
 
+			@SuppressWarnings("unused")
 			ExportResults exp = new ExportResults(new JFrame("DialogFrame"), this, taskManager.getImageLayerList(), id);
 		}
 		else{
