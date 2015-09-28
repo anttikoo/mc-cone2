@@ -1073,10 +1073,19 @@ private int rightPanelWidth=0;
 		}
 	}
 
+	/**
+	 * Returns the object of main window. Only one GUI object exists.
+	 * @return GUI the main window object.
+	 */
 	private GUI getGUI(){
 		return this;
 	}
 
+	/**
+	 * Creates new MarkingLayer to under ImageLayer by given ID. Creates also a new MarkingPanel and refreshes the ImageLayerInfos. 
+	 * @param imageLayerID int ID of ImageLayer
+	 * @throws Exception
+	 */
 	public void createNewMarkingLayer(int imageLayerID) throws Exception{
 		MarkingLayer ml= taskManager.createNewMarkingLayer(imageLayerID);
 		if(ml.getLayerID()>0){
@@ -1107,12 +1116,17 @@ private int rightPanelWidth=0;
 
 	}
 
+	/**
+	 * Refresh the all MarkingPanels by first removing all layer and then recreating them again. 
+	 * updates: imagePanel markingPanels, gridPanel and highlightPanel.
+	 * Sets the selected MarkingPanel to front of layers.
+	 */
 	private void refreshMarkingPanels(){
 
 		try {
 			// remove panels from JLayeredPane
 			this.layers.removeAll();
-		//	this.layers.revalidate();
+			// add imagePanel, gridPanel and highlightPanel
 			this.layers.add(this.imagePanel, JLayeredPane.DEFAULT_LAYER);
 			this.layers.add(this.gridPanel, JLayeredPane.DRAG_LAYER);
 			this.layers.add(this.highlightPanel, JLayeredPane.DRAG_LAYER);
