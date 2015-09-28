@@ -880,7 +880,7 @@ private int rightPanelWidth=0;
 			this.taskManager.updateImageOfSelectedImageLayer();
 			// Update GUI: ImageLayerInfos
 			updateImageLayerInfos();
-
+			// update markings of Highlightlayer
 			setMarkingsOfHighlightLayer();
 
 			// update the BufferedImage of ImagePanel
@@ -897,10 +897,18 @@ private int rightPanelWidth=0;
 
 	}
 
+	/**
+	 * Changes the selected ImageLayer one up or down in ImageLayerlist.
+	 * @param directionID int ID.MOVE_DOWN or ID.MOVE.UP
+	 */
 	public void changeSelectedImageLayerUpOrDown(int directionID){
 		setSelectedImageLayerAndImage(this.taskManager.getSelectedImageLayerAtUpOrDown(directionID));
 	}
 
+	/**
+	 * Changes the selected MarkingLayer one up or down in MarkingLayerImageLayerlist.
+	 * @param directionID int ID.MOVE_DOWN or ID.MOVE.UP
+	 */
 	public void changeSelectedMarkingLayerUpOrDown(int directionID){
 		setSelectedMarkingLayer(this.taskManager.getSelectedMarkingLayerAtUpOrDown(directionID));
 	}
@@ -913,21 +921,17 @@ private int rightPanelWidth=0;
 	 */
 	public void setSelectedImageLayerAndImage(int iLayerID){
 		 try {
-			// update selected ImageLayer to InformationCenter (through TaskManager)
-			// update BufferedImage of LayerVisualManager
+
 			this.taskManager.changeSelectedImageLayer(iLayerID);
-
-
-//	long start = System.currentTimeMillis();
+			
 			// scale the image with best quality (in LayerVisualManager) and send it to ImagePanel
 			this.imagePanel.setImage(this.taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
-//	long endtime = System.currentTimeMillis()-start;
-//	LOGGER.fine("elapsed in time: "+endtime);
-			//this.imagePanel.repaint();
+
 			// update ImageLayerInfo to show selected ImageLayer title in right way
 			//update highlight panel
 			this.highlightPanel.setLayer(this.taskManager.getSelectedMarkingLayer());
 			this.highlightPanel.updateHighlightPoint(null);
+			// update information in ImageLayerInfo
 			updateImageLayerInfos();
 			// refresh markingpanels (repaints also the imagepanel)
 			refreshMarkingPanels();
@@ -935,14 +939,10 @@ private int rightPanelWidth=0;
 			// clean the precountingThreadManager
 			cleanPreCountingIfNecessary();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOGGER.severe("Error in changing selected ImageLayer: "+e.getMessage());
 			e.printStackTrace();
 		}
 	}
-
-
-
 
 
 	/**
@@ -973,10 +973,18 @@ private int rightPanelWidth=0;
 		return this.taskManager.getImageLayerByMarkingLayerID(markingLayerID);
 	}
 	
+	/**
+	 * Returns all Markinglayers.
+	 * @return ArrayList<MarkingLayer> All MarkingLayers
+	 */
 	public ArrayList<MarkingLayer> getAllMarkingLayers(){
 		return this.taskManager.getAllMarkingLayers();
 	}
 
+	/**
+	 * Up
+	 * @param mLayerID int ID of the MarkingLayer which information is used.
+	 */
 	public void updateMarkingPanelProperties(int mLayerID){
 		updateImageLayerInfos();
 		setPropertiesOfMarkingPanel(mLayerID);
@@ -1023,17 +1031,7 @@ private int rightPanelWidth=0;
 		}
 
 	}
-	/*
-	private void updateCountingOfSelectedMarkingPanelInImageLayerInfos(int layerID, int counts){
-		if(layerInfoListJPanel != null && layerInfoListJPanel.getComponentCount()>0)
-		for (int i = 0; i < layerInfoListJPanel.getComponentCount(); i++) {
-			Component c= layerInfoListJPanel.getComponent(i);
-			if(((Object)c) instanceof ImageLayerInfo){
-				((ImageLayerInfo)c).
-			}
-		}
-	}
-	*/
+
 	/** Starts the progress to add ImageLayers or import MarkingLayers to ImageLayers if any ImageLayer present: User gives the image and/or markings from file in new Dialog window.
 	 * ImageLayer(s) are created or updated and when done, GUI layers, ImagePanel and ImageLayerInfo is updated
 	 * @throws Exception
@@ -1189,6 +1187,9 @@ private int rightPanelWidth=0;
 
 	}
 
+	/**
+	 * 
+	 */
 	private void setPropertiesOfAllMarkingPanels(){
 		// gothrough all markingPanels
 		Component[] panelList=this.layers.getComponents();
