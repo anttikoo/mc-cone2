@@ -1,6 +1,5 @@
 package gui;
 import gui.grid.GridPropertiesPanel;
-import gui.grid.SingleGridSize;
 import gui.panels.GridPanel;
 import gui.panels.HighlightPanel;
 import gui.panels.ImageLayerInfo;
@@ -11,30 +10,22 @@ import gui.saving.SaveMarkings;
 import gui.saving.ImageSet.ImageSetCreator;
 import gui.saving.image.ExportImage;
 import information.Fonts;
-import information.GridProperties;
 import information.ID;
 import information.ImageLayer;
 import information.MarkingLayer;
 import information.PositionedImage;
 import information.ScreenCoordinatesOfMarkingLayer;
 import information.SharedVariables;
-
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
-import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -50,9 +41,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -74,23 +62,16 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import net.iharder.dnd.FileDrop;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import managers.TaskManager;
 import managers.ProgramLogger;
 
