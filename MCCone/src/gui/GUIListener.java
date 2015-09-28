@@ -201,6 +201,9 @@ public class GUIListener extends MouseInputAdapter {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource() instanceof ImagePanel){
@@ -219,6 +222,16 @@ public class GUIListener extends MouseInputAdapter {
 
 	}
 
+	/* 
+	 * Mediates the MousePressed Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
+	 * Computation of events of ImagePanel depends on which keys are pressed down or which threads are running at same time:
+	 * CTRL-down -> do nothing
+	 * SPACE-down -> dragging -> set init dragging point.
+	 * SHIFT-down -> select/unselect grid cell.
+	 * MOUSE-LEFT-button -> add marking
+	 * MOUSE-RIGHT-button -> remove marking and it's highlight point.
+	 * 
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(e.getSource() instanceof ImagePanel){
@@ -250,13 +263,8 @@ public class GUIListener extends MouseInputAdapter {
 								gui.updateCoordinatesOfSelectedMarkingPanel();
 								}
 							}
-
-
 						}
-
-
 					}
-
 			}
 		}
 		}else if(e.getSource() instanceof PrecountGlassPane){
@@ -264,6 +272,10 @@ public class GUIListener extends MouseInputAdapter {
 		}
 	}
 
+	/* 
+	 * Mediates the MouseReleased Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
+	 * In ImagePanel made releasing sets previous dragging point as null. -> No More dragging.
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(e.getSource() instanceof ImagePanel){
@@ -278,14 +290,17 @@ public class GUIListener extends MouseInputAdapter {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-
+		// do nothing
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-
+		// do nothing
 	}
 
+	/* 
+	 * 
+	 */
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 
