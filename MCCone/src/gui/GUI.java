@@ -1234,15 +1234,13 @@ private int rightPanelWidth=0;
 			if(selectedMarkingLayer != null){
 				MarkingPanel selectedMarkingPanel= getMarkingPanelByLayerID(selectedMarkingLayer.getLayerID());
 				if(selectedMarkingPanel != null){
-		//			LOGGER.fine("updating marking panel");
-
-				//	selectedMarkingPanel.setMarkingPanelProperties(selectedMarkingLayer);
+					// get and set the coordinates formatted to screen (coordinates at image -> coordinates at screen)
 					selectedMarkingPanel.setCoordinateList(taskManager.getScreenCoordinatesOfSelectedMarkingLayer());
 
 					layers.repaint();
 
 					updateImageLayerInfos(); // for faster computing -> should update only SingleMarkingPanel (in future)
-					//selectedMarkingLayer.getCounts();
+					
 				}
 			}
 		} catch (Exception e) {
@@ -1252,6 +1250,11 @@ private int rightPanelWidth=0;
 
 	}
 
+	/**
+	 * Fetches and returns a MarkingPanel corresponding to given MarkingLayer ID.
+	 * @param mLayerID int ID of MarkingLayer, which MarkingPanel is fetched.
+	 * @return MarkingPanel corresponding to given MarkingLayer ID. If not found, null is returned.
+	 */
 	private MarkingPanel getMarkingPanelByLayerID(int mLayerID){
 		Component[] mPanels=this.layers.getComponents();
 		if(mPanels != null && mPanels.length>1){ // ImagePanel is the first layer
@@ -1269,6 +1272,11 @@ private int rightPanelWidth=0;
 
 
 
+	/**
+	 * Fetches and removes a MarkingPanel corresponding to given MarkingLayer ID. 
+	 * Removes first all layers and add all but MarkingPanel which corresponds to given MarkingLayer ID.
+	 * @param mLayerID int ID of MarkingLayer, which MarkingPanel removed.
+	 */
 	private void removeMarkingPanelByLayerID(int mLayerID){
 
 		try {
@@ -1347,14 +1355,24 @@ private int rightPanelWidth=0;
 
 
 
+	/**
+	 * Modifies the name of MarkingLayer given by ID.
+	 * @param iLayerID int ID of ImageLayer which MarkingLayeris modified.
+	 * @param mLayerID int ID of MarkingLayer, which name is modified.
+	 * @param markingName String the new name.
+	 */
 	public void setMarkingLayerName(int iLayerID, int mLayerID, String markingName){
 		taskManager.setMarkingLayerName(iLayerID, mLayerID, markingName);
 	}
 
+	/**
+	 * Sets visibility of MarkingLayer.
+	 * @param mLayerID int ID of MarkingLayer, which visibility is modified.
+	 * @param visible boolean true if visible and false to invisible.
+	 */
 	public void setMarkingLayerVisibility(int mLayerID, Boolean visible){
 		// add or remove MarkingLayer from InformationCenter.visibleMarkingLayers
 		taskManager.setMarkingLayerVisibility(mLayerID, visible);
-
 
 		// set the visibility to MarkingPanel of MarkingLayer
 		getMarkingPanelByLayerID(mLayerID).setVisible(visible);
@@ -1364,13 +1382,15 @@ private int rightPanelWidth=0;
 			if(taskManager.getSelectedMarkingLayer().isGridON()){
 				this.gridPanel.setShowGrid(visible);
 			}
-
 		}
-
 		this.layers.repaint();
 
 	}
 
+	/**
+	 * Sets the given MarkingLayer to visible. GridPanel and highlightPanel are updated. All layers repainted.
+	 * @param mLayerID int ID of MarkingLayer, which is been selected.
+	 */
 	public void setSelectedMarkingLayer(int mLayerID){
 		// set the MarkingLayer selected in InfromationCenter
 		MarkingLayer selectedMarkingLayer= this.taskManager.setMarkingLayerSelected(mLayerID);
@@ -1398,12 +1418,16 @@ private int rightPanelWidth=0;
 	}
 
 
+	/**
+	 * Removes the ImageLayer from list of ImageLayers at informationCenter. 
+	 * Removes also the MarkingPanels corresponding to MarkingLayers of removed ImageLayer.Confirm dialog is shown to confirm removing.
+	 * @param layerID int ID of ImageLayer, which is removed.
+	 * @param layerName String name of ImageLayer.
+	 */
 	public void removeImageLayer(int layerID, String layerName){
-
-
-		try {
-			// ask the user should the ImageLayer being deleter
-
+		try
+		{
+			// ask the user should the ImageLayer being deleted
 			ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "DELETE", "Delete ImageLayer:  "+layerName, ID.YES_NO, this);
 			if(dialog.showDialog() == ID.YES){ // confirmed deleting the ImageLayer
 
@@ -1424,24 +1448,25 @@ private int rightPanelWidth=0;
 			this.taskManager.updateImageOfSelectedImageLayer();
 
 			// update ImageLayer: if no image found null is returned and only background is paint in ImagePanel
-				this.imagePanel.setImage(this.taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
+			this.imagePanel.setImage(this.taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
 				this.imagePanel.repaint();
 
-				cleanPreCountingIfNecessary();
+			cleanPreCountingIfNecessary();
 			}
 
 			dialog=null;
-		} catch (HeadlessException e) {
-			// TODO Auto-generated catch block
+		} catch (HeadlessException e) {	
 			LOGGER.severe("Error in removint ImageLayer: "+e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOGGER.severe("Error in removint ImageLayer: "+e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 *  Refreshes the PrecountingManager Thread to initial state if necessary.
+	 */
 	private void cleanPreCountingIfNecessary(){
 		// clean precoutingManager
 		if(this.taskManager.getImageLayerList() == null || this.taskManager.getImageLayerList().size()==0 ||
@@ -1468,12 +1493,25 @@ private int rightPanelWidth=0;
 
 	}
 
+	/**
+	 * Checks that given image file dimension is same as the dimension of previously used images. ONLY ONE IMAGE DIMENSION IS ALLOWED.
+	 * @param file File image file which size is determined
+	 * @return boolean true if allowed dimension. Otherwise false.
+	 * @throws Exception
+	 */
 	public boolean isAllowedImageDimension(File file) throws Exception{
 		return this.taskManager.isAllowedImageDimension(file);
 	}
 
 
 
+	/**
+	 * Removes the MarkingLayer and corresponding MarkingPanel by given MarkingLayer ID. 
+	 * Confirm dialog will be shown. ImageLayerInfo will be updated.
+	 * @param imageLayerID int ID of ImageLayer which MarkingLayer is removed.
+	 * @param mLayerID int ID of MarkingLayer, which is removed .
+	 * @param markingLayerName
+	 */
 	public void removeMarkingLayer(int imageLayerID, int mLayerID, String markingLayerName){
 
 
@@ -1485,8 +1523,6 @@ private int rightPanelWidth=0;
 			taskManager.removeMarkingLayer(imageLayerID, mLayerID);
 			// remove MarkingPanel
 			removeMarkingPanelByLayerID(mLayerID);
-
-
 
 			// update imagelayerinfos
 			updateImageLayerInfos();
