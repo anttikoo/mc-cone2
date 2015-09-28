@@ -561,23 +561,25 @@ private int rightPanelWidth=0;
 
 	}
 
-	/**
-	 * @return
-	 */
+	
+/*	
 	public ArrayList<SingleGridSize> getSingleGridSizeList() {
 		return this.taskManager.getSingleGridSizeList();
 	}
-
+*/
+	/**
+	 * Hides the highlight of marking.
+	 */
 	public void removeHighLightPoint(){
 		this.highlightPanel.updateHighlightPoint(null);
 
 	}
-
+/*
 	public void hideGrid(){
 		this.gridPanel.setGridProperties(null);
 		this.gridPanel.repaint();
 	}
-
+*/
 
 
 	/**
@@ -593,23 +595,38 @@ private int rightPanelWidth=0;
 		try {
 			Font fontConsolasBOLD16 = new Font("Consolas", Font.BOLD,16);
 			Font fontConsolasPLAIN16 = new Font("Consolas", Font.PLAIN,16);
-		/*
-			JPanel backSliderPanel=new JPanel();
-			backSliderPanel.setLayout(new FlowLayout(FlowLayout.LEFT,20,2));
-			backSliderPanel.setBorder(BorderFactory.createEmptyBorder());
-			*/
 
 			JLabel zoom_label = new JLabel("ZOOM: ");
 			zoom_label.setFont(fontConsolasBOLD16);
 
-			sliderPanel = new JPanel();
-		//	sliderPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 2));
+			sliderPanel = new JPanel();	
 			sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.LINE_AXIS));
 			ImageIcon imgOut = getImageIcon( "/images/out.png");
 			JLabel out=new JLabel(imgOut);
+			JButton outButton= new JButton(imgOut);
+			outButton.setBorder(BorderFactory.createEmptyBorder());
+			outButton.setFocusable(false);
+			outButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 0.8, ID.IMAGE_PROCESSING_BEST_QUALITY);
+
+					
+				}
+			});
 
 			ImageIcon imgIn = getImageIcon( "/images/in.png");
 			JLabel in=new JLabel(imgIn);
+			JButton inButton= new JButton(imgIn);
+			inButton.setBorder(BorderFactory.createEmptyBorder());
+			inButton.setFocusable(false);
+			inButton.addActionListener(new ActionListener() {			
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 1.25, ID.IMAGE_PROCESSING_BEST_QUALITY);					
+				}
+			});
 
 			sliderPanel.setMaximumSize(new Dimension(5000,30));
 			sliderPanel.setMinimumSize(new Dimension(200,25));
@@ -625,18 +642,17 @@ private int rightPanelWidth=0;
 
 			zoomSlider.setMajorTickSpacing(majorTicks);
 			zoomSlider.setMinorTickSpacing(minorTicks);
-		//	zoomSlider.setPaintTicks(true);
+	
 
 			sliderPanel.add(Box.createRigidArea(new Dimension(3,0)));
 			sliderPanel.add(zoom_label);
 			sliderPanel.add(Box.createRigidArea(new Dimension(5,0)));
-			sliderPanel.add(out);
+			sliderPanel.add(outButton);
 			sliderPanel.add(Box.createRigidArea(new Dimension(5,0)));
 			sliderPanel.add(zoomSlider);
 			sliderPanel.add(Box.createRigidArea(new Dimension(5,0)));
-			sliderPanel.add(in);
-		//	sliderPanel.add(zoomValueLabel);
-		//	sliderPanel.add(zoomscrollProcent);
+			sliderPanel.add(inButton);
+		
 
 			zoomSlider.addChangeListener(new ChangeListener() {
 
@@ -645,9 +661,7 @@ private int rightPanelWidth=0;
 				@Override
 				public void stateChanged(ChangeEvent e) {
 
-
-
-				// make the zooming here..
+				// zooming
 					if(!guiListener.isIs_SPACE_pressed() && sliderListener.isSlidingON() && !sliderListener.isSliderTimerRunning()){
 						sliderListener.startSliderTimer();
 						LOGGER.fine("slider moved+ "+((JSlider)e.getSource()).getValue());
@@ -2530,6 +2544,7 @@ private void showWebInstructions(){
 
 
 private void addMouseListenerForJButton(JButton button){
+	
 	button.addMouseListener(new MouseListener() {
 
 		@Override
@@ -2569,6 +2584,7 @@ private void addMouseListenerForJButton(JButton button){
 
 		}
 	});
+	
 }
 /*
 private class MyDispatcher implements KeyEventDispatcher {
