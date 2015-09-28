@@ -745,8 +745,7 @@ private int rightPanelWidth=0;
 		addImageLayerJPanel.add(Box.createRigidArea(new Dimension(0,5)));
 		addImageLayerJPanel.add(addImageLayerJButton);
 		addImageLayerJPanel.add(Box.createRigidArea(new Dimension(0,5)));
-
-		//layerInfoListJPanel.add(addImageLayerJPanel,BorderLayout.PAGE_END);
+		
 	}
 
 	/**
@@ -766,11 +765,8 @@ private int rightPanelWidth=0;
 	 * @param iLayerList Array of one or more ImageLayers.
 	 */
 	public void addImageLayerList(ArrayList<ImageLayer> iLayerList){
-		//LOGGER.fine("Continue IMage process");
 		// set the ImageLayers through TaskManager -> InformationCenter.imageLayerList	(finalizes the layers -> gives ids)
 		this.taskManager.addImageLayers(iLayerList);
-
-
 
 		//updates the selected Layers and Refreshes GUI
 		refreshLayersAndGUI();
@@ -794,8 +790,6 @@ private int rightPanelWidth=0;
 
 	}
 
-
-
 	/**
 	 * Starts the precounting
 	 * @param imagePanelPoint Middle Point of cell that user has picked
@@ -809,23 +803,28 @@ private int rightPanelWidth=0;
 		// creates the ProgressBallsDialog
 		ProgressBallsDialog pbd= new ProgressBallsDialog(new JFrame(), "Counting Cells", "running part 1/2: finding pixels", ID.CANCEL, this);
 
-
 		pbd.showDialog();
-
-
 
 		// start counting
 		this.taskManager.precountCells(imagePanelPoint, size, pbd);
 		pbd=null;
 	}
 
+	/**
+	 *  If cell picking thread is not running this method starts it. If the selected MarkingLayer contains markings, will a dialog confirm overwriting them.
+	 *  Sets glassPane visible and shows the cell selecting rectangle and round over the image.
+	 *  If cell picking was already running it will be stopped.
+	 *  
+	 */
 	public void startStopCellPicking(){
 		ShadyMessageDialog dialog;
+		// check is the cell picking running already
 		if(!this.guiListener.isCellPickingON()){
 			if(this.taskManager.getSelectedImageLayer() != null){
 				if(this.taskManager.getSelectedMarkingLayer() != null ){
 					if(this.taskManager.getSelectedImageLayer().hasMarkingLayer(this.taskManager.getSelectedMarkingLayer().getLayerID())){
 						if(this.taskManager.getSelectedMarkingLayer().getCounts()>0){
+							// show confirm dialog if selected MarkingLayer contains markings.
 							dialog = new ShadyMessageDialog(new JFrame(), "Selected MarkingLayer contains markings", " Overwrite with precountings?", ID.YES_NO, this);
 							if(dialog.showDialog() == ID.NO){
 								dialog=null;
@@ -870,7 +869,7 @@ private int rightPanelWidth=0;
 	}
 
 	/**
-	 *  Checks does selected ImageLayer and visible MarkingLayers exist and after that updates GUI
+	 *  Checks does selected ImageLayer and visible MarkingLayers exist and after that updates GUI.
 	 */
 	public void refreshLayersAndGUI(){
 
