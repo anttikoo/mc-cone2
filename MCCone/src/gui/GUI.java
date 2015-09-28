@@ -682,10 +682,6 @@ private int rightPanelWidth=0;
 
 			sliderListener = new SliderListener(zoomValueLabel);
 			zoomSlider.addMouseListener(sliderListener);
-
-
-	//		backSliderPanel.add(labelPanel);
-	//		backSliderPanel.add(sliderPanel);
 			zoomSlider.setMaximumSize(new Dimension(400,25));
 			zoomSlider.setPreferredSize(new Dimension(400,25));
 			zoomSlider.setMinimumSize(new Dimension(100,20));
@@ -696,8 +692,6 @@ private int rightPanelWidth=0;
 			return null;
 		}
 	}
-
-
 
 	/**
 	 * Mediates call to TaskManager to update markings of one ImageLayers by giving as parameter a File (.xml) where from the markings are imported.
