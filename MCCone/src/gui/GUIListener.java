@@ -27,6 +27,14 @@ import javax.swing.event.MouseInputAdapter;
 
 import managers.TaskManager;
 
+/**
+ * Class GUIListener contains all mouse and key listeners for GUI-object. 
+ * Keys: CTRL, SHIFT, SPACE and several other keys and combinations.
+ * Timers: Space pressed down. highlighting.
+ * Mouse Listeners: clicked, dragged, entered, exited, pressed, released, wheel moved.
+ * @author Antti Kurronen
+ *
+ */
 public class GUIListener extends MouseInputAdapter {
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private boolean is_CTRL_pressed = false;
@@ -50,6 +58,10 @@ public class GUIListener extends MouseInputAdapter {
 	private JPanel sliderPanel;
 
 
+	/**
+	 * A Class constructor. Inits the timers.
+	 * @param gui GUI main window which is listened
+	 */
 	public GUIListener(GUI gui){
 		this.gui=gui;
 		initSPACEactions();
@@ -74,6 +86,10 @@ public class GUIListener extends MouseInputAdapter {
 	}
 
 
+	/**
+	 * MouseEvents made on GlassPane are redirected to lower layer components if necessary. 
+	 * @param e MouseEvents the mouse event which is forwarded.
+	 */
 	private void forwardGlassPaneEvent(MouseEvent e){
 
 		Point glassPanePoint = e.getPoint();
@@ -83,8 +99,8 @@ public class GUIListener extends MouseInputAdapter {
 		Point preCountButtonPoint = SwingUtilities.convertPoint(downBarPanel, downBarPoint, precountButton);
 
 		if(containerPoint.y >=0){
-			//Component guiComponent = SwingUtilities.getDeepestComponentAt(container, containerPoint.x, containerPoint.y);
 			Component guiComponent=null;
+				// check does imagePanel containg the point were mouse was pressed
 				if(imagePanel.contains(imagePanelPoint)){
 					guiComponent=imagePanel;
 					switch (e.getID()){
@@ -121,7 +137,7 @@ public class GUIListener extends MouseInputAdapter {
 				}
 
 			}
-			
+				// check does downbarPanel containg the point were mouse was pressed
 				else if(downBarPanel.contains(downBarPoint)){
 					if(precountButton.contains(preCountButtonPoint)){
 						guiComponent=precountButton;
@@ -130,7 +146,7 @@ public class GUIListener extends MouseInputAdapter {
 							gui.startStopCellPicking();
 						}
 					}
-					else {
+					else { // third option is zoomSlider
 						guiComponent=zoomSlider;
 
 						// redirect for slider
@@ -140,6 +156,11 @@ public class GUIListener extends MouseInputAdapter {
 		}
 	}
 
+	/**
+	 * Paints the circle and square for precounting if fits fully to imagePanel.
+	 * @param imagePanelPoint Point at imagePanel where mouse focused
+	 * @param glassPanePoint Point at glassPane where mouse focused
+	 */
 	private void paintCircle(Point imagePanelPoint, Point glassPanePoint){
 		Point up = new Point(imagePanelPoint.x, imagePanelPoint.y -glassPane.getRectangleSize()/2);
 		Point right = new Point(imagePanelPoint.x+glassPane.getRectangleSize()/2, imagePanelPoint.y);
