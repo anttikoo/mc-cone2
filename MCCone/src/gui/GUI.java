@@ -560,13 +560,7 @@ private int rightPanelWidth=0;
 		return null;
 
 	}
-
 	
-/*	
-	public ArrayList<SingleGridSize> getSingleGridSizeList() {
-		return this.taskManager.getSingleGridSizeList();
-	}
-*/
 	/**
 	 * Hides the highlight of marking.
 	 */
@@ -574,12 +568,7 @@ private int rightPanelWidth=0;
 		this.highlightPanel.updateHighlightPoint(null);
 
 	}
-/*
-	public void hideGrid(){
-		this.gridPanel.setGridProperties(null);
-		this.gridPanel.repaint();
-	}
-*/
+
 
 
 	/**
@@ -616,8 +605,7 @@ private int rightPanelWidth=0;
 				}
 			});
 
-			ImageIcon imgIn = getImageIcon( "/images/in.png");
-		
+			ImageIcon imgIn = getImageIcon( "/images/in.png");		
 			JButton inButton= new JButton(imgIn);
 			inButton.setBorder(BorderFactory.createEmptyBorder());
 			inButton.setFocusable(false);
@@ -688,9 +676,7 @@ private int rightPanelWidth=0;
 
 							}
 						}
-
-				//	}
-
+				
 				}
 			});
 
