@@ -75,7 +75,6 @@ import java.util.logging.Logger;
 import managers.TaskManager;
 import managers.ProgramLogger;
 
-//import images.*;
 
 
 /**
@@ -83,14 +82,6 @@ import managers.ProgramLogger;
  * "author Antti Kurronen
  */
 
-/**
- * @author Antti Kurronen
- *
- */
-/**
- * @author Antti Kurronen
- *
- */
 public class GUI extends JFrame{
 public TaskManager taskManager;
 private final static Logger LOGGER = Logger.getLogger("MCCLogger");
@@ -115,7 +106,6 @@ private JLabel zoomValueLabel;
 private GUIListener guiListener;
 private PrecountGlassPane glassPane;
 private JPanel sliderPanel;
-private ProgressBallsDialog pbd;
 private SliderListener sliderListener;
 private HighlightPanel highlightPanel;
 private GridPanel gridPanel;
