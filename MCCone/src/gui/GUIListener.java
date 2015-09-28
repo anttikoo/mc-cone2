@@ -6,7 +6,6 @@ import information.ID;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -53,7 +52,6 @@ public class GUIListener extends MouseInputAdapter {
 
 	public GUIListener(GUI gui){
 		this.gui=gui;
-
 		initSPACEactions();
 		initHighlightTimer();
 		initZoomTimer();
