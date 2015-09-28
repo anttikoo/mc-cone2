@@ -982,11 +982,11 @@ private int rightPanelWidth=0;
 	}
 
 	/**
-	 * Up
+	 * Updates properties (color, size thickness, etc.) of MarkingPanel.
 	 * @param mLayerID int ID of the MarkingLayer which information is used.
 	 */
-	public void updateMarkingPanelProperties(int mLayerID){
-		updateImageLayerInfos();
+	public void updateMarkingPanelProperties(int mLayerID){		
+		// update the properties
 		setPropertiesOfMarkingPanel(mLayerID);
 		layers.repaint();
 
@@ -1041,9 +1041,7 @@ private int rightPanelWidth=0;
 
 			// open dialog for selecting files
 			JFrame dialogFrame = new JFrame("DialogFrame");
-			AddImageLayerDialog addImage = new AddImageLayerDialog(dialogFrame, this, taskManager.getImageLayerList());
-		//	addImage.setVisible(true);
-
+			AddImageLayerDialog addImage = new AddImageLayerDialog(dialogFrame, this, taskManager.getImageLayerList());	
 
 		} catch (Exception e) {
 			LOGGER.severe("Error in adding new ImageLayer:  " +e.getClass().toString() + " :" +e.getMessage());
@@ -1058,17 +1056,16 @@ private int rightPanelWidth=0;
 	public void openAddImageLayerDialog(File[] fileList){
 		try {
 			if(fileList != null){
-			// open dialog for selecting files
-		//	JFrame dialogFrame = new JFrame("DialogFrame");
-			AddImageLayerDialog addImage = new AddImageLayerDialog(new JFrame(), getGUI(), fileList);
-			addImage=null;
+			
+				// open dialog for selecting files	
+				AddImageLayerDialog addImage = new AddImageLayerDialog(new JFrame(), getGUI(), fileList);
+				addImage=null;
 			}
 			else{
 			//	JFrame dialogFrame = new JFrame("DialogFrame");
 				AddImageLayerDialog addImage = new AddImageLayerDialog(new JFrame(), getGUI());
-			addImage=null;
+				addImage=null;
 			}
-
 
 		} catch (Exception e) {
 			LOGGER.severe("Error in adding new ImageLayer:  " +e.getClass().toString() + " :" +e.getMessage());
@@ -1098,7 +1095,7 @@ private int rightPanelWidth=0;
 				this.layers.moveToFront(p);
 			}
 			p=null;
-		//	p.repaint();
+		
 			// update imagelayerinfos
 			updateImageLayerInfos();
 
