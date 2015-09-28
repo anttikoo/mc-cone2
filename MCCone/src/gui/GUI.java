@@ -2255,9 +2255,10 @@ private void showWebInstructions(){
 
 
 	/**
-	 * @param midPoint
-	 * @param zoomValue
-	 * @param processinID
+	 * Organizes the zooming of image in or out to given point and given zoom multiplier. Determines and refreshes also the markings, grid and highlight.
+	 * @param midPoint Point where zooming will focus
+	 * @param zoomValue double multiplier how much is zoomed (1.25 -> 25% zoom)
+	 * @param processinID int ID quality of Image (ID.IMAGE_PROCESSING_BEST_QUALITY, etc.)
 	 */
 	public void zoomAndUpdateImage(Point midPoint, double zoomValue, int processinID){
 		PositionedImage im = taskManager.getZoomedImage(midPoint, zoomValue, processinID);
@@ -2273,6 +2274,12 @@ private void showWebInstructions(){
 
 	}
 
+	/**
+	 * Opens a message dialog.
+	 * @param title String title of message.
+	 * @param message String message.
+	 * @param id int ID of type of buttons in message dialog.
+	 */
 	public void showMessage(String title, String message, int id){
 		ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), title, message, id, this);
 		dialog.showDialog();
@@ -2317,6 +2324,10 @@ private void showWebInstructions(){
 		}
 	}
 
+	/**
+	 * Returns present dimension used by opened images.
+	 * @return Dimension present dimension used by opened images.
+	 */
 	public Dimension getPresentImageDimension() {
 		return this.taskManager.getPresentImageDimension();
 	}
@@ -2338,8 +2349,10 @@ private void showWebInstructions(){
 
 	}
 
+	
 	/**
-	 *  Initializes GUI JFrame size and listeners
+	 * Initializes GUI JFrame size, style and listeners.
+	 * @throws Exception
 	 */
 	private void initWindowPropertiesAndListeners() throws Exception{
 
@@ -2349,8 +2362,7 @@ private void showWebInstructions(){
 			UIManager.put("Button.background", Color_schema.dark_20);
 			UIManager.put("Button.border", BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
 			UIManager.put("Button.font", new Font("Consolas", Font.BOLD,16));
-			UIManager.put("Button.foreground", Color_schema.white_230);
-			
+			UIManager.put("Button.foreground", Color_schema.white_230);			
 			UIManager.put("RadioButton.background", Color_schema.dark_30);
 			UIManager.put("RadioButton.font", new Font("Consolas", Font.BOLD,16));
 			UIManager.put("RadioButton.foreground", Color_schema.white_230);
@@ -2360,14 +2372,11 @@ private void showWebInstructions(){
 			UIManager.put("CheckBox.foreground", Color_schema.white_230);
 			UIManager.put("CheckBox.interiorBackground", Color_schema.dark_40);
 			UIManager.put("CheckBox.select", Color_schema.white_230);
-		//	UIManager.put("CheckBox.icon", getImageIcon( "/images/checkBox_selected.png") );
 			UIManager.put("ComboBox.selectionBackground", Color_schema.orange_medium);
 			UIManager.put("ComboBox.selectionBackground", Color_schema.orange_medium);
-
 			UIManager.put("Label.foreground", Color_schema.white_230);
 			UIManager.put("Menu.background", Color_schema.dark_50);
 			UIManager.put("Menu.selectionForeground", Color_schema.dark_50);
-		//	UIManager.put("Menu.font", new Font("Consolas", Font.BOLD,16));
 			UIManager.put("Menu.font", Fonts.b18);
 			UIManager.put("Menu.foreground", Color_schema.white_230);
 			UIManager.put("Menu.selectionBackground", Color_schema.menu_selection_bg);
@@ -2395,71 +2404,26 @@ private void showWebInstructions(){
 			UIManager.put("TextField.inactiveForeground", Color_schema.white_230);
 			UIManager.put("ToolTip.background", Color_schema.menu_selection_bg);
 			UIManager.put("ToolTip.font", Fonts.p14);
-		//	UIManager.put("SplitPane.background", Color_schema.color_menu_selection_bg);
-		//	UIManager.put("TabbedPane.border", BorderFactory.createLineBorder(Color_schema.color_Button_grey_border, 2));
-		//	UIManager.put("TabbedPane.selectHighlight", Color_schema.color_Button_orange_border);
-		/*
-			timerSPACEactivate=new Timer(50,new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					is_SPACE_pressed=true;
-					LOGGER.fine("is space pressed true");
-				//	timerSPACEactivated.stop();
-				//	LOGGER.fine("ended space timer-> not pressed");
-				}
-			});
-			//timerSPACEactivate.setDelay(1000);
-
-			timerSPACEinactivate = new Timer(110,new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					timerSPACEactivate.stop();
-					is_SPACE_pressed=false;
-					timerSPACEinactivate.stop();
-					LOGGER.fine("is space pressed false");
-					previousDraggingPoint=null; // no more dragging -> initialize the previousdragging point
-					imagePanel.setImage(taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
-					updateCoordinatesOfVisibleMarkingPanels();
-			        layers.repaint();
-
-				}
-			});
-			//timerSPACEinactivate.setDelay(1000);
-		*/
-
+	
 			guiListener = new GUIListener(this);
 
 			// add listener for resizing the JFrame -> resize the sizes of Splittedpane
 			this.addComponentListener(new ComponentListener() {
 
-			@Override
-			public void componentShown(ComponentEvent e) {
-
-			}
-
-			@Override
-			public void componentResized(ComponentEvent e) {
-					// resize the lower panel
-			//	 LOGGER.fine("WindowResized: visualPanel width: "+visualPanel.getWidth() +" leftPanelHeights: " +(int)(leftPanel.getBounds().getHeight()-downBarPanel.getBounds().getHeight()));
-			//	 LOGGER.fine("WindowResized: downpanel height: " +downBarPanel.getBounds().getHeight());
-				// downBarPanel.revalidate();
-			//	 LOGGER.fine("WindowResized: downpanel height2:  " +downBarPanel.getBounds().getHeight());
-				 visualPanel.setBounds(0,0,(int)(leftPanel.getBounds().getWidth()),(int)(leftPanel.getBounds().getHeight()-downBarPanel.getBounds().getHeight()));
-				 visualPanel.revalidate();
-			//	 layers.setBounds(5,5,(int)visualPanel.getBounds().getWidth()-10, (int)visualPanel.getBounds().getHeight()-10);
-			//	  layers.revalidate();
-			//	  imagePanel.setBounds(0,0,(int)layers.getBounds().getWidth(),(int)layers.getBounds().getHeight());
-			//	  updateImagePanelSize();
-				 resizeLayerComponents();
-			//	  imagePanel.setImage(taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
-		    //      imagePanel.repaint();
-
-
+				@Override
+				public void componentShown(ComponentEvent e) {
+	
 				}
-
-
+	
+				@Override
+				public void componentResized(ComponentEvent e) {
+					// resize the lower panel
+					visualPanel.setBounds(0,0,(int)(leftPanel.getBounds().getWidth()),(int)(leftPanel.getBounds().getHeight()-downBarPanel.getBounds().getHeight()));
+					visualPanel.revalidate();
+				
+					//	updateImagePanelSize();
+					resizeLayerComponents();
+				}
 
 				@Override
 				public void componentMoved(ComponentEvent e) {
@@ -2486,51 +2450,9 @@ private void showWebInstructions(){
 
 			      }
 			    });
-			// key listeners
-			/*
-			this.addKeyListener(new KeyListener() {
-
-				@Override
-				public void keyTyped(KeyEvent e) {
-
-
-				}
-
-				@Override
-				public void keyReleased(KeyEvent e) {
-				//	boolean isCPressed = false;
-			//		boolean isCtrlPressed = false;
-			//		boolean isSpacePressed = false;
-
-					switch(e.getKeyCode()) {
-					 case KeyEvent.VK_ALT: is_ALT_pressed = false;
-			            case KeyEvent.VK_CONTROL: is_CTRL_pressed = false;
-			            case KeyEvent.VK_SPACE: is_SPACE_pressed = false;
-			            case KeyEvent.VK_C: if(is_CTRL_pressed) {
-							 LOGGER.fine("pressed ctrl + C ");
-							 } else{ if(is_SPACE_pressed) {
-								 LOGGER.fine("pressed SPace + C ");
-								 }};
-		        }
-
-
-				}
-
-				@Override
-				public void keyPressed(KeyEvent e) {
-					switch(e.getKeyCode()) {
-		            case KeyEvent.VK_ALT: is_ALT_pressed = true;
-		            case KeyEvent.VK_CONTROL: { is_CTRL_pressed = true; LOGGER.fine("pressed ctrl");};
-		            case KeyEvent.VK_SPACE: {is_SPACE_pressed = true; LOGGER.fine("pressed space");};
-		        }
-
-				}
-			});
-			*/
+			// key listeners		
 			KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 	        manager.addKeyEventDispatcher(new MCkeyDispatcher(this.guiListener));
-
-
 
 			//set window normal and minimum size and position before maximization
 			this.setSize(screenSize.width/2, screenSize.height/2);
@@ -2539,15 +2461,13 @@ private void showWebInstructions(){
 			this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 			// set window maximazed
 			this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
 			this.setTitle("MC-Cone - Manual Cell Counter");
 
 			// set icon
 			ImageIcon img = getImageIcon( "/images/MCcone_Small.png");
 			this.setIconImage(img.getImage());
-			//this.pack();
+			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOGGER.severe("Error in setting GUI properties and listeners: " +e.getMessage());
 			throw new Exception();
 		}
@@ -2556,29 +2476,42 @@ private void showWebInstructions(){
 
 
 
+	/**
+	 * Resizes components of graphical interface
+	 */
 	private void resizeLayerComponents(){
-		 layers.setBounds(5,5,(int)visualPanel.getBounds().getWidth()-10, (int)visualPanel.getBounds().getHeight()-10);
-		  layers.revalidate();
-		  imagePanel.setBounds(0,0,(int)layers.getBounds().getWidth(),(int)layers.getBounds().getHeight());
-		  this.highlightPanel.setBounds(this.imagePanel.getBounds());
-		  this.gridPanel.setBounds(this.imagePanel.getBounds());
-		 Component[] comps= layers.getComponents();
-		 for(int i=0;i<comps.length;i++){
-			 if(comps[i] instanceof MarkingPanel){
-				 LOGGER.fine("updated MarkingPanel Bounds");
-				 ((MarkingPanel)comps[i]).setBounds(imagePanel.getBounds());
+		try{
+			 layers.setBounds(5,5,(int)visualPanel.getBounds().getWidth()-10, (int)visualPanel.getBounds().getHeight()-10);
+			 layers.revalidate();
+			 imagePanel.setBounds(0,0,(int)layers.getBounds().getWidth(),(int)layers.getBounds().getHeight());
+			 this.highlightPanel.setBounds(this.imagePanel.getBounds());
+			 this.gridPanel.setBounds(this.imagePanel.getBounds());
+			 Component[] comps= layers.getComponents();
+			 for(int i=0;i<comps.length;i++){
+				 if(comps[i] instanceof MarkingPanel){
+					 LOGGER.fine("updated MarkingPanel Bounds");
+					 ((MarkingPanel)comps[i]).setBounds(imagePanel.getBounds());
+				 }
 			 }
-		 }
-
-		  updateImagePanelSize();
-
-		  imagePanel.setImage(taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
-		  updateCoordinatesOfVisibleMarkingPanels();
-		  updateGridPanel();
-		  removeHighLightPoint();
-         layers.repaint();
+	
+			  updateImagePanelSize();
+	
+			  imagePanel.setImage(taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
+			  updateCoordinatesOfVisibleMarkingPanels();
+			  updateGridPanel();
+			  removeHighLightPoint();
+	         layers.repaint();
+		}catch(Exception e){
+			LOGGER.severe("Error in resizing maing window "+e.getMessage());
+		}
 	}
 
+	/**
+	 * Creates ImageIcon from giving image path.
+	 * @param path String path of image file
+	 * @return ImageIcon the created icon.
+	 * @throws Exception
+	 */
 	public ImageIcon getImageIcon(String path) throws Exception{
 
 			URL url = this.getClass().getResource(path);
@@ -2588,14 +2521,25 @@ private void showWebInstructions(){
 
 	}
 
+	/**
+	 * Returns screen size.
+	 * @return Dimension screen size.
+	 */
 	public Dimension getScreenSize(){
 		return this.screenSize;
 	}
 
+	/**
+	 * Returns the size and position of VisualPanel.
+	 * @return Rectangle size of VisualPanel.
+	 */
 	public Rectangle getVisualPanelSize(){
 		return this.visualPanel.getBounds();
 	}
 
+	/**
+	 * @return Rectangle
+	 */
 	public Rectangle getVisibleWindowBounds(){
 		int x=this.getBounds().x;
 		int y=this.getBounds().y;
@@ -2623,7 +2567,7 @@ private void showWebInstructions(){
 		if(width <0){
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			GraphicsDevice[] gs = ge.getScreenDevices();
-			LOGGER.fine("screens: " +gs.length);
+		
 			if(gs.length>1){
 				width= this.getBounds().width;
 			if(x+width> gs[0].getDefaultConfiguration().getBounds().width + gs[1].getDefaultConfiguration().getBounds().width)
