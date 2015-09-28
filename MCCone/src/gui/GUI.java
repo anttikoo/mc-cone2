@@ -1985,6 +1985,9 @@ public void setVisibilityOfAllMarkingLayers(boolean visible){
 }
 
 
+/**
+ *  Removes all markings of selected MarkingLayer. Refreshes the selected MarkingPanel and ImageLayerInfos.
+ */
 private void clearMarkingsOfSelectedMarkingLayer(){
 	MarkingLayer sMlayer=this.taskManager.getSelectedMarkingLayer();
 	if(sMlayer != null){
@@ -2002,6 +2005,9 @@ private void clearMarkingsOfSelectedMarkingLayer(){
 
 }
 
+/**
+ *  Removes all markings of all MarkingLayers. Refreshes the MarkingPanels and ImageLayerInfos.
+ */
 private void clearMarkingsOfAllMarkingLayers(){
 	ArrayList<MarkingLayer> allMarkingLayers=this.taskManager.getAllMarkingLayers();
 	if(allMarkingLayers != null && allMarkingLayers.size()>0){
@@ -2021,26 +2027,35 @@ private void clearMarkingsOfAllMarkingLayers(){
 	}
 }
 
+/**
+ * Opens info dialog showing information of MC-Cone.
+ * @param p Point where menu item was pressed.
+ */
 private void showInfo(Point p){
 	InfoDialog iDialog = new InfoDialog(new JFrame(), this,p);
 	iDialog.showDialog();
 }
 
+/**
+ *  Opens web browser and web site http://www.mc-cone.com/web_tutorial.html. If Operation system doesn't allow opening web browere
+ */
 private void showWebInstructions(){
 	if(Desktop.isDesktopSupported()) {
 	    try {
 	    	URI uri = new URI("http://www.mc-cone.com/web_tutorial.html");
 			Desktop.getDesktop().browse(uri);
 		} catch (IOException e1) {
+			showMessage("Instructions!", "Can't open the link. Possibly not supported by Operation system!", ID.OK);
 			LOGGER.severe("Can't open the link. Not supported by Operation system!");
 			e1.printStackTrace();
 		} catch (URISyntaxException e1) {
-
+			showMessage("Instructions!", "Can't open the link. Possibly not supported by Operation system!", ID.OK);
 			LOGGER.severe("Can't open the link. Not supported by Operation system!");
 			e1.printStackTrace();
 		}
 	}
 	else{
+		showMessage("Instructions!", "Can't open the link. Not supported by Operation system!", ID.OK);
 		LOGGER.severe("Can't open the link. Not supported by Operation system!");
 	}
 }
