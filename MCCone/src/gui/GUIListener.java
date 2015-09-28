@@ -179,13 +179,19 @@ public class GUIListener extends MouseInputAdapter {
 		}
 	}
 
+	/**
+	 * Dispatches the triggered event to given component. Determines is the event mouseWheel event or some other.
+	 * @param e MouseEvent the event triggered at glassPane.
+	 * @param glassPanePoint Point the point where mouse triggered event.
+	 * @param guiComponent Component the component of GUI where event is wanted to work.
+	 */
 	private void redirectEventToGUIComponents(MouseEvent e, Point glassPanePoint, Component guiComponent){
-	//	LOGGER.fine("redirecting event: "+e.getClass().toString());
+	
 		Point componentPoint = SwingUtilities.convertPoint(glassPane, glassPanePoint, guiComponent);
 		if(e.getID()== MouseEvent.MOUSE_WHEEL){
 			guiComponent.dispatchEvent(new MouseWheelEvent(guiComponent, e.getID(), e.getWhen(), e.getModifiers(),
 					componentPoint.x, componentPoint.y, e.getClickCount(), e.isPopupTrigger(), ((MouseWheelEvent)e).getScrollType(),
-					((MouseWheelEvent)e).getScrollAmount(), (int)(((MouseWheelEvent)e).getPreciseWheelRotation()*10))); //(MouseWheelEvent)e).getWheelRotation()
+					((MouseWheelEvent)e).getScrollAmount(), (int)(((MouseWheelEvent)e).getPreciseWheelRotation()*10))); 
 		}
 		else{
 
