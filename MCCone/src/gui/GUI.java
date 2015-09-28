@@ -1567,28 +1567,23 @@ private int rightPanelWidth=0;
 	 */
 	private void initMenubar() throws Exception{
 		try {
-
+			
 			menubar =new JMenuBar();
 			menubar.setMaximumSize(new Dimension(5000,30));
-	//		menubar.setPreferredSize(new Dimension((int)this.screenSize.getWidth(),30));
-	//File menu
 
+			// file-menu
 			JMenu menu_file = new JMenu("File");
-		//	menu_file.setFont(new Font("Arial",Font.BOLD,14));
 			menu_file.setMnemonic(KeyEvent.VK_ALT);
 			JMenuItem menu_item_open_image =new JMenuItem("Add Image layer(s)");
 			menu_item_open_image.setMnemonic(KeyEvent.VK_A);
-		//	menu_item_open_image.setToolTipText("Shortcut keys: CTRL + A");
 			addActionsToMenuItems(menu_item_open_image, ID.MENU_ITEM_FILE_ADD_IMAGES);
 
 			JMenuItem menu_item_import_markings =new JMenuItem("Manage ImageLayers and Markings");
 			menu_item_import_markings.setMnemonic(KeyEvent.VK_M);
-		//	menu_item_import_markings.setToolTipText("Shortcut keys: CTRL + M");
 			addActionsToMenuItems(menu_item_import_markings, ID.MENU_ITEM_FILE_MANAGE_LAYERS);
 
 			JMenuItem menu_item_save_markings =new JMenuItem("Save Markings");
 			menu_item_save_markings.setMnemonic(KeyEvent.VK_S);
-		//	menu_item_save_markings.setToolTipText("Shortcut keys: CTRL + S");
 			addActionsToMenuItems(menu_item_save_markings, ID.MENU_ITEM_FILE_SAVE_MARKINGS);
 
 			JMenu menu_export_results =new JMenu("Export Results to");
@@ -1596,13 +1591,10 @@ private int rightPanelWidth=0;
 			JMenuItem menu_item_csv_file=new JMenuItem("CSV-file");
 			menu_item_csv_file.setMnemonic(KeyEvent.VK_V);
 
-
 			JMenuItem menu_item_tab_delimited_file=new JMenuItem("Tab-delimited text file");
 			menu_item_tab_delimited_file.setMnemonic(KeyEvent.VK_T);
 			JMenuItem menu_item_tab_delimited_clipboard=new JMenuItem("Clipboard as Tab-delimited text");
 			menu_item_tab_delimited_clipboard.setMnemonic(KeyEvent.VK_B);
-		//	JMenuItem menu_item_ods=new JMenuItem("OpenDocument Spreadsheet (.ods)");
-		//	JMenuItem menu_item_excel_file=new JMenuItem("Excel Spreadsheet (.xls  or .xlsx)");
 			menu_export_results.add(menu_item_csv_file);
 			menu_export_results.add(menu_item_tab_delimited_file);
 			menu_export_results.add(menu_item_tab_delimited_clipboard);
@@ -1612,13 +1604,11 @@ private int rightPanelWidth=0;
 			JMenuItem menu_export_set_images =new JMenuItem("Export Set of Images");
 			menu_export_set_images.setMnemonic(KeyEvent.VK_S);
 
-
 			addActionsToMenuItems(menu_item_csv_file, ID.MENU_ITEM_FILE_EXPORT_TO_CSV);
 			addActionsToMenuItems(menu_item_tab_delimited_file, ID.MENU_ITEM_FILE_EXPORT_TO_TEXT_FILE);
 			addActionsToMenuItems(menu_item_tab_delimited_clipboard, ID.MENU_ITEM_FILE_EXPORT_TO_CLIPBOARD);
 			addActionsToMenuItems(menu_export_images, ID.EXPORT_IMAGE);
 			addActionsToMenuItems(menu_export_set_images, ID.EXPORT_IMAGE_SET);
-
 
 			JMenuItem menu_file_close_program = new JMenuItem("Quit program");
 			menu_file_close_program.setMnemonic(KeyEvent.VK_Q);
@@ -1632,13 +1622,8 @@ private int rightPanelWidth=0;
 			menu_file.add(menu_export_set_images);
 			menu_file.add(menu_file_close_program);
 
-	// Edit-menu
+			// Edit-menu
 			JMenu menu_edit = new JMenu("Edit");
-
-		//	menu_edit.setFont(new Font("Arial",Font.BOLD,14));
-//	JMenuItem menu_edit_undo = new JMenuItem("Undo");
-
-
 			menu_edit_set_marking_properties = new JMenuItem("Edit properties of all markings");
 			menu_edit_set_marking_properties.setMnemonic(KeyEvent.VK_E);
 			addActionsToMenuItems(menu_edit_set_marking_properties, ID.MENU_ITEM_EDIT_SET_MARKING_PROPERTIES);
@@ -1651,11 +1636,11 @@ private int rightPanelWidth=0;
 			menu_edit_clear_all_countings.setMnemonic(KeyEvent.VK_R);
 			addActionsToMenuItems(menu_edit_clear_all_countings, ID.MENU_ITEM_EDIT_CLEAR_ALL_COUNTINGS);
 
-
 			menu_edit.add(menu_edit_set_marking_properties);
 			menu_edit.add(menu_edit_clear_single_countings);
 			menu_edit.add(menu_edit_clear_all_countings);
-		// SHOW MENU
+			
+			// SHOW MENU
 			JMenu menu_show= new JMenu("Show");
 			menu_show.setMnemonic(KeyEvent.VK_S);
 			menu_show_all_markings = new JMenuItem("Show all markings");
@@ -1668,13 +1653,11 @@ private int rightPanelWidth=0;
 			menu_show.add(menu_show_all_markings);
 			menu_show.add(menu_hide_all_markings);
 
-		// Grid menu
+			// Grid menu
 			JMenu menu_grid= new JMenu("GRID");
 			menu_grid.setMnemonic(KeyEvent.VK_G);
 			JMenuItem menu_grid_properties = new JMenuItem("Set Grid Properties");
 			menu_grid_properties.setMnemonic(KeyEvent.VK_P);
-		//	JMenuItem menu_help_show_manual = new JMenuItem("Show Help Manual (pdf)");	// opens external manual file (pdf)
-		//	JMenuItem menu_help_info = new JMenuItem("Info");
 			menu_grid.add(menu_grid_properties);
 			addActionsToMenuItems(menu_grid_properties, ID.MENU_ITEM_GRID_PROPERTIES);
 			JMenuItem menu_grid_hide=new JMenuItem("Fade");
@@ -1686,10 +1669,8 @@ private int rightPanelWidth=0;
 			menu_grid.add(menu_grid_show);
 			menu_grid.add(menu_grid_hide);
 
-	//Help menu
+			//Help menu
 			JMenu menu_help = new JMenu("Help");
-
-		//	menu_help.setFont(new Font("Arial",Font.BOLD,14));
 			JMenuItem menu_help_show_log = new JMenuItem("Show Log");
 			JMenuItem menu_help_show_manual = new JMenuItem("Show Web Instructions");	// opens web browser
 			JMenuItem menu_help_info = new JMenuItem("About MC-Cone");
@@ -1709,14 +1690,8 @@ private int rightPanelWidth=0;
 			menubar.add(menu_grid);
 			menubar.add(menu_help);
 
-		//	setMenuColors(menubar);
 			// add menubar to JFrame
 			this.setJMenuBar(menubar);
-		//	this.pack();
-
-
-
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			LOGGER.severe("Error in creating GUI");
@@ -1727,6 +1702,11 @@ private int rightPanelWidth=0;
 	}
 
 
+	/**
+	 * Add actions to JMenuItems.
+	 * @param item @see JMenuitem itme where action is added.
+	 * @param itemType int type item (ID.MENU_ITEM_FILE_ADD_IMAGES, ID.MENU_ITEM_FILE_MANAGE_LAYERS, etc.)
+	 */
 	private void addActionsToMenuItems(JMenuItem item, int itemType){
 		switch (itemType){
 			case ID.MENU_ITEM_FILE_ADD_IMAGES:
@@ -1855,17 +1835,9 @@ private int rightPanelWidth=0;
 					public void actionPerformed(ActionEvent e) {
 
 						Point guiPoint = new Point((int)getGUI().getBounds().getX()+50, (int)getGUI().getBounds().getY()+50);
-					setPropertiesOfAllMarkinglayers(guiPoint);
-						//	LOGGER.fine("x y: "+guiPoint.toString());
-/*
-						GlobalMarkingProperties dialog = new GlobalMarkingProperties(new JFrame(), getGUI(), guiPoint, taskManager.getAllMarkingLayers());
+						setPropertiesOfAllMarkinglayers(guiPoint);
+					
 
-						dialog.showDialog();
-
-						GlobalMarkingProperties dialog = new GlobalMarkingProperties(frame, getGUI(), guiPoint, taskManager.getAllMarkingLayers());
-
-						dialog.showDialog();
-*/
 					}
 				});
 				break;
