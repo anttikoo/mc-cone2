@@ -2541,23 +2541,24 @@ private void showWebInstructions(){
 	}
 
 	/**
-	 * @return Rectangle
+	 * Calculates and returns position and size of window where dialog can be positioned.
+	 * @return Rectangle size and position where dialog window can be positioned.
 	 */
 	public Rectangle getVisibleWindowBounds(){
-		int x=this.getBounds().x;
-		int y=this.getBounds().y;
-		int width=this.getBounds().width;
-		int height=this.getBounds().height;
+		int x=this.getBounds().x; // get horizontal top left position of window
+		int y=this.getBounds().y; // get vertical top left position of window
+		int width=this.getBounds().width; // get width of window
+		int height=this.getBounds().height; // get height of window
 
-		if(x<0){
+		if(x<0){ // horizontal position too small -> out of screen.
 			width= width+x;
 			x=0;
 		}
-		if(y<0){
+		if(y<0){ // vertical position too small -> out of screen.
 			height=height+y;
 			y=0;
 		}
-		System.out.println("screen: " +getScreenSize().width);
+	//	System.out.println("screen: " +getScreenSize().width);
 		if(x+width > getScreenSize().width){
 
 			width=getScreenSize().width-x;
@@ -2584,6 +2585,10 @@ private void showWebInstructions(){
 	}
 
 
+/**
+ * Adds a MouseListener to given JButton. Listener affects to a graphical view of button.
+ * @param button JButton where mouse listener is added.
+ */
 private void addMouseListenerForJButton(JButton button){
 	
 	button.addMouseListener(new MouseListener() {
@@ -2621,118 +2626,11 @@ private void addMouseListenerForJButton(JButton button){
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-			// TODO Auto-generated method stub
+			// do nothing
 
 		}
 	});
 	
-}
-/*
-private class MyDispatcher implements KeyEventDispatcher {
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent e) {
-        if (e.getID() == KeyEvent.KEY_PRESSED) {
-        	if(e.isAltDown()){
-        		is_ALT_pressed=true;
-        		System.out.println("ALT down");
-        	}else
-            if(e.isControlDown()){
-            	is_CTRL_pressed=true;
-            	System.out.println("CTRL down");
-            }
-            else
-
-            	if(e.getKeyCode()== KeyEvent.VK_SPACE){
-            		is_SPACE_pressed=true;
-            		System.out.println("space pressed");
-            	}
-
-        } else if (e.getID() == KeyEvent.KEY_RELEASED) {
-        	if(e.getKeyCode()== KeyEvent.VK_ALT){
-        		is_ALT_pressed=false;
-        		System.out.println("ALT released");
-        	}
-        	else if(e.getKeyCode()== KeyEvent.VK_CONTROL){
-        		is_CTRL_pressed=false;
-        		System.out.println("CTRL released");
-        	}
-        	if(e.getKeyCode()== KeyEvent.VK_SPACE){
-        		is_SPACE_pressed=false;
-        		System.out.println("space released");
-        	}
-
-        } else if (e.getID() == KeyEvent.KEY_TYPED) {
-          //  System.out.println("3test3");
-        }
-        return false;
-    }
-}
-*/
-
-private void printUI(){
-	 ArrayList<String> comm = new ArrayList<String>();
-	 /*	 UIManager.LookAndFeelInfo looks[] = UIManager.getInstalledLookAndFeels();
-
-	    for (UIManager.LookAndFeelInfo info : looks) {
-	      try {
-			UIManager.setLookAndFeel(info.getClassName());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	      UIDefaults defaults = UIManager.getDefaults();
-	      Enumeration newKeys = defaults.keys();
-
-	      while (newKeys.hasMoreElements()) {
-	        Object obj = newKeys.nextElement();
-	       String s = String.format("%50s : %s\n", obj, UIManager.get(obj));
-	     //   String s = ""+ obj.getClass().toString() + UIManager.get(obj).getClass().toString();
-	        comm.add(s);
-	      //  System.out.printf("%50s : %s\n", obj, UIManager.get(obj));
-	      }
-
-	      Collections.sort(comm);
-	      System.out.println(comm);
-	    }
-	    */
-	    Set<Entry<Object, Object>> entries =  UIManager.getLookAndFeelDefaults().entrySet();
-	    for (Entry entry : entries)
-	    {
-	    	comm.add(entry.getKey() + " = " + entry.getValue());
-	    //  System.out.print(entry.getKey() + " = ");
-	     // System.out.print(entry.getValue() + "\n");
-	    }
-	    Collections.sort(comm, new StringComparator());
-	      System.out.println(comm);
-
-	    Iterator<String> siterator = comm.iterator();
-	    while(siterator.hasNext()){
-	    	System.out.println(siterator.next());
-	    }
-
-
-}
-
-private class StringComparator implements Comparator<String>{
-
-	@Override
-	public int compare(String o1, String o2) {
-		// TODO Auto-generated method stub
-		return o1.toLowerCase().compareTo(o2.toLowerCase());
-	}
-
-
-
 }
 
 
