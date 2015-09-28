@@ -602,7 +602,7 @@ private int rightPanelWidth=0;
 			sliderPanel = new JPanel();	
 			sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.LINE_AXIS));
 			ImageIcon imgOut = getImageIcon( "/images/out.png");
-			JLabel out=new JLabel(imgOut);
+		
 			JButton outButton= new JButton(imgOut);
 			outButton.setBorder(BorderFactory.createEmptyBorder());
 			outButton.setFocusable(false);
@@ -617,7 +617,7 @@ private int rightPanelWidth=0;
 			});
 
 			ImageIcon imgIn = getImageIcon( "/images/in.png");
-			JLabel in=new JLabel(imgIn);
+		
 			JButton inButton= new JButton(imgIn);
 			inButton.setBorder(BorderFactory.createEmptyBorder());
 			inButton.setFocusable(false);
