@@ -1536,24 +1536,32 @@ private int rightPanelWidth=0;
 		}
 	}
 
+	/**
+	 * Checks is given image name already in use.
+	 * @param imageName String imageName, which duplicate using is checked.
+	 * @return boolean true if name is already used. Otherwise false.
+	 */
 	public boolean imageNameAlreadyUsed(String imageName){
 		return taskManager.imageNameAlreadyUsed(imageName);
 	}
 
+	/**
+	 * Returns the folder name which is previously used.
+	 * @return String folder name which is previously used.
+	 */
 	public String getPresentFolder(){
 		return taskManager.getPresentFolder();
 	}
 
+	/**
+	 * Sets the folder name which is previously used.
+	 * @param folder String folder name which is previously used.
+	 */
 	public void setPresentFolder(String folder){
 		this.taskManager.setPresentFolder(folder);
 	}
 
 
-/*	// possibly not used
-	private void setImageLayerList(ArrayList<ImageLayer> imageLayerList){
-		this.taskManager.setImageLayerList(imageLayerList);
-	}
-*/
 	/**
 	 *  Initializes the menubar components
 	 */
