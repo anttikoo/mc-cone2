@@ -322,8 +322,10 @@ public class GridProperties {
 				if(!rec.isSelected() || countSelectedRectangles() > 1)
 				rec.setSelected(!rec.isSelected());
 				
-				//update the percentValue
-				this.randomProcent= (int)(Math.ceil(((double)countSelectedRectangles())/ ((double)this.positionedRectangleList.size())*100));
+				//update the percentValue to round to the nearest multiple of 5
+				this.randomProcent= (int)((Math.round((((double)countSelectedRectangles())/ ((double)this.positionedRectangleList.size())*100))/5)*5);
+
+				//this.randomProcent= (int)(Math.ceil(((double)countSelectedRectangles())/ ((double)this.positionedRectangleList.size())*100));
 
 			}
 		}
