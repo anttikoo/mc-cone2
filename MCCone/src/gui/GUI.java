@@ -1177,7 +1177,7 @@ private int rightPanelWidth=0;
 	}
 
 	/**
-	 *  Initializes the Splitpane which contains GUI components for showing images, markings and info of them in list
+	 *  Initializes the Splitpane which contains GUI components for showing images, markings and info of them in list.
 	 */
 	private void initSplitPane() throws Exception {
 		try{
@@ -1483,6 +1483,7 @@ private int rightPanelWidth=0;
 
 			// open dialog for selecting files
 			JFrame dialogFrame = new JFrame("DialogFrame");
+			@SuppressWarnings("unused")
 			AddImageLayerDialog addImage = new AddImageLayerDialog(dialogFrame, this, taskManager.getImageLayerList());	
 
 		} catch (Exception e) {
@@ -1499,11 +1500,13 @@ private int rightPanelWidth=0;
 			if(fileList != null){
 			
 				// open dialog for selecting files	
+				@SuppressWarnings("unused")
 				AddImageLayerDialog addImage = new AddImageLayerDialog(new JFrame(), getGUI(), fileList);
 				addImage=null;
 			}
 			else{
 			//	JFrame dialogFrame = new JFrame("DialogFrame");
+				@SuppressWarnings("unused")
 				AddImageLayerDialog addImage = new AddImageLayerDialog(new JFrame(), getGUI());
 				addImage=null;
 			}
@@ -1798,6 +1801,7 @@ private int rightPanelWidth=0;
 
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
 
+			@SuppressWarnings("unused")
 			SaveMarkings saveMarkingsDialog=new SaveMarkings(new JFrame(), this, this.taskManager.getImageLayerList());
 			saveMarkingsDialog=null;
 		}
@@ -2426,6 +2430,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 	/**
 	 * For testing purposes opens one image at launch-> one ImageLayer and MarkingLayer created.
 	 */
+	@SuppressWarnings("unused")
 	private void testing(){
 		ImageLayer l = new ImageLayer("/home/antti/4kuvaa/kuusiSolua.jpg");
 		ArrayList<ImageLayer> list = new ArrayList<ImageLayer>();
