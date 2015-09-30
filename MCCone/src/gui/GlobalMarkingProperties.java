@@ -70,6 +70,9 @@ public class GlobalMarkingProperties extends MarkingProperties{
 
 
 
+	/* (non-Javadoc)
+	 * @see gui.MarkingProperties#initMarkingPropertiesPanel()
+	 */
 	protected void initMarkingPropertiesPanel(){
 
 		if(this.markingLayerList != null && this.markingLayerList.size()>0){

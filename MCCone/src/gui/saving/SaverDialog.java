@@ -449,7 +449,7 @@ public JPanel initSaveButton(String saveTitle) throws Exception{
 	saveDownLayerJPanel.setPreferredSize(new Dimension(220,30));
 	saveDownLayerJPanel.setMaximumSize(new Dimension(220,30));
 	saveJButton = new JButton(saveTitle);
-	if(this.savingType==ID.CLIPBOARD)
+	if(this.savingType==ID.CLIPBOARD || this.savingType==ID.EXPORT_PREVIEW_IMAGES)
 		saveJButton.setEnabled(true);
 	else
 		saveJButton.setEnabled(false);

@@ -188,9 +188,11 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	}
 
 	/**
+	 * Creates JPanel containing combobox for size of the grid
 	 * @return JCombobox object
 	 */
 	private JPanel setUpComboBoxPanel(){
+		try{
 		JPanel comboBoxPanel=new JPanel();
 		comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.LINE_AXIS));
 		comboBoxPanel.setMaximumSize(new Dimension(panelWidth,36));
@@ -215,7 +217,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		gridComboBox.setForeground(Color_schema.white_230);
 		gridComboBox.setFont(Fonts.b14);
 
-
+		//go trough all gridsizes and add to Combobox
 		Iterator<SingleGridSize> sgIterator = this.gridSizes.iterator();
 		while(sgIterator.hasNext()){
 			SingleGridSize sgs= sgIterator.next();
@@ -259,28 +261,37 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		
 		comboBoxPanel.add(gridComboBox);
 		return comboBoxPanel;
+		
+		}catch(Exception e){
+			LOGGER.severe("unable to create combobox for grid sizes "+e.getMessage());
+			return new JPanel();
+		}
 
 
 	}
 	
+	/**
+	 * Creates JPanel, where is JSlider for selecting for percent value of selected cells in grid.
+	 * @return JPanel containing JSlider for percent value of selected cells in grid
+	 */
 	private JPanel setupSliderPanel(){
 		
-		JPanel prosentSliderPanel=new JPanel();
-		prosentSliderPanel.setLayout(new BoxLayout(prosentSliderPanel, BoxLayout.LINE_AXIS));
-		prosentSliderPanel.setMaximumSize(new Dimension(panelWidth,36));
-		prosentSliderPanel.setMinimumSize(new Dimension(panelWidth,36));
-		prosentSliderPanel.setPreferredSize(new Dimension(panelWidth,36));
+		JPanel percentSliderPanel=new JPanel();
+		percentSliderPanel.setLayout(new BoxLayout(percentSliderPanel, BoxLayout.LINE_AXIS));
+		percentSliderPanel.setMaximumSize(new Dimension(panelWidth,36));
+		percentSliderPanel.setMinimumSize(new Dimension(panelWidth,36));
+		percentSliderPanel.setPreferredSize(new Dimension(panelWidth,36));
 		JPanel pSliderLabelPanel=new JPanel();
 		pSliderLabelPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
 		sliderLabel = new JLabel("RANDOM FILL %:");
 		sliderLabel.setFont(Fonts.b14);
 		pSliderLabelPanel.add(sliderLabel);
-		prosentSliderPanel.add(Box.createRigidArea(new Dimension(10,0)));
-		prosentSliderPanel.add(pSliderLabelPanel);
-		prosentSliderPanel.add(Box.createRigidArea(new Dimension(10,0)));
-		prosentSliderPanel.add(Box.createRigidArea(new Dimension(0,5)));
+		percentSliderPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		percentSliderPanel.add(pSliderLabelPanel);
+		percentSliderPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		percentSliderPanel.add(Box.createRigidArea(new Dimension(0,5)));
 		//setup randow Slider
-		randomSlider=new JSlider(10, 90,50);
+		randomSlider=new JSlider(10, 100,50);
 		
 
 		randomSlider.setMinimumSize(new Dimension(200,30));
@@ -288,7 +299,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		randomSlider.setMaximumSize(new Dimension(200,30));
 		
 		randomSlider.setMajorTickSpacing(20);
-		randomSlider.setMinorTickSpacing(10);
+		randomSlider.setMinorTickSpacing(5);
 		randomSlider.setPaintTicks(true);
 		randomSlider.setSnapToTicks(true);
 		
@@ -302,6 +313,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 					@Override
 					public void run() {
 						sliderValueLabel.setText(""+randomSlider.getValue()+" %");
+						//update grid, because amount of selected cells is changed
 						updateGridDimensionFromComboBox(ID.GPANEL_RANDOM_PROCENT_CHANGED);
 
 					}
@@ -313,7 +325,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		if(this.templateGP != null && this.templateGP.getRandomProcent() >0)
 			randomSlider.setValue(this.templateGP.getRandomProcent());
 		
-		prosentSliderPanel.add(randomSlider);
+		percentSliderPanel.add(randomSlider);
 		
 		JPanel pSliderValueLabelPanel=new JPanel();
 		pSliderValueLabelPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 2));
@@ -321,9 +333,9 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		sliderValueLabel.setFont(Fonts.b18);
 		
 		pSliderValueLabelPanel.add(sliderValueLabel);
-		prosentSliderPanel.add(pSliderValueLabelPanel);
+		percentSliderPanel.add(pSliderValueLabelPanel);
 		
-		return prosentSliderPanel;
+		return percentSliderPanel;
 		
 	}
 
@@ -334,8 +346,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	private void enableComponents(){
 
 			this.gridComboBox.setEnabled(gridON);
-		//	updateGridDimensionFromComboBox();
-		//	this.gridPanel.setEnabled(gridON);
 			if(gridON){
 				this.gridPanel.setVisible(true);
 			//	if(this.gridPanel.getComponentCount()==0){
@@ -422,23 +432,23 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		unselectAllCells(rows, columns); // set all cells unselected
 		int cellsCount = rows*columns;
 		double value=((double)this.randomSlider.getValue())/100.0;
-		double selectedCells= ((double)cellsCount)*value;
+		double selectedCells= Math.ceil(((double)cellsCount)*value); // round selected number to next upper integer value
 		int partOfCellsCount= (int)selectedCells;
 	//	int partOfCellsCount = cellsCount*(this.randomSlider.getValue()/100);
 		if(partOfCellsCount==0)
 			partOfCellsCount=1;
-
-		for(int i=0;i<partOfCellsCount;i++){
-			// check that unselected grid rectangles number is smaller than selected ones.
-		//	if(countUnselectedGridRectangle(rows, columns) > countSelectedGridRectangle(rows, columns)){
-			if(countSelectedGridRectangle(rows, columns)<partOfCellsCount){
-				GridRectangle gr = getRandomGridRectangle(rows, columns);
-				if(gr != null){
-					gr.setShown(true);
-					gr.updatePanel();
+		
+			for(int i=0;i<partOfCellsCount;i++){
+				// check that unselected grid rectangles number is smaller than selected ones.
+				if(countSelectedGridRectangle(rows, columns)<partOfCellsCount){
+					GridRectangle gr = getRandomGridRectangle(rows, columns);
+					if(gr != null){
+						gr.setShown(true);
+						gr.updatePanel();
+					}
 				}
 			}
-		}		
+		
 	}
 	
 	
@@ -566,7 +576,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 							GridProperties gpSingle = mSingleILiterator.next().getGridProperties();
 							// c and r is zero when initializing panel. And they are something else, when user selects row and column in combobox.
 							if(gpSingle != null && gpSingle .isGridON() && ( (c==0 && r==0) || (gpSingle.getGridColumnCount() == c && gpSingle.getGridRowCount() == r) ) )
-								if(!checkProcent || checkProcent && gpSingle.getRandomProcent()== this.randomSlider.getValue()) // check that prosentSlider value is same
+								if(!checkProcent || checkProcent && gpSingle.getRandomProcent()== this.randomSlider.getValue()) // check that percentSlider value is same
 								return gpSingle; // found Gridproperties that is visible (ON) and under same ImageLayer
 						}
 						// try to find unvisible Gridproperties here, because not found any visible ones.
@@ -575,7 +585,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 							GridProperties gpSingle = mSingleILiteratorUnvisible.next().getGridProperties();
 							// c and r is zero when initializing panel. And they are something else, when user selects row and column in combobox.
 							if(gpSingle != null && ( (c==0 && r==0) || (gpSingle.getGridColumnCount() == c && gpSingle.getGridRowCount() == r) ))
-								if(!checkProcent || checkProcent && gpSingle.getRandomProcent()== this.randomSlider.getValue()) // check that prosentSlider value is same								
+								if(!checkProcent || checkProcent && gpSingle.getRandomProcent()== this.randomSlider.getValue()) // check that percentSlider value is same								
 								return gpSingle; // found Gridproperties that is under same ImageLayer
 						}					
 					}
@@ -631,7 +641,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 						//if r and c >0 has gp include same values of columns and rows.
 						if(gp != null && ((c==0 && r==0) || (gp.getGridColumnCount()==c && gp.getGridRowCount()==r) ) ){
 							if( (findON && gp.isGridON() ) || !findON) // if searching GRID which is ON (visible) then check that it is ON.
-								if(!checkProcent || checkProcent && gp.getRandomProcent()== this.randomSlider.getValue()) // check that prosentSlider value is same
+								if(!checkProcent || checkProcent && gp.getRandomProcent()== this.randomSlider.getValue()) // check that percentSlider value is same
 									return gp;
 						}
 				}						
@@ -735,9 +745,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			
 		
 		}
-		
-		
-		
 		
 		if(this.gridSizes != null && this.gridSizes.size()>index){
 			if(sgs==null)

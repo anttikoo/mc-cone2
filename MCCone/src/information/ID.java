@@ -117,6 +117,14 @@ public class ID {
 	public static final int MENU_ITEM_INFO= 112;
 	public static final int MENU_ITEM_LOG= 113;
 	public static final int MENU_ITEM_HELP= 114;
+	public static final int GPANEL_STARTUP= 115;
+	public static final int GPANEL_GRID_SIZE_CHANGED= 116;
+	public static final int GPANEL_RANDOM_PROCENT_CHANGED= 117;
+	public static final int CURSOR_HAND= 118;
+	public static final int CURSOR_DEFAULT= 119;
+	public static final int EXPORT_PREVIEW_IMAGES= 120;
+
+	
 
 
 

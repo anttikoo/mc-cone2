@@ -143,6 +143,14 @@ public class GridPanel extends JPanel {
 		g2.drawLine(x1, y1, x2, y2);
 	}
 
+	/**
+	 *  Draws a edge line, which is closest to image edge.
+	 * @param x1 int start point vertical position
+	 * @param y1 int start point horizontal position
+	 * @param x2 int end point vertical position
+	 * @param y2 int end point horizontal position
+	 * @param g2 Graphics2D object
+	 */
 private void drawEdgeLine(int x1, int y1, int x2, int y2, Graphics2D g2){
 
 	//	g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,0.4f));
@@ -157,14 +165,19 @@ private void drawEdgeLine(int x1, int y1, int x2, int y2, Graphics2D g2){
 
 	}
 
+	/**
+	 * Draws Rectangle to GridPanel. Shows the grid rectangle, that is not selected.
+	 * @param rec PositionedRectangle object
+	 * @param g2 Graphics2D object
+	 */
 	private void drawRectangle(PositionedRectangle rec, Graphics2D g2){
 
 		g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,used_transparency_hard));
 
-		int small_x= rec.x+50;
-		int small_y= rec.y+50;
-		int small_width=rec.width-100;
-		int small_height=rec.height-100;
+		int small_x= rec.x+20;
+		int small_y= rec.y+20;
+		int small_width=rec.width-40;
+		int small_height=rec.height-40;
 		g2.fillRect(small_x, small_y, small_width, small_height);
 		g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,used_transparency_soft));
 	/*	g2.setPaint(Color.red);
@@ -177,10 +190,16 @@ private void drawEdgeLine(int x1, int y1, int x2, int y2, Graphics2D g2){
 
 	}
 
+	/**
+	 * @return boolean is grid shown.
+	 */
 	public boolean isShowGrid() {
 		return showGrid;
 	}
 
+	/**
+	 * @param showGrid boolean to set grid visible or invisible
+	 */
 	public void setShowGrid(boolean showGrid) {
 		this.showGrid = showGrid;
 	}

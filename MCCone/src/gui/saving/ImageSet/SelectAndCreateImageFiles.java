@@ -23,6 +23,13 @@ import gui.saving.SingleImagePanel;
 public class SelectAndCreateImageFiles extends ExportResults {
 	private ArrayList<BufferedImageWithName> createdImages;
 
+	/**
+	 * Class constructor. Shows window where user can select ImageLayers and MarkingLayers to shown.
+	 * @param frame parent JFrame
+	 * @param gui GUI object of Graphical interface
+	 * @param iList	ArrayList of ImageLayers that are opened in main program
+	 * @param savingTypeID int type of savingType
+	 */
 	public SelectAndCreateImageFiles(JFrame frame, GUI gui,ArrayList<ImageLayer> iList, int savingTypeID) {
 		super(frame, gui, iList, savingTypeID);
 		// TODO Auto-generated constructor stub

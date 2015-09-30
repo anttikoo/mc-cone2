@@ -406,6 +406,7 @@ public class MarkingLayer{
 		//	gridProperty.setUnselectedRectangles(gProperties.getUnselectedRectangles());
 		//	gridProperty.setUnselectedRectangleNumbers(gProperties.getUnselectedGridCellNumbers());
 			gridProperty.setPositionedRectangleList(gProperties.getPositionedRectangleList());
+			gridProperty.setRandomProcent(gProperties.getRandomProcent());
 	
 			this.gridProperties = gridProperty;
 		}

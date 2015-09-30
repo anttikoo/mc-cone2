@@ -69,381 +69,6 @@ public class GUIListener extends MouseInputAdapter {
 		initZoomTimer();
 	}
 
-	public void setComponents(GUI gui, TaskManager tm, Container contentPane, PrecountGlassPane glassPane, ImagePanel imagePanel,
-			AbstractButton precountButton, JLayeredPane layers, JPanel downBarPanel, JSlider zoomSlider, JPanel sliderPanel){
-		this.gui=gui;
-		this.taskManager=tm;
-		this.contentPane=contentPane;
-		this.glassPane=glassPane;
-		this.imagePanel=imagePanel;
-		this.precountButton=precountButton;
-		this.layers=layers;
-		this.downBarPanel=downBarPanel;
-		this.zoomSlider=zoomSlider;
-		this.sliderPanel=sliderPanel;
-
-
-	}
-
-
-	/**
-	 * MouseEvents made on GlassPane are redirected to lower layer components if necessary. 
-	 * @param e MouseEvents the mouse event which is forwarded.
-	 */
-	private void forwardGlassPaneEvent(MouseEvent e){
-
-		Point glassPanePoint = e.getPoint();
-		Point containerPoint = SwingUtilities.convertPoint(glassPane, glassPanePoint, contentPane);
-		Point imagePanelPoint = SwingUtilities.convertPoint(contentPane, containerPoint, layers);
-		Point downBarPoint = SwingUtilities.convertPoint(contentPane, containerPoint, downBarPanel);
-		Point preCountButtonPoint = SwingUtilities.convertPoint(downBarPanel, downBarPoint, precountButton);
-
-		if(containerPoint.y >=0){
-			Component guiComponent=null;
-				// check does imagePanel containg the point were mouse was pressed
-				if(imagePanel.contains(imagePanelPoint)){
-					guiComponent=imagePanel;
-					switch (e.getID()){
-					case MouseEvent.MOUSE_PRESSED:
-						// start counting
-						if(!is_CTRL_pressed && !is_SPACE_pressed){
-
-							if(e.getButton()== MouseEvent.BUTTON1){
-								// left mouse pressed -> start counting
-								gui.startCellCounting(imagePanelPoint, this.glassPane.getRectangleSize());
-							}
-						}
-						else{
-							// zooming is redirected to components under glasspane
-							redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
-						}
-						break;
-
-					case MouseEvent.MOUSE_MOVED:
-						paintCircle(imagePanelPoint, glassPanePoint);
-						break;
-
-					case MouseEvent.MOUSE_DRAGGED:
-						paintCircle(imagePanelPoint, glassPanePoint);
-						//redirect to components under glasspane
-						redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
-						break;
-
-					default:
-						//redirect to components under glasspane
-						redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
-						break;
-
-				}
-
-			}
-				// check does downbarPanel containg the point were mouse was pressed
-				else if(downBarPanel.contains(downBarPoint)){
-					if(precountButton.contains(preCountButtonPoint)){
-						guiComponent=precountButton;
-						if(e.getID() == MouseEvent.MOUSE_RELEASED){			
-							// redirect for button					
-							gui.startStopCellPicking();
-						}
-					}
-					else { // third option is zoomSlider
-						guiComponent=zoomSlider;
-
-						// redirect for slider
-						redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
-					}
-				}
-		}
-	}
-
-	/**
-	 * Paints the circle and square for precounting if fits fully to imagePanel.
-	 * @param imagePanelPoint Point at imagePanel where mouse focused
-	 * @param glassPanePoint Point at glassPane where mouse focused
-	 */
-	private void paintCircle(Point imagePanelPoint, Point glassPanePoint){
-		Point up = new Point(imagePanelPoint.x, imagePanelPoint.y -glassPane.getRectangleSize()/2);
-		Point right = new Point(imagePanelPoint.x+glassPane.getRectangleSize()/2, imagePanelPoint.y);
-		Point down = new Point(imagePanelPoint.x, imagePanelPoint.y +glassPane.getRectangleSize()/2);
-		Point left = new Point(imagePanelPoint.x-glassPane.getRectangleSize()/2, imagePanelPoint.y);
-
-		if(imagePanel.contains(up) && imagePanel.contains(right) && imagePanel.contains(down) && imagePanel.contains(left)){
-			// repaint the circle in new position
-			glassPane.setCenterPoint(glassPanePoint);
-			glassPane.repaint();
-		}
-		else{
-			// hide circle
-			glassPane.setCenterPoint(null);
-			glassPane.repaint();
-		}
-	}
-
-	/**
-	 * Dispatches the triggered event to given component. Determines is the event mouseWheel event or some other.
-	 * @param e MouseEvent the event triggered at glassPane.
-	 * @param glassPanePoint Point the point where mouse triggered event.
-	 * @param guiComponent Component the component of GUI where event is wanted to work.
-	 */
-	private void redirectEventToGUIComponents(MouseEvent e, Point glassPanePoint, Component guiComponent){
-	
-		Point componentPoint = SwingUtilities.convertPoint(glassPane, glassPanePoint, guiComponent);
-		if(e.getID()== MouseEvent.MOUSE_WHEEL){
-			guiComponent.dispatchEvent(new MouseWheelEvent(guiComponent, e.getID(), e.getWhen(), e.getModifiers(),
-					componentPoint.x, componentPoint.y, e.getClickCount(), e.isPopupTrigger(), ((MouseWheelEvent)e).getScrollType(),
-					((MouseWheelEvent)e).getScrollAmount(), (int)(((MouseWheelEvent)e).getPreciseWheelRotation()*10))); 
-		}
-		else{
-
-			guiComponent.dispatchEvent(new MouseEvent(guiComponent, e.getID(), e.getWhen(), e.getModifiers(),componentPoint.x, componentPoint.y, e.getClickCount(), e.isPopupTrigger()));
-
-		}
-	}
-
-
-	/* 
-	 * When mouse clicked over ImagePanel and ctrl is pressed down the zooming is launched. Left-button -> zoom in; right-button -> zoom out.
-	 * If mouse was pressed on glasspane (Precounting running) -> the event is forwarded to method forwardGlassPaneEvent.
-	 */
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if(e.getSource() instanceof ImagePanel){
-			if(is_CTRL_pressed){
-				double zoomValue= 0.8;
-				//Button1 -> zoom in
-				if(e.getButton() == MouseEvent.BUTTON1)
-					zoomValue=1.25;
-				gui.zoomAndUpdateImage(e.getPoint(), zoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
-			}
-		}
-		else if(e.getSource() instanceof PrecountGlassPane){
-			forwardGlassPaneEvent(e);
-		}
-
-
-	}
-
-	/* 
-	 * Mediates the MousePressed Event to wanted procedure. Events of PrecountGlassPane are forwarded to @see gui.GUIListener#forwardGlassPaneEvent(java.awt.event.MouseEvent).
-	 * Computation of events of ImagePanel depends on which keys are pressed down or which threads are running at same time:
-	 * CTRL-down -> do nothing
-	 * SPACE-down -> dragging -> set init dragging point.
-	 * SHIFT-down -> select/unselect grid cell.
-	 * MOUSE-LEFT-button -> add marking
-	 * MOUSE-RIGHT-button -> remove marking and it's highlight point.
-	 * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
-	 */
-	@Override
-	public void mousePressed(MouseEvent e) {
-		if(e.getSource() instanceof ImagePanel){
-		if(!is_CTRL_pressed){
-				// started dragging
-			if(previousDraggingPoint==null && timerSPACEactivate.isRunning()){
-				previousDraggingPoint = new Point(e.getPoint().x, e.getPoint().y);
-			}
-			else{
-
-					if(taskManager.isSelectedMarkingLayerVisible()){
-
-						if(is_SHIFT_pressed){
-							// setting selected Grids
-							gui.setGridSelectedRectangle(e.getPoint());
-						}
-						else{
-							// adding or deleting single marking
-							if(e.getButton() == MouseEvent.BUTTON1){ // left button -> add marking
-								if(gui.addSingleMarking(e.getPoint()))
-									gui.updateCoordinatesOfSelectedMarkingPanel();
-							}
-							else { // right button -> remove marking
-
-								if(gui.removeSingleMarking(e.getPoint())){
-								gui.removeHighLightPoint();
-
-								// update selectedMarkingPanel
-								gui.updateCoordinatesOfSelectedMarkingPanel();
-								}
-							}
-						}
-					}
-			}
-		}
-		}else if(e.getSource() instanceof PrecountGlassPane){
-			forwardGlassPaneEvent(e);
-		}
-	}
-
-	/* 
-	 * Mediates the MouseReleased Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
-	 * In ImagePanel made releasing sets previous dragging point as null. -> No More dragging.
-	 * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
-	 */
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		if(e.getSource() instanceof ImagePanel){
-			if(timerSPACEactivate.isRunning()){ //is dragging
-				previousDraggingPoint=null; // dragging movement ended -> set starting point as null
-			}
-		}else if(e.getSource() instanceof PrecountGlassPane){
-			forwardGlassPaneEvent(e);
-		}
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// do nothing
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// do nothing
-	}
-
-	/* 
-	 * Mediates the mouseWheelMoved Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
-	 * Single wheel movement zooms 25% in or out depending wheel movement direction.
-	 * @see java.awt.event.MouseAdapter#mouseWheelMoved(java.awt.event.MouseWheelEvent)
-	 */
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
-
-			if(e.getSource() instanceof ImagePanel){
-					// if previous zooming has stopped can start new zooming
-					if(!zoomTimer.isRunning()){
-						zoomTimer.start();									
-							double zoomValue=0.8;
-							if(e.getPreciseWheelRotation() <0){ // e.getWheelRotation works only in linux
-								zoomValue=1.25;
-							}
-							gui.zoomAndUpdateImage(e.getPoint(), zoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
-			
-				}
-			}else if(e.getSource() instanceof PrecountGlassPane){
-				forwardGlassPaneEvent(e);
-			}
-
-	}
-
-	/* 
-	 * Mediates the mouseWheelMoved Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
-	 * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
-	 */
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		if(e.getSource() instanceof ImagePanel){
-			if(is_SPACE_pressed){
-				gui.dragLayers(e);
-				is_SPACE_pressed=false;
-				if(timerSPACEactivate.isRunning())
-				timerSPACEactivate.start(); // start counting from beginning
-			}
-		}else if(e.getSource() instanceof PrecountGlassPane){
-			forwardGlassPaneEvent(e);
-		}
-
-	}
-
-	/* Mediates the mouseWheelMoved Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
-	 * @see java.awt.event.MouseAdapter#mouseMoved(java.awt.event.MouseEvent)
-	 */
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		if(e.getSource() instanceof PrecountGlassPane){
-			forwardGlassPaneEvent(e);
-
-		}
-		else if(e.getSource() instanceof ImagePanel){
-			if(!hightLightTimer.isRunning()){
-				hightLightTimer.start();
-			//	System.out.println("moving");
-				gui.updateHighlight(e.getPoint());
-			}
-
-		}
-
-
-
-	}
-
-	/**
-	 * Returns true if precounting Thread is running. Otherwise false.
-	 * @return boolean true if Precounting Thread is running.
-	 */
-	public boolean isCellPickingON() {
-		return isCellPickingON;
-	}
-
-	/**
-	 *  Sets is the precounting Thread running.
-	 * @param isCellPickingON boolean running or not running
-	 */
-	public void setCellPickingON(boolean isCellPickingON) {
-		this.isCellPickingON = isCellPickingON;
-	}
-
-	/**
-	 * Gets the previous dragging point.
-	 *
-	 * @return the previous dragging point
-	 */
-	
-	public Point getPreviousDraggingPoint() {
-		return previousDraggingPoint;
-	}
-
-	/**
-	 * Sets the previous dragging point.
-	 *
-	 * @param previousDraggingPoint the new previous dragging point
-	 */
-	public void setPreviousDraggingPoint(Point previousDraggingPoint) {
-		this.previousDraggingPoint = previousDraggingPoint;
-	}
-
-	/**
-	 * Checks if is is space pressed.
-	 *
-	 * @return true, if space is pressed
-	 */
-	public boolean isIs_SPACE_pressed() {
-		return is_SPACE_pressed;
-	}
-
-
-
-	/**
-	 * Initializes the space action timers for activating and inactivating dragging.
-	 */
-	private void initSPACEactions(){
-		timerSPACEactivate=new Timer(50,new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				is_SPACE_pressed=true;
-
-			}
-		});
-
-		timerSPACEinactivate = new Timer(110,new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// stop activate timer
-				timerSPACEactivate.stop();
-				is_SPACE_pressed=false;
-				timerSPACEinactivate.stop();
-				
-				previousDraggingPoint=null; // no more dragging -> initialize the previousdragging point
-				// update visible image and markings
-				gui.setImage(taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
-				gui.updateCoordinatesOfVisibleMarkingPanels();
-		        gui.paintLayers();
-
-			}
-		});
-	}
-
 	/**
 	 * Adds shortcut keys to given components.
 	 *
@@ -704,7 +329,85 @@ public class GUIListener extends MouseInputAdapter {
 	}
 
 
+	/**
+	 * MouseEvents made on GlassPane are redirected to lower layer components if necessary. 
+	 * @param e MouseEvents the mouse event which is forwarded.
+	 */
+	private void forwardGlassPaneEvent(MouseEvent e){
 
+		Point glassPanePoint = e.getPoint();
+		Point containerPoint = SwingUtilities.convertPoint(glassPane, glassPanePoint, contentPane);
+		Point imagePanelPoint = SwingUtilities.convertPoint(contentPane, containerPoint, layers);
+		Point downBarPoint = SwingUtilities.convertPoint(contentPane, containerPoint, downBarPanel);
+		Point preCountButtonPoint = SwingUtilities.convertPoint(downBarPanel, downBarPoint, precountButton);
+
+		if(containerPoint.y >=0){
+			Component guiComponent=null;
+				// check does imagePanel containg the point were mouse was pressed
+				if(imagePanel.contains(imagePanelPoint)){
+					guiComponent=imagePanel;
+					switch (e.getID()){
+					case MouseEvent.MOUSE_PRESSED:
+						// start counting
+						if(!is_CTRL_pressed && !is_SPACE_pressed){
+
+							if(e.getButton()== MouseEvent.BUTTON1){
+								// left mouse pressed -> start counting
+								gui.startCellCounting(imagePanelPoint, this.glassPane.getRectangleSize());
+							}
+						}
+						else{
+							// zooming is redirected to components under glasspane
+							redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
+						}
+						break;
+
+					case MouseEvent.MOUSE_MOVED:
+						paintCircle(imagePanelPoint, glassPanePoint);
+						break;
+
+					case MouseEvent.MOUSE_DRAGGED:
+						paintCircle(imagePanelPoint, glassPanePoint);
+						//redirect to components under glasspane
+						redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
+						break;
+
+					default:
+						//redirect to components under glasspane
+						redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
+						break;
+
+				}
+
+			}
+				// check does downbarPanel containg the point were mouse was pressed
+				else if(downBarPanel.contains(downBarPoint)){
+					if(precountButton.contains(preCountButtonPoint)){
+						guiComponent=precountButton;
+						if(e.getID() == MouseEvent.MOUSE_RELEASED){			
+							// redirect for button					
+							gui.startStopCellPicking();
+						}
+					}
+					else { // third option is zoomSlider
+						guiComponent=zoomSlider;
+
+						// redirect for slider
+						redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
+					}
+				}
+		}
+	}
+
+	/**
+	 * Gets the previous dragging point.
+	 *
+	 * @return the previous dragging point
+	 */
+	
+	public Point getPreviousDraggingPoint() {
+		return previousDraggingPoint;
+	}
 
 	/**
 	 * Inits the highlight timer.
@@ -720,17 +423,41 @@ public class GUIListener extends MouseInputAdapter {
 		});
 	}
 
+
 	/**
-	 * Sets the variable is_CTRL_down to false;
+	 * Initializes the space action timers for activating and inactivating dragging.
 	 */
-	public void releaseCtrl(){
-		is_CTRL_pressed=false;
+	private void initSPACEactions(){
+		timerSPACEactivate=new Timer(50,new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				is_SPACE_pressed=true;
+
+			}
+		});
+
+		timerSPACEinactivate = new Timer(110,new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// stop activate timer
+				timerSPACEactivate.stop();
+				is_SPACE_pressed=false;
+				timerSPACEinactivate.stop();
+				
+				previousDraggingPoint=null; // no more dragging -> initialize the previousdragging point
+				// update visible image and markings
+				gui.setImage(taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
+				gui.updateCoordinatesOfVisibleMarkingPanels();
+		        gui.paintLayers();
+
+			}
+		});
 	}
 
-
-
 	/**
-	 * Inits the tiumer for zooming.
+	 * Initializes the timer for zooming.
 	 */
 	private void initZoomTimer(){
 		this.zoomTimer=new Timer(100, new ActionListener() {
@@ -742,6 +469,280 @@ public class GUIListener extends MouseInputAdapter {
 
 			}
 		});
+	}
+
+	/**
+	 * Returns true if precounting Thread is running. Otherwise false.
+	 * @return boolean true if Precounting Thread is running.
+	 */
+	public boolean isCellPickingON() {
+		return isCellPickingON;
+	}
+
+	/**
+	 * Checks if is is space pressed.
+	 *
+	 * @return true, if space is pressed
+	 */
+	public boolean isIs_SPACE_pressed() {
+		return is_SPACE_pressed;
+	}
+
+	/** 
+	 * When mouse clicked over ImagePanel and ctrl is pressed down the zooming is launched. Left-button -> zoom in; right-button -> zoom out.
+	 * If mouse was pressed on glasspane (Precounting running) -> the event is forwarded to method forwardGlassPaneEvent.
+	 */
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(e.getSource() instanceof ImagePanel){
+			if(is_CTRL_pressed){
+				double zoomValue= 0.8;
+				//Button1 -> zoom in
+				if(e.getButton() == MouseEvent.BUTTON1)
+					zoomValue=1.25;
+				gui.zoomAndUpdateImage(e.getPoint(), zoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
+			}
+		}
+		else if(e.getSource() instanceof PrecountGlassPane){
+			forwardGlassPaneEvent(e);
+		}
+
+
+	}
+
+	/** 
+	 * Mediates the mouseWheelMoved Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
+	 * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
+	 */
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		if(e.getSource() instanceof ImagePanel){
+			if(is_SPACE_pressed){
+				gui.dragLayers(e);
+				is_SPACE_pressed=false;
+				if(timerSPACEactivate.isRunning())
+				timerSPACEactivate.start(); // start counting from beginning
+			}
+		}else if(e.getSource() instanceof PrecountGlassPane){
+			forwardGlassPaneEvent(e);
+		}
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// do nothing
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// do nothing
+	}
+
+	/**
+	 *  Mediates the mouseWheelMoved Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
+	 * @see java.awt.event.MouseAdapter#mouseMoved(java.awt.event.MouseEvent)
+	 */
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		if(e.getSource() instanceof PrecountGlassPane){
+			forwardGlassPaneEvent(e);
+
+		}
+		else if(e.getSource() instanceof ImagePanel){
+			if(!hightLightTimer.isRunning()){
+				hightLightTimer.start();
+			//	System.out.println("moving");
+				gui.updateHighlight(e.getPoint());
+			}
+
+		}
+
+
+
+	}
+
+	/**
+	 * Mediates the MousePressed Event to wanted procedure. Events of PrecountGlassPane are forwarded to @see gui.GUIListener#forwardGlassPaneEvent(java.awt.event.MouseEvent).
+	 * Computation of events of ImagePanel depends on which keys are pressed down or which threads are running at same time:
+	 * CTRL-down -> do nothing
+	 * SPACE-down -> dragging -> set init dragging point.
+	 * SHIFT-down -> select/unselect grid cell.
+	 * MOUSE-LEFT-button -> add marking
+	 * MOUSE-RIGHT-button -> remove marking and it's highlight point.
+	 * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
+	 */
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if(e.getSource() instanceof ImagePanel){
+		if(!is_CTRL_pressed){
+				// started dragging
+			if(previousDraggingPoint==null && timerSPACEactivate.isRunning()){
+				previousDraggingPoint = new Point(e.getPoint().x, e.getPoint().y);
+			}
+			else{
+
+					if(taskManager.isSelectedMarkingLayerVisible()){
+
+						if(is_SHIFT_pressed){
+							// setting selected Grids
+							gui.setGridSelectedRectangle(e.getPoint());
+						}
+						else{
+							// adding or deleting single marking
+							if(e.getButton() == MouseEvent.BUTTON1){ // left button -> add marking
+								if(gui.addSingleMarking(e.getPoint()))
+									gui.updateCoordinatesOfSelectedMarkingPanel();
+							}
+							else { // right button -> remove marking
+
+								if(gui.removeSingleMarking(e.getPoint())){
+								gui.removeHighLightPoint();
+
+								// update selectedMarkingPanel
+								gui.updateCoordinatesOfSelectedMarkingPanel();
+								}
+							}
+						}
+					}
+			}
+		}
+		}else if(e.getSource() instanceof PrecountGlassPane){
+			forwardGlassPaneEvent(e);
+		}
+	}
+
+	/**
+	 * Mediates the MouseReleased Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
+	 * In ImagePanel made releasing sets previous dragging point as null. -> No More dragging.
+	 * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
+	 */
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if(e.getSource() instanceof ImagePanel){
+			if(timerSPACEactivate.isRunning()){ //is dragging
+				previousDraggingPoint=null; // dragging movement ended -> set starting point as null
+			}
+		}else if(e.getSource() instanceof PrecountGlassPane){
+			forwardGlassPaneEvent(e);
+		}
+
+	}
+
+	/**
+	 * Mediates the mouseWheelMoved Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
+	 * Single wheel movement zooms 25% in or out depending wheel movement direction.
+	 * @see java.awt.event.MouseAdapter#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 */
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+
+			if(e.getSource() instanceof ImagePanel){
+					// if previous zooming has stopped can start new zooming
+					if(!zoomTimer.isRunning()){
+						zoomTimer.start();									
+							double zoomValue=0.8;
+							if(e.getPreciseWheelRotation() <0){ // e.getWheelRotation works only in linux
+								zoomValue=1.25;
+							}
+							gui.zoomAndUpdateImage(e.getPoint(), zoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
+			
+				}
+			}else if(e.getSource() instanceof PrecountGlassPane){
+				forwardGlassPaneEvent(e);
+			}
+
+	}
+
+	/**
+	 * Paints the circle and square for precounting if fits fully to imagePanel.
+	 * @param imagePanelPoint Point at imagePanel where mouse focused
+	 * @param glassPanePoint Point at glassPane where mouse focused
+	 */
+	private void paintCircle(Point imagePanelPoint, Point glassPanePoint){
+		Point up = new Point(imagePanelPoint.x, imagePanelPoint.y -glassPane.getRectangleSize()/2);
+		Point right = new Point(imagePanelPoint.x+glassPane.getRectangleSize()/2, imagePanelPoint.y);
+		Point down = new Point(imagePanelPoint.x, imagePanelPoint.y +glassPane.getRectangleSize()/2);
+		Point left = new Point(imagePanelPoint.x-glassPane.getRectangleSize()/2, imagePanelPoint.y);
+
+		if(imagePanel.contains(up) && imagePanel.contains(right) && imagePanel.contains(down) && imagePanel.contains(left)){
+			// repaint the circle in new position
+			glassPane.setCenterPoint(glassPanePoint);
+			glassPane.repaint();
+		}
+		else{
+			// hide circle
+			glassPane.setCenterPoint(null);
+			glassPane.repaint();
+		}
+	}
+
+
+
+	/**
+	 * Dispatches the triggered event to given component. Determines is the event mouseWheel event or some other.
+	 * @param e MouseEvent the event triggered at glassPane.
+	 * @param glassPanePoint Point the point where mouse triggered event.
+	 * @param guiComponent Component the component of GUI where event is wanted to work.
+	 */
+	private void redirectEventToGUIComponents(MouseEvent e, Point glassPanePoint, Component guiComponent){
+	
+		Point componentPoint = SwingUtilities.convertPoint(glassPane, glassPanePoint, guiComponent);
+		if(e.getID()== MouseEvent.MOUSE_WHEEL){
+			guiComponent.dispatchEvent(new MouseWheelEvent(guiComponent, e.getID(), e.getWhen(), e.getModifiers(),
+					componentPoint.x, componentPoint.y, e.getClickCount(), e.isPopupTrigger(), ((MouseWheelEvent)e).getScrollType(),
+					((MouseWheelEvent)e).getScrollAmount(), (int)(((MouseWheelEvent)e).getPreciseWheelRotation()*10))); 
+		}
+		else{
+
+			guiComponent.dispatchEvent(new MouseEvent(guiComponent, e.getID(), e.getWhen(), e.getModifiers(),componentPoint.x, componentPoint.y, e.getClickCount(), e.isPopupTrigger()));
+
+		}
+	}
+
+	/**
+	 * Sets the variable is_CTRL_down to false;
+	 */
+	public void releaseCtrl(){
+		is_CTRL_pressed=false;
+	}
+
+
+
+
+	/**
+	 *  Sets is the precounting Thread running.
+	 * @param isCellPickingON boolean running or not running
+	 */
+	public void setCellPickingON(boolean isCellPickingON) {
+		this.isCellPickingON = isCellPickingON;
+	}
+
+	public void setComponents(GUI gui, TaskManager tm, Container contentPane, PrecountGlassPane glassPane, ImagePanel imagePanel,
+			AbstractButton precountButton, JLayeredPane layers, JPanel downBarPanel, JSlider zoomSlider, JPanel sliderPanel){
+		this.gui=gui;
+		this.taskManager=tm;
+		this.contentPane=contentPane;
+		this.glassPane=glassPane;
+		this.imagePanel=imagePanel;
+		this.precountButton=precountButton;
+		this.layers=layers;
+		this.downBarPanel=downBarPanel;
+		this.zoomSlider=zoomSlider;
+		this.sliderPanel=sliderPanel;
+
+
+	}
+
+
+
+	/**
+	 * Sets the previous dragging point.
+	 *
+	 * @param previousDraggingPoint the new previous dragging point
+	 */
+	public void setPreviousDraggingPoint(Point previousDraggingPoint) {
+		this.previousDraggingPoint = previousDraggingPoint;
 	}
 
 
