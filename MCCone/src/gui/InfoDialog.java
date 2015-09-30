@@ -33,25 +33,13 @@ public class InfoDialog extends PropertiesDialog{
 		initDialog();
 	}
 
-	/* (non-Javadoc)
-	 * @see gui.PropertiesDialog#initUPPanels()
+	/**
+	 * Hides Dialog window;
+	 * @param saveChanges boolean value has to give although it is not doing anything.
 	 */
-	protected JPanel initUPPanels(){
-		try {
-			// contains title panel
-			JPanel upperBackPanel = new JPanel();
-			upperBackPanel.setLayout(new BoxLayout(upperBackPanel,BoxLayout.PAGE_AXIS));
-			upperBackPanel.setMaximumSize(new Dimension(panelWidth, 30));
-			upperBackPanel.setMinimumSize(new Dimension(panelWidth, 30));
-			upperBackPanel.setPreferredSize(new Dimension(panelWidth, 30));
-			upperBackPanel.add(initTitlePanel("About MC-Cone"));
-
-			return upperBackPanel;
-		} catch (Exception e) {
-			e.printStackTrace();
-			LOGGER.severe("Error in creating title for the window!");
-			return null;
-		}
+	protected void hideDialog(boolean saveChanges){
+		this.setVisible(false);
+		dispose();
 	}
 
 	/* (non-Javadoc)
@@ -151,13 +139,25 @@ public class InfoDialog extends PropertiesDialog{
 		return buttonPanel;
 	}
 
-	/**
-	 * Hides Dialog window;
-	 * @param saveChanges boolean value has to give although it is not doing anything.
+	/* (non-Javadoc)
+	 * @see gui.PropertiesDialog#initUPPanels()
 	 */
-	protected void hideDialog(boolean saveChanges){
-		this.setVisible(false);
-		dispose();
+	protected JPanel initUPPanels(){
+		try {
+			// contains title panel
+			JPanel upperBackPanel = new JPanel();
+			upperBackPanel.setLayout(new BoxLayout(upperBackPanel,BoxLayout.PAGE_AXIS));
+			upperBackPanel.setMaximumSize(new Dimension(panelWidth, 30));
+			upperBackPanel.setMinimumSize(new Dimension(panelWidth, 30));
+			upperBackPanel.setPreferredSize(new Dimension(panelWidth, 30));
+			upperBackPanel.add(initTitlePanel("About MC-Cone"));
+
+			return upperBackPanel;
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOGGER.severe("Error in creating title for the window!");
+			return null;
+		}
 	}
 
 
