@@ -1,19 +1,14 @@
 package gui;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import java.util.logging.SimpleFormatter;
-
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 
@@ -22,12 +17,12 @@ import javax.swing.text.StyledDocument;
  * @author Antti Kurronen
  */
 public class LogFrame extends JFrame{
-private StyledDocument document;
-private SimpleAttributeSet set_SEVERE;
-private SimpleAttributeSet set_WARNING;
-private SimpleAttributeSet set_INFO;
-private SimpleAttributeSet set_FINE;
-private JTextPane pane;
+	private StyledDocument document;
+	private SimpleAttributeSet set_SEVERE;
+	private SimpleAttributeSet set_WARNING;
+	private SimpleAttributeSet set_INFO;
+	private SimpleAttributeSet set_FINE;
+	private JTextPane pane;
 
 
 	/**
@@ -52,7 +47,6 @@ private JTextPane pane;
 
 			StyleConstants.setFontSize(set_WARNING, 14);
 			StyleConstants.setForeground(set_WARNING, Color_schema.log_fg_WARNING);
-
 
 			set_INFO = new SimpleAttributeSet();
 			StyleConstants.setBold(set_INFO, false);
