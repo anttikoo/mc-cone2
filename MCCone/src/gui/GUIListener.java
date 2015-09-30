@@ -748,8 +748,6 @@ public class GUIListener extends MouseInputAdapter {
 
 	}
 
-
-
 	/**
 	 * Sets the previous dragging point.
 	 *
