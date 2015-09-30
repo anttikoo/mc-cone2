@@ -23,17 +23,22 @@ import javax.swing.JTextArea;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+/**
+ * The Class InfoDialog. Opens dialog window for showing information of MC-Cone software.
+ */
 public class InfoDialog extends PropertiesDialog{
 	protected final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	public InfoDialog(JFrame frame, GUI gui, Point point) {
 		super(frame, gui, point);
-		// TODO Auto-generated constructor stub
 		initDialog();
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.PropertiesDialog#initUPPanels()
+	 */
 	protected JPanel initUPPanels(){
 		try {
-			// contains title and colorchooser panels
+			// contains title panel
 			JPanel upperBackPanel = new JPanel();
 			upperBackPanel.setLayout(new BoxLayout(upperBackPanel,BoxLayout.PAGE_AXIS));
 			upperBackPanel.setMaximumSize(new Dimension(panelWidth, 30));
@@ -49,6 +54,9 @@ public class InfoDialog extends PropertiesDialog{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.PropertiesDialog#initCenterPanels()
+	 */
 	protected JPanel initCenterPanels(){
 		JPanel infoPanel=new JPanel();
 		infoPanel.setLayout(new GridBagLayout());
@@ -109,6 +117,9 @@ public class InfoDialog extends PropertiesDialog{
 		return infoPanel;
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.PropertiesDialog#initDownPanel()
+	 */
 	protected JPanel initDownPanel() throws Exception{
 		// Setup buttons:
 		JPanel buttonPanel = new JPanel();
@@ -116,7 +127,7 @@ public class InfoDialog extends PropertiesDialog{
 		buttonPanel.setBackground(Color_schema.dark_30);
 		buttonPanel.setMinimumSize(new Dimension(50,40));
 
-		// Button for
+		// Button for OK
 		JButton okButton = new JButton("OK");
 		okButton.setPreferredSize(new Dimension(120,30));
 		okButton.setBackground(Color_schema.dark_20);
