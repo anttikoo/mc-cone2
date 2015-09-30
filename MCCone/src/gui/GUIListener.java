@@ -413,7 +413,7 @@ public class GUIListener extends MouseInputAdapter {
 
 
 	/**
-	 * Inits the space actions. 
+	 * Initializes the space action timers for activating and inactivating dragging.
 	 */
 	private void initSPACEactions(){
 		timerSPACEactivate=new Timer(50,new ActionListener() {
@@ -429,12 +429,13 @@ public class GUIListener extends MouseInputAdapter {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			
+				// stop activate timer
 				timerSPACEactivate.stop();
 				is_SPACE_pressed=false;
 				timerSPACEinactivate.stop();
 				
 				previousDraggingPoint=null; // no more dragging -> initialize the previousdragging point
+				// update visible image and markings
 				gui.setImage(taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
 				gui.updateCoordinatesOfVisibleMarkingPanels();
 		        gui.paintLayers();
@@ -443,6 +444,12 @@ public class GUIListener extends MouseInputAdapter {
 		});
 	}
 
+	/**
+	 * Adds shortcut keys to given components.
+	 *
+	 * @param component the component where shortcut keys are added.
+	 * @param componentID the component ID @see information.ID
+	 */
 	public void addKeyInputMap(JComponent component, int componentID){
 		if(componentID == ID.IMAGE_PANEL || componentID== ID.GLASS_PANE){
 			InputMap inputMap= (component).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -458,9 +465,7 @@ public class GUIListener extends MouseInputAdapter {
 				public void actionPerformed(ActionEvent e) {
 					
 					if(!timerSPACEactivate.isRunning()){
-						timerSPACEactivate.start();
-						
-					//	LOGGER.fine("activeted space timer");
+						timerSPACEactivate.start();					
 					}
 					if(timerSPACEinactivate.isRunning())
 						timerSPACEinactivate.stop();
@@ -476,21 +481,17 @@ public class GUIListener extends MouseInputAdapter {
 					if(timerSPACEactivate.isRunning() && !timerSPACEinactivate.isRunning()){
 						timerSPACEinactivate.start();
 						
-					//	LOGGER.fine("started inactiveted space timer");
 					}
 
 
 				}
 			});
 
-
 				actionMap.put("shift_pressed", new AbstractAction() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					//	System.out.println("ctrl released");
 						is_SHIFT_pressed=true;
-						LOGGER.fine("shift_pressed");
 
 					}
 				});
@@ -499,9 +500,7 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					//	System.out.println("ctrl released");
 						is_SHIFT_pressed=false;
-						LOGGER.fine("shift_released");
 
 					}
 				});
@@ -559,7 +558,7 @@ public class GUIListener extends MouseInputAdapter {
 				}
 			});
 
-		}
+		} // whole window listening keys
 		else if(componentID == ID.WHOLE_GUI_FRAME){
 
 			InputMap inputMap= (component).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -587,7 +586,6 @@ public class GUIListener extends MouseInputAdapter {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-				//	System.out.println("ctrl released");
 					is_CTRL_pressed=true;
 
 				}
@@ -597,104 +595,94 @@ public class GUIListener extends MouseInputAdapter {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-				//	System.out.println("ctrl released");
 					is_CTRL_pressed=false;
 
 				}
 			});
-
+			//Save markings
 			actionMap.put("save_pressed", new AbstractAction() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-				//	System.out.println("ctrl pressed");
 					gui.saveMarkings();
 
 				}
 			});
-
+				// export csv
 				actionMap.put("export_csv_pressed", new AbstractAction() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					//	System.out.println("ctrl released");
 						gui.exportResults(ID.FILE_TYPE_CSV);
 
 					}
 				});
-
+				// export images
 				actionMap.put("export_images_pressed", new AbstractAction() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					//	System.out.println("ctrl released");
 						gui.exportImages();
 
 					}
 				});
-
+				// managing layers
 				actionMap.put("manage_layers_pressed", new AbstractAction() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					//	System.out.println("ctrl released");
 						gui.manageImageLayersAndMarkings();
 
 					}
 				});
-
+				// adding layers
 				actionMap.put("add_layers_pressed", new AbstractAction() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					//	System.out.println("ctrl released");
 						gui.openAddImageLayerDialog(null);
 
 					}
 				});
-
+				// exportin tab delimited file
 				actionMap.put("export_tab_pressed", new AbstractAction() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					//	System.out.println("ctrl released");
 						gui.exportResults(ID.FILE_TYPE_TEXT_FILE);
 
 					}
 				});
-
+				// export results to clipboard
 				actionMap.put("export_clip_pressed", new AbstractAction() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					//	System.out.println("ctrl released");
 						gui.exportResults(ID.CLIPBOARD);
 
 					}
 				});
-				
+				// hiding all markings
 				actionMap.put("hide_all_markings_pressed", new AbstractAction() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					//	System.out.println("ctrl released");
 						if(is_SHIFT_pressed)
 							gui.setVisibilityOfAllMarkingLayers(false);
 						
 
 					}
 				});
-				
+				// showin all markings
 				actionMap.put("show_all_markings_pressed", new AbstractAction() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					//	System.out.println("ctrl released");
 						gui.setVisibilityOfAllMarkingLayers(true);
 
 					}
 				});
-
+				// zooming out
 				actionMap.put("zoom_out_pressed", new AbstractAction() {
 
 					@Override
@@ -702,7 +690,7 @@ public class GUIListener extends MouseInputAdapter {
 						gui.zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 0.8, ID.IMAGE_PROCESSING_BEST_QUALITY);
 					}
 				});
-
+				// zooming in
 				actionMap.put("zoom_in_pressed", new AbstractAction() {
 
 					@Override
@@ -718,6 +706,9 @@ public class GUIListener extends MouseInputAdapter {
 
 
 
+	/**
+	 * Inits the highlight timer.
+	 */
 	private void initHighlightTimer(){
 		this.hightLightTimer=new Timer(100, new ActionListener() {
 
@@ -725,18 +716,22 @@ public class GUIListener extends MouseInputAdapter {
 			public void actionPerformed(ActionEvent e) {
 				if(hightLightTimer.isRunning())
 					hightLightTimer.stop();
-
 			}
 		});
 	}
 
+	/**
+	 * Sets the variable is_CTRL_down to false;
+	 */
 	public void releaseCtrl(){
 		is_CTRL_pressed=false;
-		LOGGER.fine("release control");
 	}
 
 
 
+	/**
+	 * Inits the tiumer for zooming.
+	 */
 	private void initZoomTimer(){
 		this.zoomTimer=new Timer(100, new ActionListener() {
 
