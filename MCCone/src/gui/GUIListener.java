@@ -55,7 +55,7 @@ public class GUIListener extends MouseInputAdapter {
 	private JLayeredPane layers;
 	private JPanel downBarPanel;
 	private JSlider zoomSlider;
-	private JPanel sliderPanel;
+
 
 
 	/**
@@ -90,7 +90,8 @@ public class GUIListener extends MouseInputAdapter {
 				public void actionPerformed(ActionEvent e) {
 					
 					if(!timerSPACEactivate.isRunning()){
-						timerSPACEactivate.start();					
+						timerSPACEactivate.start();	
+						gui.setCursorOverLeftPanel(ID.CURSOR_HAND);
 					}
 					if(timerSPACEinactivate.isRunning())
 						timerSPACEinactivate.stop();
@@ -105,7 +106,7 @@ public class GUIListener extends MouseInputAdapter {
 					
 					if(timerSPACEactivate.isRunning() && !timerSPACEinactivate.isRunning()){
 						timerSPACEinactivate.start();
-						
+						gui.setCursorOverLeftPanel(ID.CURSOR_CROSS_HAIR);
 					}
 
 
@@ -433,6 +434,7 @@ public class GUIListener extends MouseInputAdapter {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				is_SPACE_pressed=true;
+				
 
 			}
 		});
@@ -450,6 +452,7 @@ public class GUIListener extends MouseInputAdapter {
 				// update visible image and markings
 				gui.setImage(taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
 				gui.updateCoordinatesOfVisibleMarkingPanels();
+				
 		        gui.paintLayers();
 
 			}
@@ -522,6 +525,7 @@ public class GUIListener extends MouseInputAdapter {
 				is_SPACE_pressed=false;
 				if(timerSPACEactivate.isRunning())
 				timerSPACEactivate.start(); // start counting from beginning
+				
 			}
 		}else if(e.getSource() instanceof PrecountGlassPane){
 			forwardGlassPaneEvent(e);
@@ -743,7 +747,7 @@ public class GUIListener extends MouseInputAdapter {
 		this.layers=layers;
 		this.downBarPanel=downBarPanel;
 		this.zoomSlider=zoomSlider;
-		this.sliderPanel=sliderPanel;
+		
 
 
 	}
