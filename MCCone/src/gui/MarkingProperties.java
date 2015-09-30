@@ -512,11 +512,9 @@ public class MarkingProperties extends PropertiesDialog {
 				  presentValue =1;
 
 			  this.thicknessSlider.setMaximum(maxValue);
-
 			  this.thicknessSlider.setValue(presentValue);
 			  this.thicknessJLabel.setText(""+presentValue);
 			  this.setSelectedThickness(presentValue);
-			//  this.thicknessSliderPanel.revalidate();
 			  this.thicknessSliderPanel.repaint();
 			  }
 		} catch (Exception e) {
@@ -533,18 +531,16 @@ public class MarkingProperties extends PropertiesDialog {
 	 * @param saveChanges boolean value should the changes be saved to MarkingLayer
 	 */
 	protected void hideDialog(boolean saveChanges){
-		//LOGGER.fine("color selected: " +colorChooser.getColor().toString());
 		if(saveChanges){
 			try {
+				// save changes to MarkingLayer and MarkingPanel
 			saveChanges(this.markingLayer);
 			gui.setMadeChanges(true);
 			} catch (Exception e) {
 				LOGGER.severe("Error in saving marking properties to MarkingLayer " +e.getClass().toString() + " :" +e.getMessage());
-
 			}
 			// update the GUI ImageLayerInfo JPanel
 			gui.updateMarkingPanelProperties(this.markingLayer.getLayerID());
-		//	gui.updateImageLayerInfos();
 
 		}
 		this.setVisible(false);
