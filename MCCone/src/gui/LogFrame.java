@@ -33,7 +33,6 @@ public class LogFrame extends JFrame{
 
 		try {
 
-
 			this.setTitle("LOG");
 			// create styles for different messages
 			document = new DefaultStyledDocument();
@@ -62,6 +61,7 @@ public class LogFrame extends JFrame{
 			pane = new JTextPane();
 			pane.setEditable(false);
 			pane.setBackground(Color_schema.log_bg );
+			//add scrollbar when needed
 			JScrollPane scrollPane = new JScrollPane(pane);
 			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -72,8 +72,6 @@ public class LogFrame extends JFrame{
 
 			e.printStackTrace();
 		}
-
-
 	}
 
 	/**
@@ -106,9 +104,6 @@ public class LogFrame extends JFrame{
 
 			e.printStackTrace();
 		}
-
 	}
-
-
 
 }
