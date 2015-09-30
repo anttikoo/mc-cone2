@@ -32,27 +32,20 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import operators.ShapeDrawer;
 
+/**
+ * The Class MarkingProperties. Opens the dialog for setting properties of markings
+ */
 public class MarkingProperties extends PropertiesDialog {
 	protected final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	protected GUI gui;
-	
 	private MarkingLayer markingLayer;
 	private JColorChooser colorChooser = null;
-	//private MarkingShape[] shapePanels;
 	private ShapeIcon shapeIcons[];
-//	private int maxHeight;
-
 	private JComboBox<Integer> shapeBox;
-	//private ShapeComboboxRenderer renderer;
 	private ComboBoxIconRenderer icon_renderer;
-
 	private JPanel boxAndSlidersPanel;
 	protected JPanel comboBoxPanel;
-//	private Font fontConsolas16;
-//	private Font fontConsolas14;
-//	private Font fontConsolasBold14;
 	private int[] shapeIDs;
-
 	protected Color selectedColor;
 	protected int selectedSize;
 	protected int selectedThickness;
@@ -67,20 +60,23 @@ public class MarkingProperties extends PropertiesDialog {
 	private JLabel sizeJLabel;
 	private JLabel opacityJLabel;
 	private JLabel thicknessJLabel;
-//	protected int panelHeight=500;
 	protected ArrayList<MarkingLayer> markingLayerList;
 	private ShapeDrawer shapeDrawer;
 	protected JLayeredPane layeredPane;
 	private PreviewShapePanel previewShapePanel;
 
-
-
+	/**
+	 * Instantiates a new marking properties.
+	 *
+	 * @param frame the parent frame
+	 * @param gui the GUI-object
+	 * @param point the point where mouse was pressed to open dialog
+	 * @param mLayer the MarkingLayer which properties is modified
+	 */
 	public MarkingProperties(JFrame frame, GUI gui, Point point, MarkingLayer mLayer){
 		super(frame, gui,point);
 		this.gui = gui;
 		
-
-	//	this.maxHeight=300;
 		if(mLayer != null){
 			this.markingLayer=mLayer;
 			this.setSelectedColor(this.markingLayer.getColor());
@@ -94,13 +90,18 @@ public class MarkingProperties extends PropertiesDialog {
 
 	}
 
+	/**
+	 * Instantiates a new marking properties.
+	 *
+	 * @param frame the parent frame
+	 * @param gui the GUI-object
+	 * @param point the point where mouse was pressed to open dialog
+	 * @param mLayerList ArrayList of MarkingLayers
+	 */
 	public MarkingProperties(JFrame frame, GUI gui, Point point, ArrayList<MarkingLayer> mLayerList){
 		super(frame, gui,point);
-		this.gui = gui;
-		
+		this.gui = gui;	
 		this.markingLayerList=mLayerList;
-	//	this.maxHeight=300;
-
 		initMarkingPropertiesPanel();
 
 	}
