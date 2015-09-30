@@ -326,7 +326,7 @@ public class GUIListener extends MouseInputAdapter {
 	}
 
 	/* 
-	 * 
+	 * Mediates the mouseWheelMoved Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
 	 * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
 	 */
 	@Override
@@ -344,6 +344,9 @@ public class GUIListener extends MouseInputAdapter {
 
 	}
 
+	/* Mediates the mouseWheelMoved Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
+	 * @see java.awt.event.MouseAdapter#mouseMoved(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		if(e.getSource() instanceof PrecountGlassPane){
@@ -363,42 +366,64 @@ public class GUIListener extends MouseInputAdapter {
 
 	}
 
+	/**
+	 * Returns true if precounting Thread is running. Otherwise false.
+	 * @return boolean true if Precounting Thread is running.
+	 */
 	public boolean isCellPickingON() {
 		return isCellPickingON;
 	}
 
+	/**
+	 *  Sets is the precounting Thread running.
+	 * @param isCellPickingON boolean running or not running
+	 */
 	public void setCellPickingON(boolean isCellPickingON) {
 		this.isCellPickingON = isCellPickingON;
 	}
 
+	/**
+	 * Gets the previous dragging point.
+	 *
+	 * @return the previous dragging point
+	 */
+	
 	public Point getPreviousDraggingPoint() {
 		return previousDraggingPoint;
 	}
 
+	/**
+	 * Sets the previous dragging point.
+	 *
+	 * @param previousDraggingPoint the new previous dragging point
+	 */
 	public void setPreviousDraggingPoint(Point previousDraggingPoint) {
 		this.previousDraggingPoint = previousDraggingPoint;
 	}
 
+	/**
+	 * Checks if is is space pressed.
+	 *
+	 * @return true, if space is pressed
+	 */
 	public boolean isIs_SPACE_pressed() {
 		return is_SPACE_pressed;
 	}
 
 
 
+	/**
+	 * Inits the space actions. 
+	 */
 	private void initSPACEactions(){
 		timerSPACEactivate=new Timer(50,new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				is_SPACE_pressed=true;
-				
-				
-			//	LOGGER.fine("is space pressed true");
-			//	timerSPACEactivated.stop();
-			//	LOGGER.fine("ended space timer-> not pressed");
+
 			}
 		});
-		//timerSPACEactivate.setDelay(1000);
 
 		timerSPACEinactivate = new Timer(110,new ActionListener() {
 
@@ -409,8 +434,6 @@ public class GUIListener extends MouseInputAdapter {
 				is_SPACE_pressed=false;
 				timerSPACEinactivate.stop();
 				
-				
-			//	LOGGER.fine("is space pressed false");
 				previousDraggingPoint=null; // no more dragging -> initialize the previousdragging point
 				gui.setImage(taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
 				gui.updateCoordinatesOfVisibleMarkingPanels();
