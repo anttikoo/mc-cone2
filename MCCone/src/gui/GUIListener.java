@@ -91,7 +91,7 @@ public class GUIListener extends MouseInputAdapter {
 					
 					if(!timerSPACEactivate.isRunning()){
 						timerSPACEactivate.start();	
-						gui.setCursorOverLeftPanel(ID.CURSOR_HAND);
+						
 					}
 					if(timerSPACEinactivate.isRunning())
 						timerSPACEinactivate.stop();
@@ -106,7 +106,7 @@ public class GUIListener extends MouseInputAdapter {
 					
 					if(timerSPACEactivate.isRunning() && !timerSPACEinactivate.isRunning()){
 						timerSPACEinactivate.start();
-						gui.setCursorOverLeftPanel(ID.CURSOR_CROSS_HAIR);
+						
 					}
 
 
@@ -434,6 +434,7 @@ public class GUIListener extends MouseInputAdapter {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				is_SPACE_pressed=true;
+				gui.setCursorOverLeftPanel(ID.CURSOR_HAND);
 				
 
 			}
@@ -447,7 +448,7 @@ public class GUIListener extends MouseInputAdapter {
 				timerSPACEactivate.stop();
 				is_SPACE_pressed=false;
 				timerSPACEinactivate.stop();
-				
+				gui.setCursorOverLeftPanel(ID.CURSOR_CROSS_HAIR);
 				previousDraggingPoint=null; // no more dragging -> initialize the previousdragging point
 				// update visible image and markings
 				gui.setImage(taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
