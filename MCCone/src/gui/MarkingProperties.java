@@ -43,7 +43,7 @@ public class MarkingProperties extends PropertiesDialog {
 	private ShapeIcon shapeIcons[];
 //	private int maxHeight;
 
-	private JComboBox shapeBox;
+	private JComboBox<Integer> shapeBox;
 	//private ShapeComboboxRenderer renderer;
 	private ComboBoxIconRenderer icon_renderer;
 
