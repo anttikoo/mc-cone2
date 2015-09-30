@@ -201,21 +201,22 @@ public class GUIListener extends MouseInputAdapter {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
+	/* 
+	 * When mouse clicked over ImagePanel and ctrl is pressed down the zooming is launched. Left-button -> zoom in; right-button -> zoom out.
+	 * If mouse was pressed on glasspane (Precounting running) -> the event is forwarded to method forwardGlassPaneEvent.
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource() instanceof ImagePanel){
 			if(is_CTRL_pressed){
 				double zoomValue= 0.8;
+				//Button1 -> zoom in
 				if(e.getButton() == MouseEvent.BUTTON1)
 					zoomValue=1.25;
 				gui.zoomAndUpdateImage(e.getPoint(), zoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
 			}
 		}
 		else if(e.getSource() instanceof PrecountGlassPane){
-		//	LOGGER.fine("clicked glass");
 			forwardGlassPaneEvent(e);
 		}
 
@@ -223,14 +224,14 @@ public class GUIListener extends MouseInputAdapter {
 	}
 
 	/* 
-	 * Mediates the MousePressed Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
+	 * Mediates the MousePressed Event to wanted procedure. Events of PrecountGlassPane are forwarded to @see gui.GUIListener#forwardGlassPaneEvent(java.awt.event.MouseEvent).
 	 * Computation of events of ImagePanel depends on which keys are pressed down or which threads are running at same time:
 	 * CTRL-down -> do nothing
 	 * SPACE-down -> dragging -> set init dragging point.
 	 * SHIFT-down -> select/unselect grid cell.
 	 * MOUSE-LEFT-button -> add marking
 	 * MOUSE-RIGHT-button -> remove marking and it's highlight point.
-	 * 
+	 * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -275,6 +276,7 @@ public class GUIListener extends MouseInputAdapter {
 	/* 
 	 * Mediates the MouseReleased Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
 	 * In ImagePanel made releasing sets previous dragging point as null. -> No More dragging.
+	 * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -299,23 +301,23 @@ public class GUIListener extends MouseInputAdapter {
 	}
 
 	/* 
-	 * 
+	 * Mediates the mouseWheelMoved Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
+	 * Single wheel movement zooms 25% in or out depending wheel movement direction.
+	 * @see java.awt.event.MouseAdapter#mouseWheelMoved(java.awt.event.MouseWheelEvent)
 	 */
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 
 			if(e.getSource() instanceof ImagePanel){
-				if(!zoomTimer.isRunning()){
-					zoomTimer.start();
-				//	System.out.println("scroll: " +e.getPreciseWheelRotation()+ " " +e.getWheelRotation() + " "+ e.getPoint().x+ " amount: " +e.getScrollAmount());
-					if(!is_SPACE_pressed){
-					//	LOGGER.fine("wheel crolled " +e.getWheelRotation());
-						double zoomValue=0.8;
-						if(e.getPreciseWheelRotation() <0){ // e.getWheelRotation works only in linux
-							zoomValue=1.25;
-						}
-						gui.zoomAndUpdateImage(e.getPoint(), zoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
-					}
+					// if previous zooming has stopped can start new zooming
+					if(!zoomTimer.isRunning()){
+						zoomTimer.start();									
+							double zoomValue=0.8;
+							if(e.getPreciseWheelRotation() <0){ // e.getWheelRotation works only in linux
+								zoomValue=1.25;
+							}
+							gui.zoomAndUpdateImage(e.getPoint(), zoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
+			
 				}
 			}else if(e.getSource() instanceof PrecountGlassPane){
 				forwardGlassPaneEvent(e);
@@ -323,6 +325,10 @@ public class GUIListener extends MouseInputAdapter {
 
 	}
 
+	/* 
+	 * 
+	 * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if(e.getSource() instanceof ImagePanel){
