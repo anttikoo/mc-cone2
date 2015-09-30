@@ -547,6 +547,11 @@ public class MarkingProperties extends PropertiesDialog {
 		dispose();
 	}
 
+	/**
+	 * Saves the made changes of properties to MarkingLayer.
+	 *
+	 * @param mLayer the MarkingLayer
+	 */
 	protected void saveChanges(MarkingLayer mLayer){
 		// save changes to markinglayer
 		// set color from colorchooser
@@ -585,18 +590,16 @@ public class MarkingProperties extends PropertiesDialog {
  */
 private JComboBox<Integer> setUpComboBox(){
 
-
 	try {
 		int[] tempIDlist = {ID.SHAPE_CIRCLE, ID.SHAPE_CROSS, ID.SHAPE_DIAMOND, ID.SHAPE_OVAL, ID.SHAPE_PLUS, ID.SHAPE_SQUARE, ID.SHAPE_TRIANGLE};
 		shapeIDs=new int[tempIDlist.length]; // can't initialize global variable other way
 
-	//	shapePanels = new MarkingShape[shapeIDs.length]; // 6 different shapes
 		shapeIcons = new ShapeIcon[shapeIDs.length];
 		Integer[] intArray = new Integer[shapeIDs.length];
 		for (int i = 0; i < shapeIDs.length; i++) {
 			shapeIDs[i]=tempIDlist[i];
 		    intArray[i] = new Integer(i);
-		   // shapePanels[i] = createShapePanel(shapeIDs[i]);
+		  
 		    shapeIcons[i] =  createShapeIcon(shapeIDs[i]);
 		}
 		JComboBox<Integer> box = new JComboBox<Integer>(intArray);
@@ -691,11 +694,7 @@ private int getselectedMarkingLayerShapeIndex(){
 	}
 
 }
-/*
-private MarkingShape createShapePanel(int shapeID){
-	return new MarkingShape(shapeID, 30, 30, colorChooser.getColor(), 1.0f, 1.0f, 15, 15);
-}
-*/
+
 
 /**
  * @return the size of shape
