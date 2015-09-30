@@ -434,6 +434,8 @@ public class GUIListener extends MouseInputAdapter {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				is_SPACE_pressed=true;
+				
+				// set cursor hand cursor - dragging state
 				gui.setCursorOverLeftPanel(ID.CURSOR_HAND);
 				
 
@@ -448,6 +450,7 @@ public class GUIListener extends MouseInputAdapter {
 				timerSPACEactivate.stop();
 				is_SPACE_pressed=false;
 				timerSPACEinactivate.stop();
+				// set cross hair cursor - default state
 				gui.setCursorOverLeftPanel(ID.CURSOR_CROSS_HAIR);
 				previousDraggingPoint=null; // no more dragging -> initialize the previousdragging point
 				// update visible image and markings
