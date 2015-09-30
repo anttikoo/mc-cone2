@@ -124,6 +124,14 @@ public class ShapeDrawer {
 		return g2d; // should newer be reached here
 	}
 
+	/**
+	 * Draw diamond.
+	 *
+	 * @param g2d the Graphics2D object.
+	 * @param x the top left horizontal point of shape
+	 * @param y the y top left vertical point of shape
+	 * @return the Graphics2D object.
+	 */
 	public Graphics2D drawDiamond(Graphics2D g2d, int x, int y){
 
 		Point[] middlePoints = getMiddlePoints(x, y);
@@ -155,6 +163,14 @@ public class ShapeDrawer {
 
 	}
 
+	/**
+	 * Draws a plus.
+	 *
+	 * @param g2d the Graphics2D object.
+	 * @param x the top left horizontal point of shape
+	 * @param y the y top left vertical point of shape
+	 * @return the Graphics2D object.
+	 */
 	public Graphics2D drawPlus(Graphics2D g2d, int x, int y){
 		Point[] middlePoints = getMiddlePoints(x, y);
 		Point up =middlePoints[0];
@@ -185,6 +201,14 @@ public class ShapeDrawer {
 
 	}
 
+	/**
+	 * Draws a cross.
+	 *
+	 * @param g2d the Graphics2D object.
+	 * @param x the top left horizontal point of shape
+	 * @param y the y top left vertical point of shape
+	 * @return the Graphics2D object.
+	 */
 	public Graphics2D drawCross(Graphics2D g2d, int x, int y){
 		Point[] cornerPoints = getCornerPoints(x, y);
 		Point upleft =cornerPoints[0];
@@ -214,6 +238,14 @@ public class ShapeDrawer {
 			return g2d;
 	}
 
+	/**
+	 * Draws a oval.
+	 *
+	 * @param g2d the Graphics2D object.
+	 * @param x the top left horizontal point of shape
+	 * @param y the y top left vertical point of shape
+	 * @return the Graphics2D object.
+	 */
 	public Graphics2D drawOval(Graphics2D g2d, int x, int y){
 		x=(int)((double)x-((double)shapeSize)/2);
 		y=(int)((double)y-((double)shapeSize)/2);
@@ -230,6 +262,14 @@ public class ShapeDrawer {
 		return g2d;
 	}
 
+	/**
+	 * Draws a square.
+	 *
+	 * @param g2d the Graphics2D object.
+	 * @param x the top left horizontal point of shape
+	 * @param y the y top left vertical point of shape
+	 * @return the Graphics2D object.
+	 */
 	public Graphics2D drawSquare(Graphics2D g2d, int x, int y){
 		x=(int)((double)x-((double)shapeSize)/2);
 		y=(int)((double)y-((double)shapeSize)/2);
@@ -246,6 +286,14 @@ public class ShapeDrawer {
 		return g2d;
 	}
 
+	/**
+	 * Draw circle.
+	 *
+	 * @param g2d the Graphics2D object.
+	 * @param x the top left horizontal point of shape
+	 * @param y the y top left vertical point of shape
+	 * @return the Graphics2D object.
+	 */
 	public Graphics2D drawCircle(Graphics2D g2d, int x, int y){
 		x=(int)((double)x-((double)shapeSize)/2);
 		y=(int)((double)y-((double)shapeSize)/2);
@@ -262,6 +310,14 @@ public class ShapeDrawer {
 		 return g2d;
 	}
 
+	/**
+	 * Draw triangle.
+	 *
+	 * @param g2d the Graphics2D object.
+	 * @param x the top left horizontal point of shape
+	 * @param y the y top left vertical point of shape
+	 * @return the Graphics2D object.	 
+	 */
 	public Graphics2D drawTriangle(Graphics2D g2d, int x, int y){
 		Point up = new Point((x),(int)((double)y-((double)shapeSize)/2));
 		Point downright = new Point((int)((double)x+((double)shapeSize)/2),(int)((double)y+((double)shapeSize)/2));
@@ -292,6 +348,13 @@ public class ShapeDrawer {
 	}
 
 
+	/**
+	 * Gets the middle points.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @return the middle points
+	 */
 	private Point[] getMiddlePoints(int x,int y){
 		Point up = new Point((x),(int)((double)y-((double)shapeSize)/2));
 		Point right = new Point((int)((double)x+((double)shapeSize)/2),y);
@@ -300,6 +363,13 @@ public class ShapeDrawer {
 		return new Point[]{up,right,down,left};
 	}
 
+	/**
+	 * Gets the corner points.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @return the corner points
+	 */
 	private Point[] getCornerPoints(int x,int y){
 		Point upLeft = new Point((int)((double)x-((double)shapeSize)/2),(int)((double)y-((double)shapeSize)/2));
 		Point upright = new Point((int)((double)x+((double)shapeSize)/2),(int)((double)y-((double)shapeSize)/2));
@@ -308,10 +378,20 @@ public class ShapeDrawer {
 		return new Point[]{upLeft,upright,downright,downleft};
 	}
 
+	/**
+	 * Gets the shape id.
+	 *
+	 * @return the shape id
+	 */
 	public int getShapeID() {
 		return shapeID;
 	}
 
+	/**
+	 * Sets the shape id.
+	 *
+	 * @param shapeID the new shape id
+	 */
 	public void setShapeID(int shapeID) {
 		this.shapeID = shapeID;
 	}
