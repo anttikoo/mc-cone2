@@ -411,29 +411,19 @@ public class MarkingProperties extends PropertiesDialog {
 					setSelectedSize(sizeSlider.getValue());
 					setMaximumThickness();
 					sizeJLabel.setText(""+sizeSlider.getValue());
-				//	previewShapePanel.setShapeSize(sizeSlider.getValue());
 					
 				}
 				else
 					if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.THICKNESS_SLIDER){
 
 						setSelectedThickness(thicknessSlider.getValue());
-						thicknessJLabel.setText(""+thicknessSlider.getValue());
-					//	previewShapePanel.setShapeThickness(changeIntToFloat(getSelectedThickness()));
+						thicknessJLabel.setText(""+thicknessSlider.getValue());			
 					}
 					else
 						if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.OPACITY_SLIDER){
-
 							setSelectedOpacity(opacitySlider.getValue()); // in slider int values 1-100 -> 0.01F-1.0F
-							opacityJLabel.setText(""+opacitySlider.getValue());
-						
-						
-						
-							
-
-						}
-				
-			//	previewShapePanel.repaint();
+							opacityJLabel.setText(""+opacitySlider.getValue());						
+						}			
 				}
 				
 			});
@@ -466,30 +456,29 @@ public class MarkingProperties extends PropertiesDialog {
 				
 				@Override
 				public void mousePressed(MouseEvent arg0) {
-					// TODO Auto-generated method stub
+					// do nothing
 					
 				}
 				
 				@Override
 				public void mouseExited(MouseEvent arg0) {
-					// TODO Auto-generated method stub
+					// do nothing
 					
 				}
 				
 				@Override
 				public void mouseEntered(MouseEvent arg0) {
-					// TODO Auto-generated method stub
+					// do nothing
 					
 				}
 				
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					// TODO Auto-generated method stub
+					// do nothing
 					
 				}
 			});
-			
-			
+					
 			backSliderPanel.add(labelPanel,BorderLayout.PAGE_START);
 			backSliderPanel.add(sliderPanel, BorderLayout.CENTER);
 			slider.setMaximumSize(new Dimension(350,40));
@@ -512,10 +501,10 @@ public class MarkingProperties extends PropertiesDialog {
 			int size = this.getSelectedSize();
 			  if(size >0){
 			  int maxValue = (int)(size/3);
-			  if(maxValue<1)
+			  if(maxValue<1) // set max value to 3 if goes to zero.
 				  maxValue =3;
 			  
-			  if(maxValue>20)
+			  if(maxValue>20) //set max value to maximum 20
 				  maxValue=20;
 
 			  int presentValue = (int)(maxValue/2);
