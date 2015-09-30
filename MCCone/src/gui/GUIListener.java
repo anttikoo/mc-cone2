@@ -73,7 +73,7 @@ public class GUIListener extends MouseInputAdapter {
 	 * Adds shortcut keys to given components.
 	 *
 	 * @param component the component where shortcut keys are added.
-	 * @param componentID the component ID @see information.ID
+	 * @param componentID the component ID
 	 */
 	public void addKeyInputMap(JComponent component, int componentID){
 		if(componentID == ID.IMAGE_PANEL || componentID== ID.GLASS_PANE){
@@ -563,7 +563,7 @@ public class GUIListener extends MouseInputAdapter {
 	}
 
 	/**
-	 * Mediates the MousePressed Event to wanted procedure. Events of PrecountGlassPane are forwarded to @see gui.GUIListener#forwardGlassPaneEvent(java.awt.event.MouseEvent).
+	 * Mediates the MousePressed Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
 	 * Computation of events of ImagePanel depends on which keys are pressed down or which threads are running at same time:
 	 * CTRL-down -> do nothing
 	 * SPACE-down -> dragging -> set init dragging point.
@@ -718,6 +718,20 @@ public class GUIListener extends MouseInputAdapter {
 		this.isCellPickingON = isCellPickingON;
 	}
 
+	/**
+	 * Sets the components. Components are used to check in which part of gui the mouse was pressed.
+	 *
+	 * @param gui the gui
+	 * @param tm the TaskManager
+	 * @param contentPane the content pane at gui
+	 * @param glassPane the glass pane of gui
+	 * @param imagePanel the visible image panel at gui
+	 * @param precountButton the precount button at gui
+	 * @param layers JLayeredPane containing Layers at gui
+	 * @param downBarPanel the down bar panel at gui
+	 * @param zoomSlider the zoom slider at gui
+	 * @param sliderPanel the slider panel at gui
+	 */
 	public void setComponents(GUI gui, TaskManager tm, Container contentPane, PrecountGlassPane glassPane, ImagePanel imagePanel,
 			AbstractButton precountButton, JLayeredPane layers, JPanel downBarPanel, JSlider zoomSlider, JPanel sliderPanel){
 		this.gui=gui;
