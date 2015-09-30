@@ -106,6 +106,9 @@ public class MarkingProperties extends PropertiesDialog {
 
 	}
 
+	/**
+	 * Initializes the marking properties panel.
+	 */
 	protected void initMarkingPropertiesPanel(){
 		initDialog();
 		this.revalidate();
@@ -113,17 +116,15 @@ public class MarkingProperties extends PropertiesDialog {
 	}
 	
 	/**
-	 *  Setups the components of Dialog window
+	 *  Initializes the components of Dialog window
 	 */
 	protected void initDialog(){
 		try {
-			//setup fonts
-
-		//	this.setBounds(gui.getBounds()); // sets the size of this dialog same as the GUI (the parent)
+			
+			//dim the screen around window 
 			this.setBounds(gui.getVisibleWindowBounds()); // sets the size of this dialog same as the GUI (the parent)
 			this.setUndecorated(true); // no titlebar or buttons
 			this.setBackground(new Color(0,0,0,0)); // transparent color
-//			if(checkBounds()) // if GUI is over screen -> not using dimming of GUI (dimming would be positioned wrong)
 			this.setContentPane(new ContentPane()); // makes dimming over GUI
 			this.getContentPane().setBackground(Color_schema.dark_30);
 			this.setLayout(null); // backpanel position is determined with setBounds(..)
@@ -137,9 +138,8 @@ public class MarkingProperties extends PropertiesDialog {
 			dimPane.setLayout(null);
 			dimPane.setBounds(this.getBounds());
 			dimPane.setBackground(Color.blue);
-	//		layeredPane.add(dimPane, JLayeredPane.DEFAULT_LAYER);
 			
-
+			// the window showing components
 			backPanel = new JPanel();
 			backPanel.setLayout(new BorderLayout());
 			backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 3));
@@ -159,9 +159,7 @@ public class MarkingProperties extends PropertiesDialog {
 			previewShapePanel = new PreviewShapePanel(this.getSelectedThickness(), changeIntToFloat(this.getSelectedOpacity()), this.getSelectedShapeID(), this.getSelectedSize(), this.getSelectedColor(), this.recOfBackpanel, gui.getVisibleWindowBounds());
 			layeredPane.add(previewShapePanel,JLayeredPane.DRAG_LAYER);
 			this.layeredPane.moveToFront(previewShapePanel);
-	//		this.layeredPane.moveToBack(dimPane);
-			
-			
+					
 			this.add(layeredPane);
 			this.repaint();
 
@@ -173,6 +171,9 @@ public class MarkingProperties extends PropertiesDialog {
 	}
 
 
+	/** 
+	 * Initializes the uppermost JPanel showing a color chooser. Color chooser is modified from default color chooser by removing swatch, rgb and hsb views.
+	 */
 	protected JPanel initUPPanels(){
 		// contains title and colorchooser panels
 					JPanel upperBackPanel= new JPanel();
@@ -187,7 +188,6 @@ public class MarkingProperties extends PropertiesDialog {
 					// contains label and colorchooser object
 					JPanel colorChooserPanel = new JPanel();
 					colorChooserPanel.setLayout(new BoxLayout(colorChooserPanel, BoxLayout.PAGE_AXIS));
-				//	colorChooserPanel.setBorder(BorderFactory.createLineBorder(Color_schema.dark_100, 1));
 
 					colorChooserPanel.setMaximumSize(new Dimension(panelWidth,140));
 					colorChooserPanel.setMinimumSize(new Dimension(panelWidth,140));
@@ -214,11 +214,7 @@ public class MarkingProperties extends PropertiesDialog {
 
 					// Retrieve the current set of panels
 					AbstractColorChooserPanel[] oldPanels = colorChooser.getChooserPanels();
-			/*		for (int i=0; i<oldPanels.length; i++) {
-						 String cName = oldPanels[i].getDisplayName();
-
-						// LOGGER.fine(" name:"+cName);
-					}*/
+			
 					// Remove all panels except the Swathces panel
 					for (int i=0; i<oldPanels.length; i++) {
 					    String clsName = oldPanels[i].getDisplayName();
@@ -274,6 +270,9 @@ public class MarkingProperties extends PropertiesDialog {
 					return upperBackPanel;
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.PropertiesDialog#initCenterPanels()
+	 */
 	protected JPanel initCenterPanels(){
 
 
@@ -295,6 +294,9 @@ public class MarkingProperties extends PropertiesDialog {
 		return  boxAndSlidersPanel;
 	}
 
+	/**
+	 * Setups the combobox JPanel for selecting shape of marking.
+	 */
 	protected void setUpComboBoXPanel(){
 		// contains JComboBox-component and label
 		comboBoxPanel = new JPanel();
@@ -313,109 +315,6 @@ public class MarkingProperties extends PropertiesDialog {
 
 	}
 
-
-
-
-/*
-	protected void setPanelPosition(){
-		Rectangle rec= getGoodBounds(); // calculates is the dialog panel going over the screen
-		if(rec != null)
-			backPanel.setBounds(rec);
-		else
-			backPanel.setBounds((int)(this.topLeftPoint.getX()-(panelWidth)), (int)this.topLeftPoint.getY(),this.panelWidth,this.panelHeight);
-	//	backPanel.setPreferredSize(new Dimension((int)colorChooser.getPreferredSize().getWidth(),(int)colorChooser.getPreferredSize().getHeight()+this.maxHeight));
-	//	comboBoxPanel.setMaximumSize(new Dimension((int)backPanel.getBounds().getWidth()-20,50));
-	//	comboBoxPanel.setPreferredSize(new Dimension((int)backPanel.getBounds().getWidth()-20,50));
-	}
-*/
-	/**
-	 * The method checks is GUI -window positioned outside of screen and returns value  true / false
-	 * @return boolean value true if the borders of window is exceeding screen size, otherwise false
-	 */
-	/*
-	private boolean checkBounds(){
-		LOGGER.fine("checkbounds" + gui.getBounds().getY() +" " +gui.getBounds().getHeight() +"" +gui.getScreenSize().getHeight());
-		if((gui.getBounds().getY() +gui.getBounds().getHeight()) > gui.getScreenSize().getHeight() ||
-				(gui.getBounds().getX() + gui.getBounds().getWidth()) > gui.getScreenSize().getWidth() ||
-				gui.getBounds().getX() <0 || gui.getBounds().getY() <0)
-			return false;
-		return true;
-	}
-*/
-	/**
-	 * Calculates the location and size values for Dialog window to fit in screen
-	 * @return Rectangle containing appropriate location and size values for the Dialog window.
-	 */
-	/*
-	private Rectangle getGoodBounds(){
-		try {
-			//this.topLeftPoint
-			int topleftX = (int)(this.topLeftPoint.getX()-colorChooser.getPreferredSize().getWidth());
-			int topleftY = (int)this.topLeftPoint.getY();
-			int width = (int)this.colorChooser.getPreferredSize().getWidth();
-			int height = (int)this.colorChooser.getPreferredSize().getHeight()+this.maxHeight;
-
-			int guiDownY=(int)(this.gui.getBounds().getHeight());
-
-			int guiRightX=(int)(this.gui.getBounds().getWidth());
-			int guiLeftX=(int)(this.gui.getBounds().getX());
-			int guiUpY=(int)(this.gui.getBounds().getY());
-
-			LOGGER.fine("height: " +this.gui.getBounds().getHeight() + " y: " +gui.getBounds().getY()+ "width: "+ this.gui.getBounds().getWidth()+ " x: "+gui.getBounds().getX());
-			// goes over at down
-			if(topleftY+height > guiDownY){
-				topleftY=guiDownY-height-50;
-				LOGGER.fine("over down");
-			}
-			else{
-				// goes over at up
-				if(topleftY<  guiUpY){
-					topleftY=guiUpY+50;
-					LOGGER.fine("over up");
-				}
-			}
-			// goes over at right
-			if(topleftX+width > guiRightX){
-				topleftX = guiRightX-width-50;
-				LOGGER.fine("over right");
-			}
-			else{
-				// goes over at left
-				if(topleftX <  guiLeftX){
-					topleftX = guiLeftX+50;
-					LOGGER.fine("over left");
-				}
-			}
-
-			// check is the bounds over screeen
-			// goes over at down
-			if(topleftY+height > gui.getScreenSize().getHeight()){
-				topleftY=(int)gui.getScreenSize().getHeight() -height-50;
-				LOGGER.fine("over screen down");
-			}
-			// goes down at right
-			if(topleftX+width > gui.getScreenSize().getWidth()){
-				topleftX = (int)gui.getScreenSize().getWidth()-width-50;
-				LOGGER.fine("over screen right");
-			}
-			// goes over at up
-			if(topleftY<  0){
-				topleftY=50;
-				LOGGER.fine("over screen up");
-			}
-			// goes over at left
-			if(topleftX <  0){
-				topleftX = 50;
-				LOGGER.fine("over screen left");
-			}
-
-			return new Rectangle(topleftX, topleftY, width , height);
-		} catch (Exception e) {
-			LOGGER.severe("Error in counting Bounds for MarkingProperties: " +e.getClass().toString() + " :" +e.getMessage() +"line: " +e.getStackTrace()[2].getLineNumber());
-			return null;
-		}
-	}
-*/
 	/**
 	 * Converts float value to integer. The value is multiplied with 100: float 0,1F -> integer 10.
 	 * @param fl float to be changed
@@ -528,7 +427,7 @@ public class MarkingProperties extends PropertiesDialog {
 							setSelectedOpacity(opacitySlider.getValue()); // in slider int values 1-100 -> 0.01F-1.0F
 							opacityJLabel.setText(""+opacitySlider.getValue());
 						
-						//	previewShapePanel.setShapeOpacity(changeIntToFloat(opacitySlider.getValue()));
+						
 						
 							
 
