@@ -752,9 +752,6 @@ public void setSelectedShapeID(int selectedShapeID) {
 	this.selectedShapeID = selectedShapeID;
 }
 
-private void refresh(){
-	this.repaint();
-}
 
 	/**
 	 * Custom renderer for JComboBox. It places icons to ComboBox list and manages drawing the effects when items viewed
@@ -774,7 +771,7 @@ private void refresh(){
 		setBackground(Color_schema.dark_40);
 	}
 
-	/*
+	/**
 	* This method finds the image and text corresponding
 	* to the selected value and returns the label, set up
 	* to display the text and image.
