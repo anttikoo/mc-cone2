@@ -41,7 +41,7 @@ public class PreviewShapePanel extends JPanel{
 		super.paintComponent(g);
 		
 		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0F));			// THIS WORKING IN LINUX
+	//	g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0F));			// THIS WORKING IN LINUX
 //		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_IN, 0.7f));		
 		/*	
 		g2d.setColor(Color.black);
