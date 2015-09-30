@@ -1,14 +1,11 @@
 package gui;
 
-import gui.panels.ImageLayerInfo;
+
 import information.Fonts;
 import information.InformationCenter;
-
-import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,8 +13,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.logging.Logger;
-
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -27,8 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-
-import operators.GetResources;
 
 public class InfoDialog extends PropertiesDialog{
 	protected final static Logger LOGGER = Logger.getLogger("MCCLogger");
