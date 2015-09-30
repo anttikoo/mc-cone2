@@ -35,9 +35,8 @@ import operators.ShapeDrawer;
 public class MarkingProperties extends PropertiesDialog {
 	protected final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	protected GUI gui;
-	private Point topLeftPoint;
+	
 	private MarkingLayer markingLayer;
-	//private boolean mouseEntered=false;
 	private JColorChooser colorChooser = null;
 	//private MarkingShape[] shapePanels;
 	private ShapeIcon shapeIcons[];
@@ -79,7 +78,7 @@ public class MarkingProperties extends PropertiesDialog {
 	public MarkingProperties(JFrame frame, GUI gui, Point point, MarkingLayer mLayer){
 		super(frame, gui,point);
 		this.gui = gui;
-		this.topLeftPoint=point;
+		
 
 	//	this.maxHeight=300;
 		if(mLayer != null){
@@ -98,7 +97,7 @@ public class MarkingProperties extends PropertiesDialog {
 	public MarkingProperties(JFrame frame, GUI gui, Point point, ArrayList<MarkingLayer> mLayerList){
 		super(frame, gui,point);
 		this.gui = gui;
-		this.topLeftPoint=point;
+		
 		this.markingLayerList=mLayerList;
 	//	this.maxHeight=300;
 
