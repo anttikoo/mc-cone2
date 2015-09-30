@@ -129,13 +129,10 @@ public class InfoDialog extends PropertiesDialog{
 			}
 		});
 
-
-
 		buttonPanel.add(Box.createHorizontalGlue());
 		buttonPanel.add(okButton);
 		buttonPanel.add(Box.createRigidArea(new Dimension(20,0)));
-
-
+		
 		return buttonPanel;
 	}
 
