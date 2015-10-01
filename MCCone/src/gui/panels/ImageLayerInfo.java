@@ -7,6 +7,7 @@ import gui.GUI;
 import gui.MarkingProperties;
 import gui.MouseListenerCreator;
 import gui.ShapeIcon;
+import gui.SingleMarkingProperties;
 import information.Fonts;
 import information.ID;
 import information.ImageLayer;
@@ -449,7 +450,7 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 												JFrame frame = new JFrame();
 												//MarkingProperties dialog = new MarkingProperties(frame, gui, ((JButton)e.getSource()).getLocationOnScreen(), editingMarking);
 												MarkingProperties dialog = new MarkingProperties(frame, gui, ((JButton)e.getSource()).getLocationOnScreen(), editingMarking);
-
+											
 													dialog.showDialog();
 													dialog =null;
 											}
