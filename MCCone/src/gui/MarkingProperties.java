@@ -61,9 +61,10 @@ public class MarkingProperties extends PropertiesDialog {
 	private JLabel opacityJLabel;
 	private JLabel thicknessJLabel;
 	protected ArrayList<MarkingLayer> markingLayerList;
-	private ShapeDrawer shapeDrawer;
+//	private ShapeDrawer shapeDrawer;
 	protected JLayeredPane layeredPane;
 	private PreviewShapePanel previewShapePanel;
+	private JPanel backPanelPreview;
 
 	/**
 	 * Instantiates a new marking properties.
@@ -84,7 +85,7 @@ public class MarkingProperties extends PropertiesDialog {
 			this.setSelectedThickness(this.markingLayer.getThickness());
 			this.setSelectedOpacity(changeUnderZeroFloatToInt(this.markingLayer.getOpacity()));
 			this.setSelectedShapeID(this.markingLayer.getShapeID());
-			this.shapeDrawer =new ShapeDrawer(mLayer.getShapeID(), getSelectedSize(), changeIntToFloat(getSelectedThickness()), this.markingLayer.getOpacity());
+		//	this.shapeDrawer =new ShapeDrawer(mLayer.getShapeID(), getSelectedSize(), changeIntToFloat(getSelectedThickness()), this.markingLayer.getOpacity(), this.markingLayer.getColor());
 		}
 		initMarkingPropertiesPanel();
 
@@ -133,12 +134,7 @@ public class MarkingProperties extends PropertiesDialog {
 			layeredPane.setLayout(null);
 			layeredPane.setBorder(BorderFactory.createEmptyBorder());
 			layeredPane.setBounds(this.getBounds());
-			
-			ContentPane dimPane = new ContentPane();
-			dimPane.setLayout(null);
-			dimPane.setBounds(this.getBounds());
-			dimPane.setBackground(Color.blue);
-			
+	
 			// the window showing components
 			backPanel = new JPanel();
 			backPanel.setLayout(new BorderLayout());
@@ -146,20 +142,19 @@ public class MarkingProperties extends PropertiesDialog {
 			backPanel.setMaximumSize(new Dimension(panelWidth,panelHeight));
 			backPanel.setMinimumSize(new Dimension(panelWidth,panelHeight));
 			backPanel.setPreferredSize(new Dimension(panelWidth,panelHeight));
-
+	
 			// set sizes and locations of components
 			setPanelPosition();
-			
+				
 			backPanel.add(initUPPanels(), BorderLayout.PAGE_START);
 			backPanel.add(initCenterPanels(), BorderLayout.CENTER);
 			backPanel.add(initDownPanel(),BorderLayout.PAGE_END);
 
-			layeredPane.add(backPanel,JLayeredPane.DEFAULT_LAYER);
-			
+			layeredPane.add(backPanel,JLayeredPane.DEFAULT_LAYER);		
 			previewShapePanel = new PreviewShapePanel(this.getSelectedThickness(), changeIntToFloat(this.getSelectedOpacity()), this.getSelectedShapeID(), this.getSelectedSize(), this.getSelectedColor(), this.recOfBackpanel, gui.getVisibleWindowBounds());
 			layeredPane.add(previewShapePanel,JLayeredPane.DRAG_LAYER);
-			this.layeredPane.moveToFront(previewShapePanel);
-					
+
+			this.layeredPane.moveToFront(previewShapePanel);				
 			this.add(layeredPane);
 			this.repaint();
 
