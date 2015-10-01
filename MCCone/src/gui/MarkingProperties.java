@@ -36,6 +36,7 @@ import operators.ShapeDrawer;
  * The Class MarkingProperties. Opens the dialog for setting properties of markings
  */
 public class MarkingProperties extends PropertiesDialog {
+	
 	protected final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	protected GUI gui;
 	private MarkingLayer markingLayer;
@@ -62,8 +63,24 @@ public class MarkingProperties extends PropertiesDialog {
 	private JLabel thicknessJLabel;
 	protected ArrayList<MarkingLayer> markingLayerList;
 	protected JLayeredPane layeredPane;
+
 	private PreviewShapePanel previewShapePanel;
-	private JPanel backPanelPreview;
+
+	/**
+	 * Instantiates a new marking properties.
+	 *
+	 * @param frame the parent frame
+	 * @param gui the GUI-object
+	 * @param point the point where mouse was pressed to open dialog
+	 * @param mLayerList ArrayList of MarkingLayers
+	 */
+	public MarkingProperties(JFrame frame, GUI gui, Point point, ArrayList<MarkingLayer> mLayerList){
+		super(frame, gui,point);
+		this.gui = gui;	
+		this.markingLayerList=mLayerList;
+		initMarkingPropertiesPanel();
+
+	}
 
 	/**
 	 * Instantiates a new marking properties.
@@ -88,225 +105,23 @@ public class MarkingProperties extends PropertiesDialog {
 		initMarkingPropertiesPanel();
 
 	}
-
-	/**
-	 * Instantiates a new marking properties.
-	 *
-	 * @param frame the parent frame
-	 * @param gui the GUI-object
-	 * @param point the point where mouse was pressed to open dialog
-	 * @param mLayerList ArrayList of MarkingLayers
-	 */
-	public MarkingProperties(JFrame frame, GUI gui, Point point, ArrayList<MarkingLayer> mLayerList){
-		super(frame, gui,point);
-		this.gui = gui;	
-		this.markingLayerList=mLayerList;
-		initMarkingPropertiesPanel();
-
-	}
-
-	/**
-	 * Initializes the marking properties panel.
-	 */
-	protected void initMarkingPropertiesPanel(){
-		initDialog();
-		this.revalidate();
-		this.repaint();
-	}
 	
 	/**
-	 *  Initializes the components of Dialog window
+	 * Converts integer value to float. The value isdivided with 100: int 10 -> float 0,1F.
+	 * @param value integer value to be converted
+	 * @return parameter integer value / 100 as float
 	 */
-	protected void initDialog(){
+	protected float changeIntToFloat(int value){
 		try {
-			
-			//dim the screen around window 
-			this.setBounds(gui.getVisibleWindowBounds()); // sets the size of this dialog same as the GUI (the parent)
-			this.setUndecorated(true); // no titlebar or buttons
-			this.setBackground(new Color(0,0,0,0)); // transparent color
-			this.setContentPane(new ContentPane()); // makes dimming over GUI
-			this.getContentPane().setBackground(Color_schema.dark_30);
-			this.setLayout(null); // backpanel position is determined with setBounds(..)
-			
-			layeredPane=new JLayeredPane();
-			layeredPane.setLayout(null);
-			layeredPane.setBorder(BorderFactory.createEmptyBorder());
-			layeredPane.setBounds(this.getBounds());
-	
-			// the window showing components
-			backPanel = new JPanel();
-			backPanel.setLayout(new BorderLayout());
-			backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 3));
-			backPanel.setMaximumSize(new Dimension(panelWidth,panelHeight));
-			backPanel.setMinimumSize(new Dimension(panelWidth,panelHeight));
-			backPanel.setPreferredSize(new Dimension(panelWidth,panelHeight));
-	
-			// set sizes and locations of components
-			setPanelPosition();
-				
-			backPanel.add(initUPPanels(), BorderLayout.PAGE_START);
-			backPanel.add(initCenterPanels(), BorderLayout.CENTER);
-			backPanel.add(initDownPanel(),BorderLayout.PAGE_END);
-
-			layeredPane.add(backPanel,JLayeredPane.DEFAULT_LAYER);		
-			previewShapePanel = new PreviewShapePanel(this.getSelectedThickness(), changeIntToFloat(this.getSelectedOpacity()), this.getSelectedShapeID(), this.getSelectedSize(), this.getSelectedColor(), this.recOfBackpanel, gui.getVisibleWindowBounds());
-			layeredPane.add(previewShapePanel,JLayeredPane.DRAG_LAYER);
-
-			this.layeredPane.moveToFront(previewShapePanel);				
-			this.add(layeredPane);
-			this.repaint();
-
-
+			float valueF = (float)value/100;
+			return valueF;
 		} catch (Exception e) {
-			LOGGER.severe("Error in initializing PropertiesDialog: " +e.getClass().toString() + " :" +e.getMessage() +" line: " +e.getStackTrace()[2].getLineNumber());
-			e.printStackTrace();
+			LOGGER.severe("Error in converting float to int: " +e.getClass().toString() + " :" +e.getMessage());
+			return 1.0F;
 		}
-	}
-
-
-	/** 
-	 * Initializes the uppermost JPanel showing a color chooser. Color chooser is modified from default color chooser by removing swatch, rgb and hsb views.
-	 */
-	protected JPanel initUPPanels(){
-		// contains title and colorchooser panels
-					JPanel upperBackPanel= new JPanel();
-					upperBackPanel.setLayout(new BoxLayout(upperBackPanel, BoxLayout.PAGE_AXIS));
-
-
-					upperBackPanel.setMaximumSize(new Dimension(panelWidth,180));
-					upperBackPanel.setMinimumSize(new Dimension(panelWidth,180));
-					upperBackPanel.setPreferredSize(new Dimension(panelWidth,180));
-
-
-					// contains label and colorchooser object
-					JPanel colorChooserPanel = new JPanel();
-					colorChooserPanel.setLayout(new BoxLayout(colorChooserPanel, BoxLayout.PAGE_AXIS));
-
-					colorChooserPanel.setMaximumSize(new Dimension(panelWidth,140));
-					colorChooserPanel.setMinimumSize(new Dimension(panelWidth,140));
-					colorChooserPanel.setPreferredSize(new Dimension(panelWidth,140));
-
-					// contains colorChooser-component
-					JPanel colorLabelJPanel = new JPanel();
-					colorLabelJPanel.setLayout(new FlowLayout(FlowLayout.LEFT,10,6));
-					colorLabelJPanel.setMinimumSize(new Dimension(panelWidth,30));
-					colorLabelJPanel.setMinimumSize(new Dimension(panelWidth,30));
-					colorLabelJPanel.setMinimumSize(new Dimension(panelWidth,30));
-					JLabel setColorLabel = new JLabel("SELECT COLOR:");
-
-					setColorLabel.setFont(Fonts.b14);
-
-					colorLabelJPanel.add(setColorLabel);
-
-					colorChooserPanel.add(colorLabelJPanel);
-
-					// setup colorchooser
-					colorChooser = new JColorChooser(this.getSelectedColor());
-					colorChooser.setPreviewPanel(new JPanel());
-
-
-					// Retrieve the current set of panels
-					AbstractColorChooserPanel[] oldPanels = colorChooser.getChooserPanels();
-			
-					// Remove all panels except the Swathces panel
-					for (int i=0; i<oldPanels.length; i++) {
-					    String clsName = oldPanels[i].getDisplayName();
-					    if (clsName.equals("HSV")) {
-					        // Remove swatch chooser if desired
-					        colorChooser.removeChooserPanel(oldPanels[i]);
-					    } else if (clsName.equals("HSL")) {
-					        // Remove rgb chooser if desired
-					        colorChooser.removeChooserPanel(oldPanels[i]);
-					    } else if (clsName.equals("RGB")) {
-					        // Remove hsb chooser if desired
-					        colorChooser.removeChooserPanel(oldPanels[i]);
-					    }
-					    else if (clsName.equals("CMYK")) {
-					        // Remove hsb chooser if desired
-					        colorChooser.removeChooserPanel(oldPanels[i]);
-					    }
-
-					}
-					AbstractColorChooserPanel swatchPanel = colorChooser.getChooserPanels()[0]; // get the first panel that is swatchPanel
-					JPanel p = (JPanel) swatchPanel.getComponent(0); //get JPanel
-					p.remove(2);	// Remove the recent Panel
-					p.remove(1);	// Remove the recent JLabel
-
-
-					// listen when new color is selected
-					colorChooser.getSelectionModel().addChangeListener(new ChangeListener() {
-
-						@Override
-						public void stateChanged(ChangeEvent arg0) {
-							if(colorChooser.getColor() != null){
-								setSelectedColor(colorChooser.getColor());
-							}
-							// update shapeBox's shape color
-							if(shapeBox != null){
-								shapeBox=setUpComboBox();
-								comboBoxPanel.repaint();
-							}
-							
-							if(previewShapePanel != null){
-								previewShapePanel.setShapeColor(selectedColor);
-								previewShapePanel.repaint();
-								
-							}
-
-
-
-						}
-					});
-					colorChooserPanel.add(colorChooser);
-					upperBackPanel.add(initTitlePanel("EDIT MARKING PROPERTIES"));
-					upperBackPanel.add(colorChooserPanel);
-					return upperBackPanel;
-	}
-
-	/* (non-Javadoc)
-	 * @see gui.PropertiesDialog#initCenterPanels()
-	 */
-	protected JPanel initCenterPanels(){
-
-
-		// contains combobox and slider panels
-		boxAndSlidersPanel = new JPanel();
-		boxAndSlidersPanel.setLayout(new BoxLayout(boxAndSlidersPanel, BoxLayout.PAGE_AXIS));
-		setUpComboBoXPanel();
-		if(comboBoxPanel != null)
-		boxAndSlidersPanel.add(comboBoxPanel);
-
-		// Setup sliders for size, opacity, thickness
-		sizeSliderPanel = setUpSLiderPanel(ID.SIZE_SLIDER, "SET SIZE: ", 5, 100, this.getSelectedSize(), 10, 100);
-		thicknessSliderPanel = setUpSLiderPanel(ID.THICKNESS_SLIDER, "SET THICKNESS: ", 1, 20, this.getSelectedThickness(), 1, 5);
-		opacitySliderPanel = setUpSLiderPanel(ID.OPACITY_SLIDER, "SET OPACITY: ", 1, 100, this.getSelectedOpacity(), 10, 100);
-		boxAndSlidersPanel.add(sizeSliderPanel);
-		boxAndSlidersPanel.add(thicknessSliderPanel);
-		boxAndSlidersPanel.add(opacitySliderPanel);
-
-		return  boxAndSlidersPanel;
-	}
-
-	/**
-	 * Setups the combobox JPanel for selecting shape of marking.
-	 */
-	protected void setUpComboBoXPanel(){
-		// contains JComboBox-component and label
-		comboBoxPanel = new JPanel();
-		comboBoxPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-		comboBoxPanel.setMaximumSize(new Dimension(panelWidth,50));
-		comboBoxPanel.setMinimumSize(new Dimension(panelWidth,50));
-		comboBoxPanel.setPreferredSize(new Dimension(panelWidth,50));
-
-		JLabel boxLabel = new JLabel("SELECT SHAPE: ");
-		boxLabel.setFont(Fonts.b14);
-
-		// Setup JCompoBox for selecting shape
-		shapeBox = setUpComboBox();
-		comboBoxPanel.add(boxLabel);
-		comboBoxPanel.add(shapeBox);
 
 	}
+
 
 	/**
 	 * Converts float value to integer. The value is multiplied with 100: float 0,1F -> integer 10.
@@ -324,200 +139,86 @@ public class MarkingProperties extends PropertiesDialog {
 	}
 
 	/**
-	 * Converts integer value to float. The value isdivided with 100: int 10 -> float 0,1F.
-	 * @param value integer value to be converted
-	 * @return parameter integer value / 100 as float
+	 * Manages creation of shape Icon
+	 * @param id shape ID. @see information.ID
+	 * @return Custom Icon with painted shape
 	 */
-	protected float changeIntToFloat(int value){
-		try {
-			float valueF = (float)value/100;
-			return valueF;
-		} catch (Exception e) {
-			LOGGER.severe("Error in converting float to int: " +e.getClass().toString() + " :" +e.getMessage());
-			return 1.0F;
-		}
-
+	private ShapeIcon createShapeIcon(int id){
+		return new ShapeIcon(id, 32,32,getSelectedColor(), Color_schema.dark_40);
 	}
 
 	/**
-	 * Creates JPanel containing JSlider for changing numerical properties of MarkingLayer.
-	 * @param typeOfSlider ID for identifying the slider type. @see information.ID
-	 * @param labelText the string title to be shown
-	 * @param minValue the minimum value of slider
-	 * @param maxValue the maximum value of slider
-	 * @param initValue the selected value of slider in the beginning
-	 * @param minorTicks the minor thicks of slider
-	 * @param majorTicks the major thicks of slider
-	 * @return a JPanel containing title, slider and label showing selected value
+	 *
+	 * @return the selected color for marking
 	 */
-	private JPanel setUpSLiderPanel(int typeOfSlider, String labelText, int minValue, int maxValue, int initValue, int minorTicks, int majorTicks){
+	private Color getSelectedColor(){
+		return this.selectedColor;
+	}
+
+	/**
+	 * Gives the index of shape JCombobox corresponding to shapeID of MarkingLayer
+	 * @return int index of combobox corresponding for Shape in MarkingLayer
+	 */
+	private int getselectedMarkingLayerShapeIndex(){
 		try {
-
-			JPanel backSliderPanel=new JPanel();
-			backSliderPanel.setLayout(new BorderLayout(2,2));
-			backSliderPanel.setBorder(BorderFactory.createLineBorder(Color_schema.dark_100, 1));
-			JPanel sliderPanel = new JPanel();
-			sliderPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-
-			JPanel labelPanel=new JPanel();
-			labelPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 3, 2));
-			JLabel label = new JLabel(labelText);
-
-			label.setFont(Fonts.b14);
-			JSlider slider = new JSlider(JSlider.HORIZONTAL,minValue,maxValue, initValue);
-			slider.putClientProperty("type", typeOfSlider);
-
-
-			JLabel numberLabel = new JLabel(""+initValue);
-			numberLabel.putClientProperty("name", ID.NUMBER_LABEL); // by adding this can JLabels be identified in statechanged -listener
-			numberLabel.setFont(Fonts.b14);
-
-			slider.setMajorTickSpacing(majorTicks);
-			slider.setMinorTickSpacing(minorTicks);
-			slider.setPaintTicks(true);
-
-			// select the slider type
-			switch (typeOfSlider){
-			case ID.SIZE_SLIDER:
-				this.sizeSlider = slider;
-				this.sizeJLabel = numberLabel;
-				break;
-			case ID.THICKNESS_SLIDER:
-				this.thicknessSlider = slider;
-				this.thicknessJLabel = numberLabel;
-				break;
-			case ID.OPACITY_SLIDER:
-				this.opacitySlider=slider;
-				this.opacityJLabel = numberLabel;
-				break;
+			for(int i=0;i < this.shapeIDs.length; i++){
+				if(shapeIDs[i] == this.getSelectedShapeID()){
+					LOGGER.fine("found shapeID: "+i);
+					return i;
+				}
 			}
-			labelPanel.add(label);
-			sliderPanel.add(slider);
-			sliderPanel.add(numberLabel);
-
-			slider.addChangeListener(new ChangeListener() {
-
-				@Override
-				public void stateChanged(ChangeEvent e) {
-
-				if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){
-					setSelectedSize(sizeSlider.getValue());
-					setMaximumThickness();
-					sizeJLabel.setText(""+sizeSlider.getValue());
-					
-				}
-				else
-					if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.THICKNESS_SLIDER){
-
-						setSelectedThickness(thicknessSlider.getValue());
-						thicknessJLabel.setText(""+thicknessSlider.getValue());			
-					}
-					else
-						if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.OPACITY_SLIDER){
-							setSelectedOpacity(opacitySlider.getValue()); // in slider int values 1-100 -> 0.01F-1.0F
-							opacityJLabel.setText(""+opacitySlider.getValue());						
-						}			
-				}
-				
-			});
-			
-			slider.addMouseListener(new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){					
-						previewShapePanel.setShapeSize(sizeSlider.getValue());
-						if(thicknessSlider !=null && thicknessSlider.getValue() >0)
-						previewShapePanel.setShapeThickness(thicknessSlider.getValue());
-						
-					}
-					else
-						if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.THICKNESS_SLIDER){
-							previewShapePanel.setShapeThickness(thicknessSlider.getValue());
-						}
-						else
-							if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.OPACITY_SLIDER){
-								previewShapePanel.setShapeOpacity(changeIntToFloat(opacitySlider.getValue()));
-							
-								
-
-							}
-
-					previewShapePanel.repaint();
-					
-				}
-				
-				@Override
-				public void mousePressed(MouseEvent arg0) {
-					// do nothing
-					
-				}
-				
-				@Override
-				public void mouseExited(MouseEvent arg0) {
-					// do nothing
-					
-				}
-				
-				@Override
-				public void mouseEntered(MouseEvent arg0) {
-					// do nothing
-					
-				}
-				
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-					// do nothing
-					
-				}
-			});
-					
-			backSliderPanel.add(labelPanel,BorderLayout.PAGE_START);
-			backSliderPanel.add(sliderPanel, BorderLayout.CENTER);
-			slider.setMaximumSize(new Dimension(350,40));
-			slider.setPreferredSize(new Dimension(350,40));
-
-			return backSliderPanel;
+			LOGGER.fine("doesn't found shapeID");
+			return 0;
 		} catch (Exception e) {
-			LOGGER.severe("Error in initializing sliders: " +e.getClass().toString() + " :" +e.getMessage());
-			return null;
+			LOGGER.severe("Error in searching selected shape of Markinglayer as combobox index: " +e.getClass().toString() + " :" +e.getMessage());
+			return 0;
 		}
+	
+	}
+
+	/**
+	 * @return the selected opacity (float)
+	 */
+	public int getSelectedOpacity() {
+		return this.selectedOpacity;
+	}
+
+	/**
+	 * @return the shape ID of selected shape. @see information.ID
+	 */
+	public int getSelectedShapeID() {
+		return this.selectedShapeID;
 	}
 
 
 	  /**
-	 *  This method is called when the value of sizeSlider is changed.
-	 *  -> Changes the maximum and present value of thicknessSlider, because small shape shouldn't be very thick.
+	 * @return the size of shape
 	 */
-	private void setMaximumThickness(){
-		  try {
-			int size = this.getSelectedSize();
-			  if(size >0){
-			  int maxValue = (int)(size/3);
-			  if(maxValue<1) // set max value to 3 if goes to zero.
-				  maxValue =3;
-			  
-			  if(maxValue>20) //set max value to maximum 20
-				  maxValue=20;
-
-			  int presentValue = (int)(maxValue/2);
-			  if(presentValue <1)
-				  presentValue =1;
-
-			  this.thicknessSlider.setMaximum(maxValue);
-			  this.thicknessSlider.setValue(presentValue);
-			  this.thicknessJLabel.setText(""+presentValue);
-			  this.setSelectedThickness(presentValue);
-			  this.thicknessSliderPanel.repaint();
-			  }
-		} catch (Exception e) {
-			LOGGER.severe("Error in changing maximumThickenss values: " +e.getClass().toString() + " :" +e.getMessage());
-
-		}
-
-	  }
+	public int getSelectedSize() {
+		return selectedSize;
+	}
 
 
+
+	/**
+	 * @return the selected thickness (int)
+	 */
+	public int getSelectedThickness() {
+		return selectedThickness;
+	}
+
+	/**
+	 * Return shape ID (int) located from shapeIDs-array at given index
+	 * @param index the index of shapeComboBox
+	 * @return ID (int) of shape that corresponds to shapeIDs -array at given index
+	 */
+	private int getShapeIDfromComboBoxIndex(int index){
+	
+		if(index >=0 && index < shapeIDs.length)
+			return shapeIDs[index];
+	
+		return shapeIDs[0];
+	}
 
 	/**
 	 * Hides Dialog window and saves the changes made to MarkingLayer.
@@ -540,41 +241,287 @@ public class MarkingProperties extends PropertiesDialog {
 		dispose();
 	}
 
-	/**
-	 * Saves the made changes of properties to MarkingLayer.
-	 *
-	 * @param mLayer the MarkingLayer
-	 */
-	protected void saveChanges(MarkingLayer mLayer){
-		// save changes to markinglayer
-		// set color from colorchooser
-		mLayer.setColor(this.getSelectedColor());
-		// set shape id
-		mLayer.setShapeID(this.getSelectedShapeID());
-		if(this.getSelectedSize()>0){
-			// set size value
-			mLayer.setSize(this.getSelectedSize());
-		}
 
-		if(this.getSelectedThickness()>0){
-			// set thickness value
-			mLayer.setThickness(this.getSelectedThickness());
-		}
 
-		if(this.getSelectedOpacity()> 0.0F){
-			// set opacity value
-			mLayer.setOpacity(changeIntToFloat(this.getSelectedOpacity()));
-		}
+/* (non-Javadoc)
+ * @see gui.PropertiesDialog#initCenterPanels()
+ */
+protected JPanel initCenterPanels(){
+
+
+	// contains combobox and slider panels
+	boxAndSlidersPanel = new JPanel();
+	boxAndSlidersPanel.setLayout(new BoxLayout(boxAndSlidersPanel, BoxLayout.PAGE_AXIS));
+	setUpComboBoXPanel();
+	if(comboBoxPanel != null)
+	boxAndSlidersPanel.add(comboBoxPanel);
+
+	// Setup sliders for size, opacity, thickness
+	sizeSliderPanel = setUpSLiderPanel(ID.SIZE_SLIDER, "SET SIZE: ", 5, 100, this.getSelectedSize(), 10, 100);
+	thicknessSliderPanel = setUpSLiderPanel(ID.THICKNESS_SLIDER, "SET THICKNESS: ", 1, 20, this.getSelectedThickness(), 1, 5);
+	opacitySliderPanel = setUpSLiderPanel(ID.OPACITY_SLIDER, "SET OPACITY: ", 1, 100, this.getSelectedOpacity(), 10, 100);
+	boxAndSlidersPanel.add(sizeSliderPanel);
+	boxAndSlidersPanel.add(thicknessSliderPanel);
+	boxAndSlidersPanel.add(opacitySliderPanel);
+
+	return  boxAndSlidersPanel;
+}
+
+/**
+ *  Initializes the components of Dialog window
+ */
+protected void initDialog(){
+	try {
+		
+		//dim the screen around window 
+		this.setBounds(gui.getVisibleWindowBounds()); // sets the size of this dialog same as the GUI (the parent)
+		this.setUndecorated(true); // no titlebar or buttons
+		this.setBackground(new Color(0,0,0,0)); // transparent color
+		this.setContentPane(new ContentPane()); // makes dimming over GUI
+		this.getContentPane().setBackground(Color_schema.dark_30);
+		this.setLayout(null); // backpanel position is determined with setBounds(..)
+		
+		layeredPane=new JLayeredPane();
+		layeredPane.setLayout(null);
+		layeredPane.setBorder(BorderFactory.createEmptyBorder());
+		layeredPane.setBounds(this.getBounds());
+
+		// the window showing components
+		backPanel = new JPanel();
+		backPanel.setLayout(new BorderLayout());
+		backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 3));
+		backPanel.setMaximumSize(new Dimension(panelWidth,panelHeight));
+		backPanel.setMinimumSize(new Dimension(panelWidth,panelHeight));
+		backPanel.setPreferredSize(new Dimension(panelWidth,panelHeight));
+
+		// set sizes and locations of components
+		setPanelPosition();
+			
+		backPanel.add(initUPPanels(), BorderLayout.PAGE_START);
+		backPanel.add(initCenterPanels(), BorderLayout.CENTER);
+		backPanel.add(initDownPanel(),BorderLayout.PAGE_END);
+
+		layeredPane.add(backPanel,JLayeredPane.DEFAULT_LAYER);		
+		previewShapePanel = new PreviewShapePanel(this.getSelectedThickness(), changeIntToFloat(this.getSelectedOpacity()), this.getSelectedShapeID(), this.getSelectedSize(), this.getSelectedColor(), this.recOfBackpanel, gui.getVisibleWindowBounds());
+		layeredPane.add(previewShapePanel,JLayeredPane.DRAG_LAYER);
+
+		this.layeredPane.moveToFront(previewShapePanel);				
+		this.add(layeredPane);
+		this.repaint();
+
+
+	} catch (Exception e) {
+		LOGGER.severe("Error in initializing PropertiesDialog: " +e.getClass().toString() + " :" +e.getMessage() +" line: " +e.getStackTrace()[2].getLineNumber());
+		e.printStackTrace();
+	}
+}
+
+/**
+ * Initializes the marking properties panel.
+ */
+protected void initMarkingPropertiesPanel(){
+	initDialog();
+	this.revalidate();
+	this.repaint();
+}
+
+/** 
+ * Initializes the uppermost JPanel showing a color chooser. Color chooser is modified from default color chooser by removing swatch, rgb and hsb views.
+ */
+protected JPanel initUPPanels(){
+	// contains title and colorchooser panels
+				JPanel upperBackPanel= new JPanel();
+				upperBackPanel.setLayout(new BoxLayout(upperBackPanel, BoxLayout.PAGE_AXIS));
+
+
+				upperBackPanel.setMaximumSize(new Dimension(panelWidth,180));
+				upperBackPanel.setMinimumSize(new Dimension(panelWidth,180));
+				upperBackPanel.setPreferredSize(new Dimension(panelWidth,180));
+
+
+				// contains label and colorchooser object
+				JPanel colorChooserPanel = new JPanel();
+				colorChooserPanel.setLayout(new BoxLayout(colorChooserPanel, BoxLayout.PAGE_AXIS));
+
+				colorChooserPanel.setMaximumSize(new Dimension(panelWidth,140));
+				colorChooserPanel.setMinimumSize(new Dimension(panelWidth,140));
+				colorChooserPanel.setPreferredSize(new Dimension(panelWidth,140));
+
+				// contains colorChooser-component
+				JPanel colorLabelJPanel = new JPanel();
+				colorLabelJPanel.setLayout(new FlowLayout(FlowLayout.LEFT,10,6));
+				colorLabelJPanel.setMinimumSize(new Dimension(panelWidth,30));
+				colorLabelJPanel.setMinimumSize(new Dimension(panelWidth,30));
+				colorLabelJPanel.setMinimumSize(new Dimension(panelWidth,30));
+				JLabel setColorLabel = new JLabel("SELECT COLOR:");
+
+				setColorLabel.setFont(Fonts.b14);
+
+				colorLabelJPanel.add(setColorLabel);
+
+				colorChooserPanel.add(colorLabelJPanel);
+
+				// setup colorchooser
+				colorChooser = new JColorChooser(this.getSelectedColor());
+				colorChooser.setPreviewPanel(new JPanel());
+
+
+				// Retrieve the current set of panels
+				AbstractColorChooserPanel[] oldPanels = colorChooser.getChooserPanels();
+		
+				// Remove all panels except the Swathces panel
+				for (int i=0; i<oldPanels.length; i++) {
+				    String clsName = oldPanels[i].getDisplayName();
+				    if (clsName.equals("HSV")) {
+				        // Remove swatch chooser if desired
+				        colorChooser.removeChooserPanel(oldPanels[i]);
+				    } else if (clsName.equals("HSL")) {
+				        // Remove rgb chooser if desired
+				        colorChooser.removeChooserPanel(oldPanels[i]);
+				    } else if (clsName.equals("RGB")) {
+				        // Remove hsb chooser if desired
+				        colorChooser.removeChooserPanel(oldPanels[i]);
+				    }
+				    else if (clsName.equals("CMYK")) {
+				        // Remove hsb chooser if desired
+				        colorChooser.removeChooserPanel(oldPanels[i]);
+				    }
+
+				}
+				AbstractColorChooserPanel swatchPanel = colorChooser.getChooserPanels()[0]; // get the first panel that is swatchPanel
+				JPanel p = (JPanel) swatchPanel.getComponent(0); //get JPanel
+				p.remove(2);	// Remove the recent Panel
+				p.remove(1);	// Remove the recent JLabel
+
+
+				// listen when new color is selected
+				colorChooser.getSelectionModel().addChangeListener(new ChangeListener() {
+
+					@Override
+					public void stateChanged(ChangeEvent arg0) {
+						if(colorChooser.getColor() != null){
+							setSelectedColor(colorChooser.getColor());
+						}
+						// update shapeBox's shape color
+						if(shapeBox != null){
+							shapeBox=setUpComboBox();
+							comboBoxPanel.repaint();
+						}
+						
+						if(previewShapePanel != null){
+							previewShapePanel.setShapeColor(selectedColor);
+							previewShapePanel.repaint();
+							
+						}
+
+
+
+					}
+				});
+				colorChooserPanel.add(colorChooser);
+				upperBackPanel.add(initTitlePanel("EDIT MARKING PROPERTIES"));
+				upperBackPanel.add(colorChooserPanel);
+				return upperBackPanel;
+}
+
+/**
+ * Saves the made changes of properties to MarkingLayer.
+ *
+ * @param mLayer the MarkingLayer
+ */
+protected void saveChanges(MarkingLayer mLayer){
+	// save changes to markinglayer
+	// set color from colorchooser
+	mLayer.setColor(this.getSelectedColor());
+	// set shape id
+	mLayer.setShapeID(this.getSelectedShapeID());
+	if(this.getSelectedSize()>0){
+		// set size value
+		mLayer.setSize(this.getSelectedSize());
 	}
 
-	/**
-	 * Sets the Dialog visible
-	 */
-	public void showDialog(){
-		setVisible(true);
+	if(this.getSelectedThickness()>0){
+		// set thickness value
+		mLayer.setThickness(this.getSelectedThickness());
 	}
 
+	if(this.getSelectedOpacity()> 0.0F){
+		// set opacity value
+		mLayer.setOpacity(changeIntToFloat(this.getSelectedOpacity()));
+	}
+}
 
+/**
+ *  This method is called when the value of sizeSlider is changed.
+ *  -> Changes the maximum and present value of thicknessSlider, because small shape shouldn't be very thick.
+ */
+private void setMaximumThickness(){
+	  try {
+		int size = this.getSelectedSize();
+		  if(size >0){
+		  int maxValue = (int)(size/3);
+		  if(maxValue<1) // set max value to 3 if goes to zero.
+			  maxValue =3;
+		  
+		  if(maxValue>20) //set max value to maximum 20
+			  maxValue=20;
+
+		  int presentValue = (int)(maxValue/2);
+		  if(presentValue <1)
+			  presentValue =1;
+
+		  this.thicknessSlider.setMaximum(maxValue);
+		  this.thicknessSlider.setValue(presentValue);
+		  this.thicknessJLabel.setText(""+presentValue);
+		  this.setSelectedThickness(presentValue);
+		  this.thicknessSliderPanel.repaint();
+		  }
+	} catch (Exception e) {
+		LOGGER.severe("Error in changing maximumThickenss values: " +e.getClass().toString() + " :" +e.getMessage());
+
+	}
+
+  }
+
+
+/**
+ *  Sets the selected color
+ * @param color the color that will be saved
+ */
+protected void setSelectedColor(Color color){
+	if(color != null)
+		this.selectedColor=color;
+	else
+		this.selectedColor=new Color(51,255,51); // just for case but hardly happens ever
+}
+
+/**
+ * @param selectedOpacity the new opacity value (float) of shape to be saved
+ */
+public void setSelectedOpacity(int selectedOpacity) {
+	this.selectedOpacity = selectedOpacity;
+}
+
+/**
+ * @param selectedShapeID the shape id (int) to been saved
+ */
+public void setSelectedShapeID(int selectedShapeID) {
+	this.selectedShapeID = selectedShapeID;
+}
+
+/**
+ * @param selectedSize the new size (int) of shape to be saved
+ */
+public void setSelectedSize(int selectedSize) {
+	this.selectedSize = selectedSize;
+}
+
+/**
+ * @param selectedThickness the thickenss (int) of shape to be saved
+ */
+public void setSelectedThickness(int selectedThickness) {
+	this.selectedThickness = selectedThickness;
+}
 
 /**
  * Setups JComboBox for selecting shape for MarkingLayer. JComboBox contains array of integers,
@@ -627,127 +574,181 @@ private JComboBox<Integer> setUpComboBox(){
 }
 
 /**
- * Return shape ID (int) located from shapeIDs-array at given index
- * @param index the index of shapeComboBox
- * @return ID (int) of shape that corresponds to shapeIDs -array at given index
+ * Setups the combobox JPanel for selecting shape of marking.
  */
-private int getShapeIDfromComboBoxIndex(int index){
+protected void setUpComboBoXPanel(){
+	// contains JComboBox-component and label
+	comboBoxPanel = new JPanel();
+	comboBoxPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+	comboBoxPanel.setMaximumSize(new Dimension(panelWidth,50));
+	comboBoxPanel.setMinimumSize(new Dimension(panelWidth,50));
+	comboBoxPanel.setPreferredSize(new Dimension(panelWidth,50));
 
-	if(index >=0 && index < shapeIDs.length)
-		return shapeIDs[index];
+	JLabel boxLabel = new JLabel("SELECT SHAPE: ");
+	boxLabel.setFont(Fonts.b14);
 
-	return shapeIDs[0];
+	// Setup JCompoBox for selecting shape
+	shapeBox = setUpComboBox();
+	comboBoxPanel.add(boxLabel);
+	comboBoxPanel.add(shapeBox);
+
 }
 
 /**
- * Manages creation of shape Icon
- * @param id shape ID. @see information.ID
- * @return Custom Icon with painted shape
+ * Creates JPanel containing JSlider for changing numerical properties of MarkingLayer.
+ * @param typeOfSlider ID for identifying the slider type. @see information.ID
+ * @param labelText the string title to be shown
+ * @param minValue the minimum value of slider
+ * @param maxValue the maximum value of slider
+ * @param initValue the selected value of slider in the beginning
+ * @param minorTicks the minor thicks of slider
+ * @param majorTicks the major thicks of slider
+ * @return a JPanel containing title, slider and label showing selected value
  */
-private ShapeIcon createShapeIcon(int id){
-	return new ShapeIcon(id, 32,32,getSelectedColor(), Color_schema.dark_40);
-}
-
-/**
- *  Sets the selected color
- * @param color the color that will be saved
- */
-protected void setSelectedColor(Color color){
-	if(color != null)
-		this.selectedColor=color;
-	else
-		this.selectedColor=new Color(51,255,51); // just for case but hardly happens ever
-}
-
-/**
- *
- * @return the selected color for marking
- */
-private Color getSelectedColor(){
-	return this.selectedColor;
-}
-
-/**
- * Gives the index of shape JCombobox corresponding to shapeID of MarkingLayer
- * @return int index of combobox corresponding for Shape in MarkingLayer
- */
-private int getselectedMarkingLayerShapeIndex(){
+private JPanel setUpSLiderPanel(int typeOfSlider, String labelText, int minValue, int maxValue, int initValue, int minorTicks, int majorTicks){
 	try {
-		for(int i=0;i < this.shapeIDs.length; i++){
-			if(shapeIDs[i] == this.getSelectedShapeID()){
-				LOGGER.fine("found shapeID: "+i);
-				return i;
-			}
+
+		JPanel backSliderPanel=new JPanel();
+		backSliderPanel.setLayout(new BorderLayout(2,2));
+		backSliderPanel.setBorder(BorderFactory.createLineBorder(Color_schema.dark_100, 1));
+		JPanel sliderPanel = new JPanel();
+		sliderPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+
+		JPanel labelPanel=new JPanel();
+		labelPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 3, 2));
+		JLabel label = new JLabel(labelText);
+
+		label.setFont(Fonts.b14);
+		JSlider slider = new JSlider(JSlider.HORIZONTAL,minValue,maxValue, initValue);
+		slider.putClientProperty("type", typeOfSlider);
+
+
+		JLabel numberLabel = new JLabel(""+initValue);
+		numberLabel.putClientProperty("name", ID.NUMBER_LABEL); // by adding this can JLabels be identified in statechanged -listener
+		numberLabel.setFont(Fonts.b14);
+
+		slider.setMajorTickSpacing(majorTicks);
+		slider.setMinorTickSpacing(minorTicks);
+		slider.setPaintTicks(true);
+
+		// select the slider type
+		switch (typeOfSlider){
+		case ID.SIZE_SLIDER:
+			this.sizeSlider = slider;
+			this.sizeJLabel = numberLabel;
+			break;
+		case ID.THICKNESS_SLIDER:
+			this.thicknessSlider = slider;
+			this.thicknessJLabel = numberLabel;
+			break;
+		case ID.OPACITY_SLIDER:
+			this.opacitySlider=slider;
+			this.opacityJLabel = numberLabel;
+			break;
 		}
-		LOGGER.fine("doesn't found shapeID");
-		return 0;
+		labelPanel.add(label);
+		sliderPanel.add(slider);
+		sliderPanel.add(numberLabel);
+
+		slider.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+
+			if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){
+				setSelectedSize(sizeSlider.getValue());
+				setMaximumThickness();
+				sizeJLabel.setText(""+sizeSlider.getValue());
+				
+			}
+			else
+				if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.THICKNESS_SLIDER){
+
+					setSelectedThickness(thicknessSlider.getValue());
+					thicknessJLabel.setText(""+thicknessSlider.getValue());			
+				}
+				else
+					if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.OPACITY_SLIDER){
+						setSelectedOpacity(opacitySlider.getValue()); // in slider int values 1-100 -> 0.01F-1.0F
+						opacityJLabel.setText(""+opacitySlider.getValue());						
+					}			
+			}
+			
+		});
+		
+		slider.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// do nothing
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// do nothing
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// do nothing
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// do nothing
+				
+			}
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){					
+					previewShapePanel.setShapeSize(sizeSlider.getValue());
+					if(thicknessSlider !=null && thicknessSlider.getValue() >0)
+					previewShapePanel.setShapeThickness(thicknessSlider.getValue());
+					
+				}
+				else
+					if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.THICKNESS_SLIDER){
+						previewShapePanel.setShapeThickness(thicknessSlider.getValue());
+					}
+					else
+						if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.OPACITY_SLIDER){
+							previewShapePanel.setShapeOpacity(changeIntToFloat(opacitySlider.getValue()));
+						
+							
+
+						}
+
+				previewShapePanel.repaint();
+				
+			}
+		});
+				
+		backSliderPanel.add(labelPanel,BorderLayout.PAGE_START);
+		backSliderPanel.add(sliderPanel, BorderLayout.CENTER);
+		slider.setMaximumSize(new Dimension(350,40));
+		slider.setPreferredSize(new Dimension(350,40));
+
+		return backSliderPanel;
 	} catch (Exception e) {
-		LOGGER.severe("Error in searching selected shape of Markinglayer as combobox index: " +e.getClass().toString() + " :" +e.getMessage());
-		return 0;
+		LOGGER.severe("Error in initializing sliders: " +e.getClass().toString() + " :" +e.getMessage());
+		return null;
 	}
-
-}
-
-
-/**
- * @return the size of shape
- */
-public int getSelectedSize() {
-	return selectedSize;
-}
-
-/**
- * @param selectedSize the new size (int) of shape to be saved
- */
-public void setSelectedSize(int selectedSize) {
-	this.selectedSize = selectedSize;
-}
-
-/**
- * @return the selected thickness (int)
- */
-public int getSelectedThickness() {
-	return selectedThickness;
-}
-
-/**
- * @param selectedThickness the thickenss (int) of shape to be saved
- */
-public void setSelectedThickness(int selectedThickness) {
-	this.selectedThickness = selectedThickness;
-}
-
-/**
- * @return the selected opacity (float)
- */
-public int getSelectedOpacity() {
-	return this.selectedOpacity;
-}
-
-/**
- * @param selectedOpacity the new opacity value (float) of shape to be saved
- */
-public void setSelectedOpacity(int selectedOpacity) {
-	this.selectedOpacity = selectedOpacity;
-}
-
-/**
- * @return the shape ID of selected shape. @see information.ID
- */
-public int getSelectedShapeID() {
-	return this.selectedShapeID;
-}
-
-/**
- * @param selectedShapeID the shape id (int) to been saved
- */
-public void setSelectedShapeID(int selectedShapeID) {
-	this.selectedShapeID = selectedShapeID;
 }
 
 
 	/**
-	 * Custom renderer for JComboBox. It places icons to ComboBox list and manages drawing the effects when items viewed
+	 * Sets the Dialog visible
+	 */
+	public void showDialog(){
+		setVisible(true);
+	}
+	
+	/**
+	 * Custom renderer for JComboBox. It places icons to ComboBox list and manages drawing the effects when items viewed.
 	 * @author Antti Kurronen
 	 *
 	 */
