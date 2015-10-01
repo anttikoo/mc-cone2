@@ -3,24 +3,16 @@ package gui;
 import information.Fonts;
 import information.ID;
 import information.MarkingLayer;
-
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Logger;
-
 import javax.swing.BoxLayout;
-import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.colorchooser.AbstractColorChooserPanel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
-import managers.TaskManager;
 
 /**
  * 
