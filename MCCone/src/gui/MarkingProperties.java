@@ -61,7 +61,6 @@ public class MarkingProperties extends PropertiesDialog {
 	private JLabel opacityJLabel;
 	private JLabel thicknessJLabel;
 	protected ArrayList<MarkingLayer> markingLayerList;
-//	private ShapeDrawer shapeDrawer;
 	protected JLayeredPane layeredPane;
 	private PreviewShapePanel previewShapePanel;
 	private JPanel backPanelPreview;
@@ -85,7 +84,6 @@ public class MarkingProperties extends PropertiesDialog {
 			this.setSelectedThickness(this.markingLayer.getThickness());
 			this.setSelectedOpacity(changeUnderZeroFloatToInt(this.markingLayer.getOpacity()));
 			this.setSelectedShapeID(this.markingLayer.getShapeID());
-		//	this.shapeDrawer =new ShapeDrawer(mLayer.getShapeID(), getSelectedSize(), changeIntToFloat(getSelectedThickness()), this.markingLayer.getOpacity(), this.markingLayer.getColor());
 		}
 		initMarkingPropertiesPanel();
 
