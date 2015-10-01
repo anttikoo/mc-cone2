@@ -3,12 +3,15 @@ package gui;
 import information.Fonts;
 import information.ID;
 import information.MarkingLayer;
+import information.SharedVariables;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -284,7 +287,9 @@ protected void initDialog(){
 		layeredPane=new JLayeredPane();
 		layeredPane.setLayout(null);
 		layeredPane.setBorder(BorderFactory.createEmptyBorder());
-		layeredPane.setBounds(this.getBounds());
+		layeredPane.setBounds(new Rectangle(0,0, this.getBounds().width,this.getBounds().height));
+		
+	
 
 		// the window showing components
 		backPanel = new JPanel();
@@ -320,11 +325,124 @@ protected void initDialog(){
  * Initializes the marking properties panel.
  */
 protected void initMarkingPropertiesPanel(){
+	
 	initDialog();
 	this.revalidate();
 	this.repaint();
 }
 
+/**
+ * Calculates the location and size values for MarkingProperties window to fit in screen. This is 300p
+ * @return Rectangle containing appropriate location and size values for the Dialog window.
+ */
+protected Rectangle getGoodBoundsForPanel(){
+	try {
+		System.out.println("went here");
+		System.out.println(gui.getScreenSize().width+ " height: "+gui.getScreenSize().height);
+		//this.topLeftPoint
+		int topleftX = (int)(this.topLeftPoint.getX()-panelWidth);
+		int topleftY = (int)this.topLeftPoint.getY();
+
+
+		int guiDownY=(int)(this.gui.getBounds().getY()+this.gui.getBounds().getHeight());
+
+		int guiRightX=(int)(this.gui.getBounds().getX()+this.gui.getBounds().getWidth());
+		int guiLeftX=(int)(this.gui.getBounds().getX());
+		int guiUpY=(int)(this.gui.getBounds().getY());
+
+	//	LOGGER.fine("height: " +this.gui.getBounds().getHeight() + " y: " +gui.getBounds().getY()+ "width: "+ this.gui.getBounds().getWidth()+ " x: "+gui.getBounds().getX());
+		// goes over at down
+		if(topleftY+panelHeight > guiDownY){
+			topleftY=guiDownY-panelHeight-50;
+			LOGGER.fine("over down");
+		}
+		else{
+			// goes over at up
+			if(topleftY<  guiUpY){
+				topleftY=guiUpY+50;
+				LOGGER.fine("over up");
+			}
+		}
+		// goes over at right
+		if(topleftX+panelWidth > guiRightX){
+			topleftX = guiRightX-panelWidth-50;
+			LOGGER.fine("over right");
+		}
+		else{
+			// goes over at left HERE IS ADDED THE PREVIEW PANEL WIDTH 300px
+			if(topleftX -300<  guiLeftX){
+				topleftX = guiLeftX+300+50;
+				LOGGER.fine("over left");
+			}
+		}
+		topleftX-=guiLeftX;
+		topleftY-=guiUpY;
+
+		// check is the bounds over screeen
+
+		if(SharedVariables.operationSystem == ID.OS_WINDOWS || SharedVariables.operationSystem== ID.OS_LINUX_UNIX){
+			// goes over at down
+			if(topleftY+panelHeight + guiUpY > gui.getScreenSize().getHeight()){
+				topleftY-=  (guiUpY+topleftY+panelHeight)- (int)gui.getScreenSize().getHeight();
+				LOGGER.fine("over screen down " + topleftY);
+			}
+			// goes down at right
+			if(topleftX+panelWidth > gui.getScreenSize().getWidth()){
+				topleftX = (int)gui.getScreenSize().getWidth()-panelWidth-50;
+				LOGGER.fine("over screen right "+topleftX);
+			}
+			// goes over at up
+			if(topleftY +guiUpY<  0){
+				topleftY=50;
+				LOGGER.fine("over screen up " +topleftY);
+			}
+			// goes over at left
+			if(topleftX+  guiRightX <  0){
+				topleftX = 50;
+				LOGGER.fine("over screen left " +topleftX);
+			}
+		}
+		else{ //
+
+
+			// goes over at down
+			if(topleftY+panelHeight > gui.getScreenSize().getHeight()){
+				topleftY=(int)gui.getScreenSize().getHeight() -panelHeight-50;
+				LOGGER.fine("over screen down");
+			}
+			// goes down at right
+			if(topleftX+panelWidth > gui.getScreenSize().getWidth()){
+				topleftX = (int)gui.getScreenSize().getWidth()-panelWidth-50;
+				LOGGER.fine("over screen right");
+			}
+			// goes over at up
+			if(topleftY<  0){
+				topleftY=50;
+				LOGGER.fine("over screen up");
+			}
+			// goes over at left
+			if(topleftX <  0){
+				topleftX = 50;
+				LOGGER.fine("over screen left");
+			}
+		}
+
+		return new Rectangle(topleftX, topleftY, panelWidth , panelHeight);
+	} catch (Exception e) {
+		LOGGER.severe("Error in counting Bounds for MarkingProperties: " +e.getClass().toString() + " :" +e.getMessage() +"line: " +e.getStackTrace()[2].getLineNumber());
+		return null;
+	}
+}
+/*
+protected void setPanelPosition(){
+	Rectangle guiRec = gui.getVisibleWindowBounds();
+	
+	int x =(int)guiRec.getX()+guiRec.width-400-300-50;
+	int y = (int)(this.gui.getBounds().getY());
+	recOfBackpanel = new Rectangle(50, 50,this.panelWidth,this.panelHeight);	
+	backPanel.setBounds(recOfBackpanel);		
+}
+*/
 /** 
  * Initializes the uppermost JPanel showing a color chooser. Color chooser is modified from default color chooser by removing swatch, rgb and hsb views.
  */
@@ -704,25 +822,26 @@ private JPanel setUpSLiderPanel(int typeOfSlider, String labelText, int minValue
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){					
-					previewShapePanel.setShapeSize(sizeSlider.getValue());
-					if(thicknessSlider !=null && thicknessSlider.getValue() >0)
-					previewShapePanel.setShapeThickness(thicknessSlider.getValue());
+				if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){		
+					if(previewShapePanel != null)
+						previewShapePanel.setShapeSize(sizeSlider.getValue());
+					if( previewShapePanel != null && thicknessSlider !=null && thicknessSlider.getValue() >0)
+						previewShapePanel.setShapeThickness(thicknessSlider.getValue());
 					
 				}
 				else
 					if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.THICKNESS_SLIDER){
-						previewShapePanel.setShapeThickness(thicknessSlider.getValue());
+						if(previewShapePanel != null)
+							previewShapePanel.setShapeThickness(thicknessSlider.getValue());
 					}
 					else
 						if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.OPACITY_SLIDER){
-							previewShapePanel.setShapeOpacity(changeIntToFloat(opacitySlider.getValue()));
+							if(previewShapePanel != null)
+								previewShapePanel.setShapeOpacity(changeIntToFloat(opacitySlider.getValue()));
 						
-							
-
 						}
-
-				previewShapePanel.repaint();
+				if(previewShapePanel != null)
+					previewShapePanel.repaint();
 				
 			}
 		});
