@@ -293,7 +293,6 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						if(is_SHIFT_pressed)
 							gui.setVisibilityOfAllMarkingLayers(false);
 						
 
