@@ -3,17 +3,10 @@ package gui;
 import gui.graphics.BigCloseIcon;
 import gui.graphics.MediumCloseIcon;
 import gui.graphics.SmallCloseIcon;
-
-import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.net.URL;
-
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
-import operators.GetResources;
 
 /**
  * Helper class for adding MouseListeners to JButtons. The listeners only affects to visual style of buttons: border, color, icon, etc.
