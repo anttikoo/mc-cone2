@@ -40,6 +40,7 @@ import operators.ShapeDrawer;
  */
 public class MarkingProperties extends PropertiesDialog {
 	
+	
 	protected final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	protected GUI gui;
 	private MarkingLayer markingLayer;
@@ -65,6 +66,7 @@ public class MarkingProperties extends PropertiesDialog {
 	private JLabel opacityJLabel;
 	private JLabel thicknessJLabel;
 	protected ArrayList<MarkingLayer> markingLayerList;
+
 	protected JLayeredPane layeredPane;
 
 	private PreviewShapePanel previewShapePanel;
@@ -84,7 +86,7 @@ public class MarkingProperties extends PropertiesDialog {
 		initMarkingPropertiesPanel();
 
 	}
-
+	
 	/**
 	 * Instantiates a new marking properties.
 	 *
@@ -108,7 +110,8 @@ public class MarkingProperties extends PropertiesDialog {
 		initMarkingPropertiesPanel();
 
 	}
-	
+
+
 	/**
 	 * Converts integer value to float. The value isdivided with 100: int 10 -> float 0,1F.
 	 * @param value integer value to be converted
@@ -124,7 +127,6 @@ public class MarkingProperties extends PropertiesDialog {
 		}
 
 	}
-
 
 	/**
 	 * Converts float value to integer. The value is multiplied with 100: float 0,1F -> integer 10.
@@ -148,6 +150,108 @@ public class MarkingProperties extends PropertiesDialog {
 	 */
 	private ShapeIcon createShapeIcon(int id){
 		return new ShapeIcon(id, 32,32,getSelectedColor(), Color_schema.dark_40);
+	}
+
+	/**
+	 * Calculates the location and size values for MarkingProperties window to fit in screen. This takes account the preview panel for showing preview of marking.
+	 * @return Rectangle containing appropriate location and size values for the Dialog window.
+	 */
+	protected Rectangle getGoodBoundsForPanel(){
+		try {
+			
+			
+			//this.topLeftPoint
+			int topleftX = (int)(this.topLeftPoint.getX()-panelWidth);
+			int topleftY = (int)this.topLeftPoint.getY();
+	
+	
+			int guiDownY=(int)(this.gui.getBounds().getY()+this.gui.getBounds().getHeight());
+	
+			int guiRightX=(int)(this.gui.getBounds().getX()+this.gui.getBounds().getWidth());
+			int guiLeftX=(int)(this.gui.getBounds().getX());
+			int guiUpY=(int)(this.gui.getBounds().getY());
+	
+			// goes over at down
+			if(topleftY+panelHeight > guiDownY){
+				topleftY=guiDownY-panelHeight-50;
+				LOGGER.fine("over down");
+			}
+			else{
+				// goes over at up
+				if(topleftY<  guiUpY){
+					topleftY=guiUpY+50;
+					LOGGER.fine("over up");
+				}
+			}
+			// goes over at right
+			if(topleftX+panelWidth > guiRightX){
+				topleftX = guiRightX-panelWidth-50;
+				LOGGER.fine("over right");
+			}
+			else{
+				// goes over at left HERE IS ADDED THE PREVIEW PANEL WIDTH 300px
+				if(topleftX -300<  guiLeftX){
+					topleftX = guiLeftX+300+50;
+					LOGGER.fine("over left");
+				}
+			}
+			topleftX-=guiLeftX;
+			topleftY-=guiUpY;
+	
+			// check is the bounds over screeen
+	
+			if(SharedVariables.operationSystem == ID.OS_WINDOWS || SharedVariables.operationSystem== ID.OS_LINUX_UNIX){
+				// goes over at down
+				if(topleftY+panelHeight + guiUpY > gui.getScreenSize().getHeight()){
+					topleftY-=  (guiUpY+topleftY+panelHeight)- (int)gui.getScreenSize().getHeight();
+					LOGGER.fine("over screen down " + topleftY);
+				}
+				// goes down at right
+				if(topleftX+panelWidth > gui.getScreenSize().getWidth()){
+					topleftX = (int)gui.getScreenSize().getWidth()-panelWidth-50;
+					LOGGER.fine("over screen right "+topleftX);
+				}
+				// goes over at up
+				if(topleftY +guiUpY<  0){
+					topleftY=50;
+					LOGGER.fine("over screen up " +topleftY);
+				}
+				// goes over at left
+				if(topleftX+  guiRightX <  0){
+					topleftX = 50;
+					LOGGER.fine("over screen left " +topleftX);
+				}
+			}
+			else{ //
+	
+	
+				// goes over at down
+				if(topleftY+panelHeight > gui.getScreenSize().getHeight()){
+					topleftY=(int)gui.getScreenSize().getHeight() -panelHeight-50;
+					LOGGER.fine("over screen down");
+				}
+				// goes down at right
+				if(topleftX+panelWidth > gui.getScreenSize().getWidth()){
+					topleftX = (int)gui.getScreenSize().getWidth()-panelWidth-50;
+					LOGGER.fine("over screen right");
+				}
+				// goes over at up
+				if(topleftY<  0){
+					topleftY=50;
+					LOGGER.fine("over screen up");
+				}
+				// goes over at left
+				if(topleftX <  0){
+					topleftX = 50;
+					LOGGER.fine("over screen left");
+				}
+			}
+	
+			return new Rectangle(topleftX, topleftY, panelWidth , panelHeight);
+		} catch (Exception e) {
+			LOGGER.severe("Error in counting Bounds for MarkingProperties: " +e.getClass().toString() + " :" +e.getMessage() +"line: " +e.getStackTrace()[2].getLineNumber());
+			return null;
+		}
 	}
 
 	/**
@@ -179,12 +283,15 @@ public class MarkingProperties extends PropertiesDialog {
 	
 	}
 
-	/**
+
+	  /**
 	 * @return the selected opacity (float)
 	 */
 	public int getSelectedOpacity() {
 		return this.selectedOpacity;
 	}
+
+
 
 	/**
 	 * @return the shape ID of selected shape. @see information.ID
@@ -193,15 +300,12 @@ public class MarkingProperties extends PropertiesDialog {
 		return this.selectedShapeID;
 	}
 
-
-	  /**
+	/**
 	 * @return the size of shape
 	 */
 	public int getSelectedSize() {
 		return selectedSize;
 	}
-
-
 
 	/**
 	 * @return the selected thickness (int)
@@ -210,41 +314,41 @@ public class MarkingProperties extends PropertiesDialog {
 		return selectedThickness;
 	}
 
-	/**
-	 * Return shape ID (int) located from shapeIDs-array at given index
-	 * @param index the index of shapeComboBox
-	 * @return ID (int) of shape that corresponds to shapeIDs -array at given index
-	 */
-	private int getShapeIDfromComboBoxIndex(int index){
-	
-		if(index >=0 && index < shapeIDs.length)
-			return shapeIDs[index];
-	
-		return shapeIDs[0];
-	}
 
-	/**
-	 * Hides Dialog window and saves the changes made to MarkingLayer.
-	 * @param saveChanges boolean value should the changes be saved to MarkingLayer
-	 */
-	protected void hideDialog(boolean saveChanges){
-		if(saveChanges){
-			try {
-				// save changes to MarkingLayer and MarkingPanel
-			saveChanges(this.markingLayer);
-			gui.setMadeChanges(true);
-			} catch (Exception e) {
-				LOGGER.severe("Error in saving marking properties to MarkingLayer " +e.getClass().toString() + " :" +e.getMessage());
-			}
-			// update the GUI ImageLayerInfo JPanel
-			gui.updateMarkingPanelProperties(this.markingLayer.getLayerID());
 
+/**
+ * Return shape ID (int) located from shapeIDs-array at given index
+ * @param index the index of shapeComboBox
+ * @return ID (int) of shape that corresponds to shapeIDs -array at given index
+ */
+private int getShapeIDfromComboBoxIndex(int index){
+
+	if(index >=0 && index < shapeIDs.length)
+		return shapeIDs[index];
+
+	return shapeIDs[0];
+}
+
+/**
+ * Hides Dialog window and saves the changes made to MarkingLayer.
+ * @param saveChanges boolean value should the changes be saved to MarkingLayer
+ */
+protected void hideDialog(boolean saveChanges){
+	if(saveChanges){
+		try {
+			// save changes to MarkingLayer and MarkingPanel
+		saveChanges(this.markingLayer);
+		gui.setMadeChanges(true);
+		} catch (Exception e) {
+			LOGGER.severe("Error in saving marking properties to MarkingLayer " +e.getClass().toString() + " :" +e.getMessage());
 		}
-		this.setVisible(false);
-		dispose();
+		// update the GUI ImageLayerInfo JPanel
+		gui.updateMarkingPanelProperties(this.markingLayer.getLayerID());
+
 	}
-
-
+	this.setVisible(false);
+	dispose();
+}
 
 /* (non-Javadoc)
  * @see gui.PropertiesDialog#initCenterPanels()
@@ -320,7 +424,6 @@ protected void initDialog(){
 		e.printStackTrace();
 	}
 }
-
 /**
  * Initializes the marking properties panel.
  */
@@ -331,108 +434,6 @@ protected void initMarkingPropertiesPanel(){
 	this.repaint();
 }
 
-/**
- * Calculates the location and size values for MarkingProperties window to fit in screen. This is 300p
- * @return Rectangle containing appropriate location and size values for the Dialog window.
- */
-protected Rectangle getGoodBoundsForPanel(){
-	try {
-		System.out.println("went here");
-		System.out.println(gui.getScreenSize().width+ " height: "+gui.getScreenSize().height);
-		//this.topLeftPoint
-		int topleftX = (int)(this.topLeftPoint.getX()-panelWidth);
-		int topleftY = (int)this.topLeftPoint.getY();
-
-
-		int guiDownY=(int)(this.gui.getBounds().getY()+this.gui.getBounds().getHeight());
-
-		int guiRightX=(int)(this.gui.getBounds().getX()+this.gui.getBounds().getWidth());
-		int guiLeftX=(int)(this.gui.getBounds().getX());
-		int guiUpY=(int)(this.gui.getBounds().getY());
-
-	//	LOGGER.fine("height: " +this.gui.getBounds().getHeight() + " y: " +gui.getBounds().getY()+ "width: "+ this.gui.getBounds().getWidth()+ " x: "+gui.getBounds().getX());
-		// goes over at down
-		if(topleftY+panelHeight > guiDownY){
-			topleftY=guiDownY-panelHeight-50;
-			LOGGER.fine("over down");
-		}
-		else{
-			// goes over at up
-			if(topleftY<  guiUpY){
-				topleftY=guiUpY+50;
-				LOGGER.fine("over up");
-			}
-		}
-		// goes over at right
-		if(topleftX+panelWidth > guiRightX){
-			topleftX = guiRightX-panelWidth-50;
-			LOGGER.fine("over right");
-		}
-		else{
-			// goes over at left HERE IS ADDED THE PREVIEW PANEL WIDTH 300px
-			if(topleftX -300<  guiLeftX){
-				topleftX = guiLeftX+300+50;
-				LOGGER.fine("over left");
-			}
-		}
-		topleftX-=guiLeftX;
-		topleftY-=guiUpY;
-
-		// check is the bounds over screeen
-
-		if(SharedVariables.operationSystem == ID.OS_WINDOWS || SharedVariables.operationSystem== ID.OS_LINUX_UNIX){
-			// goes over at down
-			if(topleftY+panelHeight + guiUpY > gui.getScreenSize().getHeight()){
-				topleftY-=  (guiUpY+topleftY+panelHeight)- (int)gui.getScreenSize().getHeight();
-				LOGGER.fine("over screen down " + topleftY);
-			}
-			// goes down at right
-			if(topleftX+panelWidth > gui.getScreenSize().getWidth()){
-				topleftX = (int)gui.getScreenSize().getWidth()-panelWidth-50;
-				LOGGER.fine("over screen right "+topleftX);
-			}
-			// goes over at up
-			if(topleftY +guiUpY<  0){
-				topleftY=50;
-				LOGGER.fine("over screen up " +topleftY);
-			}
-			// goes over at left
-			if(topleftX+  guiRightX <  0){
-				topleftX = 50;
-				LOGGER.fine("over screen left " +topleftX);
-			}
-		}
-		else{ //
-
-
-			// goes over at down
-			if(topleftY+panelHeight > gui.getScreenSize().getHeight()){
-				topleftY=(int)gui.getScreenSize().getHeight() -panelHeight-50;
-				LOGGER.fine("over screen down");
-			}
-			// goes down at right
-			if(topleftX+panelWidth > gui.getScreenSize().getWidth()){
-				topleftX = (int)gui.getScreenSize().getWidth()-panelWidth-50;
-				LOGGER.fine("over screen right");
-			}
-			// goes over at up
-			if(topleftY<  0){
-				topleftY=50;
-				LOGGER.fine("over screen up");
-			}
-			// goes over at left
-			if(topleftX <  0){
-				topleftX = 50;
-				LOGGER.fine("over screen left");
-			}
-		}
-
-		return new Rectangle(topleftX, topleftY, panelWidth , panelHeight);
-	} catch (Exception e) {
-		LOGGER.severe("Error in counting Bounds for MarkingProperties: " +e.getClass().toString() + " :" +e.getMessage() +"line: " +e.getStackTrace()[2].getLineNumber());
-		return null;
-	}
-}
 /*
 protected void setPanelPosition(){
 	Rectangle guiRec = gui.getVisibleWindowBounds();
@@ -569,6 +570,7 @@ protected void saveChanges(MarkingLayer mLayer){
 	}
 }
 
+
 /**
  *  This method is called when the value of sizeSlider is changed.
  *  -> Changes the maximum and present value of thicknessSlider, because small shape shouldn't be very thick.
@@ -600,7 +602,6 @@ private void setMaximumThickness(){
 	}
 
   }
-
 
 /**
  *  Sets the selected color
@@ -712,160 +713,160 @@ protected void setUpComboBoXPanel(){
 
 }
 
-/**
- * Creates JPanel containing JSlider for changing numerical properties of MarkingLayer.
- * @param typeOfSlider ID for identifying the slider type. @see information.ID
- * @param labelText the string title to be shown
- * @param minValue the minimum value of slider
- * @param maxValue the maximum value of slider
- * @param initValue the selected value of slider in the beginning
- * @param minorTicks the minor thicks of slider
- * @param majorTicks the major thicks of slider
- * @return a JPanel containing title, slider and label showing selected value
- */
-private JPanel setUpSLiderPanel(int typeOfSlider, String labelText, int minValue, int maxValue, int initValue, int minorTicks, int majorTicks){
-	try {
 
-		JPanel backSliderPanel=new JPanel();
-		backSliderPanel.setLayout(new BorderLayout(2,2));
-		backSliderPanel.setBorder(BorderFactory.createLineBorder(Color_schema.dark_100, 1));
-		JPanel sliderPanel = new JPanel();
-		sliderPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-
-		JPanel labelPanel=new JPanel();
-		labelPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 3, 2));
-		JLabel label = new JLabel(labelText);
-
-		label.setFont(Fonts.b14);
-		JSlider slider = new JSlider(JSlider.HORIZONTAL,minValue,maxValue, initValue);
-		slider.putClientProperty("type", typeOfSlider);
-
-
-		JLabel numberLabel = new JLabel(""+initValue);
-		numberLabel.putClientProperty("name", ID.NUMBER_LABEL); // by adding this can JLabels be identified in statechanged -listener
-		numberLabel.setFont(Fonts.b14);
-
-		slider.setMajorTickSpacing(majorTicks);
-		slider.setMinorTickSpacing(minorTicks);
-		slider.setPaintTicks(true);
-
-		// select the slider type
-		switch (typeOfSlider){
-		case ID.SIZE_SLIDER:
-			this.sizeSlider = slider;
-			this.sizeJLabel = numberLabel;
-			break;
-		case ID.THICKNESS_SLIDER:
-			this.thicknessSlider = slider;
-			this.thicknessJLabel = numberLabel;
-			break;
-		case ID.OPACITY_SLIDER:
-			this.opacitySlider=slider;
-			this.opacityJLabel = numberLabel;
-			break;
-		}
-		labelPanel.add(label);
-		sliderPanel.add(slider);
-		sliderPanel.add(numberLabel);
-
-		slider.addChangeListener(new ChangeListener() {
-
-			@Override
-			public void stateChanged(ChangeEvent e) {
-
-			if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){
-				setSelectedSize(sizeSlider.getValue());
-				setMaximumThickness();
-				sizeJLabel.setText(""+sizeSlider.getValue());
-				
+	/**
+	 * Creates JPanel containing JSlider for changing numerical properties of MarkingLayer.
+	 * @param typeOfSlider ID for identifying the slider type. @see information.ID
+	 * @param labelText the string title to be shown
+	 * @param minValue the minimum value of slider
+	 * @param maxValue the maximum value of slider
+	 * @param initValue the selected value of slider in the beginning
+	 * @param minorTicks the minor thicks of slider
+	 * @param majorTicks the major thicks of slider
+	 * @return a JPanel containing title, slider and label showing selected value
+	 */
+	private JPanel setUpSLiderPanel(int typeOfSlider, String labelText, int minValue, int maxValue, int initValue, int minorTicks, int majorTicks){
+		try {
+	
+			JPanel backSliderPanel=new JPanel();
+			backSliderPanel.setLayout(new BorderLayout(2,2));
+			backSliderPanel.setBorder(BorderFactory.createLineBorder(Color_schema.dark_100, 1));
+			JPanel sliderPanel = new JPanel();
+			sliderPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+	
+			JPanel labelPanel=new JPanel();
+			labelPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 3, 2));
+			JLabel label = new JLabel(labelText);
+	
+			label.setFont(Fonts.b14);
+			JSlider slider = new JSlider(JSlider.HORIZONTAL,minValue,maxValue, initValue);
+			slider.putClientProperty("type", typeOfSlider);
+	
+	
+			JLabel numberLabel = new JLabel(""+initValue);
+			numberLabel.putClientProperty("name", ID.NUMBER_LABEL); // by adding this can JLabels be identified in statechanged -listener
+			numberLabel.setFont(Fonts.b14);
+	
+			slider.setMajorTickSpacing(majorTicks);
+			slider.setMinorTickSpacing(minorTicks);
+			slider.setPaintTicks(true);
+	
+			// select the slider type
+			switch (typeOfSlider){
+			case ID.SIZE_SLIDER:
+				this.sizeSlider = slider;
+				this.sizeJLabel = numberLabel;
+				break;
+			case ID.THICKNESS_SLIDER:
+				this.thicknessSlider = slider;
+				this.thicknessJLabel = numberLabel;
+				break;
+			case ID.OPACITY_SLIDER:
+				this.opacitySlider=slider;
+				this.opacityJLabel = numberLabel;
+				break;
 			}
-			else
-				if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.THICKNESS_SLIDER){
-
-					setSelectedThickness(thicknessSlider.getValue());
-					thicknessJLabel.setText(""+thicknessSlider.getValue());			
-				}
-				else
-					if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.OPACITY_SLIDER){
-						setSelectedOpacity(opacitySlider.getValue()); // in slider int values 1-100 -> 0.01F-1.0F
-						opacityJLabel.setText(""+opacitySlider.getValue());						
-					}			
-			}
-			
-		});
-		
-		slider.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// do nothing
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				// do nothing
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				// do nothing
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				// do nothing
-				
-			}
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){		
-					if(previewShapePanel != null)
-						previewShapePanel.setShapeSize(sizeSlider.getValue());
-					if( previewShapePanel != null && thicknessSlider !=null && thicknessSlider.getValue() >0)
-						previewShapePanel.setShapeThickness(thicknessSlider.getValue());
+			labelPanel.add(label);
+			sliderPanel.add(slider);
+			sliderPanel.add(numberLabel);
+	
+			slider.addChangeListener(new ChangeListener() {
+	
+				@Override
+				public void stateChanged(ChangeEvent e) {
+	
+				if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){
+					setSelectedSize(sizeSlider.getValue());
+					setMaximumThickness();
+					sizeJLabel.setText(""+sizeSlider.getValue());
 					
 				}
 				else
 					if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.THICKNESS_SLIDER){
-						if(previewShapePanel != null)
-							previewShapePanel.setShapeThickness(thicknessSlider.getValue());
+	
+						setSelectedThickness(thicknessSlider.getValue());
+						thicknessJLabel.setText(""+thicknessSlider.getValue());			
 					}
 					else
 						if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.OPACITY_SLIDER){
-							if(previewShapePanel != null)
-								previewShapePanel.setShapeOpacity(changeIntToFloat(opacitySlider.getValue()));
+							setSelectedOpacity(opacitySlider.getValue()); // in slider int values 1-100 -> 0.01F-1.0F
+							opacityJLabel.setText(""+opacitySlider.getValue());						
+						}			
+				}
+				
+			});
+			
+			slider.addMouseListener(new MouseListener() {
+				
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					// do nothing
+					
+				}
+				
+				@Override
+				public void mouseEntered(MouseEvent arg0) {
+					// do nothing
+					
+				}
+				
+				@Override
+				public void mouseExited(MouseEvent arg0) {
+					// do nothing
+					
+				}
+				
+				@Override
+				public void mousePressed(MouseEvent arg0) {
+					// do nothing
+					
+				}
+				
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){		
+						if(previewShapePanel != null)
+							previewShapePanel.setShapeSize(sizeSlider.getValue());
+						if( previewShapePanel != null && thicknessSlider !=null && thicknessSlider.getValue() >0)
+							previewShapePanel.setShapeThickness(thicknessSlider.getValue());
 						
+					}
+					else
+						if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.THICKNESS_SLIDER){
+							if(previewShapePanel != null)
+								previewShapePanel.setShapeThickness(thicknessSlider.getValue());
 						}
-				if(previewShapePanel != null)
-					previewShapePanel.repaint();
-				
-			}
-		});
-				
-		backSliderPanel.add(labelPanel,BorderLayout.PAGE_START);
-		backSliderPanel.add(sliderPanel, BorderLayout.CENTER);
-		slider.setMaximumSize(new Dimension(350,40));
-		slider.setPreferredSize(new Dimension(350,40));
-
-		return backSliderPanel;
-	} catch (Exception e) {
-		LOGGER.severe("Error in initializing sliders: " +e.getClass().toString() + " :" +e.getMessage());
-		return null;
+						else
+							if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.OPACITY_SLIDER){
+								if(previewShapePanel != null)
+									previewShapePanel.setShapeOpacity(changeIntToFloat(opacitySlider.getValue()));
+							
+							}
+					if(previewShapePanel != null)
+						previewShapePanel.repaint();
+					
+				}
+			});
+					
+			backSliderPanel.add(labelPanel,BorderLayout.PAGE_START);
+			backSliderPanel.add(sliderPanel, BorderLayout.CENTER);
+			slider.setMaximumSize(new Dimension(350,40));
+			slider.setPreferredSize(new Dimension(350,40));
+	
+			return backSliderPanel;
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing sliders: " +e.getClass().toString() + " :" +e.getMessage());
+			return null;
+		}
 	}
-}
-
-
+	
 	/**
 	 * Sets the Dialog visible
 	 */
 	public void showDialog(){
 		setVisible(true);
 	}
-	
+
 	/**
 	 * Custom renderer for JComboBox. It places icons to ComboBox list and manages drawing the effects when items viewed.
 	 * @author Antti Kurronen
@@ -912,5 +913,4 @@ private JPanel setUpSLiderPanel(int typeOfSlider, String labelText, int minValue
 
 
 	}
-
 }
