@@ -30,13 +30,9 @@ public class PreviewShapePanel extends JPanel{
 		
 		this.recOfBackPanel=recOfBackPanel;
 		this.setBounds(new Rectangle((int)this.recOfBackPanel.getX()-300, (int)this.recOfBackPanel.getY(), 300,(int)this.recOfBackPanel.getHeight()));
-		this.setLayout(null);
-	//	this.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 3));
-	//	this.setBorder(BorderFactory.createLineBorder(Color_schema.white_230, 2));
-//		this.shapeColor=color;
-		
+		this.setLayout(null);	
 		shapeDrawer=new ShapeDrawer(shapeID, shapeSize, thickness, opacity, color);
-		//shapeDrawer.setRule_alpha(AlphaComposite.SRC_OVER);
+	
 		
 	}
 	
