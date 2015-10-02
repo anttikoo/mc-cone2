@@ -7,6 +7,7 @@ import information.ID;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -14,6 +15,8 @@ import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.logging.Logger;
@@ -40,36 +43,34 @@ import javax.swing.border.BevelBorder;
 
 public class ShadyMessageDialog extends JDialog{
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
-//	private GUI gui;
 	private String message;
 	private String title;
 	private JLabel titleLabel;
 	private int typeOfButtons;
 	private int returnValue=-1;
-	private int firstButtonID=-1;
 	private Component parentComponent;
 	private int parentComponentWidth;
 	private JPanel dialogBackPanel;
-//	private JButton firstButton;
-	private AbstractButton firstButton;
 	private JPanel messagePanel;
 	private JPanel buttonPanel;
 
 	public ShadyMessageDialog(JFrame frame, String title, String message, int typeOfButtons, Component comp){
 		super(frame,true);
-	//	this.gui=gui;
+	
+		super.setLocationRelativeTo(comp);
+		this.setLocationRelativeTo(comp);
 		this.parentComponent = comp;
 		this.title=title;
 		this.message=message;
-		this.typeOfButtons=typeOfButtons;
-
+		this.typeOfButtons=typeOfButtons;	
 		initDialog();
+		
 	}
 
 	private void initDialog(){
 
 		try {
-
+			this.setResizable(false);
 			//this.setBounds(getParentComponentBounds(this.parentComponent)); //
 			this.setBounds(this.parentComponent.getBounds());
 			//this.parentComponentWidth=getParentComponentBounds(this.parentComponent).width;
@@ -307,6 +308,7 @@ public class ShadyMessageDialog extends JDialog{
 	}
 
 	private void hideDialog(){
+		
 		this.setVisible(false);
 		this.dispose();
 	}
@@ -376,6 +378,8 @@ public class ShadyMessageDialog extends JDialog{
 	public JPanel getMessagePanel(){
 		return this.messagePanel;
 	}
+	
+
 
 
 
