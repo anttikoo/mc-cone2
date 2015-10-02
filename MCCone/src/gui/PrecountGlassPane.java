@@ -20,7 +20,6 @@ import javax.swing.JSplitPane;
  * The Class PrecountGlassPane is used to show the precounting selector.
  */
 public class PrecountGlassPane extends JComponent{
-	private GUI gui;
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private int rectangleSize=100;
 	private JSplitPane doublePanel;
@@ -29,8 +28,6 @@ public class PrecountGlassPane extends JComponent{
 	private JMenuBar menubar;
 
 	public PrecountGlassPane(GUI gui, JSplitPane doublePanel, JMenuBar menubar, GUIListener guiListener){
-		this.gui=gui;
-//		this.rightPanel=rightPanel;
 		this.doublePanel=doublePanel;
 		this.menubar=menubar;
 		this.setBackground(Color_schema.dark_50);
