@@ -1,5 +1,7 @@
 package gui;
 
+import information.SharedVariables;
+
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -10,6 +12,9 @@ import java.awt.RenderingHints;
 import javax.swing.JPanel;
 import operators.ShapeDrawer;
 
+/**
+ * The Class PreviewShapePanel.
+ */
 public class PreviewShapePanel extends JPanel{
 	private ShapeDrawer shapeDrawer;
 	
@@ -17,6 +22,17 @@ public class PreviewShapePanel extends JPanel{
 	private Rectangle recOfBackPanel;
 	
 	
+	/**
+	 * Instantiates a new preview shape panel.
+	 *
+	 * @param thickness the thickness of the shape
+	 * @param opacity the opacity of the shape
+	 * @param shapeID the id of the shape
+	 * @param shapeSize the size of the shape
+	 * @param color the color of the shape
+	 * @param recOfBackPanel the Rectangle of visible dialog
+	 * @param recOfVisibleWindow the Rectangle of the whole visible window
+	 */
 	public PreviewShapePanel(float thickness, float opacity, int shapeID, int shapeSize, Color color, Rectangle recOfBackPanel, Rectangle recOfVisibleWindow){		
 		this.setOpaque(false); // layer has to be transparent
 		this.setBackground(new Color(0,0,0,0));
@@ -35,7 +51,7 @@ public class PreviewShapePanel extends JPanel{
 		super.paintComponent(g);
 		
 		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OUT, 1.0F));			// THIS WORKING IN LINUX	
+		g2d.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER, 1.0F));			// THIS WORKING IN LINUX	
 		g2d.setPaint(Color_schema.dark_30);
 		g2d.setStroke(new BasicStroke(shapeDrawer.getThickness())); // set thickness
 		RenderingHints rh= new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
