@@ -37,10 +37,12 @@ public class ContentPane extends JPanel{
 				Graphics2D g2d = (Graphics2D) g.create();
 
 				// 70% transparent Alpha
-				g2d.setComposite(AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.7F)); // use SharedVarible
+			//	g2d.setComposite(AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.7F)); // use SharedVarible
+				
 	
 				g2d.setColor(getBackground());
 				g2d.fill(getBounds());
+				System.out.println("get bounds: "+getBounds().x+ " "+getBounds().y+ " "+ getBounds().getWidth()+ " "+getBounds().height);
 
 				g2d.dispose();
 			} catch (Exception e) {
