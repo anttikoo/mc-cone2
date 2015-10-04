@@ -20,7 +20,7 @@ public class PreviewShapePanel extends JPanel{
 	
 //	private Color shapeColor;
 	private Rectangle recOfBackPanel;
-	// addom
+	
 	
 	
 	/**
