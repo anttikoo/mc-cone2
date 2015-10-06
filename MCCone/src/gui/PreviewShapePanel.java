@@ -17,8 +17,6 @@ import operators.ShapeDrawer;
  */
 public class PreviewShapePanel extends JPanel{
 	private ShapeDrawer shapeDrawer;
-	
-//	private Color shapeColor;
 	private Rectangle recOfBackPanel;
 	
 	
