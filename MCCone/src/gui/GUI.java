@@ -89,9 +89,9 @@ public static LogFrame logFrame;
 private Dimension screenSize;
 private JMenuBar menubar;
 private JSplitPane doublePanel;
-private JPanel leftPanel;
-private JPanel visualPanel;
-private JPanel downBarPanel;
+protected JPanel leftPanel;
+protected JPanel visualPanel;
+protected JPanel downBarPanel;
 private JLayeredPane layers;
 private ImagePanel imagePanel;
 private JPanel rightPanel;
@@ -110,6 +110,7 @@ private SliderListener sliderListener;
 private HighlightPanel highlightPanel;
 private GridPanel gridPanel;
 private int rightPanelWidth=0;
+private GUIcomponentListener guiComponentListener=null;
 
 	/**
 	 * Class constructor.
@@ -151,9 +152,11 @@ private int rightPanelWidth=0;
 			
 			/*
 			 * FOR TESTING PURPOSES -> opens an image automatically -> path of image hard coded.
-			 *	testing();
+			 *	
 			 *  updateImageLayerInfos(); 
 			 */
+			
+			testing();
 			
 			LOGGER.info("Started MCcone! All OK.");	
 			
@@ -491,7 +494,7 @@ private int rightPanelWidth=0;
 	}
 
 
-
+	
 
 
 	/**
@@ -571,8 +574,8 @@ private int rightPanelWidth=0;
 	private void closeProgram(){
 		try {
 			// saving process
-			if(this.taskManager.isMadeChanges()){
-				ShadyMessageDialog dialog=new ShadyMessageDialog(new JFrame(),
+			if(this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size() >0 && this.taskManager.isMadeChanges()){
+				ShadyMessageDialog dialog=new ShadyMessageDialog(this,
 						"Exiting MC-Cone", "Changes has been made. Save Markings?", ID.YES_NO_CANCEL, this);
 				int selectionID = dialog.showDialog();
 				if(selectionID == ID.YES){
@@ -586,7 +589,7 @@ private int rightPanelWidth=0;
 
 			}
 			else {
-				ShadyMessageDialog dialog=new ShadyMessageDialog(new JFrame(),
+				ShadyMessageDialog dialog=new ShadyMessageDialog(this,
 						"Exiting MC-Cone", "Do you really want to quit MC-Cone?", ID.YES_NO, this);
 				int selectionID = dialog.showDialog();
 				if(selectionID == ID.NO){
@@ -754,7 +757,22 @@ private int rightPanelWidth=0;
 		return this;
 	}
 
-
+	/**
+	 * Gets the GUIcomponentListener of GUI if found.
+	 *
+	 * @return the GUI component listener
+	 */
+	public GUIcomponentListener getGUIComponentListener(){
+		ComponentListener[] list = this.getComponentListeners();
+		if(list != null && list.length>0){
+			for (int i = 0; i < list.length; i++) {
+				if(list[i].getClass().getName().toString().equals("gui.GUIcomponentListener")){				
+					return (GUIcomponentListener)list[i];				
+				}
+			}		
+		}		
+		return null;
+	}
 
 	/**
 	 * Creates ImageIcon from giving image path.
@@ -770,6 +788,8 @@ private int rightPanelWidth=0;
 
 
 	}
+	
+	
 
 	/**
 	 * Returns ImageLayer by given ID.
@@ -872,7 +892,8 @@ private int rightPanelWidth=0;
 	 * @return Dimension screen size.
 	 */
 	public Dimension getScreenSize(){
-		return this.screenSize;
+		// return this.screenSize;
+		return Toolkit.getDefaultToolkit().getScreenSize();
 	}
 	
 	/**
@@ -901,11 +922,12 @@ private int rightPanelWidth=0;
 			height=height+y;
 			y=0;
 		}
-	//	System.out.println("screen: " +getScreenSize().width);
+	
 		if(x+width > getScreenSize().width){
 
 			width=getScreenSize().width-x;
 		}
+	
 		if(y+height > getScreenSize().height){
 			height=getScreenSize().height-y;
 		}
@@ -921,7 +943,7 @@ private int rightPanelWidth=0;
 			   width=gs[0].getDefaultConfiguration().getBounds().width + gs[1].getDefaultConfiguration().getBounds().width-x;
 			}
 		}
-
+		
 		return new Rectangle(x, y, width, height);
 
 
@@ -1185,7 +1207,7 @@ private int rightPanelWidth=0;
 			doublePanel = new JSplitPane();
 			doublePanel.setResizeWeight(0.80);
 			guiListener.addKeyInputMap(this.doublePanel, ID.WHOLE_GUI_FRAME);
-			doublePanel.setMaximumSize(new Dimension(screenSize.width, screenSize.height));
+			doublePanel.setMaximumSize(new Dimension(getScreenSize().width, getScreenSize().height));
 			doublePanel.setBorder(BorderFactory.createEmptyBorder());
 
 			 PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
@@ -1211,7 +1233,7 @@ private int rightPanelWidth=0;
 			leftPanel.setLayout(new BorderLayout(0,0));
 
 			leftPanel.setBorder(BorderFactory.createEmptyBorder());
-			leftPanel.setMinimumSize(new Dimension((int)(this.screenSize.width/4),75));
+			leftPanel.setMinimumSize(new Dimension((int)(getScreenSize().width/4),75));
 
 			// panel which visualizes the image and markings
 			visualPanel = new JPanel();
@@ -1346,7 +1368,7 @@ private int rightPanelWidth=0;
 	private void initWindowPropertiesAndListeners() throws Exception{
 
 		try {
-			screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // maybe never used
 			// change colors of menus and tooltips
 			UIManager.put("Button.background", Color_schema.dark_20);
 			UIManager.put("Button.border", BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
@@ -1396,41 +1418,12 @@ private int rightPanelWidth=0;
 	
 			guiListener = new GUIListener(this);
 
+			guiComponentListener = new GUIcomponentListener(this);
+			
 			// add listener for resizing the JFrame -> resize the sizes of Splittedpane
-			this.addComponentListener(new ComponentListener() {
-
-				@Override
-				public void componentHidden(ComponentEvent e) {
-
-				}
-	
-				@Override
-				public void componentMoved(ComponentEvent e) {
-					try {
-					//	screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-					//	LOGGER.fine("screenSize "+screenSize);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-
-				@Override
-				public void componentResized(ComponentEvent e) {
-					// resize the lower panel
-					visualPanel.setBounds(0,0,(int)(leftPanel.getBounds().getWidth()),(int)(leftPanel.getBounds().getHeight()-downBarPanel.getBounds().getHeight()));
-					visualPanel.revalidate();
-				
-					//	updateImagePanelSize();
-					resizeLayerComponents();
-				}
-
-				@Override
-				public void componentShown(ComponentEvent e) {
-	
-				}
-			});
-
+			this.addComponentListener(guiComponentListener);
+		
+			
 			//Close the program when window closed by the user
 			this.addWindowListener(new WindowAdapter() {
 			      public void windowClosing(WindowEvent e) {
@@ -1442,12 +1435,13 @@ private int rightPanelWidth=0;
 			// key listeners		
 			KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 	        manager.addKeyEventDispatcher(new MCkeyDispatcher(this.guiListener));
-
+	       
 			//set window normal and minimum size and position before maximization
 			this.setSize(screenSize.width/2, screenSize.height/2);
 			this.setMinimumSize(new Dimension(screenSize.width/3,600));
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+			
 			// set window maximazed
 			this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			this.setTitle("MC-Cone - Manual Cell Counter");
@@ -1462,7 +1456,7 @@ private int rightPanelWidth=0;
 		}
 
 	}
-
+	
 
 	/**
 	 * Checks that given image file dimension is same as the dimension of previously used images. ONLY ONE IMAGE DIMENSION IS ALLOWED.
@@ -1765,7 +1759,7 @@ private int rightPanelWidth=0;
 	/**
 	 * Resizes components of graphical interface
 	 */
-	private void resizeLayerComponents(){
+	protected void resizeLayerComponents(){
 		try{
 			 layers.setBounds(5,5,(int)visualPanel.getBounds().getWidth()-10, (int)visualPanel.getBounds().getHeight()-10);
 			 layers.revalidate();
@@ -1787,6 +1781,8 @@ private int rightPanelWidth=0;
 			  updateGridPanel();
 			  removeHighLightPoint();
 	         layers.repaint();
+	         updateImageLayerInfos();
+	         
 		}catch(Exception e){
 			LOGGER.severe("Error in resizing maing window "+e.getMessage());
 		}
@@ -1820,12 +1816,22 @@ private int rightPanelWidth=0;
 		switch(typeOfCursor){
 			case ID.CURSOR_DEFAULT:
 				this.imagePanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				if(this.taskManager != null && this.taskManager.getSelectedMarkingLayer() != null && this.taskManager.getSelectedMarkingLayer().getLayerID()>0)
+					getMarkingPanelByLayerID(this.taskManager.getSelectedMarkingLayer().getLayerID()).setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				break;
 			case ID.CURSOR_HAND:
 				System.out.println("hand show");
 				this.imagePanel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-				
+				if(this.taskManager != null && this.taskManager.getSelectedMarkingLayer() != null && this.taskManager.getSelectedMarkingLayer().getLayerID()>0)
+					getMarkingPanelByLayerID(this.taskManager.getSelectedMarkingLayer().getLayerID()).setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));			
 				break;
+			case ID.CURSOR_CROSS_HAIR:
+				System.out.println("hand show");				
+				this.imagePanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+				if(this.taskManager != null && this.taskManager.getSelectedMarkingLayer() != null && this.taskManager.getSelectedMarkingLayer().getLayerID()>0)
+				getMarkingPanelByLayerID(this.taskManager.getSelectedMarkingLayer().getLayerID()).setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));			
+				break;
+				
 		}
 		
 	}
@@ -1867,8 +1873,14 @@ private int rightPanelWidth=0;
 	}
 
 
+	/**
+	 * Sets the made changes. Used when user does any changes that could be saved -> true; or false when user saves all opened works.
+	 * This method and procedure is still under development. Fill be finalized in future updates.
+	 *
+	 * @param mc boolean has made changes
+	 */
 	public void setMadeChanges(boolean mc){
-		this.taskManager.setMadeChange();
+		this.taskManager.setMadeChange(); //
 	}
 
 	/**
@@ -1952,10 +1964,7 @@ private void setPropertiesOfAllMarkingPanels(){
 
 		}
 	}
-
 	setMarkingsOfHighlightLayer();
-
-
 }
 
 /**
@@ -2043,7 +2052,6 @@ public void setSelectedMarkingLayer(int mLayerID){
 				this.layers.moveToFront(this.highlightPanel); // set the hightlightPanel behind to frontPanel
 				this.layers.moveToFront(panelToFront);
 			}
-
 		}
 	}
 
@@ -2230,9 +2238,11 @@ public void setSelectedMarkingLayer(int mLayerID){
 	 */
 	public void showGridPropertiesPanel(Point point, ArrayList<MarkingLayer> mLayerList){
 		if(mLayerList != null && mLayerList.size()>0){
-			GridPropertiesPanel dialog =new GridPropertiesPanel(new JFrame(), this, point, mLayerList, taskManager.getSingleGridSizeList());
+			GridPropertiesPanel dialog =new GridPropertiesPanel(this, this, point, mLayerList, taskManager.getSingleGridSizeList());		
+			
 			dialog.showDialog();
-			updateGridPanel();
+			updateGridPanel();	
+			
 			dialog=null;
 			}
 			else{
@@ -2432,7 +2442,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 	 */
 	@SuppressWarnings("unused")
 	private void testing(){
-		ImageLayer l = new ImageLayer("/home/antti/4kuvaa/kuusiSolua.jpg");
+		ImageLayer l = new ImageLayer("/home/antti/4kuvaa/eka.jpg");
 		ArrayList<ImageLayer> list = new ArrayList<ImageLayer>();
 		list.add(l);
 		addImageLayerList(list);
