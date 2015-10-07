@@ -12,6 +12,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
@@ -28,6 +29,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import operators.GetResources;
 
@@ -49,27 +51,27 @@ public class PropertiesDialog extends JDialog {
 		super(frame,true);
 		this.gui = gui;
 		this.topLeftPoint=point;
-//		this.maxHeight=300;
 		this.revalidate();
 		this.repaint();
 	}
+	
+	
 
 	/**
 	 *  Setups the components of Dialog window
 	 */
 	protected void initDialog(){
 		try {
-			//setup fonts
-
-		//	this.setBounds(gui.getBounds()); // sets the size of this dialog same as the GUI (the parent)
+			//setup dimming of window
+			this.setResizable(false);
 			this.setBounds(gui.getVisibleWindowBounds()); // sets the size of this dialog same as the GUI (the parent)
 			this.setUndecorated(true); // no titlebar or buttons
-			this.setBackground(new Color(0,0,0,0)); // transparent color
-//			if(checkBounds()) // if GUI is over screen -> not using dimming of GUI (dimming would be positioned wrong)
+			this.setBackground(new Color(0,0,0,0)); // transparent color			
 			this.setContentPane(new ContentPane()); // makes dimming over GUI
 			this.getContentPane().setBackground(Color_schema.dark_30);
 			this.setLayout(null); // backpanel position is determined with setBounds(..)
-
+			
+			
 			backPanel = new JPanel();
 			backPanel.setLayout(new BorderLayout());
 			backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 3));
@@ -83,7 +85,6 @@ public class PropertiesDialog extends JDialog {
 			backPanel.add(initUPPanels(), BorderLayout.PAGE_START);
 			backPanel.add(initCenterPanels(), BorderLayout.CENTER);
 			backPanel.add(initDownPanel(),BorderLayout.PAGE_END);
-
 			
 			this.add(backPanel);
 			this.repaint();
@@ -97,8 +98,10 @@ public class PropertiesDialog extends JDialog {
 
 	protected void setPanelPosition(){
 		recOfBackpanel = getGoodBoundsForPanel();
-		if(recOfBackpanel != null)
+		if(recOfBackpanel != null){
 			backPanel.setBounds(recOfBackpanel);
+			
+		}
 		else{
 			recOfBackpanel = new Rectangle((int)(this.topLeftPoint.getX()-(panelWidth)), (int)this.topLeftPoint.getY(),this.panelWidth,this.panelHeight);
 			backPanel.setBounds(recOfBackpanel);
@@ -107,14 +110,36 @@ public class PropertiesDialog extends JDialog {
 		}
 	}
 	
+	protected Rectangle getDimmingRectangle(){
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		Rectangle bounds = ge.getMaximumWindowBounds();
+		System.out.println("Windowbounds: "+bounds.toString());
+		
+		
+	}
+	
+	/**
+	 * Initializes the layers panel.
+	 */
 	protected void initLayersPanel(){
 		// do nothing here -> done in extended class
 	}
 
+	/**
+	 * Initializes the uppermost panels.
+	 *
+	 * @return the created JPanel
+	 * @throws Exception the exception
+	 */
 	protected JPanel initUPPanels() throws Exception{
 		return null;
 	}
 
+	/**
+	 * Initializes  the center panels.
+	 *
+	 * @return the created JPanel
+	 */
 	protected JPanel initCenterPanels(){
 		return null;
 	}
@@ -168,6 +193,12 @@ public class PropertiesDialog extends JDialog {
 		return buttonPanel;
 	}
 
+	/**
+	 * Initializes the title panel, showing title of the dialog.
+	 *
+	 * @param title the title String
+	 * @return the created JPanel
+	 */
 	protected JPanel initTitlePanel(String title){
 		try {
 			//contains title JLabel
@@ -249,9 +280,18 @@ public class PropertiesDialog extends JDialog {
 	 */
 	protected Rectangle getGoodBoundsForPanel(){
 		try {
+		//	UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			Rectangle bounds = ge.getMaximumWindowBounds();
+			System.out.println("bounds: "+bounds.toString());
+			
+			
 			//this.topLeftPoint
 			int topleftX = (int)(this.topLeftPoint.getX()-panelWidth);
 			int topleftY = (int)this.topLeftPoint.getY();
+			
+			topleftX =gui.getBounds().x+(int)(gui.getBounds().width/2);
+			topleftY = gui.getBounds().y+50;
 
 
 			int guiDownY=(int)(this.gui.getBounds().getY()+this.gui.getBounds().getHeight());
