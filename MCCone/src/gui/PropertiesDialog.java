@@ -85,7 +85,7 @@ public class PropertiesDialog extends JDialog {
 			backPanel.add(initUPPanels(), BorderLayout.PAGE_START);
 			backPanel.add(initCenterPanels(), BorderLayout.CENTER);
 			backPanel.add(initDownPanel(),BorderLayout.PAGE_END);
-			
+			getDimmingRectangle();
 			this.add(backPanel);
 			this.repaint();
 
@@ -112,9 +112,45 @@ public class PropertiesDialog extends JDialog {
 	
 	protected Rectangle getDimmingRectangle(){
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		Rectangle bounds = ge.getMaximumWindowBounds();
-		System.out.println("Windowbounds: "+bounds.toString());
+		Rectangle windowBounds = ge.getMaximumWindowBounds();
+
 		
+
+		LOGGER.fine("window bounds"+windowBounds.toString() +" gui:"+gui.getBounds().toString());
+		
+		// GUI inside the window
+		if(windowBounds.contains(gui.getBounds())){
+			return gui.getBounds();		
+			
+		}
+		int x=gui.getBounds().x;		
+		int y= gui.getBounds().y;
+		int width=gui.getBounds().width;
+		int height=gui.getBounds().height;
+		// GUI over window
+		int windowLeftX = windowBounds.x;
+		int windowRightX=windowBounds.x+windowBounds.width;
+		int windowUpY=windowBounds.y;
+		int windowDownY=windowBounds.y+windowBounds.height;
+		
+		int guiX= this.gui.getBounds().x;
+		int guiY= this.gui.getBounds().y;
+		int guiWidth= this.gui.getWidth();
+		int guiHeight=this.gui.getHeight();
+			
+		if(guiX<windowLeftX){ //over left
+			x=windowLeftX;
+			width = guiWidth-(windowLeftX-guiX);			
+		}
+		if(guiX+guiWidth > windowRightX){
+			x=guiX;
+		//	width=
+			
+		}
+		
+			
+		
+		return windowBounds;
 		
 	}
 	
@@ -279,12 +315,7 @@ public class PropertiesDialog extends JDialog {
 	 * @return Rectangle containing appropriate location and size values for the Dialog window.
 	 */
 	protected Rectangle getGoodBoundsForPanel(){
-		try {
-		//	UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			Rectangle bounds = ge.getMaximumWindowBounds();
-			System.out.println("bounds: "+bounds.toString());
-			
+		try {			
 			
 			//this.topLeftPoint
 			int topleftX = (int)(this.topLeftPoint.getX()-panelWidth);
