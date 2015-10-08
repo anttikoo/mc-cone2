@@ -36,11 +36,10 @@ import javax.swing.event.ChangeListener;
 import operators.ShapeDrawer;
 
 /**
- * The Class MarkingProperties. Opens the dialog for setting properties of markings
+ * The Class MarkingProperties. Opens the dialog for setting properties of markings.
  */
 public class MarkingProperties extends PropertiesDialog {
-	
-	
+		
 	protected final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	protected GUI gui;
 	private MarkingLayer markingLayer;
@@ -381,6 +380,7 @@ protected void initDialog(){
 	try {
 		
 		//dim the screen around window 
+		this.setResizable(false);
 		this.setBounds(gui.getVisibleWindowBounds()); // sets the size of this dialog same as the GUI (the parent)
 		this.setUndecorated(true); // no titlebar or buttons
 		this.setBackground(new Color(0,0,0,0)); // transparent color
@@ -388,12 +388,12 @@ protected void initDialog(){
 		this.getContentPane().setBackground(Color_schema.dark_30);
 		this.setLayout(null); // backpanel position is determined with setBounds(..)
 		
+		
 		layeredPane=new JLayeredPane();
 		layeredPane.setLayout(null);
 		layeredPane.setBorder(BorderFactory.createEmptyBorder());
 		layeredPane.setBounds(new Rectangle(0,0, this.getBounds().width,this.getBounds().height));
-		
-	
+			
 
 		// the window showing components
 		backPanel = new JPanel();
