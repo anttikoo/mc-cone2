@@ -903,23 +903,99 @@ private GUIcomponentListener guiComponentListener=null;
 	public double getSizeMultiplier(){
 		return this.taskManager.getShapeSizeMultiplier();
 	}
-
+	
 	/**
 	 * Calculates and returns position and size of window where dialog can be positioned.
 	 * @return Rectangle size and position where dialog window can be positioned.
 	 */
 	public Rectangle getVisibleWindowBounds(){
+		
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		Rectangle windowBounds = ge.getMaximumWindowBounds();
+		
+		
+
+		// GUI inside the window
+		if(windowBounds.contains(this.getBounds())){
+			return this.getBounds();		
+			
+		}
+		
+		int windowLeftX = windowBounds.x;
+		int windowRightX=windowBounds.x+windowBounds.width;
+		int windowUpY=windowBounds.y;
+		int windowDownY=windowBounds.y+windowBounds.height;
+		
+		int x=this.getBounds().x;		
+		int y= this.getBounds().y;
+		int width=this.getBounds().width;
+		int height=this.getBounds().height;
+		// GUI over window
+
+		
+		int guiX= this.getBounds().x;
+		int guiY= this.getBounds().y;
+		int guiWidth= this.getWidth();
+		int guiHeight=this.getHeight();
+			
+		if(guiX<windowLeftX){ //over left
+			x=windowLeftX;
+			width = guiWidth-(windowLeftX-guiX);	
+			LOGGER.fine("Over left: window"+windowBounds.toString() +" gui:"+this.getBounds().toString());
+		}
+		if(guiX+guiWidth > windowRightX){ // over right
+			x=guiX;
+			width= windowRightX- guiX;		
+			LOGGER.fine("Over right: window"+windowBounds.toString() +" gui:"+this.getBounds().toString());
+		}
+		
+		if(guiY <windowUpY){ //over up
+			y= windowUpY;
+			height= guiHeight - (windowUpY-guiY);
+			LOGGER.fine("Over up: window"+windowBounds.toString() +" gui:"+this.getBounds().toString());
+		}
+		
+		if(guiY+guiHeight > windowDownY){ // over down
+			y=guiY;
+			height= windowDownY-guiY;
+			LOGGER.fine("Over down: window"+windowBounds.toString() +" gui:"+this.getBounds().toString());
+		}
+		
+
+		// is multiple monitors used -> only horizontally positioned monitors checked
+		if(width <0){
+			ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			GraphicsDevice[] gs = ge.getScreenDevices();
+		
+			if(gs.length>1){
+				width= this.getBounds().width;
+			if(x+width> gs[0].getDefaultConfiguration().getBounds().width + gs[1].getDefaultConfiguration().getBounds().width)
+			   width = gs[0].getDefaultConfiguration().getBounds().width + gs[1].getDefaultConfiguration().getBounds().width-x;
+			}
+			
+		}
+		
+		return new Rectangle(x, y, width, height);
+
+
+	}
+
+	/**
+	 * Calculates and returns position and size of window where dialog can be positioned.
+	 * @return Rectangle size and position where dialog window can be positioned.
+	 */
+	public Rectangle getVisibleWindowBoundsOLD(){
 		int x=this.getBounds().x; // get horizontal top left position of window
 		int y=this.getBounds().y; // get vertical top left position of window
 		int width=this.getBounds().width; // get width of window
 		int height=this.getBounds().height; // get height of window
 
 		if(x<0){ // horizontal position too small -> out of screen.
-			width= width+x;
+			width = width+x;
 			x=0;
 		}
 		if(y<0){ // vertical position too small -> out of screen.
-			height=height+y;
+			height = height+y;
 			y=0;
 		}
 	
@@ -929,7 +1005,7 @@ private GUIcomponentListener guiComponentListener=null;
 		}
 	
 		if(y+height > getScreenSize().height){
-			height=getScreenSize().height-y;
+			height = getScreenSize().height-y;
 		}
 
 		// is multiple monitors used -> only horizontally positioned monitors checked
@@ -940,7 +1016,7 @@ private GUIcomponentListener guiComponentListener=null;
 			if(gs.length>1){
 				width= this.getBounds().width;
 			if(x+width> gs[0].getDefaultConfiguration().getBounds().width + gs[1].getDefaultConfiguration().getBounds().width)
-			   width=gs[0].getDefaultConfiguration().getBounds().width + gs[1].getDefaultConfiguration().getBounds().width-x;
+			   width = gs[0].getDefaultConfiguration().getBounds().width + gs[1].getDefaultConfiguration().getBounds().width-x;
 			}
 		}
 		
@@ -1940,7 +2016,9 @@ private void setPropertiesOfAllMarkinglayers(Point guiPoint){
 	ArrayList<MarkingLayer> mLayerList=taskManager.getAllMarkingLayers();
 	if(mLayerList != null && mLayerList.size()>0){
 		GlobalMarkingProperties dialog = new GlobalMarkingProperties(new JFrame(), getGUI(), guiPoint, mLayerList);
+		this.guiComponentListener.setChildDialog(dialog);
 		dialog.showDialog();
+		this.guiComponentListener.setChildDialog(null);
 	}
 	else
 		showMessage("No MarkingLayers", "No any MarkingLayer found for changing properties.", ID.OK);
