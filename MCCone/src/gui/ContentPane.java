@@ -3,6 +3,7 @@ package gui;
 import information.SharedVariables;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.logging.Logger;
@@ -38,11 +39,13 @@ public class ContentPane extends JPanel{
 
 				// 70% transparent Alpha
 			//	g2d.setComposite(AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.7F)); // use SharedVarible
+				g2d.setComposite(AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.7F)); // use SharedVarible
 				
 	
 				g2d.setColor(getBackground());
+			//	g2d.setColor(Color.green);
 				g2d.fill(getBounds());
-				System.out.println("get bounds: "+getBounds().x+ " "+getBounds().y+ " "+ getBounds().getWidth()+ " "+getBounds().height);
+				
 
 				g2d.dispose();
 			} catch (Exception e) {
