@@ -36,7 +36,7 @@ public class HighlightPanel extends JPanel{
 
 	public void setLayer(MarkingLayer layer){
 		if(layer != null){
-			this.shapeDrawer=new ShapeDrawer(layer, layer.getSize()+2, layer.getThickness(),this.opacity );
+			this.shapeDrawer=new ShapeDrawer(layer, layer.getSize()+2, layer.getThickness(),this.opacity, layer.getColor());
 			this.shapeID=layer.getShapeID();
 		}
 		else{

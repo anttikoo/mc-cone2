@@ -13,16 +13,15 @@ import javax.swing.JPanel;
 import operators.ShapeDrawer;
 
 /**
- * The Class PreviewShapePanel.
+ * The Class PreviewShapePanel. Draws a preview of style of marking to left of given parent position. 
  */
 public class PreviewShapePanel extends JPanel{
 	private ShapeDrawer shapeDrawer;
 	private Rectangle recOfBackPanel;
 	
 	
-	
 	/**
-	 * Instantiates a new preview shape panel.
+	 * Instantiates a new preview shape panel. Height will be taken from given Rectangle recOfBackPanel.
 	 *
 	 * @param thickness the thickness of the shape
 	 * @param opacity the opacity of the shape
@@ -45,6 +44,9 @@ public class PreviewShapePanel extends JPanel{
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -61,22 +63,47 @@ public class PreviewShapePanel extends JPanel{
 		
 	}
 	
+	/**
+	 * Sets the shape thickness.
+	 *
+	 * @param thickness Float the new shape thickness
+	 */
 	public void setShapeThickness(float thickness){
 		this.shapeDrawer.setThickness(thickness);
 	}
 	
+	/**
+	 * Sets the shape size.
+	 *
+	 * @param size the new shape size
+	 */
 	public void setShapeSize(int size){
 		this.shapeDrawer.setShapeSize(size);
 	}
 	
+	/**
+	 * Sets the shape opacity.
+	 *
+	 * @param opacity the new shape opacity
+	 */
 	public void setShapeOpacity(float opacity){
 		this.shapeDrawer.setOpacity(opacity);
 	}
 	
+	/**
+	 * Sets the shape id.
+	 *
+	 * @param shapeID the new shape id
+	 */
 	public void setShapeID(int shapeID){
 		this.shapeDrawer.setShapeID(shapeID);
 	}
 	
+	/**
+	 * Sets the shape color.
+	 *
+	 * @param c the new shape color
+	 */
 	public void setShapeColor(Color c){
 		this.shapeDrawer.setShapeColor(c);
 	}

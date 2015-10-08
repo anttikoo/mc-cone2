@@ -61,7 +61,7 @@ public class MarkingPanel extends JPanel {
 		setCoordinateList(new ArrayList<Point>());
 		this.rule_alpha=AlphaComposite.SRC_OVER;
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-		this.shapeDrawer=new ShapeDrawer(mLayer, mLayer.getSize(), mLayer.getThickness(), mLayer.getOpacity());
+		this.shapeDrawer=new ShapeDrawer(mLayer, mLayer.getSize(), mLayer.getThickness(), mLayer.getOpacity(), mLayer.getColor());
 
 
 	}
@@ -91,7 +91,7 @@ public class MarkingPanel extends JPanel {
 		this.shapeSize=mLayer.getSize();
 	//	this.strokeThin=new BasicStroke(this.thickness);
 	//	this.strokeThick=new BasicStroke(this.thickness*3);
-		this.shapeDrawer=new ShapeDrawer(mLayer, mLayer.getSize(), mLayer.getThickness(), mLayer.getOpacity());
+		this.shapeDrawer=new ShapeDrawer(mLayer, mLayer.getSize(), mLayer.getThickness(), mLayer.getOpacity(), mLayer.getColor());
 	}
 
 /*

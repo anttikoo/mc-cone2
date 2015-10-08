@@ -29,6 +29,14 @@ public class PrecountGlassPane extends JComponent{
 	private Point centerPoint=null;
 	private JMenuBar menubar;
 
+	/**
+	 * Instantiates a new precount glass pane.
+	 *
+	 * @param gui the GUI main window
+	 * @param doublePanel the double panel of mainwindow 
+	 * @param menubar the menubar of main window
+	 * @param guiListener the listener of GUI
+	 */
 	public PrecountGlassPane(GUI gui, JSplitPane doublePanel, JMenuBar menubar, GUIListener guiListener){
 		this.doublePanel=doublePanel;
 		this.menubar=menubar;
@@ -44,7 +52,38 @@ public class PrecountGlassPane extends JComponent{
 
 	}
 
-	 protected void paintComponent(Graphics g) {
+	 /**
+ 	 * Determine right panel size and location
+ 	 *
+ 	 * @return the rectangle Rectangle containing position and size of right panel (Info of ImageLayers).
+ 	 */
+ 	private Rectangle determineRightPanelBounds(){
+		 Point dp = doublePanel.getLocation();
+		 dp.setLocation(dp.getLocation().x+doublePanel.getDividerLocation(),dp.getLocation().y+menubar.getHeight());
+		 return new Rectangle(dp, new Dimension(doublePanel.getRightComponent().getWidth()+ doublePanel.getDividerSize(), doublePanel.getHeight()));
+	 }
+
+	 /**
+	 * Gets the center point.
+	 *
+	 * @return the center point
+	 */
+	public Point getCenterPoint() {
+		return centerPoint;
+	}
+
+
+
+	/**
+	 * Gets the rectangle size.
+	 *
+	 * @return the rectangle size
+	 */
+	public int getRectangleSize() {
+		return rectangleSize;
+	}
+
+	protected void paintComponent(Graphics g) {
 	    super.paintComponent(g);
 		// Apply our own painting effect
 		Graphics2D g2d = (Graphics2D) g.create();
@@ -71,26 +110,13 @@ public class PrecountGlassPane extends JComponent{
            g.dispose();
 	    }
 
-	 /**
- 	 * Determine right panel size and location
- 	 *
- 	 * @return the rectangle Rectangle containing position and size of right panel (Info of ImageLayers).
- 	 */
- 	private Rectangle determineRightPanelBounds(){
-		 Point dp = doublePanel.getLocation();
-		 dp.setLocation(dp.getLocation().x+doublePanel.getDividerLocation(),dp.getLocation().y+menubar.getHeight());
-		 return new Rectangle(dp, new Dimension(doublePanel.getRightComponent().getWidth()+ doublePanel.getDividerSize(), doublePanel.getHeight()));
-	 }
-
-
-
 	/**
-	 * Gets the rectangle size.
+	 * Sets the center point.
 	 *
-	 * @return the rectangle size
+	 * @param circleCenterPoint the new center point
 	 */
-	public int getRectangleSize() {
-		return rectangleSize;
+	public void setCenterPoint(Point circleCenterPoint) {
+		this.centerPoint = circleCenterPoint;
 	}
 
 	/**
@@ -100,24 +126,6 @@ public class PrecountGlassPane extends JComponent{
 	 */
 	public void setRectangleSize(int circleSize) {
 		this.rectangleSize = circleSize;
-	}
-
-	/**
-	 * Gets the center point.
-	 *
-	 * @return the center point
-	 */
-	public Point getCenterPoint() {
-		return centerPoint;
-	}
-
-	/**
-	 * Sets the center point.
-	 *
-	 * @param circleCenterPoint the new center point
-	 */
-	public void setCenterPoint(Point circleCenterPoint) {
-		this.centerPoint = circleCenterPoint;
 	}
 
 

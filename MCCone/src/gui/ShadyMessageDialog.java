@@ -70,10 +70,8 @@ public class ShadyMessageDialog extends JDialog{
 	private void initDialog(){
 
 		try {
-			this.setResizable(false);
-			//this.setBounds(getParentComponentBounds(this.parentComponent)); //
+			this.setResizable(false);		
 			this.setBounds(this.parentComponent.getBounds());
-			//this.parentComponentWidth=getParentComponentBounds(this.parentComponent).width;
 			this.parentComponentWidth=this.parentComponent.getBounds().width;
 			this.setUndecorated(true); // no titlebar or buttons
 			this.setBackground(new Color(0,0,0,0)); // transparent color

@@ -399,9 +399,9 @@ public class ImageCreator implements Runnable {
 		int thickness= (int)(ml.getThickness()*sizeMultiplier);
 		if(thickness<1)
 			thickness=1;
-		ShapeDrawer shapeDrawer=new ShapeDrawer(ml, size, thickness, ml.getOpacity());
+		ShapeDrawer shapeDrawer=new ShapeDrawer(ml, size, thickness, ml.getOpacity(), ml.getColor());
 
-		g2d.setPaint(ml.getColor());
+	//	g2d.setPaint(ml.getColor()); // already set
 		Iterator<Point> coordinateIterator=null;
 		if(ml.isDrawGridToImage()){
 			coordinateIterator =ml.getCoordinateList().iterator();

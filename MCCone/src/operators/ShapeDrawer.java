@@ -1,5 +1,6 @@
 package operators;
 
+import gui.Color_schema;
 import information.ID;
 import information.MarkingLayer;
 import information.SharedVariables;
@@ -17,7 +18,11 @@ public class ShapeDrawer {
 	private BasicStroke strokeThick;
 	private BasicStroke strokeThin;
 	private int rule_alpha;
+	private Color shapeColor;
+	private boolean isPreview=false;
 	
+
+
 
 	private float thickness;
 	private float opacity;
@@ -51,8 +56,8 @@ public class ShapeDrawer {
 		this.strokeThick=new BasicStroke(this.thickness*3);
 	}
 
-	public ShapeDrawer(MarkingLayer ml, int size, int thick, float opacity){
-//		this.rule_alpha=AlphaComposite.SRC_OVER;
+	public ShapeDrawer(MarkingLayer ml, int size, int thick, float opacity, Color shapeColor){
+		this.shapeColor=shapeColor;
 		this.rule_alpha=SharedVariables.transparencyModeOVER;
 		this.thickness=thick;
 		this.opacity= opacity;
@@ -63,8 +68,18 @@ public class ShapeDrawer {
 
 	}
 	
-	public ShapeDrawer(int shapeID, int size, float thick, float opa){
-	//	this.rule_alpha=AlphaComposite.SRC_OVER;
+	
+	/**
+	 * Instantiates a new shape drawer. Sets the isPreview to true and causes to print the marking without thick lines.
+	 *
+	 * @param shapeID the shape id
+	 * @param size the size
+	 * @param thick the thick
+	 * @param opa the opa
+	 * @param shapeColor the shape color
+	 */
+	public ShapeDrawer(int shapeID, int size, float thick, float opa, Color shapeColor){
+		this.shapeColor=shapeColor;
 		this.rule_alpha=SharedVariables.transparencyModeOVER;
 		this.thickness=thick;
 		this.opacity= opa;
@@ -72,6 +87,7 @@ public class ShapeDrawer {
 		this.shapeSize=size;
 		this.strokeThin=new BasicStroke(this.thickness);
 		this.strokeThick=new BasicStroke(this.thickness*3);
+		this.isPreview=true;
 	}
 
 	public void increaseThickness(){
@@ -147,12 +163,16 @@ public class ShapeDrawer {
     	polyline.lineTo(down.x, down.y);
     	polyline.lineTo(left.x, left.y);
     	polyline.lineTo(up.x, up.y);
-
-    	g2d.setStroke(strokeThick); // set thickness bigger
-    	g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
-
-    	// draw the line
-    	g2d.draw(polyline);
+   	
+    	g2d.setPaint(this.shapeColor);
+    	
+    	// print thick part only if not showin preview marking style
+    	if(!isPreview){    	
+	    	g2d.setStroke(strokeThick); // set thickness bigger
+	    	g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
+	    	// draw the line
+	    	g2d.draw(polyline);
+    	}
 
 		g2d.setStroke(strokeThin);
 		g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
@@ -181,7 +201,7 @@ public class ShapeDrawer {
 
 	 g2d.setStroke(strokeThick); // set thickness bigger
 
-	     g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
+	
 
 	     GeneralPath polyline = new GeneralPath(GeneralPath.WIND_NON_ZERO, 4);
 
@@ -190,8 +210,15 @@ public class ShapeDrawer {
 	    	polyline.moveTo (left.x, left.y);
 	    	polyline.lineTo(right.x, right.y);
 
-	    	// draw the line
-	    	g2d.draw(polyline);
+	    	g2d.setPaint(this.shapeColor);
+	    	
+	    	// print thick part only if not showin preview marking style
+	    	if(!isPreview){  
+	    	    g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
+	    	    g2d.setStroke(strokeThick);
+	    	    // draw the line
+	 	    	g2d.draw(polyline);
+	    	}
 
 			g2d.setStroke(strokeThin);
 			g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
@@ -217,9 +244,7 @@ public class ShapeDrawer {
 		Point downleft = cornerPoints[3];
 
 
-	 g2d.setStroke(strokeThick); // set thickness bigger
-
-	     g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
+	 
 
 	     GeneralPath polyline = new GeneralPath(GeneralPath.WIND_NON_ZERO, 4);
 
@@ -227,16 +252,24 @@ public class ShapeDrawer {
 	    	polyline.lineTo(downright.x, downright.y);
 	    	polyline.moveTo (downleft.x, downleft.y);
 	    	polyline.lineTo(upright.x, upright.y);
-
-	    	// draw the line
-	    	g2d.draw(polyline);
-
+   	
+	    	g2d.setPaint(this.shapeColor);
+	    	
+	    	// print thick part only if not showin preview marking style
+	    	if(!isPreview){  
+		    	g2d.setStroke(strokeThick); // set thickness bigger  
+			    g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));	    	
+		    	// draw the line
+		    	g2d.draw(polyline);
+	    	}
 			g2d.setStroke(strokeThin);
 			g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
 			g2d.draw(polyline);
 
 			return g2d;
 	}
+	
+	
 
 	/**
 	 * Draws a oval.
@@ -249,11 +282,17 @@ public class ShapeDrawer {
 	public Graphics2D drawOval(Graphics2D g2d, int x, int y){
 		x=(int)((double)x-((double)shapeSize)/2);
 		y=(int)((double)y-((double)shapeSize)/2);
-		g2d.setStroke(strokeThick); // set thickness bigger
-	    g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
-	     // draw thick ellipse
-		g2d.draw(new Ellipse2D.Double(x, y+shapeSize*0.2, shapeSize, shapeSize*0.6));
-
+		
+		g2d.setPaint(this.shapeColor);
+		
+		// print thick part only if not showin preview marking style
+    	if(!isPreview){  
+			g2d.setStroke(strokeThick); // set thickness bigger
+		    g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));		    
+		    // draw thick ellipse
+			g2d.draw(new Ellipse2D.Double(x, y+shapeSize*0.2, shapeSize, shapeSize*0.6));
+    	}
+    	
 		g2d.setStroke(strokeThin);
 		g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
 		// draw transparent thin rectangle
@@ -273,10 +312,17 @@ public class ShapeDrawer {
 	public Graphics2D drawSquare(Graphics2D g2d, int x, int y){
 		x=(int)((double)x-((double)shapeSize)/2);
 		y=(int)((double)y-((double)shapeSize)/2);
-		g2d.setStroke(strokeThick); // set thickness bigger
-	    g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
-		// draw thick rectangle
-	    g2d.draw(new Rectangle2D.Double(x, y, shapeSize, shapeSize));
+
+		
+	    g2d.setPaint(this.shapeColor);
+	 // print thick part only if not showin preview marking style
+    	if(!isPreview){ 
+		    // draw thick rectangle
+		    g2d.draw(new Rectangle2D.Double(x, y, shapeSize, shapeSize));
+			g2d.setStroke(strokeThick); // set thickness bigger
+		    g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
+		    g2d.draw(new Rectangle2D.Double(x, y, shapeSize, shapeSize));
+    	}
 
 		g2d.setStroke(strokeThin);
 		g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
@@ -297,12 +343,18 @@ public class ShapeDrawer {
 	public Graphics2D drawCircle(Graphics2D g2d, int x, int y){
 		x=(int)((double)x-((double)shapeSize)/2);
 		y=(int)((double)y-((double)shapeSize)/2);
-		 g2d.setStroke(strokeThick); // set thickness bigger
-	     g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
-		 // draw transparent thick circle
-		 g2d.draw(new Ellipse2D.Double(x, y, shapeSize, shapeSize));
-		 //draw thin circle
-
+		
+		g2d.setPaint(this.shapeColor);
+		
+		 // print thick part only if not showin preview marking style
+    	if(!isPreview){ 
+			g2d.setStroke(strokeThick); // set thickness bigger
+		     g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
+			 // draw transparent thick circle
+			 g2d.draw(new Ellipse2D.Double(x, y, shapeSize, shapeSize));	 
+    	}
+    	
+    	//draw thin circle
 		 g2d.setStroke(strokeThin);
 		 g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
 		 g2d.draw(new Ellipse2D.Double(x, y, shapeSize, shapeSize));
@@ -326,7 +378,7 @@ public class ShapeDrawer {
 
 	 g2d.setStroke(strokeThick); // set thickness bigger
 
-	     g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
+	     
 
 	     GeneralPath polyline = new GeneralPath(GeneralPath.WIND_NON_ZERO, 4);
 
@@ -336,10 +388,16 @@ public class ShapeDrawer {
 	    	polyline.lineTo(downleft.x, downleft.y);
 	    	polyline.closePath();
 	    //	polyline.lineTo(up.x, up.y);
-
-	    	// draw the line
-	    	g2d.draw(polyline);
-
+	    	g2d.setPaint(this.shapeColor);
+	    	
+	    	
+			 // print thick part only if not showin preview marking style
+	    	if(!isPreview){ 
+		    	g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
+		    	g2d.setStroke(strokeThick);
+		    	// draw the line
+		    	g2d.draw(polyline);
+	    	}
 			g2d.setStroke(strokeThin);
 			g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
 			g2d.draw(polyline);
@@ -394,5 +452,13 @@ public class ShapeDrawer {
 	 */
 	public void setShapeID(int shapeID) {
 		this.shapeID = shapeID;
+	}
+	
+	public Color getShapeColor() {
+		return shapeColor;
+	}
+
+	public void setShapeColor(Color shapeColor) {
+		this.shapeColor = shapeColor;
 	}
 }

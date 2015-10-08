@@ -144,7 +144,7 @@ public class PropertiesDialog extends JDialog {
 		}
 		if(guiX+guiWidth > windowRightX){
 			x=guiX;
-		//	width=
+			//width=
 			
 		}
 		
