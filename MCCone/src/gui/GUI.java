@@ -120,7 +120,7 @@ private GUIcomponentListener guiComponentListener=null;
 	public GUI()
 	{		super("gui");
 			//initialize LOGGING 
-			initLogging(Level.INFO);
+			initLogging(Level.FINE);
 			
 			// initialize fonts
 			Fonts.initFonts();
@@ -1422,6 +1422,7 @@ private GUIcomponentListener guiComponentListener=null;
 			
 			// add listener for resizing the JFrame -> resize the sizes of Splittedpane
 			this.addComponentListener(guiComponentListener);
+			
 		
 			
 			//Close the program when window closed by the user
@@ -2239,7 +2240,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 	public void showGridPropertiesPanel(Point point, ArrayList<MarkingLayer> mLayerList){
 		if(mLayerList != null && mLayerList.size()>0){
 			GridPropertiesPanel dialog =new GridPropertiesPanel(this, this, point, mLayerList, taskManager.getSingleGridSizeList());		
-			
+			this.guiComponentListener.setChildDialog(dialog);
 			dialog.showDialog();
 			updateGridPanel();	
 			
