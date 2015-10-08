@@ -121,6 +121,10 @@ public class AddImageLayerDialog extends JDialog{
 			LOGGER.severe("Error in adding new ImageLayer:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
 		}
 	}
+	
+	public void setPanelPosition(){
+		// add code here!
+	}
 
 	/**
 	 * Class constructor for creating new ImageLayers from given image files.
@@ -164,8 +168,8 @@ public class AddImageLayerDialog extends JDialog{
 					}
 					else{
 						// inform user that image with same name is already used
-						dialog = new ShadyMessageDialog(new JFrame(), "Refused opening image", " Image name:  "+imageFiles[i].getName() + " is already open", ID.OK, this);
-						dialog.showDialog();
+						dialog = new ShadyMessageDialog(gui, "Refused opening image", " Image name:  "+imageFiles[i].getName() + " is already open", ID.OK, this);	
+						dialog.showDialog();									
 					}
 				} // if file is wrong format of the dimensio is wrong -> informed in isImageFile -method
 
