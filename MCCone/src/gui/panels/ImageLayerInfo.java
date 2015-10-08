@@ -448,10 +448,13 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 												
 												//MarkingProperties dialog = new MarkingProperties(frame, gui, ((JButton)e.getSource()).getLocationOnScreen(), editingMarking);
-												MarkingProperties dialog = new MarkingProperties(new JFrame(), gui, ((JButton)e.getSource()).getLocationOnScreen(), editingMarking);
-											
+												MarkingProperties dialog = new MarkingProperties(gui, gui, ((JButton)e.getSource()).getLocationOnScreen(), editingMarking);
+												gui.getGuiComponentListener().setChildDialog(dialog);
 													dialog.showDialog();
+													gui.getGuiComponentListener().setChildDialog(dialog); // set this dialog to GuiComponentListener
 													dialog =null;
+													gui.getGuiComponentListener().setChildDialog(null); // set childDialog to null
+													
 											}
 										}
 

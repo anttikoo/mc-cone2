@@ -157,7 +157,9 @@ public class MarkingProperties extends PropertiesDialog {
 	 */
 	protected Rectangle getGoodBoundsForPanel(){
 		try {
-			
+			Rectangle initialBounds = super.getGoodBoundsForPanel();
+			return initialBounds;
+			/*
 			
 			//this.topLeftPoint
 			int topleftX = (int)(this.topLeftPoint.getX()-panelWidth);
@@ -247,10 +249,31 @@ public class MarkingProperties extends PropertiesDialog {
 			}
 	
 			return new Rectangle(topleftX, topleftY, panelWidth , panelHeight);
+	*/
 		} catch (Exception e) {
 			LOGGER.severe("Error in counting Bounds for MarkingProperties: " +e.getClass().toString() + " :" +e.getMessage() +"line: " +e.getStackTrace()[2].getLineNumber());
 			return null;
 		}
+	}
+	
+	
+	protected void setPanelPosition(){
+		recOfBackpanel = getGoodBoundsForPanel();
+		if(recOfBackpanel != null){
+			backPanel.setBounds(recOfBackpanel);
+			if(this.previewShapePanel != null) // at initial state the previewShapePanel is not initialized
+				this.previewShapePanel.setPanelBounds(recOfBackpanel);
+			
+		}
+		else{
+			recOfBackpanel = new Rectangle((int)(this.topLeftPoint.getX()-(panelWidth)), (int)this.topLeftPoint.getY(),this.panelWidth,this.panelHeight);
+			backPanel.setBounds(recOfBackpanel);
+			//backPanel.setBounds((int)(this.topLeftPoint.getX()-(panelWidth)), (int)this.topLeftPoint.getY(),this.panelWidth,this.panelHeight);
+			
+			if(this.previewShapePanel != null)
+				this.previewShapePanel.setPanelBounds(recOfBackpanel);
+		}
+		this.setBounds(this.gui.getVisibleWindowBounds());
 	}
 
 	/**
@@ -387,14 +410,12 @@ protected void initDialog(){
 		this.setContentPane(new ContentPane()); // makes dimming over GUI
 		this.getContentPane().setBackground(Color_schema.dark_30);
 		this.setLayout(null); // backpanel position is determined with setBounds(..)
-		
-		
+			
 		layeredPane=new JLayeredPane();
 		layeredPane.setLayout(null);
 		layeredPane.setBorder(BorderFactory.createEmptyBorder());
 		layeredPane.setBounds(new Rectangle(0,0, this.getBounds().width,this.getBounds().height));
 			
-
 		// the window showing components
 		backPanel = new JPanel();
 		backPanel.setLayout(new BorderLayout());

@@ -69,7 +69,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	
 
 
-
 	/**
 	 * Constructor of class.
 	 * @param frame JFrame of owner

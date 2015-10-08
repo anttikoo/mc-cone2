@@ -112,6 +112,8 @@ private GridPanel gridPanel;
 private int rightPanelWidth=0;
 private GUIcomponentListener guiComponentListener=null;
 
+
+
 	/**
 	 * Class constructor.
 	 * Initializes Logging, fonts, sizes, listeners and components of the GUI.
@@ -773,6 +775,15 @@ private GUIcomponentListener guiComponentListener=null;
 		}		
 		return null;
 	}
+	
+	/**
+	 * Gets the guiComponentListener.
+	 *
+	 * @return the guiComponentListener
+	 */
+	public GUIcomponentListener getGuiComponentListener() {
+	return guiComponentListener;
+}
 
 	/**
 	 * Creates ImageIcon from giving image path.
@@ -2015,7 +2026,7 @@ public void setPresentFolder(String folder){
 private void setPropertiesOfAllMarkinglayers(Point guiPoint){
 	ArrayList<MarkingLayer> mLayerList=taskManager.getAllMarkingLayers();
 	if(mLayerList != null && mLayerList.size()>0){
-		GlobalMarkingProperties dialog = new GlobalMarkingProperties(new JFrame(), getGUI(), guiPoint, mLayerList);
+		GlobalMarkingProperties dialog = new GlobalMarkingProperties(this, getGUI(), guiPoint, mLayerList);
 		this.guiComponentListener.setChildDialog(dialog);
 		dialog.showDialog();
 		this.guiComponentListener.setChildDialog(null);
@@ -2323,6 +2334,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 			updateGridPanel();	
 			
 			dialog=null;
+			this.guiComponentListener.setChildDialog(null);
 			}
 			else{
 				showMessage("No MarkingLayers", "No any MarkingLayers found. Can't set Properties of the Grid. ",ID.OK);
@@ -2394,8 +2406,10 @@ public void setSelectedMarkingLayer(int mLayerID){
 	 * @param p Point where menu item was pressed.
 	 */
 	private void showInfo(Point p){
-		InfoDialog iDialog = new InfoDialog(new JFrame(), this,p);
+		InfoDialog iDialog = new InfoDialog(this, this,p);
+		this.guiComponentListener.setChildDialog(iDialog);
 		iDialog.showDialog();
+		this.guiComponentListener.setChildDialog(null);
 	}
 
 
