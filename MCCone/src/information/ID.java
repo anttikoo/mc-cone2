@@ -125,15 +125,4 @@ public class ID {
 	public static final int EXPORT_PREVIEW_IMAGES= 120;
 	public static final int CURSOR_CROSS_HAIR= 121;
 
-	
-
-
-
-
-
-
-
-
-
-
 }
