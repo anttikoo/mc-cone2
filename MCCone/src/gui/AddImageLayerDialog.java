@@ -123,7 +123,7 @@ public class AddImageLayerDialog extends JDialog{
 	}
 	
 	public void setPanelPosition(){
-		// add code here!
+		
 	}
 
 	/**
