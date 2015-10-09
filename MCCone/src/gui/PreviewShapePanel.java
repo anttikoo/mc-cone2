@@ -36,7 +36,7 @@ public class PreviewShapePanel extends JPanel{
 		this.setBackground(new Color(0,0,0,0));
 		
 		this.recOfBackPanel=recOfBackPanel;
-		setPanelBounds(this.recOfBackPanel);	
+		//setPanelBounds(this.recOfBackPanel);	
 		shapeDrawer=new ShapeDrawer(shapeID, shapeSize, thickness, opacity, color);
 	
 		
