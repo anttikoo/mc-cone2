@@ -65,6 +65,9 @@ public class MarkingProperties extends PropertiesDialog {
 	private JLabel opacityJLabel;
 	private JLabel thicknessJLabel;
 	protected ArrayList<MarkingLayer> markingLayerList;
+	protected int panelWidth=700;
+	private int panelWidthRight=400;
+	private int panelWidthLeft=300;
 
 	protected JLayeredPane layeredPane;
 
@@ -83,6 +86,7 @@ public class MarkingProperties extends PropertiesDialog {
 		this.gui = gui;	
 		this.markingLayerList=mLayerList;
 		initMarkingPropertiesPanel();
+		this.panelWidth=700;
 
 	}
 	
@@ -261,8 +265,8 @@ public class MarkingProperties extends PropertiesDialog {
 		recOfBackpanel = getGoodBoundsForPanel();
 		if(recOfBackpanel != null){
 			backPanel.setBounds(recOfBackpanel);
-			if(this.previewShapePanel != null) // at initial state the previewShapePanel is not initialized
-				this.previewShapePanel.setPanelBounds(recOfBackpanel);
+		//	if(this.previewShapePanel != null) // at initial state the previewShapePanel is not initialized
+			//	this.previewShapePanel.setPanelBounds(recOfBackpanel);
 			
 		}
 		else{
@@ -410,33 +414,46 @@ protected void initDialog(){
 		this.setContentPane(new ContentPane()); // makes dimming over GUI
 		this.getContentPane().setBackground(Color_schema.dark_30);
 		this.setLayout(null); // backpanel position is determined with setBounds(..)
-			
-		layeredPane=new JLayeredPane();
-		layeredPane.setLayout(null);
-		layeredPane.setBorder(BorderFactory.createEmptyBorder());
-		layeredPane.setBounds(new Rectangle(0,0, this.getBounds().width,this.getBounds().height));
-			
-		// the window showing components
+		
+		// the window showing components -> left panel for preview, right panel for modification
 		backPanel = new JPanel();
 		backPanel.setLayout(new BorderLayout());
 		backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 3));
 		backPanel.setMaximumSize(new Dimension(panelWidth,panelHeight));
 		backPanel.setMinimumSize(new Dimension(panelWidth,panelHeight));
 		backPanel.setPreferredSize(new Dimension(panelWidth,panelHeight));
-
-		// set sizes and locations of components
+		
 		setPanelPosition();
+		
+		JPanel backRightPanel = new JPanel();
+		backRightPanel.setLayout(new BorderLayout());
+		backRightPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 3));
+		backRightPanel.setMaximumSize(new Dimension(panelWidthRight,panelHeight));
+		backRightPanel.setMinimumSize(new Dimension(panelWidthRight,panelHeight));
+		backRightPanel.setPreferredSize(new Dimension(panelWidthRight,panelHeight));
+		// set sizes and locations of components
+					
+		backRightPanel.add(initUPPanels(), BorderLayout.PAGE_START);
+		backRightPanel.add(initCenterPanels(), BorderLayout.CENTER);
+		backRightPanel.add(initDownPanel(),BorderLayout.PAGE_END);
+		
+		layeredPane=new JLayeredPane();
+		layeredPane.setLayout(new BoxLayout(layeredPane, BoxLayout.LINE_AXIS));
+		layeredPane.setBorder(BorderFactory.createEmptyBorder());
+		layeredPane.setBounds(new Rectangle(0,0, this.getBounds().width,this.getBounds().height));
+
 			
-		backPanel.add(initUPPanels(), BorderLayout.PAGE_START);
-		backPanel.add(initCenterPanels(), BorderLayout.CENTER);
-		backPanel.add(initDownPanel(),BorderLayout.PAGE_END);
-
-		layeredPane.add(backPanel,JLayeredPane.DEFAULT_LAYER);		
 		previewShapePanel = new PreviewShapePanel(this.getSelectedThickness(), changeIntToFloat(this.getSelectedOpacity()), this.getSelectedShapeID(), this.getSelectedSize(), this.getSelectedColor(), this.recOfBackpanel, gui.getVisibleWindowBounds());
+		previewShapePanel.setMaximumSize(new Dimension(panelWidthLeft,panelHeight));
+		previewShapePanel.setMinimumSize(new Dimension(panelWidthLeft,panelHeight));
+		previewShapePanel.setPreferredSize(new Dimension(panelWidthLeft,panelHeight));
+		
 		layeredPane.add(previewShapePanel,JLayeredPane.DRAG_LAYER);
-
-		this.layeredPane.moveToFront(previewShapePanel);				
-		this.add(layeredPane);
+		layeredPane.add(backRightPanel,JLayeredPane.DEFAULT_LAYER);	
+		
+		this.layeredPane.moveToFront(previewShapePanel);	
+		this.backPanel.add(layeredPane);
+		this.add(backPanel);
 		this.repaint();
 
 
@@ -474,25 +491,25 @@ protected JPanel initUPPanels(){
 				upperBackPanel.setLayout(new BoxLayout(upperBackPanel, BoxLayout.PAGE_AXIS));
 
 
-				upperBackPanel.setMaximumSize(new Dimension(panelWidth,180));
-				upperBackPanel.setMinimumSize(new Dimension(panelWidth,180));
-				upperBackPanel.setPreferredSize(new Dimension(panelWidth,180));
+				upperBackPanel.setMaximumSize(new Dimension(panelWidthRight,180));
+				upperBackPanel.setMinimumSize(new Dimension(panelWidthRight,180));
+				upperBackPanel.setPreferredSize(new Dimension(panelWidthRight,180));
 
 
 				// contains label and colorchooser object
 				JPanel colorChooserPanel = new JPanel();
 				colorChooserPanel.setLayout(new BoxLayout(colorChooserPanel, BoxLayout.PAGE_AXIS));
 
-				colorChooserPanel.setMaximumSize(new Dimension(panelWidth,140));
-				colorChooserPanel.setMinimumSize(new Dimension(panelWidth,140));
-				colorChooserPanel.setPreferredSize(new Dimension(panelWidth,140));
+				colorChooserPanel.setMaximumSize(new Dimension(panelWidthRight,140));
+				colorChooserPanel.setMinimumSize(new Dimension(panelWidthRight,140));
+				colorChooserPanel.setPreferredSize(new Dimension(panelWidthRight,140));
 
 				// contains colorChooser-component
 				JPanel colorLabelJPanel = new JPanel();
 				colorLabelJPanel.setLayout(new FlowLayout(FlowLayout.LEFT,10,6));
-				colorLabelJPanel.setMinimumSize(new Dimension(panelWidth,30));
-				colorLabelJPanel.setMinimumSize(new Dimension(panelWidth,30));
-				colorLabelJPanel.setMinimumSize(new Dimension(panelWidth,30));
+				colorLabelJPanel.setMinimumSize(new Dimension(panelWidthRight,30));
+				colorLabelJPanel.setMinimumSize(new Dimension(panelWidthRight,30));
+				colorLabelJPanel.setMinimumSize(new Dimension(panelWidthRight,30));
 				JLabel setColorLabel = new JLabel("SELECT COLOR:");
 
 				setColorLabel.setFont(Fonts.b14);
@@ -720,9 +737,9 @@ protected void setUpComboBoXPanel(){
 	// contains JComboBox-component and label
 	comboBoxPanel = new JPanel();
 	comboBoxPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-	comboBoxPanel.setMaximumSize(new Dimension(panelWidth,50));
-	comboBoxPanel.setMinimumSize(new Dimension(panelWidth,50));
-	comboBoxPanel.setPreferredSize(new Dimension(panelWidth,50));
+	comboBoxPanel.setMaximumSize(new Dimension(panelWidthRight,50));
+	comboBoxPanel.setMinimumSize(new Dimension(panelWidthRight,50));
+	comboBoxPanel.setPreferredSize(new Dimension(panelWidthRight,50));
 
 	JLabel boxLabel = new JLabel("SELECT SHAPE: ");
 	boxLabel.setFont(Fonts.b14);
