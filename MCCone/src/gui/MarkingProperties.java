@@ -452,7 +452,9 @@ protected void initDialog(){
 		layeredPane.add(backRightPanel,JLayeredPane.DEFAULT_LAYER);	
 		
 		this.layeredPane.moveToFront(previewShapePanel);	
-		this.backPanel.add(layeredPane);
+	//	this.backPanel.add(layeredPane);
+		backPanel.add(previewShapePanel,BorderLayout.WEST);
+		backPanel.add(backRightPanel, BorderLayout.EAST);
 		this.add(backPanel);
 		this.repaint();
 
