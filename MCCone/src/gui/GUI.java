@@ -2173,7 +2173,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 		}
 		else{
 			if(osString.contains("mac")){
-				SharedVariables.setUsedDimmingModeToSrcIn();
+				SharedVariables.setUsedDimmingModeToSrcOut();
 				SharedVariables.setOS(ID.OS_MAC);
 			}
 			else{ // unix or linux
