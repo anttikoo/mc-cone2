@@ -47,12 +47,19 @@ private JDialog childDialog=null;
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(childDialog != null){
 				childDialog.setBounds(gui.getVisibleWindowBounds());
-				((PropertiesDialog)childDialog).setPanelPosition();		
+				
+				if(childDialog instanceof PropertiesDialog)
+				((PropertiesDialog)childDialog).setPanelPosition();
+				
+				if(childDialog instanceof AddImageLayerDialog)
+					((AddImageLayerDialog)childDialog).setPanelPosition();
+				
 				
 				childDialog.repaint();
 				waitPaintingTimer.stop();
-				
+				}
 			}
 		});
 	}
@@ -70,7 +77,7 @@ private JDialog childDialog=null;
 	 */
 	public void componentMoved(ComponentEvent e) {
 		try {
-			if(this.childDialog != null && this.childDialog instanceof PropertiesDialog){
+			if(this.childDialog != null && ( this.childDialog instanceof PropertiesDialog || this.childDialog instanceof AddImageLayerDialog)){
 				SwingUtilities.invokeLater(new Runnable() {
 					
 					@Override
