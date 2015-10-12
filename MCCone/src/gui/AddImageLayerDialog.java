@@ -63,6 +63,7 @@ public class AddImageLayerDialog extends JDialog{
 	private JButton addImageJButton;
 	private int typeOfDialog;
 	private Dimension importAllowedImageDimension=null;
+	private JDialog visibleDialog=null;
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	/**
@@ -74,6 +75,7 @@ public class AddImageLayerDialog extends JDialog{
 
 			super(frame, true);
 			try{
+				this.setResizable(false);
 				typeOfDialog=ID.CREATE_NEW_IMAGELAYERS;
 				dialogImageLayerList = new ArrayList<ImageLayer>();
 				this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -89,7 +91,7 @@ public class AddImageLayerDialog extends JDialog{
 
 					}
 				});
-				this.setVisible(true);
+			//	this.setVisible(true);
 
 
 		} catch (Exception e) {
@@ -113,7 +115,7 @@ public class AddImageLayerDialog extends JDialog{
 				this.gui=gui;
 				initComponents();
 				updateImageList();
-				this.setVisible(true);
+			//	this.setVisible(true);
 
 
 		} catch (Exception e) {
@@ -123,6 +125,14 @@ public class AddImageLayerDialog extends JDialog{
 	}
 	
 	public void setPanelPosition(){
+		this.setBounds(this.gui.getVisibleWindowBounds());
+		if(this.visibleDialog != null){
+			this.visibleDialog.setBounds(this.getBounds());
+		}
+	}
+	
+	public void showDialog(){
+		this.setVisible(true);
 		
 	}
 
@@ -1083,7 +1093,6 @@ private JPanel initImageViewPanel(){
 
 	}
 
-	//
 	/**
 	 *
 	 * Opens a file dialog, which type depends on which file type will be opened.
@@ -1092,12 +1101,15 @@ private JPanel initImageViewPanel(){
 	 */
 	private void selectAndAddImages(){
 		JFrame openfileFrame = new JFrame();
-		OpenImageFilesDialog od=new OpenImageFilesDialog(openfileFrame, this.getBounds(), this.backPanel.getBounds(), gui.getPresentFolder());
-		od.setVisible(true);
-		gui.setPresentFolder(od.getPresentFolder());
-		File[] imagefiles = od.getSelectedFiles();
+	//	OpenImageFilesDialog 
+		visibleDialog=new OpenImageFilesDialog(this, this.getBounds(), this.backPanel.getBounds(), gui.getPresentFolder());
+			
+		visibleDialog.setVisible(true);
+		gui.setPresentFolder(((OpenImageFilesDialog)visibleDialog).getPresentFolder());
+		File[] imagefiles = ((OpenImageFilesDialog)visibleDialog).getSelectedFiles();
 		if(imagefiles != null && imagefiles.length>0)
 		addImagesToImageLayerList(imagefiles);
+		visibleDialog=null;
 	}
 
 
@@ -1108,18 +1120,20 @@ private JPanel initImageViewPanel(){
 	 * @param isMarkingsForAll Boolean should add MarkingLayers to all ImageLayers if found any.
 	 */
 	private void selectAndAddMarkings(String imageLayerPath, boolean isMarkingsForAll){
-		JFrame openfileFrame = new JFrame();
+		
 
-		OpenMarkingFileDialog od=new OpenMarkingFileDialog(openfileFrame, this.getBounds(), this.backPanel.getBounds(),imageLayerPath);
-		od.setVisible(true);
+		visibleDialog= new OpenMarkingFileDialog(this, this.getBounds(), this.backPanel.getBounds(),imageLayerPath);
+		visibleDialog.setVisible(true);
 
-		File[] markingFile = od.getSelectedFiles();
+		File[] markingFile = ((OpenMarkingFileDialog)visibleDialog).getSelectedFiles();
 		if(markingFile != null && markingFile.length==1) {// only 1 marking file is allowed
 			if(isMarkingsForAll)
 				addMarkingsToSelectedImageLayer(markingFile[0], null); // setting markins to all ImageLayers
 			else
 				addMarkingsToSelectedImageLayer(markingFile[0], imageLayerPath);
 		}
+		visibleDialog=null;
+		
 	}
 
 
