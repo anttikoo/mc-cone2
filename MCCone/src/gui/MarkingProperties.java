@@ -65,7 +65,7 @@ public class MarkingProperties extends PropertiesDialog {
 	private JLabel opacityJLabel;
 	private JLabel thicknessJLabel;
 	protected ArrayList<MarkingLayer> markingLayerList;
-	protected int panelWidth=700;
+	
 	private int panelWidthRight=400;
 	private int panelWidthLeft=300;
 
@@ -85,8 +85,10 @@ public class MarkingProperties extends PropertiesDialog {
 		super(frame, gui,point);
 		this.gui = gui;	
 		this.markingLayerList=mLayerList;
+		super.panelWidth=700;
+		super.rightPanelWidth=400;
 		initMarkingPropertiesPanel();
-		this.panelWidth=700;
+		
 
 	}
 	
@@ -407,6 +409,8 @@ protected void initDialog(){
 	try {
 		
 		//dim the screen around window 
+		super.panelWidth=700;
+		
 		this.setResizable(false);
 		this.setBounds(gui.getVisibleWindowBounds()); // sets the size of this dialog same as the GUI (the parent)
 		this.setUndecorated(true); // no titlebar or buttons
