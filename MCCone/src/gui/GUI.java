@@ -702,9 +702,15 @@ private GUIcomponentListener guiComponentListener=null;
 	 */
 	private void exportImageSet(){
 
-			JFrame dialogFrame = new JFrame("DialogFrame");
+			
 			@SuppressWarnings("unused")
-			ImageSetCreator iCreator=new ImageSetCreator(dialogFrame, this.taskManager, this);
+			ImageSetCreator iCreator=new ImageSetCreator(this, this.taskManager, this);
+			this.guiComponentListener.setChildDialog(iCreator);
+			iCreator.showDialog();
+			iCreator=null;
+			this.guiComponentListener.setChildDialog(null);
+			
+			
 
 	}
 
@@ -1564,10 +1570,13 @@ private GUIcomponentListener guiComponentListener=null;
 		try {
 
 			// open dialog for selecting files
-			JFrame dialogFrame = new JFrame("DialogFrame");
+		//	JFrame dialogFrame = new JFrame("DialogFrame");
 			@SuppressWarnings("unused")
-			AddImageLayerDialog addImage = new AddImageLayerDialog(dialogFrame, this, taskManager.getImageLayerList());	
-
+			AddImageLayerDialog addImage = new AddImageLayerDialog(this, this, taskManager.getImageLayerList());
+			this.guiComponentListener.setChildDialog(addImage);
+			addImage.showDialog();
+			this.guiComponentListener.setChildDialog(null);
+			addImage=null;
 		} catch (Exception e) {
 			LOGGER.severe("Error in adding new ImageLayer:  " +e.getClass().toString() + " :" +e.getMessage());
 		}
@@ -1583,14 +1592,18 @@ private GUIcomponentListener guiComponentListener=null;
 			
 				// open dialog for selecting files	
 				@SuppressWarnings("unused")
-				AddImageLayerDialog addImage = new AddImageLayerDialog(new JFrame(), getGUI(), fileList);
+				AddImageLayerDialog addImage = new AddImageLayerDialog(this, getGUI(), fileList);
+				
 				addImage=null;
 			}
 			else{
 			//	JFrame dialogFrame = new JFrame("DialogFrame");
 				@SuppressWarnings("unused")
-				AddImageLayerDialog addImage = new AddImageLayerDialog(new JFrame(), getGUI());
-				addImage=null;
+				AddImageLayerDialog addImageDialog = new AddImageLayerDialog(this, this);
+				this.guiComponentListener.setChildDialog(addImageDialog);
+				addImageDialog.showDialog();
+				addImageDialog=null;
+				this.guiComponentListener.setChildDialog(null);
 			}
 
 		} catch (Exception e) {
