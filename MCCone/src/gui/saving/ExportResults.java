@@ -36,6 +36,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -60,10 +61,10 @@ public class ExportResults extends SaverDialog{ // implements ActionListener
 	 */
 	public ExportResults(JFrame frame, GUI gui, ArrayList<ImageLayer> iList, int eID){
 		super(frame, gui, iList, eID);
-
-
-
-
+	}
+	
+	public ExportResults(JDialog d, GUI gui, ArrayList<ImageLayer> iList, int eID){
+		super(d, gui, iList, eID);
 	}
 
 
