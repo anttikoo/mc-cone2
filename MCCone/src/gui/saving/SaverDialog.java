@@ -148,12 +148,38 @@ protected JButton saveJButton;
 
 
 
-	} catch (Exception e) {
+		} catch (Exception e) {
 
-		LOGGER.severe("Error in saving Markings:  " +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-		e.printStackTrace();
+			LOGGER.severe("Error in saving Markings:  " +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+			e.printStackTrace();
+		}
 	}
-}
+	
+	public SaverDialog(JDialog d, GUI gui, ArrayList<ImageLayer> iList, int savingTypeID){
+
+		super(d, true);
+		try{
+			this.savingType=savingTypeID;
+
+			setPanelHeights();
+			notInformedSuccessfullSaving=true;
+			this.imageLayerList =  iList;
+			this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+			this.gui=gui;
+			initComponents();
+			initKeyListenerToDialog();
+		//	initSelectFileDialog();
+			setImageList();
+			this.revalidate();
+
+			this.setVisible(true);
+
+		} catch (Exception e) {
+
+			LOGGER.severe("Error in saving Markings:  " +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+			e.printStackTrace();
+		}
+	}
 
 	private void initComponents() throws Exception{
 		consolas15= new Font("Consolas", Font.PLAIN,15);
