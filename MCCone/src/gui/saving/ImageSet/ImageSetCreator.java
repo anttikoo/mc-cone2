@@ -6,6 +6,7 @@ import gui.GUI;
 import gui.MouseListenerCreator;
 import gui.ProgressBallsDialog;
 import gui.ShadyMessageDialog;
+import gui.file.OpenFileDialog;
 import gui.file.OpenImageFilesDialog;
 import gui.graphics.MediumCloseIcon;
 import gui.saving.SelectFileDialog;
@@ -104,6 +105,7 @@ private int[] movingPosition=null;
 private Thread createImageThread;
 private int threadNumber=1;
 private ProgressBallsDialog progressBallsDialog;
+private JDialog visibleDialog=null; // childDialog which may be progress, info or any dialog.
 //private ProgressBallsDialog progressWihoutButtons; //adding this later to work
 
 
@@ -142,7 +144,7 @@ private ProgressBallsDialog progressBallsDialog;
 			this.dispose();
 		}
 
-		this.setVisible(true);
+		
 		if(this.taskManager != null && this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size()>0){
 			createImagesFromPresentImageLayers();
 			setImagesToGrid();
@@ -246,6 +248,9 @@ private ProgressBallsDialog progressBallsDialog;
 		}
 		else return rowColumn;
 
+	}
+	public void showDialog(){
+		this.setVisible(true);
 	}
 
 	/**
@@ -359,11 +364,11 @@ private ProgressBallsDialog progressBallsDialog;
 	 * Creates SingleDrawImagePanels from selected images
 	 */
 	private void createImagesFromPresentImageLayers(){
-		SelectAndCreateImageFiles saci = new SelectAndCreateImageFiles(new JFrame(), this.gui, taskManager.getImageLayerList(), ID.EXPORT_PREVIEW_IMAGES);
-
+		visibleDialog = new SelectAndCreateImageFiles(this, this.gui, taskManager.getImageLayerList(), ID.EXPORT_PREVIEW_IMAGES);
+		
 		// create SingleDrawImagePanels of all images
-		if(saci.getCreatedBufferedImages() != null && saci.getCreatedBufferedImages().size()>0){
-			Iterator<BufferedImageWithName> imageIterator = saci.getCreatedBufferedImages().iterator();
+		if(((SelectAndCreateImageFiles)visibleDialog).getCreatedBufferedImages() != null && ((SelectAndCreateImageFiles)visibleDialog).getCreatedBufferedImages().size()>0){
+			Iterator<BufferedImageWithName> imageIterator = ((SelectAndCreateImageFiles)visibleDialog).getCreatedBufferedImages().iterator();
 			while(imageIterator.hasNext()){
 				BufferedImageWithName biwn=imageIterator.next();
 				SingleDrawImagePanel sip=new SingleDrawImagePanel(biwn.getImage(), biwn.getImageName(), taskManager, getSelectedFont());
@@ -373,6 +378,7 @@ private ProgressBallsDialog progressBallsDialog;
 
 			updatePanelFonts();
 		}
+		visibleDialog=null;
 
 
 	}
@@ -1157,11 +1163,11 @@ private ProgressBallsDialog progressBallsDialog;
 	 */
 	private void selectAndGetImagesFromFiles() throws InterruptedException{
 
-		OpenImageFilesDialog openDialog=new OpenImageFilesDialog(new JFrame(), this.getBounds(), this.backPanel.getBounds(), this.presentFolder);
-		openDialog.setVisible(true);
-		File[] imageFiles= openDialog.getSelectedFiles();
-		openDialog.dispose();
-		openDialog=null;
+		visibleDialog=new OpenImageFilesDialog(this, this.getBounds(), this.backPanel.getBounds(), this.presentFolder);
+		visibleDialog.setVisible(true);
+		File[] imageFiles= ((OpenFileDialog)visibleDialog).getSelectedFiles();
+		((OpenFileDialog)visibleDialog).hideThis();
+		visibleDialog=null;
 
 		importImagesFromFiles(imageFiles);
 		setImagesToGrid();
@@ -1294,6 +1300,16 @@ private ProgressBallsDialog progressBallsDialog;
 	public void setMovingPosition(int[] movingPosition) {
 		this.movingPosition = movingPosition;
 		//System.out.println("setmoving: "+this.movingPosition[0] + " " +this.movingPosition[1]);
+	}
+	
+	/**
+	 * Sets the panel position of this dialog and its child components.
+	 */
+	public void setPanelPosition(){
+		this.setBounds(this.gui.getVisibleWindowBounds());
+		if(this.visibleDialog != null){
+			this.visibleDialog.setBounds(this.getBounds());
+		}
 	}
 
 	/**
