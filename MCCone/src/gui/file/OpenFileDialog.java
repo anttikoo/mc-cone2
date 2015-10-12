@@ -61,6 +61,28 @@ import javax.swing.SwingUtilities;
 		 */
 		public OpenFileDialog(JFrame frame, Rectangle parentComponentBounds, Rectangle backPanelBounds, String presentFolder){
 			super(frame, true);
+			this.setResizable(false);
+			this.parentComponentBounds=parentComponentBounds;
+			this.parentComponentBackPanelBounds=backPanelBounds;
+			this.presentFolder=getFolderString(presentFolder);
+		//	this.addImageLayerDialog = aild;
+			this.typeOfImport = ID.OPEN_IMAGE_FILE; // the constructor with no imagePath -> selecting ImageFile
+			initFileDialog();
+		}
+		
+		
+		
+		/**
+		 * Instantiates a new open file dialog.
+		 *
+		 * @param d the owner JDialog
+		 * @param parentComponentBounds the Bounds of parent component
+		 * @param backPanelBounds the Bounds of visible panel
+		 * @param presentFolder String the present folder
+		 */
+		public OpenFileDialog(JDialog d, Rectangle parentComponentBounds, Rectangle backPanelBounds, String presentFolder){
+			super(d, true); // don't block parent
+			this.setResizable(false);
 			this.parentComponentBounds=parentComponentBounds;
 			this.parentComponentBackPanelBounds=backPanelBounds;
 			this.presentFolder=getFolderString(presentFolder);
@@ -99,8 +121,8 @@ import javax.swing.SwingUtilities;
 			openDialogBackPanel.setLayout(new BorderLayout());
 
 			openDialogBackPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 5));
-			openDialogBackPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-			openDialogBackPanel.setAlignmentY(JComponent.CENTER_ALIGNMENT);
+		//	openDialogBackPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		//	openDialogBackPanel.setAlignmentY(JComponent.CENTER_ALIGNMENT);
 			openDialogBackPanel.setMaximumSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.95), (int)(this.parentComponentBackPanelBounds.getHeight()*0.95)));
 			openDialogBackPanel.setMinimumSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.7), (int)(this.parentComponentBackPanelBounds.getHeight()*0.5)));
 			openDialogBackPanel.setPreferredSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.7), (int)(this.parentComponentBackPanelBounds.getHeight()*0.7)));
@@ -425,9 +447,16 @@ import javax.swing.SwingUtilities;
 			});
 		}
 
-		private void hideThis(){
+		public void hideThis(){
+			try{
 			this.setVisible(false); // close dialog
 			this.dispose();
+			}
+			catch(Exception e){
+				this.dispose();
+				LOGGER.severe("Error in hiding FileDIalog.");
+				e.printStackTrace();
+			}
 		}
 
 	}
