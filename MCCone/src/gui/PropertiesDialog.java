@@ -46,6 +46,7 @@ public class PropertiesDialog extends JDialog {
 
 	protected JPanel backPanel;
 	protected int panelWidth=400;
+	protected int rightPanelWidth=this.panelWidth; // in MarkingProperties this will be 700
 	protected int panelHeight=500;
 	protected Rectangle recOfBackpanel;
 
@@ -111,7 +112,7 @@ public class PropertiesDialog extends JDialog {
 		}
 		this.setBounds(this.gui.getVisibleWindowBounds());
 	}
-	
+	/*
 	protected Rectangle getDimmingRectangle(){
 		
 		
@@ -145,15 +146,7 @@ public class PropertiesDialog extends JDialog {
 			      for (int i=0; i < gc.length; i++) {
 			    	  LOGGER.info("monitor: "+j+": "+gc[i].getBounds().toString());
 			    	  
-			    /*    JFrame f = new JFrame(gs[j].getDefaultConfiguration());
-			         Canvas c = new Canvas(gc[i]); 
-			         Rectangle gcBounds = gc[i].getBounds();
-			         int xoffs = gcBounds.x;
-			         int yoffs = gcBounds.y;
-			           f.getContentPane().add(c);
-			           f.setLocation((i*50)+xoffs, (i*60)+yoffs);
-			         f.show();
-			         */
+			   
 			      }	      
 			   }
 		  }
@@ -200,6 +193,8 @@ public class PropertiesDialog extends JDialog {
 	//	return new Rectangle(x,y,width,height);
 		
 	}
+	*/
+	
 	
 	/**
 	 * Initializes the layers panel.
@@ -287,16 +282,16 @@ public class PropertiesDialog extends JDialog {
 			//contains title JLabel
 			JPanel backTitlePanel = new JPanel();
 			backTitlePanel.setLayout(new BoxLayout(backTitlePanel,BoxLayout.LINE_AXIS));
-			backTitlePanel.setMaximumSize(new Dimension(panelWidth, 30));
-			backTitlePanel.setMinimumSize(new Dimension(panelWidth, 30));
-			backTitlePanel.setPreferredSize(new Dimension(panelWidth, 30));
+			backTitlePanel.setMaximumSize(new Dimension(rightPanelWidth, 30));
+			backTitlePanel.setMinimumSize(new Dimension(rightPanelWidth, 30));
+			backTitlePanel.setPreferredSize(new Dimension(rightPanelWidth, 30));
 			backTitlePanel.setBackground(Color_schema.dark_25);
 
 			JPanel titleJPanel = new JPanel();
 			titleJPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-			titleJPanel.setMaximumSize(new Dimension(panelWidth - 40, 30));
-			titleJPanel.setMinimumSize(new Dimension(panelWidth - 40, 30));
-			titleJPanel.setPreferredSize(new Dimension(panelWidth - 40, 30));
+			titleJPanel.setMaximumSize(new Dimension(rightPanelWidth - 40, 30));
+			titleJPanel.setMinimumSize(new Dimension(rightPanelWidth - 40, 30));
+			titleJPanel.setPreferredSize(new Dimension(rightPanelWidth - 40, 30));
 			titleJPanel.setBackground(Color_schema.dark_30);
 			JLabel titleLabel = new JLabel(title);
 			titleLabel.setFont(Fonts.b18);
@@ -306,7 +301,7 @@ public class PropertiesDialog extends JDialog {
 			buttonPanel.setLayout(new GridBagLayout());
 			buttonPanel.setMaximumSize(new Dimension(30, 30));
 			buttonPanel.setMinimumSize(new Dimension(30, 30));
-			buttonPanel.setPreferredSize(new Dimension(panelWidth, 30));
+			buttonPanel.setPreferredSize(new Dimension(rightPanelWidth, 30));
 			buttonPanel.setBackground(Color_schema.dark_30);
 			JButton closeJButton = new JButton(new SmallCloseIcon(false));
 			closeJButton.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -473,8 +468,9 @@ public class PropertiesDialog extends JDialog {
 			Rectangle guiRectangle=gui.getVisibleWindowBounds();
 			
 			
-			int x=(int)(guiRectangle.width/2);
-			int y=  (int)((guiRectangle.height-panelHeight)/2);
+		//	int x=(int)(guiRectangle.width/2);
+			int x = (int)((guiRectangle.width-panelWidth)/2); // set to middle horizontally
+			int y=  (int)((guiRectangle.height-panelHeight)/2); // set to middle vertically
 			return new Rectangle(x,y,panelWidth,panelHeight);
 			
 			
