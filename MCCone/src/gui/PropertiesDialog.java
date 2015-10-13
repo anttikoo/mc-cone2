@@ -73,8 +73,9 @@ public class PropertiesDialog extends JDialog {
 			this.setBackground(new Color(0,0,0,0)); // transparent color			
 			this.setContentPane(new ContentPane()); // makes dimming over GUI
 			this.getContentPane().setBackground(Color_schema.dark_30);
-			this.setLayout(null); // backpanel position is determined with setBounds(..)
-					
+		//	this.setLayout(null); // backpanel position is determined with setBounds(..)
+			
+			this.getContentPane().setLayout(new GridBagLayout());
 			backPanel = new JPanel();
 			backPanel.setLayout(new BorderLayout());
 			backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 3));
@@ -100,6 +101,7 @@ public class PropertiesDialog extends JDialog {
 	}
 
 	protected void setPanelPosition(){
+		
 		recOfBackpanel = getGoodBoundsForPanel();
 		if(recOfBackpanel != null){
 			backPanel.setBounds(recOfBackpanel);		
@@ -111,6 +113,7 @@ public class PropertiesDialog extends JDialog {
 			
 		}
 		this.setBounds(this.gui.getVisibleWindowBounds());
+		
 	}
 	/*
 	protected Rectangle getDimmingRectangle(){
