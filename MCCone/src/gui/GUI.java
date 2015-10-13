@@ -927,8 +927,29 @@ private GUIcomponentListener guiComponentListener=null;
 	 */
 	public Rectangle getVisibleWindowBounds(){
 		
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		Rectangle windowBounds = ge.getMaximumWindowBounds();
+		if(SharedVariables.operationSystem == ID.OS_LINUX_UNIX){ // in linux may the unity menu bar affect to painting of dimming 
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			Rectangle windowBounds = ge.getMaximumWindowBounds();
+			LOGGER.fine(" window: "+windowBounds.toString() +" gui:"+this.getBounds().toString());
+			int windowLeftX = windowBounds.x;
+			int windowRightX=windowBounds.x+windowBounds.width;
+			int windowUpY=windowBounds.y;
+			int windowDownY=windowBounds.y+windowBounds.height;
+			
+			int x=this.getBounds().x;		
+			int y= this.getBounds().y;
+			int width=this.getBounds().width;
+			int height=this.getBounds().height;
+			// GUI over window
+
+			
+			int guiX= this.getBounds().x;
+			int guiY= this.getBounds().y;
+			int guiWidth= this.getWidth();
+			int guiHeight=this.getHeight();
+			
+		}
+		
 		
 		return this.getBounds();
 /*
@@ -996,6 +1017,8 @@ private GUIcomponentListener guiComponentListener=null;
 */
 
 	}
+	
+	
 
 	/**
 	 * Calculates and returns position and size of window where dialog can be positioned.
