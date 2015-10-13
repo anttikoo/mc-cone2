@@ -930,8 +930,8 @@ private GUIcomponentListener guiComponentListener=null;
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Rectangle windowBounds = ge.getMaximumWindowBounds();
 		
-		
-
+		return this.getBounds();
+/*
 		// GUI inside the window
 		if(windowBounds.contains(this.getBounds())){
 			return this.getBounds();		
@@ -993,7 +993,7 @@ private GUIcomponentListener guiComponentListener=null;
 		}
 		
 		return new Rectangle(x, y, width, height);
-
+*/
 
 	}
 
@@ -1041,6 +1041,9 @@ private GUIcomponentListener guiComponentListener=null;
 
 
 	}
+	
+	
+	
 	/**
 	 * Returns the size and position of VisualPanel.
 	 * @return Rectangle size of VisualPanel.
