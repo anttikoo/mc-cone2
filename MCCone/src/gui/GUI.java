@@ -1511,7 +1511,11 @@ private ShadyMessageDialog shadyMessageDialog=null;
 	       
 			//set window normal and minimum size and position before maximization
 			this.setSize(screenSize.width/2, screenSize.height/2);
-			this.setMinimumSize(new Dimension(screenSize.width/3,600));
+			if(screenSize.width<800)
+				this.setMinimumSize(new Dimension(screenSize.width-50,600));
+			else
+				this.setMinimumSize(new Dimension(800,600));
+			
 			this.setLocationRelativeTo(null);
 			this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 			
