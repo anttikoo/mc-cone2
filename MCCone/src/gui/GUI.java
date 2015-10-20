@@ -111,6 +111,7 @@ private HighlightPanel highlightPanel;
 private GridPanel gridPanel;
 private int rightPanelWidth=0;
 private GUIcomponentListener guiComponentListener=null;
+private ShadyMessageDialog shadyMessageDialog=null;
 
 
 
@@ -534,9 +535,9 @@ private GUIcomponentListener guiComponentListener=null;
 	private void clearMarkingsOfAllMarkingLayers(){
 		ArrayList<MarkingLayer> allMarkingLayers=this.taskManager.getAllMarkingLayers();
 		if(allMarkingLayers != null && allMarkingLayers.size()>0){
-			ShadyMessageDialog dialog=new ShadyMessageDialog(new JFrame(),
-					"Clear Countings?", "Clear countings of all MarkingLayers?", ID.YES_NO, this);
-			if(dialog.showDialog() == ID.YES){
+			shadyMessageDialog =new ShadyMessageDialog(this,"Clear Countings?", "Clear countings of all MarkingLayers?", ID.YES_NO, this);
+			this.guiComponentListener.setChildDialog(shadyMessageDialog);
+			if(shadyMessageDialog.showDialog() == ID.YES){
 				for (Iterator<MarkingLayer> iterator = allMarkingLayers.iterator(); iterator.hasNext();) {
 					MarkingLayer markingLayer = (MarkingLayer) iterator.next();
 					markingLayer.clearCoordinateList();
@@ -544,6 +545,9 @@ private GUIcomponentListener guiComponentListener=null;
 				updateImageLayerInfos();
 				refreshMarkingPanels();
 			}
+			this.guiComponentListener.setChildDialog(null);
+			shadyMessageDialog=null;
+			
 		}
 		else{
 			showMessage("No MarkingLayer!", "No any MarkingLayer found which counting to clear.", ID.OK);

@@ -55,7 +55,10 @@ private JDialog childDialog=null;
 				
 				if(childDialog instanceof AddImageLayerDialog)
 					((AddImageLayerDialog)childDialog).setPanelPosition();
-							
+				
+		//		if(childDialog instanceof ShadyMessageDialog)
+		//			((ShadyMessageDialog)childDialog).setPanelPosition(gui.getVisibleWindowBounds());
+				
 				childDialog.repaint();
 				waitPaintingTimer.stop();
 				}

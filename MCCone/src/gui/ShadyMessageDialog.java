@@ -264,6 +264,12 @@ public class ShadyMessageDialog extends JDialog{
 
 		return button;
 	}
+	
+	public void setPanelPosition(Rectangle bounds){
+		if(bounds != null)
+			this.setBounds(bounds);
+	
+	}
 
 	protected String getButtonText(int id){
 		switch (id) {
