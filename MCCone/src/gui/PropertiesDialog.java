@@ -73,8 +73,7 @@ public class PropertiesDialog extends JDialog {
 			this.setBackground(new Color(0,0,0,0)); // transparent color			
 			this.setContentPane(new ContentPane()); // makes dimming over GUI
 			this.getContentPane().setBackground(Color_schema.dark_30);
-		//	this.setLayout(null); // backpanel position is determined with setBounds(..)
-			
+				
 			this.getContentPane().setLayout(new GridBagLayout());
 			backPanel = new JPanel();
 			backPanel.setLayout(new BorderLayout());
@@ -112,12 +111,9 @@ public class PropertiesDialog extends JDialog {
 			//backPanel.setBounds((int)(this.topLeftPoint.getX()-(panelWidth)), (int)this.topLeftPoint.getY(),this.panelWidth,this.panelHeight);
 			
 		}
-		this.setBounds(this.gui.getVisibleWindowBounds());
-		
+		this.setBounds(this.gui.getVisibleWindowBounds());	
 	}
-	
-	
-	
+		
 	/**
 	 * Initializes the layers panel.
 	 */
@@ -256,248 +252,26 @@ public class PropertiesDialog extends JDialog {
 			return null;
 		}
 	}
-
-
-
-	/**
-	 * The method checks is GUI -window positioned outside of screen and returns value  true / false
-	 * @return boolean value true if the borders of window is exceeding screen size, otherwise false
-	 */
-	private boolean checkBounds(){
-		LOGGER.fine("checkbounds Y:" + gui.getBounds().getY() +" guiHeight:" +gui.getBounds().getHeight() +" screenHeight" +gui.getScreenSize().getHeight());
-		LOGGER.fine("checkbounds X:" + gui.getBounds().getX() +" guiWidth:" +gui.getBounds().getWidth() +" screenWidth" +gui.getScreenSize().getWidth());
-
-		if((gui.getBounds().getY() +gui.getBounds().getHeight()) > gui.getScreenSize().getHeight() ||
-				(gui.getBounds().getX() + gui.getBounds().getWidth()) > gui.getScreenSize().getWidth() ||
-				gui.getBounds().getX() <0 || gui.getBounds().getY() <0)
-			return false;
-		return true;
-	}
 	
-	
-	/**
-	 * Calculates the location and size values for Dialog window to fit in screen
-	 * @return Rectangle containing appropriate location and size values for the Dialog window.
-	 */
-	protected Rectangle getGoodBoundsForPanel2(){
-		try {			
-			
-			//this.topLeftPoint
-			int topleftX = (int)(this.topLeftPoint.getX()-panelWidth);
-			int topleftY = (int)this.topLeftPoint.getY();
-			
-			topleftX =gui.getBounds().x+(int)(gui.getBounds().width/2);
-			topleftY = gui.getBounds().y+50;
-
-
-			int guiDownY=(int)(this.gui.getBounds().getY()+this.gui.getBounds().getHeight());
-
-			int guiRightX=(int)(this.gui.getBounds().getX()+this.gui.getBounds().getWidth());
-			int guiLeftX=(int)(this.gui.getBounds().getX());
-			int guiUpY=(int)(this.gui.getBounds().getY());
-
-		//	LOGGER.fine("height: " +this.gui.getBounds().getHeight() + " y: " +gui.getBounds().getY()+ "width: "+ this.gui.getBounds().getWidth()+ " x: "+gui.getBounds().getX());
-			// goes over at down
-			if(topleftY+panelHeight > guiDownY){
-				topleftY=guiDownY-panelHeight-50;
-				LOGGER.fine("over down");
-			}
-			else{
-				// goes over at up
-				if(topleftY<  guiUpY){
-					topleftY=guiUpY+50;
-					LOGGER.fine("over up");
-				}
-			}
-			// goes over at right
-			if(topleftX+panelWidth > guiRightX){
-				topleftX = guiRightX-panelWidth-50;
-				LOGGER.fine("over right");
-			}
-			else{
-				// goes over at left
-				if(topleftX <  guiLeftX){
-					topleftX = guiLeftX+50;
-					LOGGER.fine("over left");
-				}
-			}
-			topleftX-=guiLeftX;
-			topleftY-=guiUpY;
-
-			// check is the bounds over screeen
-
-			if(SharedVariables.operationSystem == ID.OS_WINDOWS || SharedVariables.operationSystem== ID.OS_LINUX_UNIX){
-				// goes over at down
-				if(topleftY+panelHeight + guiUpY > gui.getScreenSize().getHeight()){
-					topleftY-=  (guiUpY+topleftY+panelHeight)- (int)gui.getScreenSize().getHeight();
-					LOGGER.fine("over screen down " + topleftY);
-				}
-				// goes down at right
-				if(topleftX+panelWidth > gui.getScreenSize().getWidth()){
-					topleftX = (int)gui.getScreenSize().getWidth()-panelWidth-50;
-					LOGGER.fine("over screen right "+topleftX);
-				}
-				// goes over at up
-				if(topleftY +guiUpY<  0){
-					topleftY=50;
-					LOGGER.fine("over screen up " +topleftY);
-				}
-				// goes over at left
-				if(topleftX+  guiRightX <  0){
-					topleftX = 50;
-					LOGGER.fine("over screen left " +topleftX);
-				}
-			}
-			else{ //
-
-
-				// goes over at down
-				if(topleftY+panelHeight > gui.getScreenSize().getHeight()){
-					topleftY=(int)gui.getScreenSize().getHeight() -panelHeight-50;
-					LOGGER.fine("over screen down");
-				}
-				// goes down at right
-				if(topleftX+panelWidth > gui.getScreenSize().getWidth()){
-					topleftX = (int)gui.getScreenSize().getWidth()-panelWidth-50;
-					LOGGER.fine("over screen right");
-				}
-				// goes over at up
-				if(topleftY<  0){
-					topleftY=50;
-					LOGGER.fine("over screen up");
-				}
-				// goes over at left
-				if(topleftX <  0){
-					topleftX = 50;
-					LOGGER.fine("over screen left");
-				}
-			}
-
-			return new Rectangle(topleftX, topleftY, panelWidth , panelHeight);
-		} catch (Exception e) {
-			LOGGER.severe("Error in counting Bounds for MarkingProperties: " +e.getClass().toString() + " :" +e.getMessage() +"line: " +e.getStackTrace()[2].getLineNumber());
-			return null;
-		}
-	}
-
 	/**
 	 * Calculates the location and size values for Dialog window to fit in screen
 	 * @return Rectangle containing appropriate location and size values for the Dialog window.
 	 */
 	protected Rectangle getGoodBoundsForPanel(){
 		try {			
-			
+			// get the Bounds of GUI-object
 			Rectangle guiRectangle=gui.getVisibleWindowBounds();
-			
-			
-		//	int x=(int)(guiRectangle.width/2);
+					
 			int x = (int)((guiRectangle.width-panelWidth)/2); // set to middle horizontally
 			int y=  (int)((guiRectangle.height-panelHeight)/2); // set to middle vertically
 			return new Rectangle(x,y,panelWidth,panelHeight);
 			
-			
-		/*	
-			//this.topLeftPoint
-			int topleftX = (int)(this.topLeftPoint.getX()-panelWidth);
-			int topleftY = (int)this.topLeftPoint.getY();
-			
-			topleftX =gui.getBounds().x+(int)(gui.getBounds().width/2);
-			topleftY = gui.getBounds().y+50;
 
-
-			int guiDownY=(int)(this.gui.getBounds().getY()+this.gui.getBounds().getHeight());
-
-			int guiRightX=(int)(this.gui.getBounds().getX()+this.gui.getBounds().getWidth());
-			int guiLeftX=(int)(this.gui.getBounds().getX());
-			int guiUpY=(int)(this.gui.getBounds().getY());
-
-		//	LOGGER.fine("height: " +this.gui.getBounds().getHeight() + " y: " +gui.getBounds().getY()+ "width: "+ this.gui.getBounds().getWidth()+ " x: "+gui.getBounds().getX());
-			// goes over at down
-			if(topleftY+panelHeight > guiDownY){
-				topleftY=guiDownY-panelHeight-50;
-				LOGGER.fine("over down");
-			}
-			else{
-				// goes over at up
-				if(topleftY<  guiUpY){
-					topleftY=guiUpY+50;
-					LOGGER.fine("over up");
-				}
-			}
-			// goes over at right
-			if(topleftX+panelWidth > guiRightX){
-				topleftX = guiRightX-panelWidth-50;
-				LOGGER.fine("over right");
-			}
-			else{
-				// goes over at left
-				if(topleftX <  guiLeftX){
-					topleftX = guiLeftX+50;
-					LOGGER.fine("over left");
-				}
-			}
-			topleftX-=guiLeftX;
-			topleftY-=guiUpY;
-
-			// check is the bounds over screeen
-
-			if(SharedVariables.operationSystem == ID.OS_WINDOWS || SharedVariables.operationSystem== ID.OS_LINUX_UNIX){
-				// goes over at down
-				if(topleftY+panelHeight + guiUpY > gui.getScreenSize().getHeight()){
-					topleftY-=  (guiUpY+topleftY+panelHeight)- (int)gui.getScreenSize().getHeight();
-					LOGGER.fine("over screen down " + topleftY);
-				}
-				// goes down at right
-				if(topleftX+panelWidth > gui.getScreenSize().getWidth()){
-					topleftX = (int)gui.getScreenSize().getWidth()-panelWidth-50;
-					LOGGER.fine("over screen right "+topleftX);
-				}
-				// goes over at up
-				if(topleftY +guiUpY<  0){
-					topleftY=50;
-					LOGGER.fine("over screen up " +topleftY);
-				}
-				// goes over at left
-				if(topleftX+  guiRightX <  0){
-					topleftX = 50;
-					LOGGER.fine("over screen left " +topleftX);
-				}
-			}
-			else{ //
-
-
-				// goes over at down
-				if(topleftY+panelHeight > gui.getScreenSize().getHeight()){
-					topleftY=(int)gui.getScreenSize().getHeight() -panelHeight-50;
-					LOGGER.fine("over screen down");
-				}
-				// goes down at right
-				if(topleftX+panelWidth > gui.getScreenSize().getWidth()){
-					topleftX = (int)gui.getScreenSize().getWidth()-panelWidth-50;
-					LOGGER.fine("over screen right");
-				}
-				// goes over at up
-				if(topleftY<  0){
-					topleftY=50;
-					LOGGER.fine("over screen up");
-				}
-				// goes over at left
-				if(topleftX <  0){
-					topleftX = 50;
-					LOGGER.fine("over screen left");
-				}
-			}
-
-			return new Rectangle(topleftX, topleftY, panelWidth , panelHeight);
-			
-			*/
 		} catch (Exception e) {
 			LOGGER.severe("Error in counting Bounds for MarkingProperties: " +e.getClass().toString() + " :" +e.getMessage() +"line: " +e.getStackTrace()[2].getLineNumber());
 			return null;
 		}
 	}
-
-
 
 	/**
 	 * Hides Dialog window and saves the changes made to MarkingLayer.
@@ -508,14 +282,10 @@ public class PropertiesDialog extends JDialog {
 	}
 
 	/**
-	 * Sets the Dialog visible
+	 * Sets the Dialog visible.
 	 */
 	public void showDialog(){
 		setVisible(true);
 	}
-	
-	
-
-
 }
 

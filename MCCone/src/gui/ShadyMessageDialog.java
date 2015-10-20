@@ -66,6 +66,19 @@ public class ShadyMessageDialog extends JDialog{
 		initDialog();
 		
 	}
+	
+	public ShadyMessageDialog(JDialog dialog, String title, String message, int typeOfButtons, Component comp){
+		super(dialog,true);
+	
+		super.setLocationRelativeTo(comp);
+		this.setLocationRelativeTo(comp);
+		this.parentComponent = comp;
+		this.title=title;
+		this.message=message;
+		this.typeOfButtons=typeOfButtons;	
+		initDialog();
+		
+	}
 
 	private void initDialog(){
 

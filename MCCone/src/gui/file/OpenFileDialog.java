@@ -81,12 +81,12 @@ import javax.swing.SwingUtilities;
 		 * @param presentFolder String the present folder
 		 */
 		public OpenFileDialog(JDialog d, Rectangle parentComponentBounds, Rectangle backPanelBounds, String presentFolder){
-			super(d, true); // don't block parent
+			super(d, true); 
 			this.setResizable(false);
 			this.parentComponentBounds=parentComponentBounds;
 			this.parentComponentBackPanelBounds=backPanelBounds;
 			this.presentFolder=getFolderString(presentFolder);
-		//	this.addImageLayerDialog = aild;
+		
 			this.typeOfImport = ID.OPEN_IMAGE_FILE; // the constructor with no imagePath -> selecting ImageFile
 			initFileDialog();
 		}
@@ -109,7 +109,6 @@ import javax.swing.SwingUtilities;
 		private void initFileDialog(){
 
 			this.setBounds(this.parentComponentBounds); //sets the size of window same as the parent window size
-	//		LOGGER.fine("thisbounds: "+addImageLayerDialog.getBounds());
 			this.setUndecorated(true); // no titlebar or buttons
 			this.setBackground(new Color(0,0,0,0)); // transparent color
 			this.setContentPane(new ContentPane());
@@ -121,16 +120,13 @@ import javax.swing.SwingUtilities;
 			openDialogBackPanel.setLayout(new BorderLayout());
 
 			openDialogBackPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 5));
-		//	openDialogBackPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		//	openDialogBackPanel.setAlignmentY(JComponent.CENTER_ALIGNMENT);
+	
 			openDialogBackPanel.setMaximumSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.95), (int)(this.parentComponentBackPanelBounds.getHeight()*0.95)));
 			openDialogBackPanel.setMinimumSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.7), (int)(this.parentComponentBackPanelBounds.getHeight()*0.5)));
 			openDialogBackPanel.setPreferredSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.7), (int)(this.parentComponentBackPanelBounds.getHeight()*0.7)));
-	//		LOGGER.fine("openDialogBackPanel width pref: " +openDialogBackPanel.getPreferredSize().getWidth());
 			if(openDialogBackPanel.getPreferredSize().getWidth()<500)
 				openDialogBackPanel.setPreferredSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.95), (int)(this.parentComponentBackPanelBounds.getHeight()*0.95)));
-	//		LOGGER.fine("openDialogBackPanel width pref: " +backPanel.getPreferredSize().getWidth());
-
+	
 			JPanel fileChooserPanel = initFileChooserPanel();
 			openDialogBackPanel.add(fileChooserPanel, BorderLayout.CENTER);
 			this.add(openDialogBackPanel);

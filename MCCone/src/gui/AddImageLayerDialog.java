@@ -52,6 +52,10 @@ import information.*;
  * @author Antti Kurronen
  *
  */
+/**
+ * @author Antti Kurronen
+ *
+ */
 public class AddImageLayerDialog extends JDialog{
 	private GUI gui;
 	private JPanel backPanel;
@@ -88,14 +92,11 @@ public class AddImageLayerDialog extends JDialog{
 					@Override
 					public void run() {
 						selectAndAddImages();
-
 					}
 				});
-			//	this.setVisible(true);
 
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOGGER.severe("Error in adding new ImageLayer:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
 		}
 	}
@@ -115,15 +116,16 @@ public class AddImageLayerDialog extends JDialog{
 				this.gui=gui;
 				initComponents();
 				updateImageList();
-			//	this.setVisible(true);
 
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOGGER.severe("Error in adding new ImageLayer:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
 		}
 	}
 	
+	/**
+	 * Sets the panel position when user drags the main window. This is only happening in Linux. In other OS dragging is not possible.
+	 */
 	public void setPanelPosition(){
 		this.setBounds(this.gui.getVisibleWindowBounds());
 		if(this.visibleDialog != null){
@@ -131,6 +133,9 @@ public class AddImageLayerDialog extends JDialog{
 		}
 	}
 	
+	/**
+	 * Sets dialog visible.
+	 */
 	public void showDialog(){
 		this.setVisible(true);
 		
@@ -156,7 +161,6 @@ public class AddImageLayerDialog extends JDialog{
 
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOGGER.severe("Error in adding new ImageLayer:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
 		}
 	}
@@ -303,8 +307,6 @@ public class AddImageLayerDialog extends JDialog{
 								dialog=null;
 							}
 						}
-
-
 					}
 
 				}
@@ -322,7 +324,6 @@ public class AddImageLayerDialog extends JDialog{
 						}
 					}
 				}
-
 			}
 			updateImageList();
 		} catch (Exception e) {
@@ -710,7 +711,7 @@ private boolean imageNameAlreadyInList(String item){
 }
 
 /**
- * Initializes an action for a JButton.
+ * Sets an action for a JButton.
  * @param button JButton where the action is added
  * @param typeOfItem int type of action  @see information.ID
  * @throws Exception
@@ -892,101 +893,101 @@ private JPanel initDownPanel(){
  */
 private JPanel initImageViewPanel(){
 	// SETUP THE Panel which shows the list of images and markings
-				try {
+	try {
 
-					JPanel iBackPanel = new JPanel();
-				//	iBackPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-					iBackPanel.setLayout(new BorderLayout());
-					iBackPanel.setBackground(new Color(0,0,0));
-					iBackPanel.setLayout(new BorderLayout());
-					iBackPanel.setMaximumSize(this.getMaximumSize());
-					iBackPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 1));
+		JPanel iBackPanel = new JPanel();
+	//	iBackPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+		iBackPanel.setLayout(new BorderLayout());
+		iBackPanel.setBackground(new Color(0,0,0));
+		iBackPanel.setLayout(new BorderLayout());
+		iBackPanel.setMaximumSize(this.getMaximumSize());
+		iBackPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 1));
 
-					JPanel upPanel = new JPanel();
-					upPanel.setBackground(Color_schema.dark_30);
-					upPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-					upPanel.setMaximumSize(new Dimension(200,40));
-					upPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-					upPanel.setBorder(BorderFactory.createEmptyBorder());
-					JLabel titleLabel = new JLabel("OPEN IMAGES");
-					if(this.typeOfDialog == ID.MANAGE_IMAGE_LAYERS)
-						titleLabel.setText("Manage ImageLayers and MarkingLayers");
-					titleLabel.setFont(new Font("Consolas", Font.BOLD,20));
-					titleLabel.setForeground(Color_schema.white_230);
-					upPanel.add(titleLabel);
-					iBackPanel.add(upPanel, BorderLayout.PAGE_START);
+		JPanel upPanel = new JPanel();
+		upPanel.setBackground(Color_schema.dark_30);
+		upPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		upPanel.setMaximumSize(new Dimension(200,40));
+		upPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		upPanel.setBorder(BorderFactory.createEmptyBorder());
+		JLabel titleLabel = new JLabel("OPEN IMAGES");
+		if(this.typeOfDialog == ID.MANAGE_IMAGE_LAYERS)
+			titleLabel.setText("Manage ImageLayers and MarkingLayers");
+		titleLabel.setFont(new Font("Consolas", Font.BOLD,20));
+		titleLabel.setForeground(Color_schema.white_230);
+		upPanel.add(titleLabel);
+		iBackPanel.add(upPanel, BorderLayout.PAGE_START);
 
-					// CENTER PANEL
-					JPanel centerPanel=new JPanel();
-					centerPanel.setBackground(Color_schema.dark_40);
-					centerPanel.setLayout(new BorderLayout());
-					centerPanel.setBorder(BorderFactory.createEmptyBorder());
-					JPanel scrollBiggerPanel = new JPanel();
-					scrollBiggerPanel.setLayout(new BorderLayout());
-					scrollBiggerPanel.setBorder(BorderFactory.createEmptyBorder());
-					scrollBiggerPanel.setBackground(Color_schema.dark_40);
+		// CENTER PANEL
+		JPanel centerPanel=new JPanel();
+		centerPanel.setBackground(Color_schema.dark_40);
+		centerPanel.setLayout(new BorderLayout());
+		centerPanel.setBorder(BorderFactory.createEmptyBorder());
+		JPanel scrollBiggerPanel = new JPanel();
+		scrollBiggerPanel.setLayout(new BorderLayout());
+		scrollBiggerPanel.setBorder(BorderFactory.createEmptyBorder());
+		scrollBiggerPanel.setBackground(Color_schema.dark_40);
 
-					imageScrollPanel = new JPanel();
-					imageScrollPanel.setBackground(Color_schema.dark_40);
-					imageScrollPanel.setMinimumSize(new Dimension(((int)(backPanel.getMinimumSize().getWidth()*0.4)), ((int)(backPanel.getMinimumSize().getHeight()*0.7)-40)));
-					imageScrollPanel.setLayout(new BoxLayout(imageScrollPanel, BoxLayout.PAGE_AXIS));
-					imageScrollingPane = new JScrollPane(imageScrollPanel);
-					imageScrollingPane.setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
-					imageScrollingPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-					imageScrollingPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-					imageScrollingPane.setPreferredSize(new Dimension((int)backPanel.getPreferredSize().getWidth()-20,(int)backPanel.getPreferredSize().getHeight()-140));
-					imageScrollingPane.setMaximumSize(new Dimension((int)backPanel.getPreferredSize().getWidth()-20,(int)backPanel.getPreferredSize().getHeight()-140));
-					
-					// SETUP Button and it's JPanel for adding selected pahths to list
-					JPanel imageButtonJPanel = new JPanel();
-					imageButtonJPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-					imageButtonJPanel.setBackground(Color_schema.dark_30);
-					imageButtonJPanel.setMinimumSize(new Dimension(200,50));
-					imageButtonJPanel.setMaximumSize(new Dimension(200,50));
+		imageScrollPanel = new JPanel();
+		imageScrollPanel.setBackground(Color_schema.dark_40);
+		imageScrollPanel.setMinimumSize(new Dimension(((int)(backPanel.getMinimumSize().getWidth()*0.4)), ((int)(backPanel.getMinimumSize().getHeight()*0.7)-40)));
+		imageScrollPanel.setLayout(new BoxLayout(imageScrollPanel, BoxLayout.PAGE_AXIS));
+		imageScrollingPane = new JScrollPane(imageScrollPanel);
+		imageScrollingPane.setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
+		imageScrollingPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		imageScrollingPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		imageScrollingPane.setPreferredSize(new Dimension((int)backPanel.getPreferredSize().getWidth()-20,(int)backPanel.getPreferredSize().getHeight()-140));
+		imageScrollingPane.setMaximumSize(new Dimension((int)backPanel.getPreferredSize().getWidth()-20,(int)backPanel.getPreferredSize().getHeight()-140));
+		
+		// SETUP Button and it's JPanel for adding selected pahths to list
+		JPanel imageButtonJPanel = new JPanel();
+		imageButtonJPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		imageButtonJPanel.setBackground(Color_schema.dark_30);
+		imageButtonJPanel.setMinimumSize(new Dimension(200,50));
+		imageButtonJPanel.setMaximumSize(new Dimension(200,50));
 
-					addImageJButton = new JButton("ADD IMAGE");
-					addImageJButton.setPreferredSize(new Dimension(150,30));
-					addImageJButton.setBackground(Color_schema.dark_20);
-					addImageJButton.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							selectAndAddImages();
-						}
-					});
-					addImageJButton.setFocusable(false);
-					addMouseListenerToButtons(addImageJButton, ID.BUTTON_NORMAL);
-					imageButtonJPanel.add(addImageJButton);
-
-
-					JButton addMarkingsForAll = new JButton("Import Markings For All ImageLayers");
-					addMarkingsForAll.setPreferredSize(new Dimension(350,30));
-					addMarkingsForAll.setBackground(Color_schema.dark_20);
-					addMarkingsForAll.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							if(dialogImageLayerList != null && dialogImageLayerList.size()>0)
-								selectAndAddMarkings(dialogImageLayerList.get(0).getImageFilePath(),true);
-							else{
-								showMessage("No ImageLayers", "Not found ImageLayers where to add markings");
-
-							}
-						}
-					});
-					addMarkingsForAll.setFocusable(false);
-					addMouseListenerToButtons(addMarkingsForAll, ID.BUTTON_NORMAL);
-					imageButtonJPanel.add(addMarkingsForAll);
+		addImageJButton = new JButton("ADD IMAGE");
+		addImageJButton.setPreferredSize(new Dimension(150,30));
+		addImageJButton.setBackground(Color_schema.dark_20);
+		addImageJButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				selectAndAddImages();
+			}
+		});
+		addImageJButton.setFocusable(false);
+		addMouseListenerToButtons(addImageJButton, ID.BUTTON_NORMAL);
+		imageButtonJPanel.add(addImageJButton);
 
 
-					scrollBiggerPanel.add(imageScrollingPane, BorderLayout.CENTER);
-					centerPanel.add(scrollBiggerPanel, BorderLayout.CENTER);
-					centerPanel.add(imageButtonJPanel, BorderLayout.PAGE_END);
-					iBackPanel.add(centerPanel, BorderLayout.CENTER);
+		JButton addMarkingsForAll = new JButton("Import Markings For All ImageLayers");
+		addMarkingsForAll.setPreferredSize(new Dimension(350,30));
+		addMarkingsForAll.setBackground(Color_schema.dark_20);
+		addMarkingsForAll.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(dialogImageLayerList != null && dialogImageLayerList.size()>0)
+					selectAndAddMarkings(dialogImageLayerList.get(0).getImageFilePath(),true);
+				else{
+					showMessage("No ImageLayers", "Not found ImageLayers where to add markings");
 
-					return iBackPanel;
-				} catch (Exception e) {
-					LOGGER.severe("Error in creating imageViewPanel:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-					return null;
 				}
+			}
+		});
+		addMarkingsForAll.setFocusable(false);
+		addMouseListenerToButtons(addMarkingsForAll, ID.BUTTON_NORMAL);
+		imageButtonJPanel.add(addMarkingsForAll);
+
+
+		scrollBiggerPanel.add(imageScrollingPane, BorderLayout.CENTER);
+		centerPanel.add(scrollBiggerPanel, BorderLayout.CENTER);
+		centerPanel.add(imageButtonJPanel, BorderLayout.PAGE_END);
+		iBackPanel.add(centerPanel, BorderLayout.CENTER);
+
+		return iBackPanel;
+	} catch (Exception e) {
+		LOGGER.severe("Error in creating imageViewPanel:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+		return null;
+	}
 
 }
 
@@ -1009,7 +1010,7 @@ private JPanel initImageViewPanel(){
 				}
 				else{
 					LOGGER.warning("Dimension of selected file "+file.getName()+" differs from other images! Not imported!");
-					dialog = new ShadyMessageDialog(new JFrame(), "Refused opening image", " Dimension of selected file "+file.getName()+" differs from other images! Not imported!", ID.OK, this);
+					dialog = new ShadyMessageDialog(this, "Refused opening image", " Dimension of selected file "+file.getName()+" differs from other images! Not imported!", ID.OK, this);
 					dialog.showDialog();
 					dialog=null;
 

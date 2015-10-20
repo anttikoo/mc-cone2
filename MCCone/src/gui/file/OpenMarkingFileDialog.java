@@ -14,12 +14,12 @@ public class OpenMarkingFileDialog extends OpenFileDialog{
 
 	public OpenMarkingFileDialog(JFrame frame, Rectangle pcb, Rectangle pcbb, String presentFolder) {
 		super(frame, pcb, pcbb, presentFolder);
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	public OpenMarkingFileDialog(JDialog d, Rectangle pcb, Rectangle pcbb, String presentFolder) {
 		super(d, pcb, pcbb, presentFolder);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	protected String getWindowTitle(){
