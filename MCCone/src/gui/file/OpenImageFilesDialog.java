@@ -14,12 +14,10 @@ public class OpenImageFilesDialog extends OpenFileDialog{
 
 	public OpenImageFilesDialog(JFrame frame, Rectangle pcb, Rectangle pcbb, String presentFolder) {
 		super(frame, pcb, pcbb, presentFolder);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public OpenImageFilesDialog(JDialog d, Rectangle pcb, Rectangle pcbb, String presentFolder) {
-		super(d, pcb, pcbb, presentFolder);
-		// TODO Auto-generated constructor stub
+		super(d, pcb, pcbb, presentFolder);	
 	}
 
 	protected String getWindowTitle(){
