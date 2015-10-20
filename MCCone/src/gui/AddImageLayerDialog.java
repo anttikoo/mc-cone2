@@ -69,7 +69,7 @@ public class AddImageLayerDialog extends JDialog{
 	private Dimension importAllowedImageDimension=null;
 	private JDialog visibleDialog=null;
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
-	private ShadyMessageDialog shadyMessageDialog;
+	private ShadyMessageDialog shadyMessageDialog=null;
 
 	/**
 	 * Class constructor for only creating new ImageLayers and importing markings
@@ -185,6 +185,7 @@ public class AddImageLayerDialog extends JDialog{
 						dialogImageLayerList.add(new ImageLayer(imageFiles[i].getAbsolutePath())); // create new ImageLayer by giving the path of image
 					}
 					else{
+						
 						// inform user that image with same name is already used
 						shadyMessageDialog = new ShadyMessageDialog(this, "Refused opening image", " Image name:  "+imageFiles[i].getName() + " is already open", ID.OK, this);	
 						shadyMessageDialog.showDialog();									
@@ -547,15 +548,16 @@ public class AddImageLayerDialog extends JDialog{
 	
 					// ask the user should the ImageLayer being deleted
 	
-					ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "DELETE", "Delete ImageLayer:  "+im.getImageFileName(), ID.YES_NO, this);
-					if(dialog.showDialog() == ID.YES){
+					shadyMessageDialog  = new ShadyMessageDialog(this, "DELETE", "Delete ImageLayer:  "+im.getImageFileName(), ID.YES_NO, this);
+					if(shadyMessageDialog.showDialog() == ID.YES){
 						LOGGER.fine("deleted imageLayer: " + im.getImageFilePath());
 						iIterator.remove();
 					}
-					dialog=null;
+					shadyMessageDialog=null;
 				}
 			}
 		} catch (Exception e) {
+			shadyMessageDialog=null;
 			LOGGER.severe("Error in deleting imageLayer from IMAGE LIST " +e.getClass().toString() + " :" +e.getMessage());
 	
 		}
@@ -578,17 +580,18 @@ public class AddImageLayerDialog extends JDialog{
 					MarkingLayer ma = (MarkingLayer)mIterator.next();
 					if(ma.getLayerName().equals(markingName)){
 						// ask the user should the ImageLayer being deleted
-						ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "DELETE", "Delete MarkingLayer:  "+ma.getLayerName(), ID.YES_NO, this);
-						if(dialog.showDialog() == ID.YES){
+						shadyMessageDialog = new ShadyMessageDialog(this, "DELETE", "Delete MarkingLayer:  "+ma.getLayerName(), ID.YES_NO, this);
+						if(shadyMessageDialog.showDialog() == ID.YES){
 							LOGGER.fine("deleted markingLayer: " + ma.getLayerName());
 							mIterator.remove();
 						}
-						dialog=null;
+						shadyMessageDialog=null;
 					}
 				}
 			}
 	
 		} catch (Exception e) {
+			shadyMessageDialog=null;
 			LOGGER.severe("Error in deleting imageLayer from IMAGE LIST " +e.getClass().toString() + " :" +e.getMessage());
 	
 		}
@@ -1010,7 +1013,7 @@ private JPanel initImageViewPanel(){
 	 * @return boolean value is file proper image file
 	 */
 	private boolean isImageFile(File file){
-		ShadyMessageDialog dialog;
+		
 		try {
 			ImageFilter filterImage=new ImageFilter();
 			if(filterImage.accept(file)){
@@ -1020,29 +1023,29 @@ private JPanel initImageViewPanel(){
 				}
 				else{
 					LOGGER.warning("Dimension of selected file "+file.getName()+" differs from other images! Not imported!");
-					dialog = new ShadyMessageDialog(this, "Refused opening image", " Dimension of selected file "+file.getName()+" differs from other images! Not imported!", ID.OK, this);
-					dialog.showDialog();
-					dialog=null;
+					shadyMessageDialog = new ShadyMessageDialog(this, "Refused opening image", " Dimension of selected file "+file.getName()+" differs from other images! Not imported!", ID.OK, this);
+					shadyMessageDialog.showDialog();
+					shadyMessageDialog=null;
 
 					return false;
 				}
 			}
 			else{
 				LOGGER.warning("The image format of selected file "+file.getName()+" is not acceptable! Not imported");
-				dialog = new ShadyMessageDialog(new JFrame(), "Refused opening image", "The image format of selected file "+file.getName()+" is not acceptable! Not imported", ID.OK, this);
-				dialog.showDialog();
-
+				shadyMessageDialog = new ShadyMessageDialog(this, "Refused opening image", "The image format of selected file "+file.getName()+" is not acceptable! Not imported", ID.OK, this);
+				shadyMessageDialog.showDialog();
+				shadyMessageDialog=null;
 				return false;
 			}
 		} catch (Exception e) {
 			LOGGER.severe("Error in adding Markings to ImageLayer :" +e.getMessage());
 
-			dialog = new ShadyMessageDialog(new JFrame(), "Refused opening image", "The image  "+file.getName()+" may be broken! Not imported", ID.OK, this);
-			dialog.showDialog();
+			shadyMessageDialog = new ShadyMessageDialog(this, "Refused opening image", "The image  "+file.getName()+" may be broken! Not imported", ID.OK, this);
+			shadyMessageDialog.showDialog();
 
 			return false;
 		}
-		finally{dialog=null;}
+		finally{shadyMessageDialog=null;}
 
 	}
 
@@ -1111,7 +1114,7 @@ private JPanel initImageViewPanel(){
 	 * @param pathIfAny String path for image where markings are added. If selecting image file this parameter is null.
 	 */
 	private void selectAndAddImages(){
-		JFrame openfileFrame = new JFrame();
+		
 	//	OpenImageFilesDialog 
 		visibleDialog=new OpenImageFilesDialog(this, this.getBounds(), this.backPanel.getBounds(), gui.getPresentFolder());
 			
@@ -1131,8 +1134,6 @@ private JPanel initImageViewPanel(){
 	 * @param isMarkingsForAll Boolean should add MarkingLayers to all ImageLayers if found any.
 	 */
 	private void selectAndAddMarkings(String imageLayerPath, boolean isMarkingsForAll){
-		
-
 		visibleDialog= new OpenMarkingFileDialog(this, this.getBounds(), this.backPanel.getBounds(),imageLayerPath);
 		visibleDialog.setVisible(true);
 
@@ -1173,9 +1174,9 @@ private JPanel initImageViewPanel(){
 	 * @param message String message
 	 */
 	private void showMessage(String title, String message){
-		ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), title, message, ID.OK, this);
-		dialog.showDialog();
-		dialog=null;
+		shadyMessageDialog = new ShadyMessageDialog(this, title, message, ID.OK, this);
+		shadyMessageDialog.showDialog();
+		shadyMessageDialog=null;
 	}
 
 
@@ -1195,8 +1196,6 @@ private JPanel initImageViewPanel(){
 				this.createImageLayersJButton.setEnabled(true);
 				this.createImageLayersJButton.setSelected(true);
 				
-
-
 				String longestPathString="";
 				String longestMarkingNameString="";
 				Iterator<ImageLayer> iIterator = dialogImageLayerList.iterator();
