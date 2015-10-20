@@ -954,6 +954,8 @@ private GUIcomponentListener guiComponentListener=null;
 				width = guiWidth-(windowLeftX-guiX);
 			}
 			
+			
+			
 			return new Rectangle(x,y,width,height);
 			
 			
