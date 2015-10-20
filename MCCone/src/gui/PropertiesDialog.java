@@ -72,7 +72,7 @@ public class PropertiesDialog extends JDialog {
 			this.setUndecorated(true); // no titlebar or buttons
 			this.setBackground(new Color(0,0,0,0)); // transparent color			
 			this.setContentPane(new ContentPane()); // makes dimming over GUI
-			this.getContentPane().setBackground(Color_schema.dark_30);
+		//	this.getContentPane().setBackground(Color_schema.dark_30);
 		//	this.setLayout(null); // backpanel position is determined with setBounds(..)
 			
 			this.getContentPane().setLayout(new GridBagLayout());
@@ -115,88 +115,7 @@ public class PropertiesDialog extends JDialog {
 		this.setBounds(this.gui.getVisibleWindowBounds());
 		
 	}
-	/*
-	protected Rectangle getDimmingRectangle(){
-		
-		
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		Rectangle windowBounds = ge.getMaximumWindowBounds();
-		
-		
-
-		// GUI inside the window
-		if(windowBounds.contains(gui.getBounds())){
-			return gui.getBounds();				
-		}
-		
-		int windowLeftX = windowBounds.x;
-		int windowRightX=windowBounds.x+windowBounds.width;
-		int windowUpY=windowBounds.y;
-		int windowDownY=windowBounds.y+windowBounds.height;
-		LOGGER.fine("windowRightXBefore: "+ windowRightX);
-		
-		//check is multiple monitors -> change size of screen
-		
-		  GraphicsDevice[] gs = ge.getScreenDevices();
-		  if(gs != null && gs.length>1){
-			  		  
-			//  windowRightX=Toolkit.getDefaultToolkit().getScreenSize().width;
-			  LOGGER.fine("multiple monitors: "+windowRightX);
-			   for (int j = 0; j < gs.length; j++) { 
-			      GraphicsDevice gd = gs[j];
-			      GraphicsConfiguration[] gc = gd.getConfigurations();
-			     			      
-			      for (int i=0; i < gc.length; i++) {
-			    	  LOGGER.info("monitor: "+j+": "+gc[i].getBounds().toString());
-			    	  
-			   
-			      }	      
-			   }
-		  }
-			
-		int x=gui.getBounds().x;		
-		int y= gui.getBounds().y;
-		int width=gui.getBounds().width;
-		int height=gui.getBounds().height;
-		// GUI over window
-		
-		int guiX= this.gui.getBounds().x;
-		int guiY= this.gui.getBounds().y;
-		int guiWidth= this.gui.getWidth();
-		int guiHeight=this.gui.getHeight();
-			
-		if(guiX<windowLeftX){ //over left
-			x=windowLeftX;
-			width = guiWidth-(windowLeftX-guiX);	
-			LOGGER.fine("Over left: window"+windowBounds.toString() +" gui:"+gui.getBounds().toString());
-		}
-		if(guiX+guiWidth > windowRightX){ // over right
-			x=guiX;
-			width= windowRightX- guiX;		
-			LOGGER.fine("Over right: window"+windowBounds.toString() +" gui:"+gui.getBounds().toString());
-		}
-		
-		if(guiY <windowUpY){ //over up
-			y= windowUpY;
-			height= guiHeight - (windowUpY-guiY);
-			LOGGER.fine("Over up: window"+windowBounds.toString() +" gui:"+gui.getBounds().toString());
-		}
-		
-		if(guiY+guiHeight > windowDownY){ // over down
-			y=guiY;
-			height= windowDownY-guiY;
-			LOGGER.fine("Over down: window"+windowBounds.toString() +" gui:"+gui.getBounds().toString());
-		}
-		
-		
-		
-		
-			
-		return this.gui.getVisibleWindowBounds();
-	//	return new Rectangle(x,y,width,height);
-		
-	}
-	*/
+	
 	
 	
 	/**
