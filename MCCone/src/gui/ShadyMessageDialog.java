@@ -194,12 +194,6 @@ public class ShadyMessageDialog extends JDialog{
 				}
 			maxwidth=Math.max(maxwidth,getDownButtonPanelWidth());
 
-	/*		// set sizes
-			if(parentComponent instanceof AddImageLayerDialog){
-				dialogBackPanel.setMaximumSize(new Dimension((int)((AddImageLayerDialog)this.parentComponent).getBackPanelSize().getWidth()-120,120));
-			LOGGER.fine("backpanel size: " +((AddImageLayerDialog)this.parentComponent).getBackPanelSize().getWidth());
-			}
-	*/		//	dialogBackPanel.setMinimumSize(new Dimension(maxwidth+100,120));
 			dialogBackPanel.setPreferredSize(new Dimension(maxwidth+100,120));
 			titlePanel.setMinimumSize(new Dimension(maxwidth+100,50));
 			titlePanel.setMaximumSize(new Dimension((int)dialogBackPanel.getMaximumSize().getWidth(),50));

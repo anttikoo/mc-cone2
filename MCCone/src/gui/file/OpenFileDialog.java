@@ -65,7 +65,6 @@ import javax.swing.SwingUtilities;
 			this.parentComponentBounds=parentComponentBounds;
 			this.parentComponentBackPanelBounds=backPanelBounds;
 			this.presentFolder=getFolderString(presentFolder);
-		//	this.addImageLayerDialog = aild;
 			this.typeOfImport = ID.OPEN_IMAGE_FILE; // the constructor with no imagePath -> selecting ImageFile
 			initFileDialog();
 		}

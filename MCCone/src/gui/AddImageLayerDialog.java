@@ -69,6 +69,7 @@ public class AddImageLayerDialog extends JDialog{
 	private Dimension importAllowedImageDimension=null;
 	private JDialog visibleDialog=null;
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	private ShadyMessageDialog shadyMessageDialog;
 
 	/**
 	 * Class constructor for only creating new ImageLayers and importing markings
@@ -124,13 +125,16 @@ public class AddImageLayerDialog extends JDialog{
 	}
 	
 	/**
-	 * Sets the panel position when user drags the main window. This is only happening in Linux. In other OS dragging is not possible.
+	 * Sets the panel position and child dialogs when user drags the main window. 
+	 * This is only happening in Linux. In other OS the dragging is not possible, because modal dialogs are used.
 	 */
 	public void setPanelPosition(){
 		this.setBounds(this.gui.getVisibleWindowBounds());
-		if(this.visibleDialog != null){
+		if(this.visibleDialog != null)
 			this.visibleDialog.setBounds(this.getBounds());
-		}
+		
+		if(this.shadyMessageDialog != null)
+			this.shadyMessageDialog.setBounds(this.getBounds());
 	}
 	
 	/**
@@ -171,7 +175,7 @@ public class AddImageLayerDialog extends JDialog{
 	 * @param imageFiles List of files, which path are used in creating  ImageLayer objects
 	 */
 	private void addImagesToImageLayerList(File[] imageFiles){
-		ShadyMessageDialog dialog;
+		try{
 		if(imageFiles !=null && imageFiles.length>0)
 
 		for(int i=0; i<imageFiles.length;i++){
@@ -182,21 +186,25 @@ public class AddImageLayerDialog extends JDialog{
 					}
 					else{
 						// inform user that image with same name is already used
-						dialog = new ShadyMessageDialog(gui, "Refused opening image", " Image name:  "+imageFiles[i].getName() + " is already open", ID.OK, this);	
-						dialog.showDialog();									
+						shadyMessageDialog = new ShadyMessageDialog(this, "Refused opening image", " Image name:  "+imageFiles[i].getName() + " is already open", ID.OK, this);	
+						shadyMessageDialog.showDialog();									
 					}
 				} // if file is wrong format of the dimensio is wrong -> informed in isImageFile -method
 
 			}else{
 				// inform user that image with same name is already used
-				dialog = new ShadyMessageDialog(new JFrame(), "Refused opening image", " Image name:  "+imageFiles[i].getName() + " doesn't exist!", ID.OK, this);
-				dialog.showDialog();
+				shadyMessageDialog = new ShadyMessageDialog(this, "Refused opening image", " Image name:  "+imageFiles[i].getName() + " doesn't exist!", ID.OK, this);
+				shadyMessageDialog.showDialog();
 
 			}
 		}
 		updateImageList();
-		dialog=null;
+		shadyMessageDialog=null;
 		imageFiles=null;
+		}catch(Exception e){
+			LOGGER.severe("Problems in adding images to list: "+e.getMessage());
+			shadyMessageDialog=null;
+		}
 
 	}
 
@@ -241,9 +249,9 @@ public class AddImageLayerDialog extends JDialog{
 					// Check is MarkingLayer already in original ImageLayer
 					if(originalIL.isMarkingLayerInList(maCopy)){
 						// found same MarkingLayer (name) from both ImageLayers -> confirm overwrite
-						JFrame frame = new JFrame();
-						ShadyMessageDialog dialog = new ShadyMessageDialog(frame, "Imported MarkingLayer "+ maCopy.getLayerName()+ " already exists!", "OVERWRITE?", ID.YES_NO, this);
-						if(dialog.showDialog() == ID.YES){
+						
+						shadyMessageDialog = new ShadyMessageDialog(this, "Imported MarkingLayer "+ maCopy.getLayerName()+ " already exists!", "OVERWRITE?", ID.YES_NO, this);
+						if(shadyMessageDialog.showDialog() == ID.YES){
 							LOGGER.fine("overwriting markingLayer: " + maCopy.getLayerName());
 							//remove original
 							originalIL.removeMarkingLayer(maCopy); // this method compares names of MarkingLayers and if same -> removed
@@ -251,7 +259,7 @@ public class AddImageLayerDialog extends JDialog{
 							originalIL.addMarkingLayer(maCopy); // add new one
 							madeSave=true;
 						}
-						dialog=null;
+						shadyMessageDialog=null;
 
 					}
 					else{ // not found -> add MarkingLayer to original ImageLayer
@@ -262,6 +270,7 @@ public class AddImageLayerDialog extends JDialog{
 			}
 			return madeSave;
 		} catch (HeadlessException e) {
+			shadyMessageDialog=null;
 			LOGGER.severe("Error in adding Markings to ImageLayer " +e.getClass().toString() + " :" +e.getMessage());
 			return false;
 		}
@@ -302,9 +311,9 @@ public class AddImageLayerDialog extends JDialog{
 						else{ // no markins found -> inform user
 
 							if(imageLayerPath != null){
-								ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "MARKINGS NOT FOUND!", "No markings for selected ImageLayer were found!", ID.OK, this);
-								dialog.showDialog();
-								dialog=null;
+								shadyMessageDialog = new ShadyMessageDialog(this, "MARKINGS NOT FOUND!", "No markings for selected ImageLayer were found!", ID.OK, this);
+								shadyMessageDialog.showDialog();
+								shadyMessageDialog=null;
 							}
 						}
 					}
@@ -313,20 +322,21 @@ public class AddImageLayerDialog extends JDialog{
 				if(imageLayerPath == null){ // imported for several ImageLayers
 					if(dialogImageLayerList != null && dialogImageLayerList.size() > importedNumber){
 						if(importedNumber >0){
-						ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "Importing successfull!", "Imported markings for "+importedNumber+" of "+dialogImageLayerList.size()+ " ImageLayers.", ID.OK, this);
-						dialog.showDialog();
-						dialog=null;
+							shadyMessageDialog = new ShadyMessageDialog(this, "Importing successfull!", "Imported markings for "+importedNumber+" of "+dialogImageLayerList.size()+ " ImageLayers.", ID.OK, this);
+							shadyMessageDialog.showDialog();
+							shadyMessageDialog=null;
 						}
 						else{
-							ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "Importing not successfull!", "No any Markings found for ImageLayers.", ID.OK, this);
-							dialog.showDialog();
-							dialog=null;
+							shadyMessageDialog = new ShadyMessageDialog(this, "Importing not successfull!", "No any Markings found for ImageLayers.", ID.OK, this);
+							shadyMessageDialog.showDialog();
+							shadyMessageDialog=null;
 						}
 					}
 				}
 			}
 			updateImageList();
 		} catch (Exception e) {
+			shadyMessageDialog=null;
 			LOGGER.severe("Error in adding Markings to ImageLayer " +e.getClass().toString() + " :" +e.getMessage());
 			e.printStackTrace();
 		}
