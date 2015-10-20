@@ -55,8 +55,7 @@ private JDialog childDialog=null;
 				
 				if(childDialog instanceof AddImageLayerDialog)
 					((AddImageLayerDialog)childDialog).setPanelPosition();
-				
-				
+							
 				childDialog.repaint();
 				waitPaintingTimer.stop();
 				}
@@ -94,7 +93,6 @@ private JDialog childDialog=null;
 			
 						
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
