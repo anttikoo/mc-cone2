@@ -85,6 +85,15 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		this.gridSizes=gridSizeList;
 		this.templateGP= getFirstGridPropertiesFromAllMarkingLayers(0, 0);
 		initDialog();
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				repaint();
+				
+			}
+		});
+		
 	
 	}
 

@@ -2326,6 +2326,8 @@ public void setSelectedMarkingLayer(int mLayerID){
 		if(mLayerList != null && mLayerList.size()>0){
 			GridPropertiesPanel dialog =new GridPropertiesPanel(this, this, point, mLayerList, taskManager.getSingleGridSizeList());		
 			this.guiComponentListener.setChildDialog(dialog);
+			
+			
 			dialog.showDialog();
 			updateGridPanel();	
 			
@@ -2531,16 +2533,18 @@ public void setSelectedMarkingLayer(int mLayerID){
 	 */
 	@SuppressWarnings("unused")
 	private void testing(){
-		ImageLayer l = new ImageLayer("/home/antti/4kuvaa/eka.jpg");
-		ArrayList<ImageLayer> list = new ArrayList<ImageLayer>();
-		list.add(l);
-		addImageLayerList(list);
-
-		try {
-			createNewMarkingLayer(taskManager.getSelectedImageLayer().getLayerID());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(SharedVariables.operationSystem== ID.OS_LINUX_UNIX){
+			ImageLayer l = new ImageLayer("/home/antti/4kuvaa/eka.jpg");
+			ArrayList<ImageLayer> list = new ArrayList<ImageLayer>();
+			list.add(l);
+			addImageLayerList(list);
+	
+			try {
+				createNewMarkingLayer(taskManager.getSelectedImageLayer().getLayerID());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -2613,7 +2617,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 				this.taskManager.getSelectedMarkingLayer().isVisible()
 				&& this.taskManager.getSelectedMarkingLayer().isGridON())
 			this.gridPanel.setShowGrid(true);
-		this.gridPanel.repaint();
+	//	this.gridPanel.repaint();
 	}
 
 	/**

@@ -45,7 +45,7 @@ public class ContentPane extends JPanel{
 				g2d.setColor(getBackground());
 			//	g2d.setColor(Color.green);
 				g2d.fill(getBounds());
-				
+				LOGGER.fine("filling dimming: "+getBounds().toString()+ " back:"+getBackground().toString());
 
 				g2d.dispose();
 			} catch (Exception e) {
