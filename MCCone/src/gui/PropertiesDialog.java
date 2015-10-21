@@ -78,7 +78,7 @@ public class PropertiesDialog extends JDialog {
 		
 			this.setContentPane(cone); // makes dimming over GUI
 			
-		//	this.getContentPane().setBackground(Color_schema.dark_30);
+			this.getContentPane().setBackground(Color_schema.dark_30);
 				
 			
 			backPanel = new JPanel();
@@ -96,7 +96,6 @@ public class PropertiesDialog extends JDialog {
 			backPanel.add(initDownPanel(),BorderLayout.PAGE_END);
 		
 			this.add(backPanel);
-		//	this.repaint();
 			LOGGER.fine("called propertiesDialog");
 
 
@@ -297,6 +296,7 @@ public class PropertiesDialog extends JDialog {
 			@Override
 			public void run() {
 				setVisible(true);
+				repaint();
 				
 			}
 		});

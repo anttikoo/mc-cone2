@@ -20,7 +20,7 @@ public class ContentPane extends JPanel{
 	
 
 	 /**
-	 * Class constructor.
+	 * Class constructor.s
 	 */
 	public ContentPane() {
 	        setOpaque(false);

@@ -2533,8 +2533,15 @@ public void setSelectedMarkingLayer(int mLayerID){
 	 */
 	@SuppressWarnings("unused")
 	private void testing(){
-		if(SharedVariables.operationSystem== ID.OS_LINUX_UNIX){
-			ImageLayer l = new ImageLayer("/home/antti/4kuvaa/eka.jpg");
+		String path="/home/antti/4kuvaa/eka.jpg";
+		if(SharedVariables.operationSystem== ID.OS_LINUX_UNIX)
+			path="/home/antti/4kuvaa/eka.jpg";
+		if(SharedVariables.operationSystem== ID.OS_MAC)
+			path="/Users/Antti/Documents/kuva.jpeg";
+		if(SharedVariables.operationSystem== ID.OS_WINDOWS)
+			return;
+		
+			ImageLayer l = new ImageLayer(path);
 			ArrayList<ImageLayer> list = new ArrayList<ImageLayer>();
 			list.add(l);
 			addImageLayerList(list);
@@ -2542,10 +2549,10 @@ public void setSelectedMarkingLayer(int mLayerID){
 			try {
 				createNewMarkingLayer(taskManager.getSelectedImageLayer().getLayerID());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
-		}
+		
 	}
 
 	/**
