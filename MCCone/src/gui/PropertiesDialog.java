@@ -32,6 +32,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import operators.GetResources;
@@ -55,8 +56,8 @@ public class PropertiesDialog extends JDialog {
 		super(frame,true);
 		this.gui = gui;
 		this.topLeftPoint=point;
-		this.revalidate();
-		this.repaint();
+	//	this.revalidate();
+	//	this.repaint();
 	}
 	
 	
@@ -70,11 +71,16 @@ public class PropertiesDialog extends JDialog {
 			this.setResizable(false);
 			this.setBounds(this.gui.getVisibleWindowBounds()); // sets the size of this dialog same as the GUI (the parent)
 			this.setUndecorated(true); // no titlebar or buttons
-			this.setBackground(new Color(0,0,0,0)); // transparent color			
-			this.setContentPane(new ContentPane()); // makes dimming over GUI
-			this.getContentPane().setBackground(Color_schema.dark_30);
+			this.setBackground(new Color(0,0,0,0)); // transparent color
+			ContentPane cone = new ContentPane();
+			cone.setBackground(Color_schema.dark_30);
+			cone.setLayout(new GridBagLayout());
+		
+			this.setContentPane(cone); // makes dimming over GUI
+			
+		//	this.getContentPane().setBackground(Color_schema.dark_30);
 				
-			this.getContentPane().setLayout(new GridBagLayout());
+			
 			backPanel = new JPanel();
 			backPanel.setLayout(new BorderLayout());
 			backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 3));
@@ -83,14 +89,15 @@ public class PropertiesDialog extends JDialog {
 			backPanel.setPreferredSize(new Dimension(panelWidth,panelHeight));
 
 			// set sizes and locations of components
-			setPanelPosition();
+		//	setPanelPosition();
 			
 			backPanel.add(initUPPanels(), BorderLayout.PAGE_START);
 			backPanel.add(initCenterPanels(), BorderLayout.CENTER);
 			backPanel.add(initDownPanel(),BorderLayout.PAGE_END);
 		
 			this.add(backPanel);
-			this.repaint();
+		//	this.repaint();
+			LOGGER.fine("called propertiesDialog");
 
 
 		} catch (Exception e) {
@@ -285,7 +292,15 @@ public class PropertiesDialog extends JDialog {
 	 * Sets the Dialog visible.
 	 */
 	public void showDialog(){
-		setVisible(true);
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				setVisible(true);
+				
+			}
+		});
+		
 	}
 }
 
