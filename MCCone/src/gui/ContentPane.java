@@ -6,6 +6,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
@@ -20,10 +21,19 @@ public class ContentPane extends JPanel{
 	
 
 	 /**
-	 * Class constructor.s
+	 * Class constructor
 	 */
 	public ContentPane() {
 	        setOpaque(false);
+	    }
+	
+	 /**
+	 * Class constructor.s
+	 */
+	public ContentPane(GridBagLayout layout) {
+		this.setLayout(layout);
+	        setOpaque(false);
+	        this.setBackground(Color_schema.dark_30);
 	    }
 	
 
@@ -36,16 +46,16 @@ public class ContentPane extends JPanel{
 
 				// Apply our own painting effect
 				Graphics2D g2d = (Graphics2D) g.create();
-
+			//	g2d.setColor(getBackground());
 				// 70% transparent Alpha
 			//	g2d.setComposite(AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.7F)); // use SharedVarible
 				g2d.setComposite(AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.7F)); // use SharedVarible
 				
 	
+			//	g2d.setColor(getBackground());
 				g2d.setColor(getBackground());
-			//	g2d.setColor(Color.green);
 				g2d.fill(getBounds());
-				LOGGER.fine("filling dimming: "+getBounds().toString()+ " back:"+getBackground().toString());
+				LOGGER.fine("filling dimming: "+getBounds().toString()+ " back:"+getBackground().toString()+ " c0: "+g2d.getComposite().toString());
 
 				g2d.dispose();
 			} catch (Exception e) {

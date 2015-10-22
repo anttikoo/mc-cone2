@@ -72,15 +72,12 @@ public class PropertiesDialog extends JDialog {
 			this.setBounds(this.gui.getVisibleWindowBounds()); // sets the size of this dialog same as the GUI (the parent)
 			this.setUndecorated(true); // no titlebar or buttons
 			this.setBackground(new Color(0,0,0,0)); // transparent color
-			ContentPane cone = new ContentPane();
-			cone.setBackground(Color_schema.dark_30);
-			cone.setLayout(new GridBagLayout());
+			ContentPane cone = new ContentPane(new GridBagLayout());
 		
+		//	cone.setLayout(new GridBagLayout());
 			this.setContentPane(cone); // makes dimming over GUI
-			
-			this.getContentPane().setBackground(Color_schema.dark_30);
-				
-			
+					
+		//	this.getContentPane().setBackground(Color_schema.dark_30);		
 			backPanel = new JPanel();
 			backPanel.setLayout(new BorderLayout());
 			backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 3));
@@ -97,7 +94,7 @@ public class PropertiesDialog extends JDialog {
 		
 			this.add(backPanel);
 			LOGGER.fine("called propertiesDialog");
-
+			
 
 		} catch (Exception e) {
 			LOGGER.severe("Error in initializing PropertiesDialog: " +e.getClass().toString() + " :" +e.getMessage() +" line: " +e.getStackTrace()[2].getLineNumber());
@@ -296,7 +293,17 @@ public class PropertiesDialog extends JDialog {
 			@Override
 			public void run() {
 				setVisible(true);
+				
+				
+			}
+		});
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
 				repaint();
+				
 				
 			}
 		});

@@ -112,6 +112,7 @@ private GridPanel gridPanel;
 private int rightPanelWidth=0;
 private GUIcomponentListener guiComponentListener=null;
 private ShadyMessageDialog shadyMessageDialog=null;
+private GridPropertiesPanel gridDialog=null;
 
 
 
@@ -2323,20 +2324,25 @@ public void setSelectedMarkingLayer(int mLayerID){
 	 * @param mLayerList ArrayList<MarkingLayer> of all MarkingLayers.
 	 */
 	public void showGridPropertiesPanel(Point point, ArrayList<MarkingLayer> mLayerList){
-		if(mLayerList != null && mLayerList.size()>0){
-			GridPropertiesPanel dialog =new GridPropertiesPanel(this, this, point, mLayerList, taskManager.getSingleGridSizeList());		
-			this.guiComponentListener.setChildDialog(dialog);
-			
-			
-			dialog.showDialog();
-			updateGridPanel();	
-			
-			dialog=null;
-			this.guiComponentListener.setChildDialog(null);
-			}
-			else{
-				showMessage("No MarkingLayers", "No any MarkingLayers found. Can't set Properties of the Grid. ",ID.OK);
-			}
+		
+		try {
+			if(mLayerList != null && mLayerList.size()>0){
+				gridDialog = new GridPropertiesPanel(this, this, point, mLayerList, taskManager.getSingleGridSizeList());		
+				this.guiComponentListener.setChildDialog(gridDialog);
+				
+				gridDialog .showDialog();
+				updateGridPanel();						
+				gridDialog =null;
+				guiComponentListener.setChildDialog(null);
+
+				}
+				else{
+					showMessage("No MarkingLayers", "No any MarkingLayers found. Can't set Properties of the Grid. ",ID.OK);
+				}
+		} catch (Exception e) {
+			LOGGER.severe("Error in Opening GridPropertiesPanel: "+e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -2624,7 +2630,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 				this.taskManager.getSelectedMarkingLayer().isVisible()
 				&& this.taskManager.getSelectedMarkingLayer().isGridON())
 			this.gridPanel.setShowGrid(true);
-	//	this.gridPanel.repaint();
+		this.gridPanel.repaint();
 	}
 
 	/**
