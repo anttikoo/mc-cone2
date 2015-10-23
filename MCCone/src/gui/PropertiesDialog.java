@@ -228,7 +228,6 @@ public class PropertiesDialog extends JDialog {
 			closeJButton.setAlignmentY(Component.CENTER_ALIGNMENT);
 			closeJButton.setPreferredSize(new Dimension(16, 16));
 			closeJButton.setMargin(new Insets(0, 0, 0, 0));
-			//	closeJButton.setBorder(BorderFactory.createEmptyBorder());
 			closeJButton.setContentAreaFilled(false);
 			closeJButton.setFocusable(false);
 			closeJButton.setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 1));
