@@ -288,26 +288,7 @@ public class PropertiesDialog extends JDialog {
 	 * Sets the Dialog visible.
 	 */
 	public void showDialog(){
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				setVisible(true);
-				
-				
-			}
-		});
-		
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				repaint();
-				
-				
-			}
-		});
-		
+		setVisible(true);	
 	}
 }
 
