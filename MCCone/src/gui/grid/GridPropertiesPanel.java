@@ -70,6 +70,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 */
 	public GridPropertiesPanel(JFrame frame, GUI gui, Point point, ArrayList<MarkingLayer> markingLayerList, ArrayList<SingleGridSize> gridSizeList) {
 		super(frame, gui, point);
+	
 		this.markingLayerList=markingLayerList;
 		this.gridON= isAnyGridON();
 		this.gridSizes=gridSizeList;

@@ -56,8 +56,6 @@ public class PropertiesDialog extends JDialog {
 		super(frame,true);
 		this.gui = gui;
 		this.topLeftPoint=point;
-	//	this.revalidate();
-	//	this.repaint();
 	}
 	
 	
