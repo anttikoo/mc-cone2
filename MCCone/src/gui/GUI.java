@@ -2700,6 +2700,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 	public void updateMarkingPanelProperties(int mLayerID){		
 		// update the properties
 		setPropertiesOfMarkingPanel(mLayerID);
+		updateImageLayerInfos();
 		layers.repaint();
 
 	}

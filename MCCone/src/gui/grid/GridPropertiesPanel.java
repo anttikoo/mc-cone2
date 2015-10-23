@@ -67,8 +67,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	private JLabel sliderLabel;
 	private JLabel sliderValueLabel;
 	
-
-
 	/**
 	 * Constructor of class.
 	 * @param frame JFrame of owner
@@ -85,8 +83,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		this.gridSizes=gridSizeList;
 		this.templateGP= getFirstGridPropertiesFromAllMarkingLayers(0, 0);
 		initDialog();
-
-		
 	
 	}
 
@@ -135,7 +131,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		});
 
 		on_button.setBorder(BorderFactory.createLineBorder(Color_schema.dark_30, 2));
-
 		MouseListenerCreator.addMouseListenerToNormalButtonsWithBlackBorder(on_button);
 
 		off_button = new JButton(gui.getImageIcon("/images/off_selected.png"));
@@ -150,7 +145,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				gridON=false;
 				updateOnOffButtonIcons();
 				enableComponents();
-
 			}
 		});
 
