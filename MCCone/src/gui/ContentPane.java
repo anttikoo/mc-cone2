@@ -32,9 +32,9 @@ public class ContentPane extends JPanel{
 	 */
 	public ContentPane(GridBagLayout layout) {
 		this.setLayout(layout);
-	        setOpaque(false);
-	        this.setBackground(Color_schema.dark_30);
-	    }
+	    setOpaque(false);
+	    this.setBackground(Color_schema.dark_30);
+	}
 	
 
 	    @Override
@@ -51,8 +51,6 @@ public class ContentPane extends JPanel{
 			//	g2d.setComposite(AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.7F)); // use SharedVarible
 				g2d.setComposite(AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.7F)); // use SharedVarible
 				
-	
-			//	g2d.setColor(getBackground());
 				g2d.setColor(getBackground());
 				g2d.fill(getBounds());
 				LOGGER.fine("filling dimming: "+getBounds().toString()+ " back:"+getBackground().toString()+ " c0: "+g2d.getComposite().toString());

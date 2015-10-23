@@ -6,25 +6,20 @@ import information.ID;
 import information.ImageLayer;
 import information.MarkingLayer;
 import information.PositionedRectangle;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.logging.Logger;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -37,8 +32,6 @@ import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.metal.MetalIconFactory.FolderIcon16;
-
 import gui.Color_schema;
 import gui.GUI;
 import gui.MouseListenerCreator;
@@ -79,7 +72,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		super(frame, gui, point);
 		this.markingLayerList=markingLayerList;
 		this.gridON= isAnyGridON();
-
 		this.gridSizes=gridSizeList;
 		this.templateGP= getFirstGridPropertiesFromAllMarkingLayers(0, 0);
 		initDialog();

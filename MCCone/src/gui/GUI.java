@@ -2335,10 +2335,10 @@ public void setSelectedMarkingLayer(int mLayerID){
 				gridDialog =null;
 				guiComponentListener.setChildDialog(null);
 
-				}
-				else{
+			}
+			else{
 					showMessage("No MarkingLayers", "No any MarkingLayers found. Can't set Properties of the Grid. ",ID.OK);
-				}
+			}
 		} catch (Exception e) {
 			LOGGER.severe("Error in Opening GridPropertiesPanel: "+e.getMessage());
 			e.printStackTrace();

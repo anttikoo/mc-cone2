@@ -73,11 +73,7 @@ public class PropertiesDialog extends JDialog {
 			this.setUndecorated(true); // no titlebar or buttons
 			this.setBackground(new Color(0,0,0,0)); // transparent color
 			ContentPane cone = new ContentPane(new GridBagLayout());
-		
-		//	cone.setLayout(new GridBagLayout());
-			this.setContentPane(cone); // makes dimming over GUI
-					
-		//	this.getContentPane().setBackground(Color_schema.dark_30);		
+			this.setContentPane(cone); // makes dimming over GUI	
 			backPanel = new JPanel();
 			backPanel.setLayout(new BorderLayout());
 			backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 3));
