@@ -33,6 +33,8 @@ import javax.swing.SwingConstants;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.metal.MetalComboBoxUI;
+
 import operators.ShapeDrawer;
 
 /**
@@ -65,12 +67,9 @@ public class MarkingProperties extends PropertiesDialog {
 	private JLabel opacityJLabel;
 	private JLabel thicknessJLabel;
 	protected ArrayList<MarkingLayer> markingLayerList;
-	
 	private int panelWidthRight=400;
 	private int panelWidthLeft=300;
-
 	protected JLayeredPane layeredPane;
-
 	private PreviewShapePanel previewShapePanel;
 
 	/**
@@ -154,7 +153,7 @@ public class MarkingProperties extends PropertiesDialog {
 	 * @return Custom Icon with painted shape
 	 */
 	private ShapeIcon createShapeIcon(int id){
-		return new ShapeIcon(id, 32,32,getSelectedColor(), Color_schema.dark_40);
+			return new ShapeIcon(id, 32,32,getSelectedColor(), Color_schema.dark_40);
 	}
 
 	/**
@@ -165,97 +164,7 @@ public class MarkingProperties extends PropertiesDialog {
 		try {
 			Rectangle initialBounds = super.getGoodBoundsForPanel();
 			return initialBounds;
-			/*
 			
-			//this.topLeftPoint
-			int topleftX = (int)(this.topLeftPoint.getX()-panelWidth);
-			int topleftY = (int)this.topLeftPoint.getY();
-	
-	
-			int guiDownY=(int)(this.gui.getBounds().getY()+this.gui.getBounds().getHeight());
-	
-			int guiRightX=(int)(this.gui.getBounds().getX()+this.gui.getBounds().getWidth());
-			int guiLeftX=(int)(this.gui.getBounds().getX());
-			int guiUpY=(int)(this.gui.getBounds().getY());
-	
-			// goes over at down
-			if(topleftY+panelHeight > guiDownY){
-				topleftY=guiDownY-panelHeight-50;
-				LOGGER.fine("over down");
-			}
-			else{
-				// goes over at up
-				if(topleftY<  guiUpY){
-					topleftY=guiUpY+50;
-					LOGGER.fine("over up");
-				}
-			}
-			// goes over at right
-			if(topleftX+panelWidth > guiRightX){
-				topleftX = guiRightX-panelWidth-50;
-				LOGGER.fine("over right");
-			}
-			else{
-				// goes over at left HERE IS ADDED THE PREVIEW PANEL WIDTH 300px
-				if(topleftX -300<  guiLeftX){
-					topleftX = guiLeftX+300+50;
-					LOGGER.fine("over left");
-				}
-			}
-			topleftX-=guiLeftX;
-			topleftY-=guiUpY;
-	
-			// check is the bounds over screeen
-	
-			if(SharedVariables.operationSystem == ID.OS_WINDOWS || SharedVariables.operationSystem== ID.OS_LINUX_UNIX){
-				// goes over at down
-				if(topleftY+panelHeight + guiUpY > gui.getScreenSize().getHeight()){
-					topleftY-=  (guiUpY+topleftY+panelHeight)- (int)gui.getScreenSize().getHeight();
-					LOGGER.fine("over screen down " + topleftY);
-				}
-				// goes down at right
-				if(topleftX+panelWidth > gui.getScreenSize().getWidth()){
-					topleftX = (int)gui.getScreenSize().getWidth()-panelWidth-50;
-					LOGGER.fine("over screen right "+topleftX);
-				}
-				// goes over at up
-				if(topleftY +guiUpY<  0){
-					topleftY=50;
-					LOGGER.fine("over screen up " +topleftY);
-				}
-				// goes over at left
-				if(topleftX+  guiRightX <  0){
-					topleftX = 50;
-					LOGGER.fine("over screen left " +topleftX);
-				}
-			}
-			else{ //
-	
-	
-				// goes over at down
-				if(topleftY+panelHeight > gui.getScreenSize().getHeight()){
-					topleftY=(int)gui.getScreenSize().getHeight() -panelHeight-50;
-					LOGGER.fine("over screen down");
-				}
-				// goes down at right
-				if(topleftX+panelWidth > gui.getScreenSize().getWidth()){
-					topleftX = (int)gui.getScreenSize().getWidth()-panelWidth-50;
-					LOGGER.fine("over screen right");
-				}
-				// goes over at up
-				if(topleftY<  0){
-					topleftY=50;
-					LOGGER.fine("over screen up");
-				}
-				// goes over at left
-				if(topleftX <  0){
-					topleftX = 50;
-					LOGGER.fine("over screen left");
-				}
-			}
-	
-			return new Rectangle(topleftX, topleftY, panelWidth , panelHeight);
-	*/
 		} catch (Exception e) {
 			LOGGER.severe("Error in counting Bounds for MarkingProperties: " +e.getClass().toString() + " :" +e.getMessage() +"line: " +e.getStackTrace()[2].getLineNumber());
 			return null;
@@ -383,8 +292,7 @@ protected void hideDialog(boolean saveChanges){
  */
 protected JPanel initCenterPanels(){
 
-
-	// contains combobox and slider panels
+	// setup combobox and slider panels
 	boxAndSlidersPanel = new JPanel();
 	boxAndSlidersPanel.setLayout(new BoxLayout(boxAndSlidersPanel, BoxLayout.PAGE_AXIS));
 	setUpComboBoXPanel();
@@ -456,7 +364,6 @@ protected void initDialog(){
 		layeredPane.add(backRightPanel,JLayeredPane.DEFAULT_LAYER);	
 		
 		this.layeredPane.moveToFront(previewShapePanel);	
-	//	this.backPanel.add(layeredPane);
 		backPanel.add(previewShapePanel,BorderLayout.WEST);
 		backPanel.add(backRightPanel, BorderLayout.EAST);
 		this.add(backPanel);
@@ -708,10 +615,13 @@ private JComboBox<Integer> setUpComboBox(){
 		JComboBox<Integer> box = new JComboBox<Integer>(intArray);
 		icon_renderer= new ComboBoxIconRenderer(); // create renderer for JComboBox
 		icon_renderer.setPreferredSize(new Dimension(32,32));
+		icon_renderer.setMaximumSize(new Dimension(32,23));
+		icon_renderer.setMinimumSize(new Dimension(32,32));
 		box.setRenderer(icon_renderer); // set renderer
-
+		box.setUI(new MetalComboBoxUI());
 		box.setMaximumSize(new Dimension(50,37));
 		box.setPreferredSize(new Dimension(50,37));
+		box.setMinimumSize(new Dimension(50,37));
 		box.setBackground(Color_schema.dark_40);
 		box.setForeground(Color_schema.white_230);
 
@@ -742,7 +652,8 @@ private JComboBox<Integer> setUpComboBox(){
 protected void setUpComboBoXPanel(){
 	// contains JComboBox-component and label
 	comboBoxPanel = new JPanel();
-	comboBoxPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+	//comboBoxPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+	comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.X_AXIS));
 	comboBoxPanel.setMaximumSize(new Dimension(panelWidthRight,50));
 	comboBoxPanel.setMinimumSize(new Dimension(panelWidthRight,50));
 	comboBoxPanel.setPreferredSize(new Dimension(panelWidthRight,50));
