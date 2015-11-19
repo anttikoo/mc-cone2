@@ -9,6 +9,8 @@ import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import gui.saving.ImageSet.ImageSetCreator;
+
 
 /**
  * The listener interface for receiving GUIcomponent events.
@@ -55,6 +57,9 @@ private JDialog childDialog=null;
 				
 				if(childDialog instanceof AddImageLayerDialog)
 					((AddImageLayerDialog)childDialog).setPanelPosition();
+				
+				if(childDialog instanceof ImageSetCreator)
+					((ImageSetCreator)childDialog).setPanelPosition();
 				
 		//		if(childDialog instanceof ShadyMessageDialog)
 		//			((ShadyMessageDialog)childDialog).setPanelPosition(gui.getVisibleWindowBounds());
