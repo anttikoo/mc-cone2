@@ -1146,33 +1146,43 @@ private GridPropertiesPanel gridDialog=null;
 			menu_file.setMnemonic(KeyEvent.VK_ALT);
 			JMenuItem menu_item_open_image =new JMenuItem("Add Image layer(s)");
 			menu_item_open_image.setMnemonic(KeyEvent.VK_A);
+			menu_item_open_image.setToolTipText("CTRL + A");
 			addActionsToMenuItems(menu_item_open_image, ID.MENU_ITEM_FILE_ADD_IMAGES);
 
 			JMenuItem menu_item_import_markings =new JMenuItem("Manage ImageLayers and Markings");
 			menu_item_import_markings.setMnemonic(KeyEvent.VK_M);
+			menu_item_import_markings.setToolTipText("CTRL + M");
 			addActionsToMenuItems(menu_item_import_markings, ID.MENU_ITEM_FILE_MANAGE_LAYERS);
 
 			JMenuItem menu_item_save_markings =new JMenuItem("Save Markings");
 			menu_item_save_markings.setMnemonic(KeyEvent.VK_S);
+			menu_item_save_markings.setToolTipText("CTRL + S");
 			addActionsToMenuItems(menu_item_save_markings, ID.MENU_ITEM_FILE_SAVE_MARKINGS);
 
 			JMenu menu_export_results =new JMenu("Export Results to");
-			menu_export_results.setMnemonic(KeyEvent.VK_E);
+			menu_export_results.setMnemonic(KeyEvent.VK_X);
+			
 			JMenuItem menu_item_csv_file=new JMenuItem("CSV-file");
 			menu_item_csv_file.setMnemonic(KeyEvent.VK_V);
+			menu_item_csv_file.setToolTipText("CTRL + V");
 
 			JMenuItem menu_item_tab_delimited_file=new JMenuItem("Tab-delimited text file");
 			menu_item_tab_delimited_file.setMnemonic(KeyEvent.VK_T);
+			menu_item_tab_delimited_file.setToolTipText("CTRL + T");
 			JMenuItem menu_item_tab_delimited_clipboard=new JMenuItem("Clipboard as Tab-delimited text");
 			menu_item_tab_delimited_clipboard.setMnemonic(KeyEvent.VK_B);
+			menu_item_tab_delimited_clipboard.setToolTipText("CTRL + B");
+			
 			menu_export_results.add(menu_item_csv_file);
 			menu_export_results.add(menu_item_tab_delimited_file);
 			menu_export_results.add(menu_item_tab_delimited_clipboard);
 
 			JMenuItem menu_export_images =new JMenuItem("Export Images");
-			menu_export_images.setMnemonic(KeyEvent.VK_I);
+			menu_export_images.setMnemonic(KeyEvent.VK_E);
+			menu_export_images.setToolTipText("CTRL + E");
 			JMenuItem menu_export_set_images =new JMenuItem("Export Set of Images");
-			menu_export_set_images.setMnemonic(KeyEvent.VK_S);
+			menu_export_set_images.setMnemonic(KeyEvent.VK_I);
+			
 
 			addActionsToMenuItems(menu_item_csv_file, ID.MENU_ITEM_FILE_EXPORT_TO_CSV);
 			addActionsToMenuItems(menu_item_tab_delimited_file, ID.MENU_ITEM_FILE_EXPORT_TO_TEXT_FILE);
@@ -1486,8 +1496,8 @@ private GridPropertiesPanel gridDialog=null;
 			UIManager.put("TabbedPane.highlight", Color_schema.dark_30);
 			UIManager.put("TabbedPane.selected", Color_schema.orange_dark);
 			UIManager.put("TextField.inactiveForeground", Color_schema.white_230);
-			UIManager.put("ToolTip.background", Color_schema.menu_selection_bg);
-			UIManager.put("ToolTip.font", Fonts.p14);
+			UIManager.put("ToolTip.background", Color_schema.tooltip_bg);
+			UIManager.put("ToolTip.font", Fonts.b14);
 	
 			guiListener = new GUIListener(this);
 

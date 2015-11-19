@@ -3,7 +3,7 @@ package gui;
 import java.awt.Color;
 
 /**
- * Class containing static color varibles.
+ * Class containing static color variables.
  * @author Antti Kurronen
  *
  */
@@ -12,6 +12,7 @@ public class Color_schema {
 public static final Color dark_50 =new Color(50,50,50);
 public static final Color dark_100 =new Color(100,100,100);
 public static final Color menu_selection_bg =new Color(255,166,66);
+public static final Color tooltip_bg =new Color(255,188,128);
 public static final Color log_bg =new Color(50,50,50);
 public static final Color log_fg_INFO =new Color(230,230,230);
 public static final Color log_fg_SEVERE =new Color(255, 0, 0);
