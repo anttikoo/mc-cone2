@@ -145,10 +145,7 @@ private JDialog visibleDialog=null; // childDialog which may be progress, info o
 		}
 
 		
-		if(this.taskManager != null && this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size()>0){
-			createImagesFromPresentImageLayers();
-			setImagesToGrid();
-		}
+		
 	}
 
 
@@ -251,6 +248,11 @@ private JDialog visibleDialog=null; // childDialog which may be progress, info o
 	}
 	public void showDialog(){
 		this.setVisible(true);
+		//open the window to select images from layers
+		if(this.taskManager != null && this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size()>0){
+			createImagesFromPresentImageLayers();
+			setImagesToGrid();
+		}
 	}
 
 	/**
