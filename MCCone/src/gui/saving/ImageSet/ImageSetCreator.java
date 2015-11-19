@@ -119,7 +119,9 @@ private JDialog visibleDialog=null; // childDialog which may be progress, info o
 	 * @param gui GUI-object to connect Graphical interface
 	 */
 	public ImageSetCreator(JFrame frame, TaskManager taskManager, GUI gui){
+		//	super(frame, true); this not working right
 		try {
+			
 			this.taskManager=taskManager;
 			this.gui=gui;
 			this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
