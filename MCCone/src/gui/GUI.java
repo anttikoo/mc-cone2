@@ -561,8 +561,7 @@ private GridPropertiesPanel gridDialog=null;
 	private void clearMarkingsOfSelectedMarkingLayer(){
 		MarkingLayer sMlayer=this.taskManager.getSelectedMarkingLayer();
 		if(sMlayer != null){
-			ShadyMessageDialog dialog=new ShadyMessageDialog(new JFrame(),
-					"Clear Countings?", "Clear countings of MarkingLayer: "+sMlayer.getLayerName()+ "?", ID.YES_NO, this);
+			ShadyMessageDialog dialog=new ShadyMessageDialog(this,"Clear Countings?", "Clear countings of MarkingLayer: "+sMlayer.getLayerName()+ "?", ID.YES_NO, this);
 			if(dialog.showDialog() == ID.YES){
 				sMlayer.clearCoordinateList();
 				updateImageLayerInfos();
@@ -582,8 +581,7 @@ private GridPropertiesPanel gridDialog=null;
 		try {
 			// saving process
 			if(this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size() >0 && this.taskManager.isMadeChanges()){
-				ShadyMessageDialog dialog=new ShadyMessageDialog(this,
-						"Exiting MC-Cone", "Changes has been made. Save Markings?", ID.YES_NO_CANCEL, this);
+				ShadyMessageDialog dialog=new ShadyMessageDialog(this,"Exiting MC-Cone", "Changes has been made. Save Markings?", ID.YES_NO_CANCEL, this);
 				int selectionID = dialog.showDialog();
 				if(selectionID == ID.YES){
 					saveMarkings();
@@ -596,8 +594,7 @@ private GridPropertiesPanel gridDialog=null;
 
 			}
 			else {
-				ShadyMessageDialog dialog=new ShadyMessageDialog(this,
-						"Exiting MC-Cone", "Do you really want to quit MC-Cone?", ID.YES_NO, this);
+				ShadyMessageDialog dialog=new ShadyMessageDialog(this,"Exiting MC-Cone", "Do you really want to quit MC-Cone?", ID.YES_NO, this);
 				int selectionID = dialog.showDialog();
 				if(selectionID == ID.NO){
 					return;
@@ -1707,7 +1704,7 @@ private GridPropertiesPanel gridDialog=null;
 		try
 		{
 			// ask the user should the ImageLayer being deleted
-			ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "DELETE", "Delete ImageLayer:  "+layerName, ID.YES_NO, this);
+			ShadyMessageDialog dialog = new ShadyMessageDialog(this, "DELETE", "Delete ImageLayer:  "+layerName, ID.YES_NO, this);
 			if(dialog.showDialog() == ID.YES){ // confirmed deleting the ImageLayer
 
 			ArrayList<Integer> mLayersToRemove = taskManager.getImageLayerByID(layerID).getAllMarkingLayerIDs();
@@ -1755,7 +1752,7 @@ private GridPropertiesPanel gridDialog=null;
 
 		try {
 			// ask the user should the MarkingLayer being deleted
-			ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "DELETE", "Delete MarkingLayer:  "+markingLayerName, ID.YES_NO, this);
+			ShadyMessageDialog dialog = new ShadyMessageDialog(this, "DELETE", "Delete MarkingLayer:  "+markingLayerName, ID.YES_NO, this);
 			if(dialog.showDialog() == ID.YES){
 			// remove the MarkingLayer from list of InformationCenter
 			taskManager.removeMarkingLayer(imageLayerID, mLayerID);
@@ -2435,7 +2432,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 	 * @param id int ID of type of buttons in message dialog.
 	 */
 	public void showMessage(String title, String message, int id){
-		ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), title, message, id, this);
+		ShadyMessageDialog dialog = new ShadyMessageDialog(this, title, message, id, this);
 		dialog.showDialog();
 		dialog=null;
 
@@ -2501,7 +2498,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 					if(this.taskManager.getSelectedImageLayer().hasMarkingLayer(this.taskManager.getSelectedMarkingLayer().getLayerID())){
 						if(this.taskManager.getSelectedMarkingLayer().getCounts()>0){
 							// show confirm dialog if selected MarkingLayer contains markings.
-							dialog = new ShadyMessageDialog(new JFrame(), "Selected MarkingLayer contains markings", " Overwrite with precountings?", ID.YES_NO, this);
+							dialog = new ShadyMessageDialog(this, "Selected MarkingLayer contains markings", " Overwrite with precountings?", ID.YES_NO, this);
 							if(dialog.showDialog() == ID.NO){
 								dialog=null;
 								return;
@@ -2520,16 +2517,16 @@ public void setSelectedMarkingLayer(int mLayerID){
 
 					}
 					else{
-						dialog = new ShadyMessageDialog(new JFrame(), "Selected ImageLayer has no selected MarkingLayer", "Select MarkingLayer under Selected ImageLayer.", ID.OK, this);
+						dialog = new ShadyMessageDialog(this, "Selected ImageLayer has no selected MarkingLayer", "Select MarkingLayer under Selected ImageLayer.", ID.OK, this);
 						dialog.showDialog();
 					}
 				}
 				else{
-					dialog = new ShadyMessageDialog(new JFrame(), "No markinglayer", "Not found selected MarkingLayer where add precountings", ID.OK, this);
+					dialog = new ShadyMessageDialog(this, "No markinglayer", "Not found selected MarkingLayer where add precountings", ID.OK, this);
 					dialog.showDialog();
 				}
 			}else{
-				dialog = new ShadyMessageDialog(new JFrame(), "No ImageLayer", "Not found ImageLayer for precounting", ID.OK, this);
+				dialog = new ShadyMessageDialog(this, "No ImageLayer", "Not found ImageLayer for precounting", ID.OK, this);
 				dialog.showDialog();
 
 			}

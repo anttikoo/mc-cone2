@@ -53,11 +53,13 @@ public class ShadyMessageDialog extends JDialog{
 	private JPanel dialogBackPanel;
 	private JPanel messagePanel;
 	private JPanel buttonPanel;
+	
 
 	public ShadyMessageDialog(JFrame frame, String title, String message, int typeOfButtons, Component comp){
 		super(frame,true);
-	
 		super.setLocationRelativeTo(comp);
+		
+	
 		this.setLocationRelativeTo(comp);
 		this.parentComponent = comp;
 		this.title=title;
@@ -84,7 +86,8 @@ public class ShadyMessageDialog extends JDialog{
 
 		try {
 			this.setResizable(false);		
-			this.setBounds(this.parentComponent.getBounds());
+		//	this.setBounds(this.parentComponent.getBounds());
+			this.setBounds(WindowLocator.getVisibleWindowBounds(parentComponent));
 			this.parentComponentWidth=this.parentComponent.getBounds().width;
 			this.setUndecorated(true); // no titlebar or buttons
 			this.setBackground(new Color(0,0,0,0)); // transparent color
@@ -229,6 +232,8 @@ public class ShadyMessageDialog extends JDialog{
 		}
 		return width;
 	}
+	
+	
 
 
 
