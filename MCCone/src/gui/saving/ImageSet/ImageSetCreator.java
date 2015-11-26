@@ -261,7 +261,7 @@ private JDialog visibleDialog=null; // childDialog which may be progress, info o
 	 * Opens Confirm dialog to close ImageSet window.
 	 */
 	private void closeWindow(){
-		ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "Closing image set creator window", "Really want to close ImageSet window?", ID.YES_NO, this);
+		ShadyMessageDialog dialog = new ShadyMessageDialog(this, "Closing image set creator window", "Really want to close ImageSet window?", ID.YES_NO, this);
 		if(dialog.showDialog() == ID.YES){
 			this.setVisible(false);
 			this.dispose();
@@ -349,12 +349,12 @@ private JDialog visibleDialog=null; // childDialog which may be progress, info o
 			ShadyMessageDialog dialog;
 			if(imageCreator.isImageSetCreatedSuccessfully())
 			{
-				dialog = new ShadyMessageDialog(new JFrame(), "Exporting succesfull", "Exported successfully the set of images.  ", ID.OK, this);
+				dialog = new ShadyMessageDialog(this, "Exporting succesfull", "Exported successfully the set of images.  ", ID.OK, this);
 				dialog.showDialog();
 				dialog=null;
 			}
 			else{
-				dialog = new ShadyMessageDialog(new JFrame(), "Exporting not succesfull", "Could not export set of Images. Read Log for errors or try again.", ID.OK, this);
+				dialog = new ShadyMessageDialog(this, "Exporting not succesfull", "Could not export set of Images. Read Log for errors or try again.", ID.OK, this);
 				dialog.showDialog();
 				dialog= null;
 			}
@@ -410,7 +410,7 @@ private JDialog visibleDialog=null; // childDialog which may be progress, info o
 
 		}
 		else{
-			ShadyMessageDialog dialog=new ShadyMessageDialog(new JFrame(), "No Images!", "import images before exporting.", ID.OK, this);
+			ShadyMessageDialog dialog=new ShadyMessageDialog(this, "No Images!", "import images before exporting.", ID.OK, this);
 			dialog.showDialog();
 			dialog=null;
 		}
@@ -1136,7 +1136,7 @@ private JDialog visibleDialog=null; // childDialog which may be progress, info o
 						updateGridComboBoxItems();
 					}
 
-					ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "Removing ImagePanel", "Remove ImagePanel from ImageSet.", ID.YES_NO, this);
+					ShadyMessageDialog dialog = new ShadyMessageDialog(this, "Removing ImagePanel", "Remove ImagePanel from ImageSet.", ID.YES_NO, this);
 					selection=dialog.showDialog();
 					if(selection == ID.YES)
 						sdpIterator.remove();

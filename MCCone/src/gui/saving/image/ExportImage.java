@@ -40,11 +40,11 @@ import operators.ImageCreator;
 public class ExportImage extends SaverDialog{
 	//private JCheckBox showGridCheckBox;
 	final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	
+	
 	public ExportImage(JFrame frame, GUI gui, ArrayList<ImageLayer> iList) {
 		super(frame, gui, iList, ID.EXPORT_IMAGE);
-
-
-
 	}
 
 	protected JPanel initImageViewPanelWithTitle(){
@@ -139,7 +139,7 @@ public class ExportImage extends SaverDialog{
 					 setSuccesfullSavingBackgrounds(successfullIDs);
 
 					if(successfullIDs.size() >0){
-						dialog = new ShadyMessageDialog(new JFrame(), "Exporting succesfull", "Successfully exported MarkingLayers are at green background.  ", ID.OK, this);
+						dialog = new ShadyMessageDialog(this, "Exporting succesfull", "Successfully exported MarkingLayers are at green background.  ", ID.OK, this);
 						dialog.showDialog();
 
 					}
@@ -152,7 +152,7 @@ public class ExportImage extends SaverDialog{
 							if(!filePathAccepted && hasSelectedMarkingLayers)
 							info =  "unacceptable file path.";
 						}
-						dialog = new ShadyMessageDialog(new JFrame(), "No Images Exported", "No any images exported possible due to "+info, ID.OK, this);
+						dialog = new ShadyMessageDialog(this, "No Images Exported", "No any images exported possible due to "+info, ID.OK, this);
 						dialog.showDialog();
 					}
 					dialog=null;

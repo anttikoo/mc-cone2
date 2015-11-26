@@ -689,7 +689,7 @@ private GridPropertiesPanel gridDialog=null;
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
 
 			@SuppressWarnings("unused")
-			ExportImage exportImage = new ExportImage(new JFrame(), this, taskManager.getImageLayerList());
+			ExportImage exportImage = new ExportImage(this, this, taskManager.getImageLayerList());
 		}
 		else{
 			showMessage( "Not starting exporting images", "Not exported images, because no images were found", ID.OK);
@@ -1890,7 +1890,7 @@ private GridPropertiesPanel gridDialog=null;
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
 
 			@SuppressWarnings("unused")
-			SaveMarkings saveMarkingsDialog=new SaveMarkings(new JFrame(), this, this.taskManager.getImageLayerList());
+			SaveMarkings saveMarkingsDialog=new SaveMarkings(this, this, this.taskManager.getImageLayerList());
 			saveMarkingsDialog=null;
 		}
 		else{
@@ -2474,7 +2474,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 		startStopCellPicking();
 
 		// creates the ProgressBallsDialog
-		ProgressBallsDialog pbd= new ProgressBallsDialog(new JFrame(), "Counting Cells", "running part 1/2: finding pixels", ID.CANCEL, this);
+		ProgressBallsDialog pbd= new ProgressBallsDialog(this, "Counting Cells", "running part 1/2: finding pixels", ID.CANCEL, this);
 
 		pbd.showDialog();
 
