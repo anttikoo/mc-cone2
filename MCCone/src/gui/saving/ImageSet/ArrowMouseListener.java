@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.Timer;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.PlainDocument;
 
 public class ArrowMouseListener implements MouseListener {
 	public final String widthUp = "WIDTH_UP";
@@ -155,9 +157,29 @@ public class ArrowMouseListener implements MouseListener {
 	public void updateResolutions(){
 		updateField(0,this.widthField, this.heightField, false);
 	}
+	
+	
 
+
+	/**
+	 * Updates textfields of resolution for exported image. If given JTextField is widthField then the divide parameter has to be false and conversely.
+	 *
+	 * @param resolutionchange the resolutionchange
+	 * @param field_changed the field_changed
+	 * @param field_calculated the field_calculated
+	 * @param divide boolean true if count value of another textfield by diving otherwise false for multiplying
+	 */
 	private void updateField(int resolutionchange, JTextField field_changed, JTextField field_calculated, boolean divide){
 		changingValuesON=true;
+		DocumentFilter filter1 =((PlainDocument)field_changed.getDocument()).getDocumentFilter();
+		DocumentFilter filter2 =((PlainDocument)field_calculated.getDocument()).getDocumentFilter();
+		if(filter1 instanceof ResolutionIntFilter){
+			((ResolutionIntFilter)filter1).setUpdateAnotherField(false);
+		}
+		if(filter2 instanceof ResolutionIntFilter){
+			((ResolutionIntFilter)filter2).setUpdateAnotherField(false);
+		}
+		
 		if(field_changed.getText() != null && field_changed.getText().length()>0){
 
 			try {
@@ -223,10 +245,23 @@ public class ArrowMouseListener implements MouseListener {
 				}
 
 				changingValuesON=false;
+				
+				if(filter1 instanceof ResolutionIntFilter){
+					((ResolutionIntFilter)filter1).setUpdateAnotherField(true);
+				}
+				if(filter2 instanceof ResolutionIntFilter){
+					((ResolutionIntFilter)filter2).setUpdateAnotherField(true);
+				}
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
+				
 				LOGGER.warning("Resolution has to be numerical value");
 				changingValuesON=false;
+				if(filter1 instanceof ResolutionIntFilter){
+					((ResolutionIntFilter)filter1).setUpdateAnotherField(true);
+				}
+				if(filter2 instanceof ResolutionIntFilter){
+					((ResolutionIntFilter)filter2).setUpdateAnotherField(true);
+				}
 			}
 
 

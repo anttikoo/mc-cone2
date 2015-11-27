@@ -106,11 +106,8 @@ private Thread createImageThread;
 private int threadNumber=1;
 private ProgressBallsDialog progressBallsDialog;
 private JDialog visibleDialog=null; // childDialog which may be progress, info or any dialog.
-//private ProgressBallsDialog progressWihoutButtons; //adding this later to work
-
-
-
-	private JButton exportJButton;
+private JButton exportJButton;
+private Dimension wgbDimension; // Dimension of whole printable area where images are positioned
 
 	/**
 	 * Class constructor. Opens window, where use can download Images from ImageLayers and image-files and export them to file.
@@ -737,9 +734,8 @@ private JDialog visibleDialog=null; // childDialog which may be progress, info o
 			widthField.setPreferredSize(new Dimension(70,30));
 			widthField.setColumns(4);
 			widthField.setBorder(BorderFactory.createLineBorder(Color_schema.grey_100,  1));
-			//set DocumentFileter to widthField
-			PlainDocument w_doc = (PlainDocument) widthField.getDocument();
-		    w_doc.setDocumentFilter(new ResolutionIntFilter());
+			
+			
 
 		    widthField.setToolTipText("Set imagewidth between 1-5000 pixels");
 
@@ -759,16 +755,17 @@ private JDialog visibleDialog=null; // childDialog which may be progress, info o
 			heigthField.setPreferredSize(new Dimension(70,30));
 			heigthField.setColumns(4);
 			heigthField.setBorder(BorderFactory.createLineBorder(Color_schema.grey_100,  1));
-			//set DocumentFileter to heightField
-			PlainDocument h_doc = (PlainDocument) heigthField.getDocument();
-		      h_doc.setDocumentFilter(new ResolutionIntFilter());
-		      heigthField.setToolTipText("Set image height between 1-5000 pixels.");
-
+			
+			
+			heigthField.setToolTipText("Set image height between 1-5000 pixels."); 
 			resolutionPanel.add(widthField);
 			resolutionPanel.add(createBasicArrowButtons(widthField, ID.TEXTFIELD_WIDTH));
 			resolutionPanel.add(Box.createRigidArea(new Dimension(5,0)));
-			 resolutionPanel.add(pixelLabel1);
-			 resolutionPanel.add(Box.createRigidArea(new Dimension(30,0)));
+			resolutionPanel.add(pixelLabel1);
+			resolutionPanel.add(Box.createRigidArea(new Dimension(30,0)));
+			 
+			
+			      
 
 			JLabel heightResolutionLabel = new JLabel("Image Height:");
 			heightResolutionLabel.setFont(Fonts.b16);
@@ -780,6 +777,23 @@ private JDialog visibleDialog=null; // childDialog which may be progress, info o
 			resolutionPanel.add(createBasicArrowButtons(heigthField, ID.TEXTFIELD_HEIGHT));
 			resolutionPanel.add(Box.createRigidArea(new Dimension(5,0)));
 			resolutionPanel.add(pixelLabel2);
+			
+			
+			// set up filters for documents 
+			//set DocumentFileter to widthField
+			PlainDocument w_doc = (PlainDocument) widthField.getDocument();
+			ResolutionIntFilter widthResolutionFilter= new ResolutionIntFilter(this.arrowMouseListener, ID.TEXTFIELD_WIDTH, heigthField);
+		//	w_doc.setDocumentFilter(new ResolutionIntFilter(this.arrowMouseListener, ID.TEXTFIELD_WIDTH));
+			w_doc.setDocumentFilter(widthResolutionFilter);			 
+						 
+			//set DocumentFileter to heightField
+			PlainDocument h_doc = (PlainDocument) heigthField.getDocument();
+			ResolutionIntFilter heightResolutionFilter= new ResolutionIntFilter(this.arrowMouseListener, ID.TEXTFIELD_HEIGHT, widthField);
+		//	 h_doc.setDocumentFilter(new ResolutionIntFilter(this.arrowMouseListener, ID.TEXTFIELD_HEIGHT));
+			h_doc.setDocumentFilter(heightResolutionFilter);
+			
+			widthResolutionFilter.setAnotherFilter(heightResolutionFilter);
+			heightResolutionFilter.setAnotherFilter(widthResolutionFilter);
 
 			exportJButton = new JButton("Export");
 			exportJButton.setPreferredSize(new Dimension(100,30));
@@ -1492,7 +1506,7 @@ private JDialog visibleDialog=null; // childDialog which may be progress, info o
 
 		int w=dim.width+this.gap*2;
 		int h=dim.height+this.gap*2;
-		Dimension wgbDimension=new Dimension(w,h);
+		wgbDimension = new Dimension(w,h);
 		this.whiteGridBackPanel.setMaximumSize(wgbDimension);
 		this.whiteGridBackPanel.setPreferredSize(wgbDimension);
 		this.whiteGridBackPanel.setMinimumSize(wgbDimension);
