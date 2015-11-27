@@ -147,6 +147,20 @@ public class ImageLayer {
 	public ArrayList<MarkingLayer> getMarkingLayers(){
 		return this.markingLayerList;
 	}
+	
+	public MarkingLayer getFirstVisibleMarkingLayer(){
+		if(this.markingLayerList != null && this.markingLayerList.size()>0){
+			Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
+			while(iIterator.hasNext()){
+				MarkingLayer ml = (MarkingLayer)iIterator.next();
+				if(ml.isVisible()){ // MarkingLayer name
+					return ml;
+				}
+
+			}
+		}
+		return null;
+	}
 
 	public void setMarkingLayerList(ArrayList<MarkingLayer> markingLayerList) {
 		this.markingLayerList = markingLayerList;

@@ -755,13 +755,21 @@ public class InformationCenter {
 					return;
 				}
 
-			// if reached here the selectedMarkingPanel is not right one -> select first MarkingLayer of selectedImageLayer
-			MarkingLayer firstMLayer = selectedIL.getMarkingLayers().get(0);
+			// if reached here the selectedMarkingPanel is not right one -> select first visible MarkingLayer of selectedImageLayer and if not found -> any
+			MarkingLayer firstMLayer = selectedIL.getFirstVisibleMarkingLayer();
+			if(firstMLayer==null)
+				firstMLayer = selectedIL.getMarkingLayers().get(0);
 			if(firstMLayer != null){
 				// set all MarkingLayers as unselected
 				setAllMarkingLayersUnselected();
 				// set the selected MarkingLayer
 				this.setSelectedMarkingLayer(firstMLayer);
+				// if firstmLayer is not visible -> set to visible
+				if(!isInVisibleMarkingList(firstMLayer.getLayerID())){
+					addMarkingLayerToVisibleList(firstMLayer.getLayerID());
+					firstMLayer.setVisible(true);
+					
+				}
 				firstMLayer.setSelected(true);
 			}
 			else{ // no MarkingLayers of selectedImageLayer
