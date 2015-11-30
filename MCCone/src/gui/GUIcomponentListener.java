@@ -40,35 +40,7 @@ private JDialog childDialog=null;
 	public GUIcomponentListener(GUI gui){
 		this.gui=gui;
 		initTimer();
-		
-		
-	}
-	
-	private void  initTimer(){
-		this.waitPaintingTimer = new Timer(100, new ActionListener() {
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(childDialog != null){
-				childDialog.setBounds(gui.getVisibleWindowBounds());
-				
-				if(childDialog instanceof PropertiesDialog)
-				((PropertiesDialog)childDialog).setPanelPosition();
-				
-				if(childDialog instanceof AddImageLayerDialog)
-					((AddImageLayerDialog)childDialog).setPanelPosition();
-				
-				if(childDialog instanceof ImageSetCreator)
-					((ImageSetCreator)childDialog).setPanelPosition();
-				
-		//		if(childDialog instanceof ShadyMessageDialog)
-		//			((ShadyMessageDialog)childDialog).setPanelPosition(gui.getVisibleWindowBounds());
-				
-				childDialog.repaint();
-				waitPaintingTimer.stop();
-				}
-			}
-		});
 	}
 	
 	/* (non-Javadoc)
@@ -78,7 +50,7 @@ private JDialog childDialog=null;
 	public void componentHidden(ComponentEvent e) {
 
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
 	 */
@@ -125,7 +97,7 @@ private JDialog childDialog=null;
 	public void componentShown(ComponentEvent e) {
 
 	}
-	
+
 	/**
 	 * Gets the child dialog.
 	 *
@@ -136,6 +108,36 @@ private JDialog childDialog=null;
 	}
 	
 	/**
+	 * Inits the timer for different parent objects. Starts setting the panel bounds of parent object.
+	 */
+	private void  initTimer(){
+		this.waitPaintingTimer = new Timer(100, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(childDialog != null){
+				childDialog.setBounds(gui.getVisibleWindowBounds());
+				
+				if(childDialog instanceof PropertiesDialog)
+				((PropertiesDialog)childDialog).setPanelPosition();
+				
+				if(childDialog instanceof AddImageLayerDialog)
+					((AddImageLayerDialog)childDialog).setPanelPosition();
+				
+				if(childDialog instanceof ImageSetCreator)
+					((ImageSetCreator)childDialog).setPanelPosition();
+				
+		//		if(childDialog instanceof ShadyMessageDialog)
+		//			((ShadyMessageDialog)childDialog).setPanelPosition(gui.getVisibleWindowBounds());
+				
+				childDialog.repaint();
+				waitPaintingTimer.stop();
+				}
+			}
+		});
+	}
+	
+	/**
 	 * Sets the child dialog.
 	 *
 	 * @param childDialog the new child dialog
@@ -143,10 +145,5 @@ private JDialog childDialog=null;
 	public void setChildDialog(JDialog childDialog) {
 		this.childDialog = childDialog;
 	}
-	
-	
-
-	
-	
 
 }

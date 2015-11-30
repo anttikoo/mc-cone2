@@ -751,8 +751,6 @@ public class GUIListener extends MouseInputAdapter {
 		this.downBarPanel=downBarPanel;
 		this.zoomSlider=zoomSlider;
 		
-
-
 	}
 
 	/**
