@@ -63,54 +63,7 @@ public class GlobalMarkingProperties extends MarkingProperties{
 		this.setVisible(false);
 		dispose();
 	}
-/*
-	/**
-	 *  Initializes the components of Dialog window
-	 */
-/*	protected void initDialog(){
-		try {
-			
-			//dim the screen around window 
-			this.setBounds(gui.getVisibleWindowBounds()); // sets the size of this dialog same as the GUI (the parent)
-			this.setUndecorated(true); // no titlebar or buttons
-			this.setBackground(new Color(0,0,0,0)); // transparent color
-			this.setContentPane(new ContentPane()); // makes dimming over GUI
-			this.getContentPane().setBackground(Color_schema.dark_30);
-			this.setLayout(null); // backpanel position is determined with setBounds(..)
-			
-			layeredPane=new JLayeredPane();
-			layeredPane.setLayout(null);
-			layeredPane.setBorder(BorderFactory.createEmptyBorder());
-			layeredPane.setBounds(this.getBounds());
 
-			// the window showing components
-			backPanel = new JPanel();
-			backPanel.setLayout(new BorderLayout());
-			backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 3));
-			backPanel.setMaximumSize(new Dimension(panelWidth,panelHeight));
-			backPanel.setMinimumSize(new Dimension(panelWidth,panelHeight));
-			backPanel.setPreferredSize(new Dimension(panelWidth,panelHeight));
-
-			// set sizes and locations of components
-			setPanelPosition();
-				
-			backPanel.add(initUPPanels(), BorderLayout.PAGE_START);
-			backPanel.add(initCenterPanels(), BorderLayout.CENTER);
-			backPanel.add(initDownPanel(),BorderLayout.PAGE_END);
-
-			layeredPane.add(backPanel,JLayeredPane.DEFAULT_LAYER);		
-						
-			this.add(layeredPane);
-			this.repaint();
-
-
-		} catch (Exception e) {
-			LOGGER.severe("Error in initializing GlobalMarkingPropertiesDialog: " +e.getClass().toString() + " :" +e.getMessage() +" line: " +e.getStackTrace()[2].getLineNumber());
-			e.printStackTrace();
-		}
-	}
-
-*/
 	/* (non-Javadoc)
 	 * @see gui.MarkingProperties#initMarkingPropertiesPanel()
 	 */

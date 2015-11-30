@@ -54,16 +54,16 @@ public class ContentPane extends JPanel{
 				
 				
 				// 70% transparent Alpha
-			//	g2d.setComposite(AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.7F)); // use SharedVarible
+			
 				Composite com = AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.8f);
 		
 				g2d.setComposite(com);
-			//	g2d.setComposite(AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.7F)); // use SharedVarible
+		
 							
 				g2d.setColor(this.getBackground());
 		
 				g2d.fill(getBounds());
-				LOGGER.fine("filling dimming: "+getBounds().toString()+ " back:"+getBackground().toString()+ " c0: "+g2d.getComposite().toString());
+		
 				
 				g2d.dispose();
 			} catch (Exception e) {
