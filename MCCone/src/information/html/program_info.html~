@@ -3,7 +3,7 @@
 <title color="#EDEDED">INFO of MC-Cone </title>
 <body text="#EDEDED" bgcolor="#282828">
 <div>
-<img src="images/MC-Cone_small_200.png" width="171" height="200" alt="MC-Cone icon" align="left"/>
+<img src="./images/MC-Cone_small_200.png" width="171" height="200" alt="MC-Cone icon" align="left"/>
 <p ><strong>MC-Cone</strong> <br>
 Version: 0.1 <br>
 </p> 
