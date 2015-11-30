@@ -57,6 +57,8 @@ import information.*;
  *
  */
 public class AddImageLayerDialog extends JDialog{
+	
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private GUI gui;
 	private JPanel backPanel;
 	private JButton cancelJButton;
@@ -67,10 +69,11 @@ public class AddImageLayerDialog extends JDialog{
 	private JButton addImageJButton;
 	private int typeOfDialog;
 	private Dimension importAllowedImageDimension=null;
-	private JDialog visibleDialog=null;
-	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
-	private ShadyMessageDialog shadyMessageDialog=null;
 
+	private JDialog visibleDialog=null;
+
+	private ShadyMessageDialog shadyMessageDialog=null;
+	
 	/**
 	 * Class constructor for only creating new ImageLayers and importing markings
 	 * @param frame Owner JFrame
@@ -101,7 +104,7 @@ public class AddImageLayerDialog extends JDialog{
 			LOGGER.severe("Error in adding new ImageLayer:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
 		}
 	}
-
+	
 	/**
 	 * Class constructor which shows already open ImageLayers enabling managing markings
 	 * @param frame Owner JFrame
@@ -122,27 +125,6 @@ public class AddImageLayerDialog extends JDialog{
 		} catch (Exception e) {
 			LOGGER.severe("Error in adding new ImageLayer:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
 		}
-	}
-	
-	/**
-	 * Sets the panel position and child dialogs when user drags the main window. 
-	 * This is only happening in Linux. In other OS the dragging is not possible, because modal dialogs are used.
-	 */
-	public void setPanelPosition(){
-		this.setBounds(this.gui.getVisibleWindowBounds());
-		if(this.visibleDialog != null)
-			this.visibleDialog.setBounds(this.getBounds());
-		
-		if(this.shadyMessageDialog != null)
-			this.shadyMessageDialog.setBounds(this.getBounds());
-	}
-	
-	/**
-	 * Sets dialog visible.
-	 */
-	public void showDialog(){
-		this.setVisible(true);
-		
 	}
 
 	/**
@@ -1161,6 +1143,19 @@ private JPanel initImageViewPanel(){
 
 
 	/**
+	 * Sets the panel position and child dialogs when user drags the main window. 
+	 * This is only happening in Linux. In other OS the dragging is not possible, because modal dialogs are used.
+	 */
+	public void setPanelPosition(){
+		this.setBounds(this.gui.getVisibleWindowBounds());
+		if(this.visibleDialog != null)
+			this.visibleDialog.setBounds(this.getBounds());
+		
+		if(this.shadyMessageDialog != null)
+			this.shadyMessageDialog.setBounds(this.getBounds());
+	}
+
+	/**
 	 * Sets the folder that is previously used.
 	 * @param folder String path of used folder
 	 */
@@ -1168,6 +1163,15 @@ private JPanel initImageViewPanel(){
 		gui.setPresentFolder(folder);
 	}
 
+
+	/**
+	 * Sets dialog visible.
+	 */
+	public void showDialog(){
+		this.setVisible(true);
+		
+	}
+	
 	/**
 	 * Opens message dialog with ok-button.
 	 * @param title String title of message
@@ -1178,8 +1182,6 @@ private JPanel initImageViewPanel(){
 		shadyMessageDialog.showDialog();
 		shadyMessageDialog=null;
 	}
-
-
 	/**
 	 *  Refreshes the imageLayerList by going throw array of ImageLayers (+ MarkingLayer) -> creating JPanels and adding
 	 *  them on imageScrollPanel (IMAGE LIST)
@@ -1254,7 +1256,7 @@ private JPanel initImageViewPanel(){
 		}
 
 	}
-	
+
 	/**
 	 * MarkingPanel is a JPanel which contains title of ImageLayer and list of titles of MarkingLayers. This panel is added to MarkingPanelList.
 	 * @author Antti Kurronen
@@ -1493,7 +1495,5 @@ private JPanel initImageViewPanel(){
 
 
 	}
-
-
 
 }
