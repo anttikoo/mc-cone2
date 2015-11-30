@@ -9,6 +9,8 @@ import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -67,11 +69,24 @@ public class InfoDialog extends PropertiesDialog{
 		editor.setBackground(Color_schema.dark_40);
 		editor.setForeground(Color_schema.white_230);
 		editor.setFont(Fonts.p16);
+		editor.setEditable(false);
+		
 		URL infoURL = InformationCenter.class.getResource("/information/html/program_info.html");
 		if (infoURL != null) {
 		    try {
-		        editor.setPage(infoURL);
-		    } catch (IOException e) {
+		      
+		        
+		        String imagePath = getClass().getResource("/images/MC-Cone_small_200.png").toString();
+		        String codeText = getPageAsString(infoURL.getPath());
+		        String newCodeText= codeText.replaceFirst("/images/MC-Cone_small_200.png", imagePath);
+		    //    System.out.println(codeText);
+		        
+		        editor.setText(newCodeText);
+		        
+		     //   editor.setPage(infoURL);
+		        
+		        
+		    } catch (Exception e) {
 		    	LOGGER.severe("Attempted to read a bad URL: " + infoURL);
 		    }
 		} else {
@@ -86,6 +101,8 @@ public class InfoDialog extends PropertiesDialog{
 		        	if(Desktop.isDesktopSupported()) {
 		        	    try {
 							Desktop.getDesktop().browse(e.getURL().toURI());
+						
+							
 						} catch (IOException e1) {
 							LOGGER.severe("Can't open the link. Not supported by Operation system!");
 							e1.printStackTrace();
@@ -155,6 +172,20 @@ public class InfoDialog extends PropertiesDialog{
 			LOGGER.severe("Error in creating title for the window!");
 			return null;
 		}
+	}
+	
+	private String getPageAsString(String url){
+		StringBuilder contentBuilder = new StringBuilder();
+		try {
+		    BufferedReader in = new BufferedReader(new FileReader(url));
+		    String str;
+		    while ((str = in.readLine()) != null) {
+		        contentBuilder.append(str);
+		    }
+		    in.close();
+		} catch (IOException e) {
+		}
+		return contentBuilder.toString();
 	}
 
 
