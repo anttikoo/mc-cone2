@@ -12,6 +12,7 @@ import gui.file.PNGfilter;
 import gui.file.TIFFfilter;
 import gui.file.TXTfilter;
 import gui.file.XMLfilter;
+import information.Fonts;
 import information.ID;
 import information.PathCount;
 
@@ -196,7 +197,7 @@ public class SelectFileDialog extends JDialog{
 
 			JLabel titleLabel = new JLabel("SELECT FILE");
 
-			titleLabel.setFont(new Font("Consolas", Font.BOLD,20));
+			titleLabel.setFont(Fonts.b20);
 			titleLabel.setForeground(Color_schema.white_230);
 			upPanel.add(titleLabel);
 			fBackPanel.add(upPanel, BorderLayout.PAGE_START);

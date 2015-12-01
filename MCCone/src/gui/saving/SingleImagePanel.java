@@ -114,10 +114,9 @@ public class SingleImagePanel extends JPanel{
 		titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.LINE_AXIS));
 		// title part (path)
 		JLabel imageTitle = new JLabel(this.imagePath);
-//		Font consolas18= new Font("Consolas", Font.BOLD,18);
-		imageTitle.setFont(saverDialog.consolas18);
+		imageTitle.setFont(Fonts.b18);
 		imageTitle.setForeground(Color_schema.white_230);
-		int labelwidth=imageTitle.getFontMetrics(saverDialog.consolas18).stringWidth(imageTitle.getText());
+		int labelwidth=imageTitle.getFontMetrics(Fonts.b18).stringWidth(imageTitle.getText());
 
 		titlePanel.setPreferredSize(new Dimension(labelwidth+100,oneImageTitleHeight));
 		titlePanel.add(Box.createRigidArea(new Dimension(10,0)));
@@ -198,7 +197,7 @@ public class SingleImagePanel extends JPanel{
 
 		filePathLabelValue.setFont(Fonts.p16);
 		filePathLabelValue.setForeground(Color_schema.white_230);
-		int labelwidthXML=filePathLabelValue.getFontMetrics(saverDialog.consolas16).stringWidth(filePathLabelValue.getText());
+		int labelwidthXML=filePathLabelValue.getFontMetrics(Fonts.b16).stringWidth(filePathLabelValue.getText());
 
 		filePathJPanel.setPreferredSize(new Dimension(labelwidthXML+40,oneImagePathHeight));
 

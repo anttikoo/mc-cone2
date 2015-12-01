@@ -10,6 +10,7 @@ import gui.file.FileManager;
 import gui.file.ImageFilter;
 import gui.file.TXTfilter;
 import gui.file.XMLfilter;
+import information.Fonts;
 import information.ID;
 import information.ImageLayer;
 import information.LayersOfPath;
@@ -101,13 +102,8 @@ private JLabel scrollTitleJlabel;
 private JButton addImageFilePathsJButton;
 protected JButton selectFileJButton;
 private JButton cancelFileChooserJButton;
-//private int stageOfimport = ID.IMAGE_SELECT;
 private JPanel imageViewPanel;
 private JPanel fileChoosingPanel;
-protected  Font consolas15;
-protected  Font consolas16;
-protected Font consolas18;
-//private int typeOfDialog;
 private ImageLayer selectedImagelayerForMarkingImport=null;
 private JPanel markingChooserBiggerPanel;
 private boolean allSelected=true;
@@ -182,9 +178,7 @@ protected JButton saveJButton;
 	}
 
 	private void initComponents() throws Exception{
-		consolas15= new Font("Consolas", Font.PLAIN,15);
-		consolas16= new Font("Consolas", Font.BOLD,16);
-		consolas18= new Font("Consolas", Font.BOLD,18);
+		
 		this.setBounds(gui.getBounds());
 	//	LOGGER.fine("this class: "+this.getClass().toString()+ "this bounds: " +this.getBounds());
 		this.setUndecorated(true);
@@ -255,21 +249,7 @@ protected JButton saveJButton;
 			path = System.getProperty("user.home");
 		this.selectFileDialog = new SelectFileDialog(this.gui, path, this.backPanel, this.savingType);
 	}
-/*
-	private String getTitleString(int id){
-		if (id== ID.FILE_TYPE_TEXT_FILE)
-			return "EXPORT RESULTS TO TAB-DELIMITED TEXT FILE";
-		else if (id== ID.FILE_TYPE_CSV)
-				return "EXPORT RESULTS TO CSV-FILE";
-			else if (id== ID.CLIPBOARD)
-				return "EXPORT RESULTS TO CLIPBOARD";
-			else if (id== ID.EXPORT_IMAGE)
-				return "EXPORT IMAGES WITH MARKINGS";
-		return null;
 
-
-	}
-*/
 	private void initKeyListenerToDialog(){
 
 		InputMap inputMap= (this.backPanel).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -709,9 +689,9 @@ private String getFirstProperSavingPath(){
 				JLabel lab = new JLabel(longestPathString); // test JLabel for counting width of string of different fonts
 				int maxStringWidth=0;
 				int maxMarkingStringWidth=0;
-				maxStringWidth = lab.getFontMetrics(consolas16).stringWidth(longestPathString);
+				maxStringWidth = lab.getFontMetrics(Fonts.b16).stringWidth(longestPathString);
 				lab.setText(longestMarkingNameString);
-				maxMarkingStringWidth=lab.getFontMetrics(consolas15).stringWidth(longestMarkingNameString);
+				maxMarkingStringWidth=lab.getFontMetrics(Fonts.p15).stringWidth(longestMarkingNameString);
 				if(maxMarkingStringWidth > maxStringWidth)
 					maxStringWidth = maxMarkingStringWidth+100;
 
