@@ -31,6 +31,7 @@ import javax.swing.event.HyperlinkListener;
  */
 public class InfoDialog extends PropertiesDialog{
 	protected final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
 	public InfoDialog(JFrame frame, GUI gui, Point point) {
 		super(frame, gui, point);
 		initDialog();
@@ -76,12 +77,12 @@ public class InfoDialog extends PropertiesDialog{
 		if (infoURL != null) {
 		    try {
 		     // String path = infoURL.getFile();
-		    	
+		    	String codeString = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html lang=\"en-us\"><title color=\"#EDEDED\">INFO of MC-Cone </title><body text=\"#EDEDED\" bgcolor=\"#282828\"><div><img src=\"/images/MC-Cone_small_200.png\" width=\"171\" height=\"200\" alt=\"MC-Cone icon\" align=\"left\"/><p ><strong>MC-Cone</strong> <br>Version: 0.1 <br></p> </div><div><p>Developed by: Antti Kurronen <br>License: <a href=\"http://www.gnu.org/copyleft/gpl.html\" style=\"color:#FFAD33\">GNU GENERAL PUBLIC LICENSE v3.0</a> <br>Home page: <a href=\"http://mc-cone.com\" style=\"color:#FFAD33\">MC-Cone.com</a><br>Contact: info@mc-cone.com</p></div></body></html>";
 		        
 		        String imagePath = InformationCenter.class.getResource("/images/MC-Cone_small_200.png").toString();
 		        String codeText = getPageAsString(infoURL.getFile());
-		        String newCodeText= codeText.replaceFirst("/images/MC-Cone_small_200.png", imagePath);
-		       LOGGER.fine("page text: "+codeText);
+		        String newCodeText= codeString.replaceFirst("/images/MC-Cone_small_200.png", imagePath);
+		       LOGGER.fine("page text: "+codeString+ " imagePath: "+imagePath);
 		        
 		        editor.setText(newCodeText);
 		        
@@ -102,7 +103,11 @@ public class InfoDialog extends PropertiesDialog{
 
 		        	if(Desktop.isDesktopSupported()) {
 		        	    try {
+		        	    	if(Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))
 							Desktop.getDesktop().browse(e.getURL().toURI());
+		        	    	else
+		        	    		LOGGER.warning("Browser not supported");
+							
 						
 							
 						} catch (IOException e1) {
