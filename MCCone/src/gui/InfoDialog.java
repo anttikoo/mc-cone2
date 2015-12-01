@@ -10,6 +10,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -74,12 +75,13 @@ public class InfoDialog extends PropertiesDialog{
 		URL infoURL = InformationCenter.class.getResource("/information/html/program_info.html");
 		if (infoURL != null) {
 		    try {
-		      
+		     // String path = infoURL.getFile();
+		    	
 		        
-		        String imagePath = getClass().getResource("/images/MC-Cone_small_200.png").toString();
-		        String codeText = getPageAsString(infoURL.getPath());
+		        String imagePath = InformationCenter.class.getResource("/images/MC-Cone_small_200.png").toString();
+		        String codeText = getPageAsString(infoURL.getFile());
 		        String newCodeText= codeText.replaceFirst("/images/MC-Cone_small_200.png", imagePath);
-		    //    System.out.println(codeText);
+		       LOGGER.fine("page text: "+codeText);
 		        
 		        editor.setText(newCodeText);
 		        
