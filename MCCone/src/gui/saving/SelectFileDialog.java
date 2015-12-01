@@ -28,6 +28,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,6 +45,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -75,6 +78,7 @@ public class SelectFileDialog extends JDialog{
 //	private SaverDialog saverDialog;
 	private JComponent backPanelComponent;
 	private JFrame ownerFrame;
+	private String givenFileName="";
 
 
 	/**
@@ -234,7 +238,8 @@ public class SelectFileDialog extends JDialog{
 
 			fileChooser.setAcceptAllFileFilterUsed(false);
 			fileChooser.setMaximumSize(new Dimension(1000,800)); // not so nice when going too large
-
+			fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+			setPropertyChangeListenerToFileChooser();
 			imageChooserPanel.add(fileChooser, BorderLayout.CENTER);
 			centerPanel.add(imageChooserPanel, BorderLayout.CENTER);
 
@@ -286,6 +291,36 @@ public class SelectFileDialog extends JDialog{
 			LOGGER.severe("Error in creating openfiledialog:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
 			return null;
 		}
+	}
+	
+	private Component findJList(Component comp) {
+	    if (comp instanceof JList) return comp;
+	    if (comp instanceof Container) {
+	        Component[] components = ((Container)comp).getComponents();
+	        for(int i = 0; i < components.length; i++) {
+	            Component child = findJList(components[i]);
+	            if (child != null) System.out.println(child.toString());
+	        }
+	    }
+	    return null;
+	}
+	
+	private void setPropertyChangeListenerToFileChooser(){
+		this.fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if(evt.getPropertyName().equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)){
+				File file = (File)evt.getNewValue();
+				System.out.println(file.getName());
+				//givenFileName= evt.getNewValue().toString();
+				//System.out.println(givenFileName);
+				}
+			}
+		});
+		
+		
+		
 	}
 
 	private void addFileFilters(){
@@ -348,6 +383,10 @@ public class SelectFileDialog extends JDialog{
 						fileSelected();
 					}
 				}
+				else{
+					
+					
+				}
 
 			}
 		};
@@ -386,7 +425,12 @@ public class SelectFileDialog extends JDialog{
 		try {
 			boolean newFile = false;
 			File file=fileChooser.getSelectedFile();
-			String fileNameText = ((JTextField)((Container)((Container)fileChooser.getComponent(3)).getComponent(0)).getComponent(1)).getText().trim();
+			
+			
+			String fileNameText =givenFileName;
+			
+			if(((JTextField)((Container)((Container)fileChooser.getComponent(3)).getComponent(0)).getComponent(1)).getText().trim() != null)
+			fileNameText = ((JTextField)((Container)((Container)fileChooser.getComponent(3)).getComponent(0)).getComponent(1)).getText().trim();
 			String finalFileNamePath=null;
 			if(file != null && fileNameText.equals(file.getName())){
 				finalFileNamePath=file.getAbsolutePath();
