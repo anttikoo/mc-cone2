@@ -155,10 +155,10 @@ private GridPropertiesPanel gridDialog=null;
 			
 			/*
 			 * FOR TESTING PURPOSES -> opens an image automatically -> path of image hard coded.
-			 *	testing();
+			 *	
 			 *  
 			 */
-			
+			testing();
 			
 			
 			LOGGER.info("Started MCcone! All OK.");	

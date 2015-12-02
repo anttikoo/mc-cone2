@@ -228,7 +228,7 @@ public class SelectFileDialog extends JDialog{
 			fileChooser.setMultiSelectionEnabled(false); // several files are not allowed to select
 			// set file filters for fileChooser
 			addFileFilters();
-
+			
 
 			// add mouse listener to get select the the file by double click
 			addActionListenerToFileChooser();
@@ -239,7 +239,7 @@ public class SelectFileDialog extends JDialog{
 			fileChooser.setAcceptAllFileFilterUsed(false);
 			fileChooser.setMaximumSize(new Dimension(1000,800)); // not so nice when going too large
 			fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-			setPropertyChangeListenerToFileChooser();
+		//	setPropertyChangeListenerToFileChooser();
 			imageChooserPanel.add(fileChooser, BorderLayout.CENTER);
 			centerPanel.add(imageChooserPanel, BorderLayout.CENTER);
 
@@ -293,16 +293,40 @@ public class SelectFileDialog extends JDialog{
 		}
 	}
 	
-	private Component findJList(Component comp) {
-	    if (comp instanceof JList) return comp;
+	private Component findJTextField(Component comp) {
+	    if (comp instanceof JTextField) return comp;
 	    if (comp instanceof Container) {
 	        Component[] components = ((Container)comp).getComponents();
 	        for(int i = 0; i < components.length; i++) {
-	            Component child = findJList(components[i]);
-	            if (child != null) System.out.println(child.toString());
+	            Component child = findJTextField(components[i]);
+	            if (child != null){ 
+	            	System.out.println(child.getClass().toString());
+	            	return findJTextField(child);
+	            	
+	            }
 	        }
 	    }
+	    
 	    return null;
+	}
+	
+	private String findJTextFieldFromFileChooser(JFileChooser chooser){
+		
+		for(int i = 0; i < ((JFileChooser)chooser).getComponentCount(); i++) {
+			
+			Component chooserComponent = findJTextField(fileChooser);
+			
+			if(chooserComponent instanceof JTextField){
+				JTextField chooserJTextField = (JTextField)chooserComponent;
+				if(chooserJTextField != null && chooserJTextField.getText() != null && chooserJTextField.getText().length()>0){
+					return chooserJTextField.getText().trim();
+									
+				}
+				
+			}
+		}
+		return null;
+		
 	}
 	
 	private void setPropertyChangeListenerToFileChooser(){
@@ -417,6 +441,8 @@ public class SelectFileDialog extends JDialog{
 			}
 		});
 	}
+	
+	
 
 	/**
 	 *  Checks the given file and saves the path and fileWritingType. If file extension is not given -> adds the extension
@@ -425,12 +451,20 @@ public class SelectFileDialog extends JDialog{
 		try {
 			boolean newFile = false;
 			File file=fileChooser.getSelectedFile();
+			String fileNameText ="";
+			Component chooserComponent = findJTextField(fileChooser);
+			fileNameText=  findJTextFieldFromFileChooser(fileChooser);
 			
 			
-			String fileNameText =givenFileName;
 			
-			if(((JTextField)((Container)((Container)fileChooser.getComponent(3)).getComponent(0)).getComponent(1)).getText().trim() != null)
-			fileNameText = ((JTextField)((Container)((Container)fileChooser.getComponent(3)).getComponent(0)).getComponent(1)).getText().trim();
+			
+			
+	
+		//	if(((JTextField)((Container)((Container)fileChooser.getComponent(3)).getComponent(0)).getComponent(1)).getText().trim() != null)
+		//	fileNameText = ((JTextField)((Container)((Container)fileChooser.getComponent(3)).getComponent(0)).getComponent(1)).getText().trim();
+			
+			
+			
 			String finalFileNamePath=null;
 			if(file != null && fileNameText.equals(file.getName())){
 				finalFileNamePath=file.getAbsolutePath();
@@ -531,6 +565,7 @@ public class SelectFileDialog extends JDialog{
 			hideDialog();
 		} catch (Exception e) {
 			LOGGER.severe("Error in selecting file for markings: " +e.getMessage());
+			e.printStackTrace();
 			setFileWritingType(ID.ERROR);
 			setSelectedFilePath(null);
 			showFileMessage("Error in selecting file", "Try again.");
