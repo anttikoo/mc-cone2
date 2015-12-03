@@ -3,13 +3,20 @@ package gui;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
 import information.ID;
 import information.SharedVariables;
 
+/**
+ * The Class WindowLocator. A class for calculating good bounds from parent object.
+ */
 public class WindowLocator {
 
+	/**
+	 * Gets the visible window bounds.
+	 *
+	 * @param comp the comp
+	 * @return Rectangle the visible window bounds
+	 */
 	public static Rectangle getVisibleWindowBounds(Component comp){
 		
 		Rectangle parentRectangle=comp.getBounds();
