@@ -2,12 +2,9 @@ package gui.file;
 import gui.Color_schema;
 import gui.ContentPane;
 import gui.MouseListenerCreator;
-import information.ID;
 import information.PathCount;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -16,11 +13,9 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
-
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -41,11 +36,10 @@ import javax.swing.SwingUtilities;
 	 *
 	 */
 	public class OpenFileDialog extends JDialog{
-	//	private AddImageLayerDialog addImageLayerDialog;
 		private JPanel openDialogBackPanel;
 		protected JFileChooser fileChooser;
 		private JButton cancelFileChooserJButton;
-		private int typeOfImport;
+	//	private int typeOfImport;
 		private JButton addFileChooserJButton;
 		protected String imageLayerPath;
 		private Rectangle parentComponentBounds;
@@ -65,7 +59,7 @@ import javax.swing.SwingUtilities;
 			this.parentComponentBounds=parentComponentBounds;
 			this.parentComponentBackPanelBounds=backPanelBounds;
 			this.presentFolder=getFolderString(presentFolder);
-			this.typeOfImport = ID.OPEN_IMAGE_FILE; // the constructor with no imagePath -> selecting ImageFile
+		//	this.typeOfImport = ID.OPEN_IMAGE_FILE; // the constructor with no imagePath -> selecting ImageFile
 			initFileDialog();
 		}
 		
@@ -86,25 +80,14 @@ import javax.swing.SwingUtilities;
 			this.parentComponentBackPanelBounds=backPanelBounds;
 			this.presentFolder=getFolderString(presentFolder);
 		
-			this.typeOfImport = ID.OPEN_IMAGE_FILE; // the constructor with no imagePath -> selecting ImageFile
+		//	this.typeOfImport = ID.OPEN_IMAGE_FILE; // the constructor with no imagePath -> selecting ImageFile
 			initFileDialog();
 		}
+
 
 		/**
-		 * Class constructor for Dialog. The Dialog is JFilechooser which gives to select xml-file containing markings of the image.
-		 * @param frame owner frame.
-		 * @param aild	AddImageLayerDialog object which called this constructor.
-		 * @param imagePath The path of image which marking file is been selected in this dialog.
-
-		private OpenImageOrMarkingFileDialog(JFrame frame, AddImageLayerDialog aild, String imagePath){
-			super(frame, true);
-			this.addImageLayerDialog = aild;
-			this.typeOfImport = ID.OPEN_MARKING_FILE; // Constructor with imageFile path -> selecting markings for that image
-			this.imageLayerPath=imagePath;
-			initFileDialog();
-
-		}
- */
+		 * Initializes the dialog opening a file.
+		 */
 		private void initFileDialog(){
 
 			this.setBounds(this.parentComponentBounds); //sets the size of window same as the parent window size
@@ -117,9 +100,7 @@ import javax.swing.SwingUtilities;
 			openDialogBackPanel = new JPanel();
 			openDialogBackPanel.setBackground(new Color(0,0,0));
 			openDialogBackPanel.setLayout(new BorderLayout());
-
 			openDialogBackPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 5));
-	
 			openDialogBackPanel.setMaximumSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.95), (int)(this.parentComponentBackPanelBounds.getHeight()*0.95)));
 			openDialogBackPanel.setMinimumSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.7), (int)(this.parentComponentBackPanelBounds.getHeight()*0.5)));
 			openDialogBackPanel.setPreferredSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.7), (int)(this.parentComponentBackPanelBounds.getHeight()*0.7)));
@@ -134,7 +115,9 @@ import javax.swing.SwingUtilities;
 		}
 
 		/**
-		 * @return
+		 * Inits the file chooser JPanel.
+		 *
+		 * @return the Jpanel
 		 */
 		private JPanel initFileChooserPanel(){
 			try {
@@ -152,12 +135,8 @@ import javax.swing.SwingUtilities;
 				upPanel.setMaximumSize(new Dimension(100,40));
 				upPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 				upPanel.setBorder(BorderFactory.createEmptyBorder());
-
-			//	JLabel titleLabel = new JLabel("SELECT IMAGES");
 				JLabel titleLabel = new JLabel(getWindowTitle());
-			//	if(typeOfImport == ID.OPEN_MARKING_FILE)
-			//		titleLabel = new JLabel("OPEN XML FILE FOR IMPORTING MARKINGS");
-
+	
 				titleLabel.setFont(new Font("Consolas", Font.BOLD,20));
 				titleLabel.setForeground(Color_schema.white_230);
 				upPanel.add(titleLabel);
@@ -184,26 +163,7 @@ import javax.swing.SwingUtilities;
 				fileChooser.setControlButtonsAreShown(false);
 				fileChooser.setMultiSelectionEnabled(true); // several files are allowed to select
 				setUpFilechooserSettings();
-/*
-				if(typeOfImport == ID.OPEN_MARKING_FILE){
-					fileChooser.setMultiSelectionEnabled(false); // only one file is allowed
-					fileChooser.setFileFilter(new XMLfilter()); // XML filter in package gui.file
-					// set the image file folder as current folder of jfilechooser
-					File f=getFolder(this.imageLayerPath);
-					if(f != null){
-						fileChooser.setCurrentDirectory(f);
-					}
-				}
-				else{
-					fileChooser.setFileFilter(new ImageFilter()); // Image filter in package gui.file
-					// set the current folder of jfilechooser
-					File f=getFolder(this.presentFolder);
-					if(f != null){
-						fileChooser.setCurrentDirectory(f);
-					}
-				}
 
-				*/
 				fileChooser.setAcceptAllFileFilterUsed(false);
 				fileChooser.setMaximumSize(new Dimension(1000,800)); // not so nice when going too large
 
@@ -221,14 +181,10 @@ import javax.swing.SwingUtilities;
 
 				addFileChooserJButton = new JButton("SELECT");
 				addFileChooserJButton.setPreferredSize(new Dimension(150,30));
-			//	addFileChooserJButton.setBackground(Color_schema.color_dark_20_bg);
-			//	addFileChooserJButton.setForeground(Color_schema.color_white_title_230_fg);
 				addFileChooserJButton.setFocusable(false);
 				addActionsToFileDialogButtons(addFileChooserJButton);	// setup action when pressed
 				MouseListenerCreator.addMouseListenerToNormalButtons(addFileChooserJButton); // setup color and border changes when button pressed
-
 				addKeyListenerToButton(addFileChooserJButton); // when Enter pressed -> this button activated
-
 				cancelFileChooserJButton = new JButton("CANCEL");
 				cancelFileChooserJButton.setPreferredSize(new Dimension(150,30));
 				cancelFileChooserJButton.setBackground(Color_schema.dark_20);
@@ -241,17 +197,11 @@ import javax.swing.SwingUtilities;
 					}
 				});
 
-
 				MouseListenerCreator.addMouseListenerToCancelButtons(cancelFileChooserJButton);
 
-
-
-			chooserButtonPanel.add(addFileChooserJButton);
-			chooserButtonPanel.add(cancelFileChooserJButton);
-
-			centerPanel.add(chooserButtonPanel, BorderLayout.PAGE_END);
-
-
+				chooserButtonPanel.add(addFileChooserJButton);
+				chooserButtonPanel.add(cancelFileChooserJButton);
+				centerPanel.add(chooserButtonPanel, BorderLayout.PAGE_END);
 				fBackPanel.add(centerPanel, BorderLayout.CENTER);
 
 				return fBackPanel;
@@ -261,18 +211,37 @@ import javax.swing.SwingUtilities;
 			}
 		}
 
+		/**
+		 * Gets the title of dialog.
+		 *
+		 * @return the window title
+		 */
 		protected String getWindowTitle(){
 			return "Title";
 		}
 
+		/**
+		 * Sets the up filechooser settings.
+		 */
 		protected void setUpFilechooserSettings(){
-
+			//
 		}
 
+		/**
+		 * Adds the actions to file dialog buttons.
+		 *
+		 * @param button the button
+		 */
 		protected void addActionsToFileDialogButtons(JButton button){
 			// create code to extended class
 		}
 
+		/**
+		 * Adds the key listener to JButton.
+		 *
+		 * @param button the button
+		 * @return the j button
+		 */
 		private JButton addKeyListenerToButton(final JButton button){
 
 			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -290,39 +259,42 @@ import javax.swing.SwingUtilities;
 
 			return button;
 		}
-	/*
+
+
 		/**
-		 * @param folderPath
-		 * @return
+		 * Gets the selected files.
+		 *
+		 * @return the selected files
 		 */
-	/*	private File getCurrentFolder(String folderPath) {
-			try {
-				File folder= new File(folderPath);
-				if(folder.exists()){
-
-					return getFolder(folder);
-				}
-				return null;
-			} catch (Exception e) {
-				LOGGER.severe("Error in getting current folder " +e.getClass().toString() + " :" +e.getMessage());
-				return null;
-			}
-		}
-	*/
-
 		public File[] getSelectedFiles(){
 			return this.selectedFiles;
 		}
 
+		/**
+		 * Sets the present folder.
+		 *
+		 * @param path the new present folder
+		 */
 		protected void setPresentFolder(String path){
 			this.presentFolder=path;
 		}
 
+		/**
+		 * Gets the present folder.
+		 *
+		 * @return the present folder
+		 */
 		public String getPresentFolder(){
 			return this.presentFolder;
 		}
 
 
+		/**
+		 * Gets the most common path from list of previous files.
+		 *
+		 * @param fileGroup list of Files
+		 * @return String the most common path
+		 */
 		protected String getMostCommonPath(File[] fileGroup){
 			try {
 				ArrayList<PathCount> countedPathList = new ArrayList<PathCount>();
@@ -358,8 +330,8 @@ import javax.swing.SwingUtilities;
 		}
 
 		/**
-		 * Adds or updates PathCount objects of array which is used to calculate occurences of folder paths
-		 * @param countList the array of PathCount objects where the occurences of paths are saved
+		 * Adds or updates PathCount objects of array which is used to calculate occurrences of folder paths
+		 * @param countList the array of PathCount objects where the occurrences of paths are saved
 		 * @param folderPath the path of folder which is added to array
 		 * @return The PathCount object which has biggest count value by this far
 		 */
@@ -427,10 +399,19 @@ import javax.swing.SwingUtilities;
 			}
 		}
 
+		/**
+		 * Gets the String of folder name from file path.
+		 *
+		 * @param filePath the file path
+		 * @return the folder string
+		 */
 		private String getFolderString(String filePath){
 			return getFolder(filePath).getAbsolutePath();
 		}
 
+		/**
+		 * Calls the hiding method to close dialog.
+		 */
 		protected void hideDialog(){
 			SwingUtilities.invokeLater(new Runnable() {
 
@@ -442,6 +423,9 @@ import javax.swing.SwingUtilities;
 			});
 		}
 
+		/**
+		 * Closes dialog.
+		 */
 		public void hideThis(){
 			try{
 			this.setVisible(false); // close dialog
