@@ -145,11 +145,10 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 				}
 			});
 			setShowON(true);
-		//	this.setVisible(true);
+		
 			if(this.painterThread != null && this.painterThread.isAlive())
 				this.painterThread.interrupt();
 			this.painterThread.start();
-
 
 			return ID.CANCEL;
 		} catch (Exception e) {
@@ -207,17 +206,17 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 	@SuppressWarnings("static-access")
 	private void showNextBall(){
 		try {
-		
+			// check if next ball can be more right (bigger) -> add paintedBall value.
 			if(nextBallBigger){
 				paintedBall++;
-				if(paintedBall > 5){
+				if(paintedBall > 5){ // ball is rightmost -> start going to left
 					paintedBall=4;
 					nextBallBigger=false;
 				}
 			}
 			else{
 				paintedBall--;
-				if(paintedBall < 0){
+				if(paintedBall < 0){ // ball is leftmost -> start going to right
 					paintedBall=1;
 					nextBallBigger=true;
 				}
@@ -225,14 +224,14 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 
 			SingleBall ballComponent = (SingleBall)ballsPanel.getComponent(paintedBall);
 		
-
+			// paint the balls
 			while(showON && ballComponent.getaRGBopacity() < 250){
 				int opa= ballComponent.getaRGBopacity()+25;
 				if(opa >255)
 					opa=255;
 				ballComponent.paintWithOpacity(opa);
 				painterThread.sleep(80);
-				//Thread.sleep(80);
+				
 
 			}
 			while(showON && ballComponent.getaRGBopacity() > 30){
@@ -241,7 +240,7 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 					opa=30;
 				ballComponent.paintWithOpacity(opa);
 				painterThread.sleep(80);
-			//	Thread.sleep(80);
+			
 
 			}
 		} catch (InterruptedException e) {
@@ -325,37 +324,35 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 
 		
 
+		/**
+		 * Sets the new integer for creating new argb color.
+		 *
+		 * @param newARGB the new argb
+		 */
 		private void paintWithOpacity(int newARGB){
 
 			this.aRGBopacity=newARGB;
 			this.repaint();
 		}		
 
+		/**
+		 * Gets the a rgb opacity.
+		 *
+		 * @return the a rgb opacity
+		 */
 		public int getaRGBopacity() {
 			return aRGBopacity;
 		}
 
 
 		@Override
-		public void paintComponent(Graphics g) {
-
-			// TODO Auto-generated method stub
+		public void paintComponent(Graphics g) {		
 			super.paintComponents(g);
 			g2d = (Graphics2D) g.create();
-		//	RenderingHints rh= new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		//	g2d.setRenderingHints(rh);
-
 			g2d.setPaint(new Color(aRGBopacity,aRGBopacity,aRGBopacity));
-
-
-		//	g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.opacity));
 			g2d.fillOval(2, 2, 16, 16);
 			g2d.dispose();
-
-
 		}
 	}
-
-
 
 }
