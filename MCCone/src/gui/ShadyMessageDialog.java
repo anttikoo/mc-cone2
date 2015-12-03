@@ -32,6 +32,9 @@ import javax.swing.KeyStroke;
 
 
 
+/**
+ * The Class ShadyMessageDialog. Shows message and buttons for selection.
+ */
 public class ShadyMessageDialog extends JDialog{
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private String message;
@@ -45,11 +48,18 @@ public class ShadyMessageDialog extends JDialog{
 	private JPanel buttonPanel;
 	
 
+	/**
+	 * Instantiates a new shady message dialog.
+	 *
+	 * @param frame the frame
+	 * @param title the title
+	 * @param message the message
+	 * @param typeOfButtons the type of buttons
+	 * @param comp the comp
+	 */
 	public ShadyMessageDialog(JFrame frame, String title, String message, int typeOfButtons, Component comp){
 		super(frame,true);
 		super.setLocationRelativeTo(comp);
-		
-	
 		this.setLocationRelativeTo(comp);
 		this.parentComponent = comp;
 		this.title=title;
@@ -59,6 +69,15 @@ public class ShadyMessageDialog extends JDialog{
 		
 	}
 	
+	/**
+	 * Instantiates a new shady message dialog.
+	 *
+	 * @param dialog the dialog
+	 * @param title the title
+	 * @param message the message
+	 * @param int typeOfButtons the type of buttons ID
+	 * @param Component comp 
+	 */
 	public ShadyMessageDialog(JDialog dialog, String title, String message, int typeOfButtons, Component comp){
 		super(dialog,true);
 	
@@ -72,6 +91,9 @@ public class ShadyMessageDialog extends JDialog{
 		
 	}
 
+	/**
+	 * Initializes the dialog.
+	 */
 	private void initDialog(){
 
 		try {
@@ -189,7 +211,7 @@ public class ShadyMessageDialog extends JDialog{
 	}
 
 	/**
-	 * Calculates and returns the width of downButton Panel. Withd depends on how many buttons there are.
+	 * Calculates and returns the width of downButton Panel. Width depends on how many buttons there are.
 	 *
 	 * @return the down button panel width
 	 */
