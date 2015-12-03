@@ -2,28 +2,18 @@ package gui;
 
 import gui.graphics.SmallCloseIcon;
 import information.Fonts;
-import information.ID;
-import information.SharedVariables;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -32,19 +22,15 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-
-import operators.GetResources;
 
 
+/**
+ * The Class PropertiesDialog. Dialog has static size 400 x 500px.
+ */
 public class PropertiesDialog extends JDialog {
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	protected GUI gui;
 	protected Point topLeftPoint;
-//	private int maxHeight;
-
-
 	protected JPanel backPanel;
 	protected int panelWidth=400;
 	protected int rightPanelWidth=this.panelWidth; // in MarkingProperties this will be 700
@@ -52,6 +38,13 @@ public class PropertiesDialog extends JDialog {
 	protected Rectangle recOfBackpanel;
 
 
+	/**
+	 * Instantiates a new properties dialog.
+	 *
+	 * @param frame the frame
+	 * @param gui the gui
+	 * @param point the point
+	 */
 	public PropertiesDialog(JFrame frame, GUI gui, Point point){
 		super(frame,true);
 		this.gui = gui;
@@ -59,7 +52,6 @@ public class PropertiesDialog extends JDialog {
 	}
 	
 	
-
 	/**
 	 *  Setups the components of Dialog window
 	 */
@@ -77,11 +69,7 @@ public class PropertiesDialog extends JDialog {
 			backPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 3));
 			backPanel.setMaximumSize(new Dimension(panelWidth,panelHeight));
 			backPanel.setMinimumSize(new Dimension(panelWidth,panelHeight));
-			backPanel.setPreferredSize(new Dimension(panelWidth,panelHeight));
-
-			// set sizes and locations of components
-		//	setPanelPosition();
-			
+			backPanel.setPreferredSize(new Dimension(panelWidth,panelHeight));		
 			backPanel.add(initUPPanels(), BorderLayout.PAGE_START);
 			backPanel.add(initCenterPanels(), BorderLayout.CENTER);
 			backPanel.add(initDownPanel(),BorderLayout.PAGE_END);
@@ -96,6 +84,9 @@ public class PropertiesDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * Sets the panel position. Calculates a good position for panel by checking bounds of parent frame.
+	 */
 	protected void setPanelPosition(){
 		
 		recOfBackpanel = getGoodBoundsForPanel();
@@ -105,7 +96,6 @@ public class PropertiesDialog extends JDialog {
 		else{
 			recOfBackpanel = new Rectangle((int)(this.topLeftPoint.getX()-(panelWidth)), (int)this.topLeftPoint.getY(),this.panelWidth,this.panelHeight);
 			backPanel.setBounds(recOfBackpanel);
-			//backPanel.setBounds((int)(this.topLeftPoint.getX()-(panelWidth)), (int)this.topLeftPoint.getY(),this.panelWidth,this.panelHeight);
 			
 		}
 		this.setBounds(this.gui.getVisibleWindowBounds());	

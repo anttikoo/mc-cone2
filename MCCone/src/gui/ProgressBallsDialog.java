@@ -96,10 +96,8 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 	
 					}
 				});
-			}
-		
+			}	
 	}
-
 	
 	/**
 	 * Initializes the components of window.
