@@ -20,21 +20,18 @@ import javax.swing.SwingUtilities;
 import managers.PreCountThreadManager;
 
 
+/**
+ * The Class ProgressBallsDialog. Shows balls moving and shows that something is running.
+ */
 public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable {
-
-	//	private ArrayList<JPanel> ballPanels;
 	private int paintedBall=-1;
 	private int threadNumber=1;
-	//private float opacity=0.0f;
 	private volatile boolean showON=true;
 	private boolean nextBallBigger=true;
-
 	private Graphics2D g2d;
 	private JPanel ballsPanel;
-
 	private PreCountThreadManager pctm;
 	private Thread painterThread;
-//	private PreCounterThread preCounterThread;
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	public ProgressBallsDialog(JFrame frame, String title, String message,int id, Component comp){
@@ -44,14 +41,9 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 			initBalls();
 			initButtonAction();
 			this.painterThread = new Thread(this, title+threadNumber++);
-
 			this.validate();
-		//	this.setVisible(true);
-		//	this.setShowON(true);
-		//	this.repaint();
-		//	this.painterThread.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			LOGGER.severe("Error starting Progress dialog.");
 			e.printStackTrace();
 		}
 
@@ -74,7 +66,6 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 			MouseListenerCreator.addMouseListenerToNormalButtons(button);
 		}
 
-	//	okButton.setForeground(Color_schema.color_orange_dark);
 		button.setFocusable(false);
 
 		button.addActionListener(new ActionListener() {
@@ -83,8 +74,6 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 				stopPaintingAndClose();
 			}
 		});
-
-
 		return button;
 	}
 
@@ -96,35 +85,28 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 	}
 
 
-	private void initButtonAction(){
-		try {
+	private void initButtonAction() throws Exception{
 			if(super.getFirstButton() != null){
-			super.getFirstButton().removeActionListener(super.getFirstButton().getActionListeners()[0]);
-			super.getFirstButton().addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					stopPaintingAndClose();
-
-				}
-			});
+				super.getFirstButton().removeActionListener(super.getFirstButton().getActionListeners()[0]);
+				super.getFirstButton().addActionListener(new ActionListener() {
+	
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						stopPaintingAndClose();
+	
+					}
+				});
 			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
-/*
-	public void initPreCounterThread(PreCounterThread pct){
-		this.preCounterThread=pct;
-	}
-	*/
+
+	
+	/**
+	 * Initializes the components of window.
+	 */
 	private void initBalls(){
 		try {
-		/*	JPanel messageBallsPanel = new JPanel();
-			messageBallsPanel.setLayout(new BoxLayout(messageBallsPanel, BoxLayout.PAGE_AXIS));
-			messageBallsPanel.setBackground(super.getMessagePanel().getBackground());
-*/
+
 			ballsPanel = new JPanel();
 			ballsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
 			ballsPanel.setBorder(null);
@@ -132,20 +114,16 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 			for(int i =0;i<6;i++){
 				ballsPanel.add(new SingleBall());
 			}
+			// set messagepanel at super class
 			super.getMessagePanel().setMaximumSize(new Dimension(200,100));
-//	messageBallsPanel.add(new JLabel("part 1/2"));
-		//	messageBallsPanel.add(ballsPanel);
 			super.getMessagePanel().removeAll();
 			super.getMessagePanel().setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
-
-
 			super.getMessagePanel().add(ballsPanel);
 			super.getMessagePanel().revalidate();
-//	super.getDialogBackPanel().add(ballsPanel);
 			super.revalidate();
 			this.revalidate();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -153,15 +131,16 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 	}
 
 
-
+	/* (non-Javadoc)
+	 * @see gui.ShadyMessageDialog#showDialog()
+	 */
 	public int showDialog(){
 		try {
 
 			SwingUtilities.invokeLater(new Runnable() {
 
 				@Override
-				public void run() {
-					// TODO Auto-generated method stub
+				public void run() {			
 					setVisible(true);
 				}
 			});
@@ -174,26 +153,20 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 
 			return ID.CANCEL;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			LOGGER.severe("Error in showing Progress dialog!");
 			e.printStackTrace();
 			return -1;
 		}
 	}
-/*
-	public void startSHowing(){
-		//setShowON(true);
-	//	this.setVisible(true);
-		LOGGER.fine("startShowing: "+showON);
-		this.painterThread.start();
 
-	}
-*/
+	/**
+	 * Stops the painting and closes window.
+	 */
 	public void stopPaintingAndClose(){
 		try {
 
 				LOGGER.fine("StopPaintingAndClose");
 				setShowON(false);
-
 
 				SwingUtilities.invokeLater(new Runnable() {
 
@@ -210,50 +183,31 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 				this.dispose();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			LOGGER.severe("Error in stopping progress windonw");
+			LOGGER.severe("Error in stopping progress dialog");
 			e.printStackTrace();
 			setShowON(false);
 		}
 
 	}
-/*
-	public void cancelCountingProcess(){
-		try {
 
-				LOGGER.fine("cancelCountingProcess");
-				setShowON(false);
-
-
-				if(this.pctm != null)
-					pctm.cancelCounting();
-
-				this.setVisible(false);
-				this.dispose();
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			LOGGER.severe("Error in stopping progress windonw");
-			e.printStackTrace();
-			setShowON(false);
-		}
-
-	}
-*/
+	/**
+	 * Sets the PreCountThreadManager.
+	 *
+	 * @param pctm the new manager
+	 */
 	public void setManager(PreCountThreadManager pctm){
 		this.pctm=pctm;
 	}
 
 
 
-
-
-
-
+	/**
+	 * Draws the next ball to window.
+	 */
 	@SuppressWarnings("static-access")
 	private void showNextBall(){
 		try {
-		//	LOGGER.fine("nextballbigger: "+nextBallBigger + " paintedball:"+paintedBall);
+		
 			if(nextBallBigger){
 				paintedBall++;
 				if(paintedBall > 5){
@@ -270,25 +224,7 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 			}
 
 			SingleBall ballComponent = (SingleBall)ballsPanel.getComponent(paintedBall);
-		/*
-			while(showON && ballComponent.getOpacity() < 0.95f){
-				float opa = ballComponent.getOpacity()+0.1f;
-				if(opa >1.0f)
-					opa=1.0f;
-				ballComponent.paintWithOpacity(opa);
-				painterThread.sleep(50);
-
-			}
-			while(showON && ballComponent.getOpacity() > 0.05f){
-				float opa = ballComponent.getOpacity()-0.1f;
-				if(opa <0.01)
-					opa=0.0f;
-				ballComponent.paintWithOpacity(opa);
-
-					painterThread.sleep(50);
-
-			}
-			*/
+		
 
 			while(showON && ballComponent.getaRGBopacity() < 250){
 				int opa= ballComponent.getaRGBopacity()+25;
@@ -309,47 +245,54 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 
 			}
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 
 		}
 		catch (Exception e) {
-			LOGGER.severe("Error in painting progress balls");
+			LOGGER.severe("Error in painting progress dialog balls");
 		}
 
 	}
 
 
+	/**
+	 * Checks if is show on.
+	 *
+	 * @return true, if is show on
+	 */
 	public boolean isShowON() {
 		return showON;
 	}
 
+	/**
+	 * Sets the show on.
+	 *
+	 * @param showON the new show on
+	 */
 	public void setShowON(boolean showON) {
 		this.showON = showON;
 	}
 
 
 
+	
 	@SuppressWarnings("static-access")
 	@Override
 	public void run() {
 		try {
 
+		// starts painting the balls
+		while(showON){
+			showNextBall();
+			painterThread.sleep(100);	
 
-//	changePaintedBalls(); // starts painting the balls
-			while(showON){
-			//	LOGGER.fine("changing ball");
-				showNextBall();
-				painterThread.sleep(100);
-			//	Thread.currentThread().sleep(100);
-
-			}
-		//	this.setVisible(false);
-		//	this.dispose();
-			LOGGER.fine("ProgressBall Thread ended");
+		}
+		
+		LOGGER.fine("ProgressBall Thread ended");
 		painterThread.interrupt();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+		
+		} catch (InterruptedException e) {		
 			e.printStackTrace();
 			showON=false;
 		}
@@ -357,6 +300,9 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 
 
 
+	/**
+	 * The Class SingleBall.
+	 */
 	private class SingleBall extends JPanel{
 		//private boolean showON=true;
 		private float opacity =0.0f;
@@ -364,9 +310,11 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 
 
 
+		/**
+		 * Instantiates a new single ball.
+		 */
 		private SingleBall(){
 			this.setOpaque(false);
-
 			this.setBorder(null);
 			this.setMaximumSize(new Dimension(20,20));
 			this.setPreferredSize(new Dimension(20,20));
