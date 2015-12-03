@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -301,10 +300,7 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 	 * The Class SingleBall.
 	 */
 	private class SingleBall extends JPanel{
-		//private boolean showON=true;
-		private float opacity =0.0f;
 		private int aRGBopacity=30;
-
 
 
 		/**
