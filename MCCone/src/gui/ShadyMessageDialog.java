@@ -1,6 +1,5 @@
 package gui;
 
-import gui.saving.ImageSet.ImageSetCreator;
 import information.Fonts;
 import information.ID;
 import java.awt.BorderLayout;
@@ -41,7 +40,6 @@ public class ShadyMessageDialog extends JDialog{
 	private int typeOfButtons;
 	private int returnValue=-1;
 	private Component parentComponent;
-//	private int parentComponentWidth;
 	private JPanel dialogBackPanel;
 	private JPanel messagePanel;
 	private JPanel buttonPanel;
@@ -208,10 +206,6 @@ public class ShadyMessageDialog extends JDialog{
 		return width;
 	}
 	
-	
-
-
-
 	/**
 	 * Creates the button by given ButtonID.
 	 *
@@ -263,7 +257,7 @@ public class ShadyMessageDialog extends JDialog{
 	}
 
 	/**
-	 * Gets the button text.
+	 * Gets the Text of JButton by given ID.
 	 *
 	 * @param ID the id
 	 * @return the button text
