@@ -969,53 +969,6 @@ private GridPropertiesPanel gridDialog=null;
 	}
 	
 	
-
-	/**
-	 * Calculates and returns position and size of window where dialog can be positioned.
-	 * @return Rectangle size and position where dialog window can be positioned.
-	 */
-	public Rectangle getVisibleWindowBoundsOLD(){
-		int x=this.getBounds().x; // get horizontal top left position of window
-		int y=this.getBounds().y; // get vertical top left position of window
-		int width=this.getBounds().width; // get width of window
-		int height=this.getBounds().height; // get height of window
-
-		if(x<0){ // horizontal position too small -> out of screen.
-			width = width+x;
-			x=0;
-		}
-		if(y<0){ // vertical position too small -> out of screen.
-			height = height+y;
-			y=0;
-		}
-	
-		if(x+width > getScreenSize().width){
-
-			width=getScreenSize().width-x;
-		}
-	
-		if(y+height > getScreenSize().height){
-			height = getScreenSize().height-y;
-		}
-
-		// is multiple monitors used -> only horizontally positioned monitors checked
-		if(width <0){
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			GraphicsDevice[] gs = ge.getScreenDevices();
-		
-			if(gs.length>1){
-				width= this.getBounds().width;
-			if(x+width> gs[0].getDefaultConfiguration().getBounds().width + gs[1].getDefaultConfiguration().getBounds().width)
-			   width = gs[0].getDefaultConfiguration().getBounds().width + gs[1].getDefaultConfiguration().getBounds().width-x;
-			}
-		}
-		
-		return new Rectangle(x, y, width, height);
-
-
-	}
-	
-	
 	
 	/**
 	 * Returns the size and position of VisualPanel.
