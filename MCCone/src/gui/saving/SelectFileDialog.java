@@ -293,6 +293,12 @@ public class SelectFileDialog extends JDialog{
 		}
 	}
 	
+	/**
+	 * Finds first JTextField from component recursively.
+	 *
+	 * @param comp the Component
+	 * @return the Component JTextField if found, otherwise null;
+	 */
 	private Component findJTextField(Component comp) {
 	    if (comp instanceof JTextField) return comp;
 	    if (comp instanceof Container) {
@@ -310,8 +316,15 @@ public class SelectFileDialog extends JDialog{
 	    return null;
 	}
 	
+	/**
+	 * Find j text field from a file chooser.
+	 *
+	 * @param chooser the chooser
+	 * @return the string
+	 */
 	private String findJTextFieldFromFileChooser(JFileChooser chooser){
 		
+		// go through all children components
 		for(int i = 0; i < ((JFileChooser)chooser).getComponentCount(); i++) {
 			
 			Component chooserComponent = findJTextField(fileChooser);
@@ -329,23 +342,7 @@ public class SelectFileDialog extends JDialog{
 		
 	}
 	
-	private void setPropertyChangeListenerToFileChooser(){
-		this.fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
-			
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if(evt.getPropertyName().equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)){
-				File file = (File)evt.getNewValue();
-				System.out.println(file.getName());
-				//givenFileName= evt.getNewValue().toString();
-				//System.out.println(givenFileName);
-				}
-			}
-		});
-		
-		
-		
-	}
+
 
 	private void addFileFilters(){
 		//boolean hasSetFileFilter=false;
@@ -452,16 +449,8 @@ public class SelectFileDialog extends JDialog{
 			boolean newFile = false;
 			File file=fileChooser.getSelectedFile();
 			String fileNameText ="";
-			Component chooserComponent = findJTextField(fileChooser);
+			//Get the text of  JTextField from filechooser
 			fileNameText=  findJTextFieldFromFileChooser(fileChooser);
-			
-			
-			
-			
-			
-	
-		//	if(((JTextField)((Container)((Container)fileChooser.getComponent(3)).getComponent(0)).getComponent(1)).getText().trim() != null)
-		//	fileNameText = ((JTextField)((Container)((Container)fileChooser.getComponent(3)).getComponent(0)).getComponent(1)).getText().trim();
 			
 			
 			

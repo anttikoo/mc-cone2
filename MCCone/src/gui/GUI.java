@@ -1449,6 +1449,9 @@ private GridPropertiesPanel gridDialog=null;
 		try {
 			screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // maybe never used
 			// change colors of menus and tooltips
+			
+			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			
 			UIManager.put("Button.background", Color_schema.dark_20);
 			UIManager.put("Button.border", BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
 			UIManager.put("Button.font", new Font("Consolas", Font.BOLD,16));
@@ -1471,12 +1474,14 @@ private GridPropertiesPanel gridDialog=null;
 			UIManager.put("Menu.foreground", Color_schema.white_230);
 			UIManager.put("Menu.selectionBackground", Color_schema.menu_selection_bg);
 			UIManager.put("MenuBar.selectionBackground", Color_schema.menu_selection_bg);
-			UIManager.put("MenuBar.highlight", Color_schema.menu_selection_bg);
+			UIManager.put("MenuBar.highlight", Color_schema.dark_50);
 			UIManager.put("MenuBar.background", Color_schema.dark_50);
+			UIManager.put("MenuBar.disabledForeground", Color_schema.white_230);
+			UIManager.put("MenuBar.disabledBackground", Color_schema.dark_50);
 			UIManager.put("PopupMenu.background", Color_schema.dark_50);
 			UIManager.put("PopupMenu.font", Fonts.b16);
 			UIManager.put("PopupMenu.foreground", Color_schema.white_230);
-			UIManager.put("MenuBar.foreground", Color_schema.white_230);
+			UIManager.put("MenuBar.foreground", Color_schema.dark_100);
 			UIManager.put("MenuItem.background", Color_schema.dark_50);
 			UIManager.put("MenuItem.font", Fonts.b16);
 			UIManager.put("MenuItem.foreground", Color_schema.white_230);
@@ -1494,6 +1499,7 @@ private GridPropertiesPanel gridDialog=null;
 			UIManager.put("TextField.inactiveForeground", Color_schema.white_230);
 			UIManager.put("ToolTip.background", Color_schema.tooltip_bg);
 			UIManager.put("ToolTip.font", Fonts.b14);
+			
 	
 			guiListener = new GUIListener(this);
 
