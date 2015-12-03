@@ -7,6 +7,9 @@ import java.io.File;
 
 import javax.swing.ImageIcon;
 
+/**
+ * The Class Utils. Contains some variables of file extensions and methdods to manage them.
+ */
 public class Utils {
     public final static String jpeg = "jpeg";
     public final static String jpg = "jpg";
@@ -19,15 +22,25 @@ public class Utils {
     public final static String txt= "txt";
 
 
-    /*
-     * Get the extension of a file.
+    /**
+     * Gets the extension.
+     *
+     * @param f the f
+     * @return the extension
      */
+    
     public static String getExtension(File f) {
 
         String s = f.getName();
         return getExtension(s);
     }
 
+    /**
+     * Gets the extension.
+     *
+     * @param s the s
+     * @return the extension
+     */
     public static String getExtension(String s){
     	String ext = null;
     	int i = s.lastIndexOf('.');
@@ -38,7 +51,12 @@ public class Utils {
         return ext;
     }
 
-    /** Returns an ImageIcon, or null if the path was invalid. */
+    /**
+     *  Returns an ImageIcon, or null if the path was invalid.
+     *
+     * @param path the path
+     * @return the image icon
+     */
     protected static ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = Utils.class.getResource(path);
         if (imgURL != null) {

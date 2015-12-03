@@ -10,6 +10,9 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+/**
+ * The Class OpenMarkingFileDialog.
+ */
 public class OpenMarkingFileDialog extends OpenFileDialog{
 
 	public OpenMarkingFileDialog(JFrame frame, Rectangle pcb, Rectangle pcbb, String presentFolder) {
@@ -17,15 +20,29 @@ public class OpenMarkingFileDialog extends OpenFileDialog{
 		
 	}
 	
+	/**
+	 * Instantiates a new open marking file dialog.
+	 *
+	 * @param d the d
+	 * @param pcb the pcb
+	 * @param pcbb the pcbb
+	 * @param presentFolder the present folder
+	 */
 	public OpenMarkingFileDialog(JDialog d, Rectangle pcb, Rectangle pcbb, String presentFolder) {
 		super(d, pcb, pcbb, presentFolder);
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.file.OpenFileDialog#getWindowTitle()
+	 */
 	protected String getWindowTitle(){
 		return "OPEN XML FILE FOR IMPORTING MARKINGS";
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.file.OpenFileDialog#setUpFilechooserSettings()
+	 */
 	protected void setUpFilechooserSettings(){
 		fileChooser.setMultiSelectionEnabled(false); // only one file is allowed
 		fileChooser.setFileFilter(new XMLfilter()); // XML filter in package gui.file
@@ -36,6 +53,9 @@ public class OpenMarkingFileDialog extends OpenFileDialog{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.file.OpenFileDialog#addActionsToFileDialogButtons(javax.swing.JButton)
+	 */
 	protected void addActionsToFileDialogButtons(JButton button){
 		button.addActionListener(new ActionListener() {
 			@Override

@@ -1,29 +1,44 @@
 package gui.file;
 
-import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+/**
+ * The Class OpenImageFilesDialog.
+ */
 public class OpenImageFilesDialog extends OpenFileDialog{
 
 	public OpenImageFilesDialog(JFrame frame, Rectangle pcb, Rectangle pcbb, String presentFolder) {
 		super(frame, pcb, pcbb, presentFolder);
 	}
 	
+	/**
+	 * Instantiates a new open image files dialog.
+	 *
+	 * @param d the d
+	 * @param pcb the pcb
+	 * @param pcbb the pcbb
+	 * @param presentFolder the present folder
+	 */
 	public OpenImageFilesDialog(JDialog d, Rectangle pcb, Rectangle pcbb, String presentFolder) {
 		super(d, pcb, pcbb, presentFolder);	
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.file.OpenFileDialog#getWindowTitle()
+	 */
 	protected String getWindowTitle(){
 		return "SELECT IMAGES";
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.file.OpenFileDialog#setUpFilechooserSettings()
+	 */
 	protected void setUpFilechooserSettings(){
 
 		fileChooser.setMultiSelectionEnabled(true); // multiselection is allowed
@@ -35,14 +50,15 @@ public class OpenImageFilesDialog extends OpenFileDialog{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.file.OpenFileDialog#addActionsToFileDialogButtons(javax.swing.JButton)
+	 */
 	protected void addActionsToFileDialogButtons(JButton button){
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(fileChooser.getSelectedFiles() != null && fileChooser.getSelectedFiles().length>0){
 					hideDialog();
-				//	LOGGER.fine("selected file and closing file dialog: " +(fileChooser.getSelectedFiles()[0]).getName());
-				//	addImageLayerDialog.addImagesToImageLayerList(fileChooser.getSelectedFiles());
 					selectedFiles=fileChooser.getSelectedFiles();
 					// update present folder to ->-> informationCenter
 					String commonFolder = getMostCommonPath(fileChooser.getSelectedFiles());
