@@ -9,17 +9,7 @@ import information.ID;
 import information.SharedVariables;
 
 public class WindowLocator {
-//	private Rectangle parentRectangle=null;
-	
-	
-	public WindowLocator(JComponent comp){
-	//	this.parentRectangle=comp.getBounds();
-	}
-	
-	public WindowLocator(JDialog d){
-	//	this.parentRectangle=d.getBounds();
-	}
-	
+
 	public static Rectangle getVisibleWindowBounds(Component comp){
 		
 		Rectangle parentRectangle=comp.getBounds();
