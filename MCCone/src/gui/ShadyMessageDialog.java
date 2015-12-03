@@ -3,11 +3,9 @@ package gui;
 import gui.saving.ImageSet.ImageSetCreator;
 import information.Fonts;
 import information.ID;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -15,14 +13,10 @@ import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.logging.Logger;
-
 import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -35,9 +29,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
-import javax.swing.border.BevelBorder;
 
 
 
@@ -49,7 +41,7 @@ public class ShadyMessageDialog extends JDialog{
 	private int typeOfButtons;
 	private int returnValue=-1;
 	private Component parentComponent;
-	private int parentComponentWidth;
+//	private int parentComponentWidth;
 	private JPanel dialogBackPanel;
 	private JPanel messagePanel;
 	private JPanel buttonPanel;
@@ -86,43 +78,28 @@ public class ShadyMessageDialog extends JDialog{
 
 		try {
 			this.setResizable(false);		
-		//	this.setBounds(this.parentComponent.getBounds());
 			this.setBounds(WindowLocator.getVisibleWindowBounds(parentComponent));
-			this.parentComponentWidth=this.parentComponent.getBounds().width;
 			this.setUndecorated(true); // no titlebar or buttons
 			this.setBackground(new Color(0,0,0,0)); // transparent color
 			this.setContentPane(new ContentPane());
 			this.getContentPane().setBackground(Color_schema.dark_30);
 			this.getContentPane().setLayout(new GridBagLayout());
 
-
 			dialogBackPanel = new JPanel();
 			dialogBackPanel.setBackground(Color_schema.dark_30);
-			dialogBackPanel.setLayout(new BorderLayout());
-		//	dialogBackPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 5));
+			dialogBackPanel.setLayout(new BorderLayout());	
 			dialogBackPanel.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color_schema.white_230));
-			//	dialogBackPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color_schema.white_230, Color_schema.orange_medium, Color_schema.dark_40_bg, Color_schema.grey_100));
 			dialogBackPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 			dialogBackPanel.setAlignmentY(JComponent.CENTER_ALIGNMENT);
-
-		//	LOGGER.fine("openDialogBackPanel width pref: " +dialogBackPanel.getPreferredSize().getWidth());
 			if(dialogBackPanel.getPreferredSize().getWidth()<500)
 				dialogBackPanel.setPreferredSize(new Dimension((int)(this.getBounds().getWidth()*0.95), (int)(this.getBounds().getHeight()*0.95)));
-			// LOGGER.fine("openDialogBackPanel width pref: " +backPanel.getPreferredSize().getWidth());
 
-
-
-		//	titleScrollPane.setBackground(Color_schema.color_dark_30_bg);
 			JPanel titlePanel = new JPanel();
 			titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 			titlePanel.setBackground(Color_schema.dark_30);
-
-		//	JTextArea titleJTextarea = new JTextArea(this.title);
-		//	titleJTextarea.setBackground(bg);
 			titleLabel = new JLabel(this.title);
 			Font fontConsolas20 = new Font("Consolas", Font.BOLD,20);
 			titleLabel.setFont(fontConsolas20);
-
 
 			titleLabel.setForeground(Color_schema.white_230);
 			titlePanel.add(Box.createRigidArea(new Dimension(20,0)));
@@ -137,13 +114,8 @@ public class ShadyMessageDialog extends JDialog{
 			int titleWidth = titleLabel.getFontMetrics(fontConsolas20).stringWidth(titleLabel.getText());
 			if(titleWidth > maxwidth)
 				maxwidth = titleWidth;
-			LOGGER.fine("max width: "+maxwidth);
-	/*		if(parentComponent.getClass().toString().equals("class gui.AddImageLayerDialog")){
-				if(maxwidth>(int)((AddImageLayerDialog)this.parentComponent).getBackPanelSize().getWidth()){
-					maxwidth=(int)((AddImageLayerDialog)this.parentComponent).getBackPanelSize().getWidth()-120;
-				}
-			}
-	*/		messageLabel.setFont(fontConsolas18);
+			
+			messageLabel.setFont(fontConsolas18);
 			messageLabel.setForeground(Color_schema.white_230);
 			messagePanel.add(messageLabel);
 
@@ -157,7 +129,7 @@ public class ShadyMessageDialog extends JDialog{
 			buttonPanel.setBackground(Color_schema.dark_30);
 			buttonPanel.add(Box.createHorizontalGlue());
 
-
+			// add buttons by the type of message box
 			switch (typeOfButtons) {
 				case ID.OK:
 					buttonPanel.add(addKeyListenerToButton(createButton(ID.OK)));
@@ -218,6 +190,11 @@ public class ShadyMessageDialog extends JDialog{
 		}
 	}
 
+	/**
+	 * Calculates and returns the width of downButton Panel. Withd depends on how many buttons there are.
+	 *
+	 * @return the down button panel width
+	 */
 	private int getDownButtonPanelWidth(){
 		int width=0;
 		Component[] bComp=this.buttonPanel.getComponents();
@@ -226,9 +203,7 @@ public class ShadyMessageDialog extends JDialog{
 			JButton bb=(JButton)bComp[i];
 			width+=bb.getMaximumSize().width;
 			}
-			else{
-				//width+=20;
-			}
+			
 		}
 		return width;
 	}
@@ -237,6 +212,13 @@ public class ShadyMessageDialog extends JDialog{
 
 
 
+	/**
+	 * Creates the button by given ButtonID.
+	 *
+	 * @param buttonID the button id
+	 * @return the j button
+	 * @throws Exception the exception
+	 */
 	protected JButton createButton(final int buttonID) throws Exception{
 		JButton button=new JButton(getButtonText(buttonID));
 		int maxStringWidth = button.getFontMetrics(Fonts.b15).stringWidth(getButtonText(buttonID));
@@ -255,7 +237,6 @@ public class ShadyMessageDialog extends JDialog{
 			addMouseListenerToNormalButtons(button);
 		}
 
-	//	okButton.setForeground(Color_schema.color_orange_dark);
 		button.setFocusable(false);
 
 		button.addActionListener(new ActionListener() {
@@ -270,12 +251,23 @@ public class ShadyMessageDialog extends JDialog{
 		return button;
 	}
 	
+	/**
+	 * Sets the panel position with given Rectangle.
+	 *
+	 * @param bounds the new panel position
+	 */
 	public void setPanelPosition(Rectangle bounds){
 		if(bounds != null)
 			this.setBounds(bounds);
 	
 	}
 
+	/**
+	 * Gets the button text.
+	 *
+	 * @param id the id
+	 * @return the button text
+	 */
 	protected String getButtonText(int id){
 		switch (id) {
 
@@ -300,6 +292,12 @@ public class ShadyMessageDialog extends JDialog{
 	}
 
 
+	/**
+	 * Adds the key listener to a JButton.
+	 *
+	 * @param button the button
+	 * @return the j button
+	 */
 	private JButton addKeyListenerToButton(final JButton button){
 
 		InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -318,71 +316,41 @@ public class ShadyMessageDialog extends JDialog{
 		return button;
 	}
 
+	/**
+	 * Shows dialog.
+	 *
+	 * @return the int
+	 */
 	public int showDialog(){
 		setVisible(true);
 		return returnValue;
 	}
 
+	/**
+	 * Hides dialog.
+	 */
 	private void hideDialog(){
 		
 		this.setVisible(false);
 		this.dispose();
 	}
 
+	/**
+	 * Gets the backPanel of dialog
+	 *
+	 * @return the dialog back panel
+	 */
 	public JPanel getDialogBackPanel(){
 		return this.dialogBackPanel;
 	}
-	/*
-	private int getParentComponentWidth(Component component){
-		try {
-			// AddImageLayerDialog is parent component
-			if(parentComponent.getClass().toString().equals("class gui.AddImageLayerDialog")){
-				return (int)((AddImageLayerDialog)this.parentComponent).getBackPanelSize().getWidth();
-			}
-			//GUI
-			if(parentComponent.getClass().toString().equals("class gui.GUI")){
-				return (int)((GUI)this.parentComponent).getBounds().getWidth();
-			}
-
-			return -1;
-		} catch (Exception e) {
-			LOGGER.severe("Error in getting parente component width: " +e.getClass().toString() + " :" +e.getMessage());
-			return -1;
-		}
-	}
-	*/
-	private Rectangle getParentComponentBounds(Component component){
-		try {
-
-			// AddImageLayerDialog is parent component
-			if(parentComponent.getClass().toString().equals("class gui.AddImageLayerDialog")){
-				//return ((AddImageLayerDialog)this.parentComponent).getBackPanelSize(); // not working right
-				return ((AddImageLayerDialog)this.parentComponent).getBounds();
-			}
-			else
-			//GUI
-			if(parentComponent.getClass().toString().equals("class gui.GUI")){
-				return ((GUI)this.parentComponent).getBounds();
-			}
-			else
-
-		/*	//ImageAndMarkingPanel
-				if(parentComponent.getClass().toString().equals("class gui.MarkingSaverDialog")){
-					return ((MarkingSaverDialog)this.parentComponent).getBounds();
-				}
-				else*/
-				if(parentComponent instanceof ImageSetCreator){
-					return ((ImageSetCreator)this.parentComponent).getBounds();
-				}
-
-			return null;
-
-		} catch (Exception e) {
-			LOGGER.severe("Error in getting parente component size: " +e.getClass().toString() + " :" +e.getMessage());
-			return null;
-		}
-	}
-
+	
+	/**
+	 * Gets the first button.
+	 *
+	 * @return the first button
+	 */
+	
+	
 	public JButton getFirstButton(){
 		Component[] buttons=this.buttonPanel.getComponents();
 		if(buttons.length>0 && buttons[0] instanceof JButton)
@@ -391,17 +359,15 @@ public class ShadyMessageDialog extends JDialog{
 			return null;
 	}
 
+	/**
+	 * Gets the message panel.
+	 *
+	 * @return the message panel
+	 */
 	public JPanel getMessagePanel(){
 		return this.messagePanel;
 	}
 	
-
-
-
-
-
-
-
 
 	private void addMouseListenerToNormalButtons(JButton button) throws Exception{
 

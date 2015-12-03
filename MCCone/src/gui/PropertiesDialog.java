@@ -139,7 +139,7 @@ public class PropertiesDialog extends JDialog {
 		buttonPanel.setBackground(Color_schema.dark_30);
 		buttonPanel.setMinimumSize(new Dimension(50,40));
 
-		// Button for
+		// Button for OK
 		JButton okButton = new JButton("SAVE");
 		okButton.setPreferredSize(new Dimension(120,30));
 		okButton.setBackground(Color_schema.dark_20);
