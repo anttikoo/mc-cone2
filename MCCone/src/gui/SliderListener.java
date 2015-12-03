@@ -3,13 +3,23 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.Timer;
 import javax.swing.event.MouseInputAdapter;
-import javax.swing.JPanel;
 
+/**
+ * The listener interface for receiving slider events.
+ * The class that is interested in processing a slider
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addSliderListener<code> method. When
+ * the slider event occurs, that object's appropriate
+ * method is invoked. A sliding Timer is started when sliding started. This
+ * Timer restricts the updating of the image to every 100 ms.
+ *
+ * @see SliderEvent
+ */
 public class SliderListener extends MouseInputAdapter{
 	private boolean slidingON=false;
 	private int startValue=0;
@@ -17,10 +27,57 @@ public class SliderListener extends MouseInputAdapter{
 	JLabel valueLabel;
 	private Timer sliderTimer;
 	
+	/**
+	 * Instantiates a new slider listener.
+	 *
+	 * @param label the label
+	 */
 	public SliderListener(JLabel label){
 	//	this.slider=slider;
 		this.valueLabel=label;
 		initZoomTimer();
+	}
+
+	/**
+	 * Gets the start value.
+	 *
+	 * @return the start value
+	 */
+	public int getStartValue() {
+		return startValue;
+	}
+
+	/**
+	 * Initializes the zoom timer.
+	 */
+	private void initZoomTimer(){
+		this.sliderTimer=new Timer(100, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(sliderTimer.isRunning())
+					sliderTimer.stop();
+
+			}
+		});
+	}
+
+	/**
+	 * Checks if is slider timer running.
+	 *
+	 * @return true, if is slider timer running
+	 */
+	public boolean isSliderTimerRunning(){
+		return this.sliderTimer.isRunning();
+	}
+
+	/**
+	 * Checks if is sliding on.
+	 *
+	 * @return true, if is sliding on
+	 */
+	public boolean isSlidingON() {
+		return slidingON;
 	}
 
 	@Override
@@ -38,39 +95,28 @@ public class SliderListener extends MouseInputAdapter{
 		this.sliderTimer.stop();
 		
 	}
-
-	public boolean isSlidingON() {
-		return slidingON;
-	}
-
+	
+	/**
+	 * Sets the sliding on.
+	 *
+	 * @param sliderPressed the new sliding on
+	 */
 	public void setSlidingON(boolean sliderPressed) {
 		this.slidingON = sliderPressed;
 	}
-
-	public int getStartValue() {
-		return startValue;
-	}
-
+	
+	/**
+	 * Sets the start value.
+	 *
+	 * @param startValue the new start value
+	 */
 	public void setStartValue(int startValue) {
 		this.startValue = startValue;
 	}
 	
-	private void initZoomTimer(){
-		this.sliderTimer=new Timer(100, new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(sliderTimer.isRunning())
-					sliderTimer.stop();
-
-			}
-		});
-	}
-	
-	public boolean isSliderTimerRunning(){
-		return this.sliderTimer.isRunning();
-	}
-	
+	/**
+	 * Start slider timer.
+	 */
 	public void startSliderTimer(){
 		this.sliderTimer.start();
 	}
