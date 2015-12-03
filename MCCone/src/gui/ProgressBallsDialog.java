@@ -323,32 +323,17 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 			this.setLayout(null);
 		}
 
-		private void paintWithOpacity(float newOpacity){
-			LOGGER.fine("paint with opacity "+newOpacity);
-			this.opacity=newOpacity;
-			this.repaint();
-		}
+		
 
 		private void paintWithOpacity(int newARGB){
 
 			this.aRGBopacity=newARGB;
 			this.repaint();
-		}
-
-
-
-		private float getOpacity(){
-			return this.opacity;
-		}
+		}		
 
 		public int getaRGBopacity() {
 			return aRGBopacity;
 		}
-
-		public void setaRGBopacity(int aRGBopacity) {
-			this.aRGBopacity = aRGBopacity;
-		}
-
 
 
 		@Override
