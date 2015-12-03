@@ -265,7 +265,7 @@ public class ShadyMessageDialog extends JDialog{
 	/**
 	 * Gets the button text.
 	 *
-	 * @param id the id
+	 * @param ID the id
 	 * @return the button text
 	 */
 	protected String getButtonText(int id){
@@ -360,22 +360,28 @@ public class ShadyMessageDialog extends JDialog{
 	}
 
 	/**
-	 * Gets the message panel.
+	 * Gets the JPanel messagePanel.
 	 *
-	 * @return the message panel
+	 * @return JPanel MessagePanel
 	 */
 	public JPanel getMessagePanel(){
 		return this.messagePanel;
 	}
 	
 
+	/**
+	 * Adds the mouse listener to normal buttons.
+	 *
+	 * @param button the button
+	 * @throws Exception the exception
+	 */
 	private void addMouseListenerToNormalButtons(JButton button) throws Exception{
 
 		button.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -397,12 +403,18 @@ public class ShadyMessageDialog extends JDialog{
 		});
 	}
 
+/**
+ * Adds the mouse listener to cancel buttons.
+ *
+ * @param button the button
+ * @throws Exception the exception
+ */
 private void addMouseListenerToCancelButtons(JButton button) throws Exception{
 
 		button.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
