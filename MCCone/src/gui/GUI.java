@@ -2400,29 +2400,32 @@ public void setSelectedMarkingLayer(int mLayerID){
 	 *  Opens web browser and web site http://www.mc-cone.com/web_tutorial.html. If Operation system doesn't allow opening web browere
 	 */
 	private void showWebInstructions(){
-		if(Desktop.isDesktopSupported()) {
-		    try {
-		    	URI uri = new URI("http://www.mc-cone.com/web_tutorial.html");
-				Desktop.getDesktop().browse(uri);
-			} catch (IOException e1) {
-				showMessage("Instructions!", "Can't open the link. Possibly not supported by Operation system!", ID.OK);
-				LOGGER.severe("Can't open the link. Not supported by Operation system!");
-				e1.printStackTrace();
-			} catch (URISyntaxException e1) {
-				showMessage("Instructions!", "Can't open the link. Possibly not supported by Operation system!", ID.OK);
-				LOGGER.severe("Can't open the link. Not supported by Operation system!");
-				e1.printStackTrace();
-			}
-		}
-		else{
-			showMessage("Instructions!", "Can't open the link. Not supported by Operation system!", ID.OK);
-			LOGGER.severe("Can't open the link. Not supported by Operation system!");
-		}
+		String url ="http://mc-cone.com/instructions/";
+		 if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
+	            Desktop desktop = Desktop.getDesktop();
+	            try {
+	                desktop.browse(new URI(url));
+	            } catch (IOException | URISyntaxException e) {
+	            	showMessage("Instructions!", "Can't open the link. Possibly not supported by Operation system!", ID.OK);
+					LOGGER.severe("Can't open the link. Not supported by Operation system!");
+	                e.printStackTrace();
+	            }
+	        }else{
+	            Runtime runtime = Runtime.getRuntime();
+	            try {
+	                runtime.exec("xdg-open " + url);
+	            } catch (IOException e) {
+	            	showMessage("Instructions!", "Can't open the link. Possibly not supported by Operation system!", ID.OK);
+					LOGGER.severe("Can't open the link. Not supported by Operation system!");
+	                e.printStackTrace();
+	            }
+	        }
+	
 	}
 
 
 	/**
-	 * Starts the precounting
+	 * Starts the precounting, opens a progress bar and calculates the cell positions.
 	 * @param imagePanelPoint Middle Point of cell that user has picked
 	 * @param size Size of picked cell
 	 */

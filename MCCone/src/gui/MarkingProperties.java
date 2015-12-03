@@ -221,7 +221,8 @@ public class MarkingProperties extends PropertiesDialog {
 	}
 
 
-	  /**
+	 /**
+	 * Returns selected opacity of MarkingProperties.
 	 * @return the selected opacity (float)
 	 */
 	public int getSelectedOpacity() {
@@ -231,6 +232,7 @@ public class MarkingProperties extends PropertiesDialog {
 
 
 	/**
+	 * Return selected ShapeId of MarkingProperties.
 	 * @return the shape ID of selected shape. @see information.ID
 	 */
 	public int getSelectedShapeID() {
@@ -238,6 +240,7 @@ public class MarkingProperties extends PropertiesDialog {
 	}
 
 	/**
+	 * Return selected shape size of MarkingProperties.
 	 * @return the size of shape
 	 */
 	public int getSelectedSize() {
@@ -245,6 +248,7 @@ public class MarkingProperties extends PropertiesDialog {
 	}
 
 	/**
+	 * Return selected thickness of MarkingProperties.
 	 * @return the selected thickness (int)
 	 */
 	public int getSelectedThickness() {
@@ -385,16 +389,7 @@ protected void initMarkingPropertiesPanel(){
 	this.repaint();
 }
 
-/*
-protected void setPanelPosition(){
-	Rectangle guiRec = gui.getVisibleWindowBounds();
-	
-	int x =(int)guiRec.getX()+guiRec.width-400-300-50;
-	int y = (int)(this.gui.getBounds().getY());
-	recOfBackpanel = new Rectangle(50, 50,this.panelWidth,this.panelHeight);	
-	backPanel.setBounds(recOfBackpanel);		
-}
-*/
+
 /** 
  * Initializes the uppermost JPanel showing a color chooser. Color chooser is modified from default color chooser by removing swatch, rgb and hsb views.
  */
@@ -555,7 +550,8 @@ private void setMaximumThickness(){
   }
 
 /**
- *  Sets the selected color
+ * 
+ *  Sets the selected color of MarkingProperties.
  * @param color the color that will be saved
  */
 protected void setSelectedColor(Color color){
@@ -566,6 +562,7 @@ protected void setSelectedColor(Color color){
 }
 
 /**
+ * Sets the selected opacity of MarkingProperties.
  * @param selectedOpacity the new opacity value (float) of shape to be saved
  */
 public void setSelectedOpacity(int selectedOpacity) {
@@ -573,6 +570,7 @@ public void setSelectedOpacity(int selectedOpacity) {
 }
 
 /**
+ * Sets the selected shape id of MarkingProperties.
  * @param selectedShapeID the shape id (int) to been saved
  */
 public void setSelectedShapeID(int selectedShapeID) {
@@ -580,6 +578,7 @@ public void setSelectedShapeID(int selectedShapeID) {
 }
 
 /**
+ * Sets the selected size of MarkingProperties.
  * @param selectedSize the new size (int) of shape to be saved
  */
 public void setSelectedSize(int selectedSize) {
@@ -587,6 +586,7 @@ public void setSelectedSize(int selectedSize) {
 }
 
 /**
+ * Sets the selected thickness of MarkingProperties.
  * @param selectedThickness the thickenss (int) of shape to be saved
  */
 public void setSelectedThickness(int selectedThickness) {
