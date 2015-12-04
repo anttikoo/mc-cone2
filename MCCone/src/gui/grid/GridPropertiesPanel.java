@@ -738,57 +738,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	}
 	
 	
-/*
-	private void updateGridDimensionFromComboBox(){
-		int index = this.gridComboBox.getSelectedIndex();
-		if(this.gridSizes != null && this.gridSizes.size()>index){
-			SingleGridSize sgs= this.gridSizes.get(index);
-			if(sgs != null){
-				if(((GridLayout)this.gridPanel.getLayout()).getRows() != sgs.getRows() ||
-						((GridLayout)this.gridPanel.getLayout()).getColumns() != sgs.getColumns() ||
-						this.gridPanel.getComponentCount() ==0)
-				updateGridSize(sgs.getRows(), sgs.getColumns());
-
-			}
-		}
-
-		//this.gridPanel.repaint();
-	}
-
-	private void updateGridSize(int r, int c){
-		this.gridPanel.removeAll();
-		this.gridPanel.revalidate();
-		boolean usedPresentGridProperties = false;
-	//	if(gridON){
-			this.gridPanel.setLayout(new GridLayout(r, c, 1, 1));
-			this.gridPanel.revalidate();
-		//	int maxSize=Math.min((int)((gridPanel.getPreferredSize().getWidth()-((c-1)*10))/(double)c), (int)((gridPanel.getPreferredSize().getHeight()-((r-1)*10))/(double)r));
-			int maxSize=Math.min((int)(backGridExamplePanel.getPreferredSize().getWidth()/(double)c), (int)((backGridExamplePanel.getPreferredSize().getHeight()-35)/(double)r));
-			int maxGridPanelWidth= maxSize*c;
-			int maxGridPanelHeight= maxSize*r;
-			this.gridPanel.setMaximumSize(new Dimension(maxGridPanelWidth,maxGridPanelHeight));
-			this.gridPanel.setMinimumSize(new Dimension(maxGridPanelWidth,maxGridPanelHeight));
-			this.gridPanel.setPreferredSize(new Dimension(maxGridPanelWidth,maxGridPanelHeight));
-		//	GridProperties firstGP=getFirstGridPropertiesWithGridON();
-			GridProperties firstGP = getFirstGridPropertiesFromAllMarkingLayers(r,c);
-			for(int i=1;i<= r;i++){
-				for(int j=1;j<= c;j++){
-					if(firstGP != null && firstGP.getGridColumnCount()==c && firstGP.getGridRowCount()==r){
-						boolean showGR=firstGP.isSelectedGridCellAt(r, c);
-						gridPanel.add(new GridRectangle(i, j, showGR));
-						usedPresentGridProperties=true;
-					}
-					else
-						gridPanel.add(new GridRectangle(i, j, false));
-				}
-			}
-			if(!usedPresentGridProperties) // no any present properties found -> create random selections
-				setRandomGridShown(r,c);
-	//	}
-		backGridExamplePanel.repaint();
-
-	}
-*/
 	private void updateOnOffButtonIcons(){
 		try {
 			if(gridON){
