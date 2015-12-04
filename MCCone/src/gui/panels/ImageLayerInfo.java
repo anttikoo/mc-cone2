@@ -1,7 +1,5 @@
 package gui.panels;
 
-
-//import gui.AddImageLayerDialog.ImageAndMarkingPanel;
 import gui.Color_schema;
 import gui.GUI;
 import gui.MarkingProperties;
@@ -11,11 +9,8 @@ import information.Fonts;
 import information.ID;
 import information.ImageLayer;
 import information.MarkingLayer;
-
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -32,47 +27,34 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
-
-import managers.ProgramLogger;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.border.BevelBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 /**
  *
- * Panel for presenting information of one Image Layer and it's Markings
- * @author Antti
+ * Panel for presenting information of one Image Layer and it's Markings.
+ * @author Antti Kurronen
  *
  */
 public class ImageLayerInfo extends JPanel{
+	
+
+private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 private int imageLayerID;
 private String imageLayerName;
 private JPanel titlePanel;
 private JLabel title;
 private GUI gui;
-
-
 private JPanel markingArea;
-JPanel addMarkingLayerJPanel;
-private final static Logger LOGGER = Logger.getLogger("MCCLogger");
-
+private JPanel addMarkingLayerJPanel;
 
 	/**
 	 * Class constructor
@@ -98,14 +80,12 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 			this.titlePanel = new JPanel();
 			this.titlePanel.setLayout(new BoxLayout(this.titlePanel, BoxLayout.LINE_AXIS));
 			this.titlePanel.setMaximumSize(new Dimension(gui.getRightPanelWidth(),40));
-		//	this.titlePanel.setMinimumSize(new Dimension(50,40));
 			this.titlePanel.setPreferredSize(new Dimension(50,40));
 			this.titlePanel.setBackground(Color_schema.dark_40);
 			JPanel titleLabelJPanel = new JPanel();
 			titleLabelJPanel.setLayout(new BoxLayout(titleLabelJPanel, BoxLayout.LINE_AXIS));
 			titleLabelJPanel.setMaximumSize(new Dimension(gui.getRightPanelWidth()-120,40));
 			titleLabelJPanel.setPreferredSize(new Dimension(gui.getRightPanelWidth()-120,40));
-		//	LOGGER.fine("titlePanelmaxWidth: "+titleLabelJPanel.getMaximumSize().width);
 			titleLabelJPanel.setBackground(Color_schema.dark_40);
 
 			JButton selectedImageLayerJButton = new JButton();
@@ -113,8 +93,6 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 				selectedImageLayerJButton.setIcon(getImageIcon("/images/eye_open.png"));
 			else
 				selectedImageLayerJButton.setIcon(getImageIcon("/images/eye_closed.png"));
-
-
 
 			selectedImageLayerJButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 			selectedImageLayerJButton.setPreferredSize(new Dimension(40,35));
@@ -126,17 +104,7 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 			selectedImageLayerJButton.setFocusable(false);
 			addActionsToJButtons(selectedImageLayerJButton, ID.SELECTED_IMAGELAYER_JBUTTON);
 			MouseListenerCreator.addMouseListenerToButtonsWithDark40Border(selectedImageLayerJButton);
-		//	createMouseListenerToButtons(selectedImageLayerJButton, ID.SELECTED_IMAGELAYER_JBUTTON);
-
-		/*
-			JScrollPane titleScroll = new JScrollPane(titleLabelJPanel);
-			titleScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-			titleScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-			titleScroll.setMaximumSize(new Dimension((int)(gui.getScreenSize().getWidth()/5),60));
-			titleScroll.setPreferredSize(new Dimension(250,60));
-			titleScroll.setBorder(BorderFactory.createEmptyBorder());
-	*/
-
+	
 			// add gridIcon for imagelayer
 			JButton gridButton=new JButton();
 			gridButton.setPreferredSize(new Dimension(30,30));
@@ -167,21 +135,17 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 			if(this.imageLayerName.length()> 50)
 				this.title.setToolTipText(this.imageLayerName);
 			addMouseListenerToTitle(this.title, ID.IMAGE_INFO);
-		//	this.title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 			titleLabelJPanel.add(this.title);
 
 			this.titlePanel.add(selectedImageLayerJButton);
-		//	this.titlePanel.add(Box.createRigidArea(new Dimension(5,0)));
 			this.titlePanel.add(gridButton);
 			this.titlePanel.add(Box.createRigidArea(new Dimension(5,0)));
 			this.titlePanel.add(titleLabelJPanel);
-		//	this.titlePanel.add(title);
 			this.titlePanel.add(Box.createHorizontalGlue()); // when panel gets bigger the horizontal extra space comes between title and deleting button
 
 			// setup button for deleting this Image Layer
 			JPanel closeImagePanel = new JPanel();
-		//	closeImagePanel.setLayout(new BoxLayout(closeImagePanel, BoxLayout.LINE_AXIS));
 			closeImagePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			closeImagePanel.setMaximumSize(new Dimension(25,40));
 			closeImagePanel.setPreferredSize(new Dimension(25,40));
@@ -215,8 +179,6 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 			// add all MarkingLayers to markingsArea
 			addMarkingLayers(imageLayer.getMarkingLayers());
 
-
-
 			this.add(this.titlePanel, BorderLayout.PAGE_START);
 			this.add(this.markingArea, BorderLayout.CENTER);
 			initAddMarkingButton(); // add JButton for creating new Marking to bottom of ImageLayerInfo
@@ -224,139 +186,6 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 		} catch (Exception e) {
 			LOGGER.severe("Error in " +e.getClass().toString() + " :" +e.getMessage());
 		}
-	}
-
-	private void addMouseListenerToTitle(JLabel label, int type){
-		if(type == ID.IMAGE_INFO)
-		label.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				int iLayerID=((ImageLayerInfo)((JPanel)((JPanel)((JLabel)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID();
-				//LOGGER.fine("Panel: " +((ImageLayerInfo)((JPanel)((JPanel)((JLabel)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID());
-				gui.setSelectedImageLayerAndImage(iLayerID);
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-		else
-			if(type== ID.MARKING_INFO)
-				label.addMouseListener(new MouseListener() {
-
-					@Override
-					public void mouseReleased(MouseEvent e) {
-						// TODO Auto-generated method stub
-					}
-
-					@Override
-					public void mousePressed(MouseEvent e) {
-						String iLayerID= e.getSource().getClass().toString();
-						//LOGGER.fine("marking title:: " +((ImageLayerInfo)((JPanel)((JPanel)((JLabel)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID());
-						//gui.changeSelectedImageLayerAndImage(iLayerID);
-
-					}
-
-					@Override
-					public void mouseExited(MouseEvent e) {
-						// TODO Auto-generated method stub
-					}
-
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						// TODO Auto-generated method stub
-					}
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						// TODO Auto-generated method stub
-
-					}
-				});
-	}
-
-	private int getWidthOfText(Font font, JLabel lab){
-
-		try {
-			return lab.getFontMetrics(font).stringWidth(lab.getText());
-		} catch (Exception e) {
-			LOGGER.severe("Error in  getting JLabel width: " +e.getClass().toString() + " :" +e.getMessage());
-			return -1;
-		}
-	}
-
-	private String splitTextIfTooLong(String text){
-		try {
-			if(text != null){
-				if(text.length()>50){
-				 // text is too long for title
-					text = text.substring(0, 10) + "..." + text.substring(text.length()-10,text.length());
-				}
-				return text;
-
-			}
-			else{
-
-				return "";
-			}
-		} catch (Exception e) {
-			LOGGER.severe("Error splitting titles: " +e.getClass().toString() + " :" +e.getMessage());
-			return text;
-		}
-	}
-
-	/**
-	 * Changes font size for title text for getting it to fit
-	 * @param text string which length affects to font size
-	 * @return font which size has been set
-	 */
-	private Font setRightTitleFont(String text, Font font, boolean bold){
-
-
-			if(text != null && text.length()>20){
-				if(bold){
-					font=Fonts.b18;
-				}
-				else{
-					font=Fonts.p18;
-				}
-				if(text.length()>30){
-					if(bold){
-						font=Fonts.b16;
-					}
-					else{
-						font=Fonts.p16;
-					}
-					if(text.length()>40){
-						if(bold){
-							font=Fonts.b14;
-						}
-						else{
-							font=Fonts.p14;
-						}
-					}
-				}
-			}
-			return font;
-
-
 	}
 
 	/**
@@ -374,9 +203,8 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 					try {
 						// remove Imagelayer by giving unique layerID and layername
 						int layerID =((ImageLayerInfo)((JPanel)((JPanel)((JButton)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID();
-					//	LOGGER.fine(" layerid:"+layerID);
 						String layerName=((ImageLayerInfo)((JPanel)((JPanel)((JButton)e.getSource()).getParent()).getParent()).getParent()).getImageLayerName();
-					//	LOGGER.fine(" layername:"+layerName);
+					
 						if(layerID >0)
 							gui.removeImageLayer(layerID, layerName);
 					} catch (Exception e1) {
@@ -385,9 +213,6 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 					}
 				}
 			});
-
-
-
 
 		}
 		else if(typeOfAction == ID.DELETE_MARKINGLAYER){
@@ -444,20 +269,16 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 										if(iLayerID >0 && mLayerID>0){
 											MarkingLayer editingMarking = gui.getMarkingLayer(iLayerID, mLayerID);
-											if(editingMarking != null){
-
-												
-												//MarkingProperties dialog = new MarkingProperties(frame, gui, ((JButton)e.getSource()).getLocationOnScreen(), editingMarking);
+											if(editingMarking != null){										
 												MarkingProperties dialog = new MarkingProperties(gui, gui, ((JButton)e.getSource()).getLocationOnScreen(), editingMarking);
 												gui.getGuiComponentListener().setChildDialog(dialog);
-													dialog.showDialog();
-													gui.getGuiComponentListener().setChildDialog(dialog); // set this dialog to GuiComponentListener
-													dialog =null;
-													gui.getGuiComponentListener().setChildDialog(null); // set childDialog to null
+												dialog.showDialog();
+												gui.getGuiComponentListener().setChildDialog(dialog); // set this dialog to GuiComponentListener
+												dialog =null;
+												gui.getGuiComponentListener().setChildDialog(null); // set childDialog to null
 													
 											}
 										}
-
 								} catch (Exception ex) {
 									LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
 								}
@@ -482,12 +303,7 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 											sPanel.setVisibleLayer(true);
 											((JButton)e.getSource()).setIcon(getImageIcon("/images/eye_open_small.png"));
 										}
-										int mLayerID= sPanel.getMarking_layer_id();
-										//int mLayerID= ((SingleMarkingPanel)((JButton)e.getSource()).getParent()).getMarking_layer_id();
-
-									//	int iLayerID= ((ImageLayerInfo)((JPanel)((SingleMarkingPanel)((JButton)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID();
-									//	LOGGER.fine(" "+iLayerID);
-
+										int mLayerID= sPanel.getMarking_layer_id();									
 										gui.setMarkingLayerVisibility(mLayerID, !isVisible);
 
 									} catch (Exception ex) {
@@ -501,16 +317,16 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 							button.addActionListener(new ActionListener() {
 								@Override
 								public void actionPerformed(ActionEvent e) {
-										try {
-											int lastcaret = Math.max(((SingleMarkingPanel)((JButton)e.getSource()).getParent()).markingTitleJTextField.getText().length(), 0);
-											((SingleMarkingPanel)((JButton)e.getSource()).getParent()).markingTitleJTextField.setCaretPosition(lastcaret);
-											((SingleMarkingPanel)((JButton)e.getSource()).getParent()).markingTitleJTextField.setEnabled(true);
-											((SingleMarkingPanel)((JButton)e.getSource()).getParent()).markingTitleJTextField.requestFocus();
-											Font fontUsed= ((SingleMarkingPanel)((JButton)e.getSource()).getParent()).markingTitleJTextField.getFont();
-											((SingleMarkingPanel)((JButton)e.getSource()).getParent()).markingTitleJTextField.setFont(new Font(fontUsed.getName(),Font.ITALIC,fontUsed.getSize()));
-										} catch (Exception ex) {
-											LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
-										}
+									try {
+										int lastcaret = Math.max(((SingleMarkingPanel)((JButton)e.getSource()).getParent()).markingTitleJTextField.getText().length(), 0);
+										((SingleMarkingPanel)((JButton)e.getSource()).getParent()).markingTitleJTextField.setCaretPosition(lastcaret);
+										((SingleMarkingPanel)((JButton)e.getSource()).getParent()).markingTitleJTextField.setEnabled(true);
+										((SingleMarkingPanel)((JButton)e.getSource()).getParent()).markingTitleJTextField.requestFocus();
+										Font fontUsed= ((SingleMarkingPanel)((JButton)e.getSource()).getParent()).markingTitleJTextField.getFont();
+										((SingleMarkingPanel)((JButton)e.getSource()).getParent()).markingTitleJTextField.setFont(new Font(fontUsed.getName(),Font.ITALIC,fontUsed.getSize()));
+									} catch (Exception ex) {
+										LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
+									}
 								}
 							});
 						}
@@ -520,11 +336,10 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 									@Override
 									public void actionPerformed(ActionEvent e) {
 											try {
-												int iLayerID = ((ImageLayerInfo)((JPanel)((JButton)e.getSource()).getParent()).getParent()).getImageLayerID();
-												//LOGGER.fine(" layerid:"+layerID);
+												int iLayerID = ((ImageLayerInfo)((JPanel)((JButton)e.getSource()).getParent()).getParent()).getImageLayerID();										
 												gui.setSelectedImageLayerAndImage(iLayerID);
 
-												} catch (Exception ex) {
+											} catch (Exception ex) {
 												LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
 											}
 									}
@@ -535,14 +350,13 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 									button.addActionListener(new ActionListener() {
 										@Override
 										public void actionPerformed(ActionEvent e) {
-												try {
-													int iLayerID = ((ImageLayerInfo)((JPanel)((JButton)e.getSource()).getParent()).getParent()).getImageLayerID();
-													//LOGGER.fine(" layerid:"+layerID);
-													gui.showGridPropertiesPanelForMarkingLayersOfImageLayer(((JButton)e.getSource()).getLocationOnScreen(), iLayerID);
+											try {
+												int iLayerID = ((ImageLayerInfo)((JPanel)((JButton)e.getSource()).getParent()).getParent()).getImageLayerID();												
+												gui.showGridPropertiesPanelForMarkingLayersOfImageLayer(((JButton)e.getSource()).getLocationOnScreen(), iLayerID);
 
-													} catch (Exception ex) {
-													LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
-												}
+											} catch (Exception ex) {
+												LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
+											}
 										}
 									});
 								}
@@ -551,21 +365,18 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 										button.addActionListener(new ActionListener() {
 											@Override
 											public void actionPerformed(ActionEvent e) {
-													try {
+												try {
 
-														int mLayerID= ((SingleMarkingPanel)((JButton)e.getSource()).getParent()).getMarking_layer_id();
+													int mLayerID= ((SingleMarkingPanel)((JButton)e.getSource()).getParent()).getMarking_layer_id();
 
-													//	int iLayerID= ((ImageLayerInfo)((JPanel)((SingleMarkingPanel)((JButton)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID();
-													//	LOGGER.fine(" "+iLayerID);
+													if(mLayerID>0){
+														gui.showGridPropertiesPanelForSingleMarkingLayer(((JButton)e.getSource()).getLocationOnScreen(), mLayerID);
 
-														if(mLayerID>0){
-															gui.showGridPropertiesPanelForSingleMarkingLayer(((JButton)e.getSource()).getLocationOnScreen(), mLayerID);
-
-														}
-
-													} catch (Exception ex) {
-														LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
 													}
+
+												} catch (Exception ex) {
+													LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
+												}
 											}
 										});
 									}
@@ -581,8 +392,8 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 			Iterator<MarkingLayer> iterator = markingLayerList.iterator();
 			while (iterator.hasNext()) {
 				MarkingLayer ma = (MarkingLayer) iterator.next();
-				if (ma.getLayerID() >0 && ma.getLayerName() != null && ma.getLayerName().length()>0) { // layerId not yet given to MarkingLayer
-				//	LOGGER.fine("create marking 3 "+ma.getLayerID() + " " + ma.getLayerName());
+				// if layerId not yet given to MarkingLayer
+				if (ma.getLayerID() >0 && ma.getLayerName() != null && ma.getLayerName().length()>0) { 
 					// increase the maximum height of area where SingleMarkingPanels are added
 					this.markingArea.setMaximumSize(new Dimension((int)this.markingArea.getMaximumSize().getWidth(),(int)this.markingArea.getMaximumSize().getHeight()+25));
 					// increase the maximum height of this SingleMarkingPanel
@@ -597,7 +408,279 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	}
 
+	/**
+	 * Adds the mouseListener to close buttons.
+	 *
+	 * @param button the button
+	 * @throws Exception the exception
+	 */
+	private void addMouseListenerToCloseButtons(JButton button) throws Exception{
+		button.addMouseListener(new MouseListener() {
 
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// do nothing
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 2));
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 1));
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setIcon(getImageIcon("/images/close_small_selected.png"));
+
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setIcon(getImageIcon("/images/close_small.png"));
+
+			}
+		});
+	}
+
+	/**
+	 * Adds the mouseListener to title.
+	 *
+	 * @param label the label
+	 * @param type the type
+	 */
+	private void addMouseListenerToTitle(JLabel label, int type){
+		if(type == ID.IMAGE_INFO)
+		label.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// do nothing
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// do nothing
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int iLayerID=((ImageLayerInfo)((JPanel)((JPanel)((JLabel)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID();
+				//LOGGER.fine("Panel: " +((ImageLayerInfo)((JPanel)((JPanel)((JLabel)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID());
+				gui.setSelectedImageLayerAndImage(iLayerID);
+
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// do nothing
+			}
+		});
+		else
+			if(type== ID.MARKING_INFO) // not doing anything yet
+				label.addMouseListener(new MouseListener() {
+
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						// do nothing
+
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						// do nothing
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e) {
+						// do nothing
+					}
+
+					@Override
+					public void mousePressed(MouseEvent e) {
+						// do nothing -> this is done at SingleMarkingPanel ->
+						//String iLayerID= e.getSource().getClass().toString();
+						//LOGGER.fine("marking title:: " +((ImageLayerInfo)((JPanel)((JPanel)((JLabel)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID());
+						//gui.changeSelectedImageLayerAndImage(iLayerID);
+
+					}
+					@Override
+					public void mouseReleased(MouseEvent e) {
+						// do nothing
+					}
+				});
+	}
+
+	/**
+	 * Creates the mouse listener to buttons.
+	 *
+	 * @param button the button
+	 * @param typeOfButton the type of button
+	 */
+	private void createMouseListenerToButtons(JButton button, int typeOfButton){
+		if(typeOfButton == ID.VISIBLEMARKINGJBUTTON){
+		button.addMouseListener(new MouseListener() {
+	
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// do nothing
+	
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 1));
+	
+			}
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_70, 1));
+	
+			}
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.orange_dark, 2));
+	
+			}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_70, 1));
+	
+			}
+		});
+		}
+		else if(typeOfButton==ID.SHAPEJBUTTON){
+			button.addMouseListener(new MouseListener() {
+	
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					// do nothing
+	
+				}
+	
+				@Override
+				public void mouseEntered(MouseEvent arg0) {
+					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 1));
+	
+				}
+	
+				@Override
+				public void mouseExited(MouseEvent arg0) {
+					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_70, 1));
+	
+				}
+	
+				@Override
+				public void mousePressed(MouseEvent arg0) {				
+					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.orange_dark, 1));
+				}
+	
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_70, 1));
+				}
+			});
+		}else if(typeOfButton==ID.SELECTED_IMAGELAYER_JBUTTON){
+			button.addMouseListener(new MouseListener() {
+	
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					// do nothing
+	
+				}
+	
+				@Override
+				public void mouseEntered(MouseEvent arg0) {
+					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 1));
+	
+				}
+	
+				@Override
+				public void mouseExited(MouseEvent arg0) {
+					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_40, 1));
+	
+				}
+	
+				@Override
+				public void mousePressed(MouseEvent arg0) {
+					
+					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.orange_dark, 1));
+				}
+	
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					
+					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_40, 1));
+				}
+			});
+		}
+	
+	}
+
+
+
+	/**
+	 * Creates and returns the image icon from given image path.
+	 *
+	 * @param path the path
+	 * @return the image icon
+	 */
+	private ImageIcon getImageIcon(String path) {
+	
+			try {
+				URL url = this.getClass().getResource(path);
+				ImageIcon img = new ImageIcon(url);
+				return img;
+			} catch (Exception e) {
+				LOGGER.severe("Error in adding SingleMarkingPanel " +e.getClass().toString() + " :" +e.getMessage());
+				return null;
+			}
+	}
+
+/**
+ * Returns the ID of ImageLayer.
+ *
+ * @return the image layer id
+ */
+public int getImageLayerID() {
+	return imageLayerID;
+}
+
+/**
+ * Returns the image layer name.
+ *
+ * @return the image layer name
+ */
+public String getImageLayerName() {
+	return imageLayerName;
+}
+
+	/**
+	 * Returns the width of JLabel with given text.
+	 *
+	 * @param font the font
+	 * @param  lab the JLabel
+	 * @return the width of text
+	 */
+	private int getWidthOfText(Font font, JLabel lab){
+
+		try {
+			return lab.getFontMetrics(font).stringWidth(lab.getText());
+		} catch (Exception e) {
+			LOGGER.severe("Error in  getting JLabel width: " +e.getClass().toString() + " :" +e.getMessage());
+			return -1;
+		}
+	}
 
 	/**
 	 * Creates a JButton for adding new Marking Layer
@@ -611,11 +694,9 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 		addMarkingLayerJPanel.setBackground(Color_schema.dark_40);
 		JButton addMarkingLayerJButton = new JButton("ADD NEW MARKING");
 		addMarkingLayerJButton.setMaximumSize(new Dimension(220, 30));
-	//	addMarkingLayerJButton.setFont(new Font("Consolas", Font.PLAIN,15));
 		addMarkingLayerJButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		addMarkingLayerJButton.setToolTipText("Create new Marking Layer for this Image Layer: " +getImageLayerName() );
 		addMarkingLayerJButton.setBackground(Color_schema.dark_30);
-	//	addMarkingLayerJButton.setForeground(Color_schema.color_Button_light_border);
 		addMarkingLayerJButton.setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 1));
 		addMarkingLayerJButton.setFocusable(false);
 
@@ -623,16 +704,9 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 		addMarkingLayerJButton.addMouseListener(new MouseListener() {
 
 			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setForeground(Color_schema.white_230);
-			}
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setForeground(Color_schema.orange_dark);
-			}
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
+			public void mouseClicked(MouseEvent arg0) {
+				// do nothing
+
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
@@ -640,9 +714,16 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 			}
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
+			public void mouseExited(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
+			}
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setForeground(Color_schema.orange_dark);
+			}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setForeground(Color_schema.white_230);
 			}
 		});
 		addMarkingLayerJPanel.add(Box.createRigidArea(new Dimension(0,2)));
@@ -652,175 +733,87 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 		this.add(addMarkingLayerJPanel,BorderLayout.PAGE_END);
 	}
 
-private ImageIcon getImageIcon(String path) {
-
-		try {
-			URL url = this.getClass().getResource(path);
-			ImageIcon img = new ImageIcon(url);
-			return img;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			LOGGER.severe("Error in adding SingleMarkingPanel " +e.getClass().toString() + " :" +e.getMessage());
-			return null;
-		}
-}
-
-private void createMouseListenerToButtons(JButton button, int typeOfButton){
-	if(typeOfButton == ID.VISIBLEMARKINGJBUTTON){
-	button.addMouseListener(new MouseListener() {
-
-		@Override
-		public void mouseReleased(MouseEvent arg0) {
-			((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_70, 1));
-
-		}
-		@Override
-		public void mousePressed(MouseEvent arg0) {
-			((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.orange_dark, 2));
-
-		}
-		@Override
-		public void mouseExited(MouseEvent arg0) {
-			((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_70, 1));
-
-		}
-		@Override
-		public void mouseEntered(MouseEvent arg0) {
-			((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 1));
-
-		}
-		@Override
-		public void mouseClicked(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
-	});
-	}
-	else if(typeOfButton==ID.SHAPEJBUTTON){
-		button.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_70, 1));
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.orange_dark, 1));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_70, 1));
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 1));
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-	}else if(typeOfButton==ID.SELECTED_IMAGELAYER_JBUTTON){
-		button.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_40, 1));
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.orange_dark, 1));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_40, 1));
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 1));
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-	}
-
-}
-
-	private void addMouseListenerToCloseButtons(JButton button) throws Exception{
-		button.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setIcon(getImageIcon("/images/close_small.png"));
-
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setIcon(getImageIcon("/images/close_small_selected.png"));
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 1));
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 2));
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-	}
-
-	public int getImageLayerID() {
-		return imageLayerID;
-	}
-
+	/**
+	 * Sets the ID of ImageLayer 
+	 *
+	 * @param layer_ID the new ID of ImageLayer
+	 */
 	public void setImageLayer_ID(int layer_ID) {
 		this.imageLayerID = layer_ID;
 	}
-	public String getImageLayerName() {
-		return imageLayerName;
-	}
+	
+	/**
+	 * Sets the name of ImageLayer.
+	 *
+	 * @param layer_name the new image layer name
+	 */
 	public void setImageLayerName(String layer_name) {
 		this.imageLayerName = layer_name;
 	}
+	/**
+	 * Changes font size for title text for getting it to fit to panel.
+	 * @param text string which length affects to font size
+	 * @return font which size has been set
+	 */
+	private Font setRightTitleFont(String text, Font font, boolean bold){
 
 
-
+			if(text != null && text.length()>20){
+				if(bold){
+					font=Fonts.b18;
+				}
+				else{
+					font=Fonts.p18;
+				}
+				if(text.length()>30){
+					if(bold){
+						font=Fonts.b16;
+					}
+					else{
+						font=Fonts.p16;
+					}
+					if(text.length()>40){
+						if(bold){
+							font=Fonts.b14;
+						}
+						else{
+							font=Fonts.p14;
+						}
+					}
+				}
+			}
+			return font;
+	}
 
 
 	/**
-	 * Creates a JPanel containing information of single Marking panel
+	 * Splits text if too long.
+	 *
+	 * @param text the text
+	 * @return the string
+	 */
+	private String splitTextIfTooLong(String text){
+		try {
+			if(text != null){
+				if(text.length()>50){
+				 // text is too long for title
+					text = text.substring(0, 10) + "..." + text.substring(text.length()-10,text.length());
+				}
+				return text;
+
+			}
+			else{
+
+				return "";
+			}
+		} catch (Exception e) {
+			LOGGER.severe("Error splitting titles: " +e.getClass().toString() + " :" +e.getMessage());
+			return text;
+		}
+	}
+	
+	/**
+	 * Creates a JPanel containing information of single MarkingLayer.
 	 * @author Antti Kurronen
 	 *
 	 */
@@ -834,8 +827,9 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 		private MarkingLayer markingLayer;
 
 		/**
-		 * @param name name for markingPanel is given only if markingPanel is opened from file
-		 * @param id identifier for layer that enables accessing to right markings between informationCenter - GUI
+		 * Instantiates a new single marking panel for info part.
+		 *
+		 * @param markingLayer the marking layer
 		 */
 		private SingleMarkingPanel(MarkingLayer markingLayer){
 			try {
@@ -867,9 +861,7 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 
 				ShapeIcon icon = new ShapeIcon(markingLayer.getShapeID(), 22, 22, markingLayer.getColor(), this.getBackground());
 				JButton shapeJButton = new JButton(icon);
-			//	JButton shapeJButton = new JButton(getImageIcon("/images/eye_closed_small.png"));
-
-
+		
 				shapeJButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 				shapeJButton.setPreferredSize(new Dimension(22,27));
 				shapeJButton.setMargin(new Insets(0, 0, 0, 0));
@@ -918,7 +910,6 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 
 				markingTitleJTextField = new JTextField();
 				markingTitleJTextField.setText(this.getMarking_layer_name());
-		//		markingTitleJTextField.setAlignmentX(Component.RIGHT_ALIGNMENT);
 				markingTitleJTextField.setCaretPosition(0);
 				markingTitleJTextField.setEnabled(false);
 				markingTitleJTextField.setFont(Fonts.p17);
@@ -950,8 +941,9 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 				markingTitleJTextField.addKeyListener(new KeyListener() {
 
 					@Override
-					public void keyTyped(KeyEvent arg0) {
-						// TODO Auto-generated method stub
+					public void keyPressed(KeyEvent arg0) {
+
+
 
 					}
 
@@ -963,7 +955,6 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 						int markingID = ((SingleMarkingPanel)((JTextField)arg0.getSource()).getParent()).getMarking_layer_id();
 						String markingName = ((JTextField)arg0.getSource()).getText();
 						gui.setMarkingLayerName(imageID, markingID, markingName);
-						//LOGGER.fine("the text is: " +((JTextField)arg0.getSource()).getText() + "id"+markingID);
 						if(arg0.getKeyCode()== KeyEvent.VK_ENTER){
 							title.requestFocus();
 
@@ -974,14 +965,19 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 					}
 
 					@Override
-					public void keyPressed(KeyEvent arg0) {
-
-
+					public void keyTyped(KeyEvent arg0) {
+						// do nothing
 
 					}
 				});
 
 				markingTitleJTextField.addFocusListener(new FocusListener() {
+
+					@Override
+					public void focusGained(FocusEvent e) {
+						// do nothing
+
+					}
 
 					@Override
 					public void focusLost(FocusEvent e) {
@@ -992,15 +988,8 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 							markingTitleJTextField.setFont(Fonts.b18);
 						else
 							markingTitleJTextField.setFont(Fonts.p17);
-
-					//	markingTitleJTextField.setFont(new Font(fontUsed.getName(),Font.BOLD,fontUsed.getSize()));
+						
 						markingTitleJTextField.setCaretPosition(0);
-					}
-
-					@Override
-					public void focusGained(FocusEvent e) {
-						// TODO Auto-generated method stub
-
 					}
 				});
 
@@ -1009,8 +998,20 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 				markingTitleJTextField.addMouseListener(new MouseListener() {
 
 					@Override
-					public void mouseReleased(MouseEvent e) {
-						// TODO Auto-generated method stub
+					public void mouseClicked(MouseEvent e) {
+						// do nothing
+
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						// do nothing
+
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e) {
+						// do nothing
 
 					}
 
@@ -1024,20 +1025,8 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 					}
 
 					@Override
-					public void mouseExited(MouseEvent e) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						// TODO Auto-generated method stub
+					public void mouseReleased(MouseEvent e) {
+						// do nothing
 
 					}
 				});
@@ -1054,11 +1043,7 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 				countingJPanel.add(Box.createRigidArea(new Dimension(5,0)));
 
 				//Add closing box to right of markinginfo
-			/*	JPanel closePanel = new JPanel();
-				closePanel.setLayout(new BorderLayout(0,0));
-				closePanel.setMaximumSize(new Dimension(5000,18));
-				closePanel.setBackground(Color_schema.dark_70);
-			*/
+			
 				closeJButton = new JButton(getImageIcon("/images/close_small.png"));
 				closeJButton.setAlignmentY(Component.CENTER_ALIGNMENT);
 				closeJButton.setPreferredSize(new Dimension(18,18));
@@ -1068,40 +1053,37 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 				closeJButton.setFocusable(false);
 				closeJButton.setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 1));
 				closeJButton.setToolTipText("Delete Marking Layer: " +getMarking_layer_name());
-			//	addMouseListenerToCloseButtons(closeJButton);
 				MouseListenerCreator.addMouseListenerToSmallCloseButtons(closeJButton);
 				addActionsToJButtons(closeJButton, ID.DELETE_MARKINGLAYER);
 
-			//	closePanel.add(closeJButton, BorderLayout.CENTER);
-			//	countingJPanel.add(closePanel);
 				countingJPanel.add(closeJButton);
 				countingJPanel.add(Box.createRigidArea(new Dimension(3,0)));
-
-
 
 				this.add(visibleMarkingJButton); //
 
 				this.add(shapeJButton);
-			//	this.add(Box.createRigidArea(new Dimension(5,0)));
 				this.add(gridButton);
 				this.add(editMarkingTitleJButton);
 				this.add(Box.createRigidArea(new Dimension(5,0)));
 				this.add(markingTitleJTextField);
-
 				this.add(Box.createHorizontalGlue());
 				this.add(countingJPanel);
 
-			//	this.validate();
 
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				// do nothing
 				LOGGER.severe("Error in adding SingleMarkingPanel " +e.getClass().toString() + " :" +e.getMessage());
 			}
 		}
 
 
 
+		/**
+		 * Returns the counting text width.
+		 *
+		 * @return the counting text width
+		 */
 		private int getCountingTextWidth(){
 			return getWidthOfText(this.countJLabel.getFont(), this.countJLabel);
 		}
@@ -1109,24 +1091,22 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 
 
 
+		/**
+		 * Returns the ID of MarkingLayer.
+		 *
+		 * @return the marking_layer_id
+		 */
 		public int getMarking_layer_id() {
 			return marking_layer_id;
 		}
 
-		public boolean isMarkingLayerSelected(){
-			if(this.markingLayer!= null){
-				return this.markingLayer.isSelected();
-			}
-			return false;
-		}
-
 		/**
-		 * Updates the markinglayerId value and JLabel showing it
-		 * @param marking_layer_id int value of counted markings
+		 * Returns the name of MarkingLayer.
+		 *
+		 * @return the marking_layer_name
 		 */
-		public void updateMarking_layer_id(int marking_layer_id) {
-			this.marking_layer_id = marking_layer_id;
-			this.countJLabel.setText(""+this.marking_layer_id);
+		public String getMarking_layer_name() {
+			return marking_layer_name;
 		}
 
 		/**
@@ -1137,10 +1117,26 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 			this.countJLabel.setText(""+this.marking_layer_id);
 		}
 
+		/**
+		 * Checks if is marking layer selected.
+		 *
+		 * @return true, if is marking layer selected
+		 */
+		public boolean isMarkingLayerSelected(){
+			if(this.markingLayer!= null){
+				return this.markingLayer.isSelected();
+			}
+			return false;
+		}
 
 
-		public String getMarking_layer_name() {
-			return marking_layer_name;
+		/**
+		 * Checks if is visible layer.
+		 *
+		 * @return true, if is visible layer
+		 */
+		public boolean isVisibleLayer() {
+			return isVisibleLayer;
 		}
 
 
@@ -1152,12 +1148,22 @@ private void createMouseListenerToButtons(JButton button, int typeOfButton){
 			this.marking_layer_name = marking_layer_name;
 		}
 
-		public boolean isVisibleLayer() {
-			return isVisibleLayer;
-		}
-
+		/**
+		 * Sets the layer visibility.
+		 *
+		 * @param isVisibleLayer the new visible layer
+		 */
 		public void setVisibleLayer(boolean isVisibleLayer) {
 			this.isVisibleLayer = isVisibleLayer;
+		}
+
+		/**
+		 * Updates the markinglayerId value and JLabel showing it
+		 * @param marking_layer_id int value of counted markings
+		 */
+		public void updateMarking_layer_id(int marking_layer_id) {
+			this.marking_layer_id = marking_layer_id;
+			this.countJLabel.setText(""+this.marking_layer_id);
 		}
 
 	}
