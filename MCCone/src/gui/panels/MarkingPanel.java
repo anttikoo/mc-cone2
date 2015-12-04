@@ -19,6 +19,7 @@ import operators.ShapeDrawer;
  * The Class MarkingPanel. Draws the markings of single MarkingLayer over image. 
  */
 public class MarkingPanel extends JPanel {
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private int id;
 	private Color paintColor;
 	private float thickness;
@@ -27,7 +28,6 @@ public class MarkingPanel extends JPanel {
 	private boolean isVisible=true;
 	private Graphics2D g2d;
 	private ShapeDrawer shapeDrawer;
-	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 
 	/**
@@ -49,12 +49,50 @@ public class MarkingPanel extends JPanel {
 	}
 
 	/**
-	 * Sets the new cursor.
-	 *
-	 * @param cursor the new new cursor
+	 *  Calculates closest Point from coordinatelist to given point. Calculates Manhattan distance.
+	 * @param p Point where coordinatelist Points are compared
+	 * @return return the closest point from coordinateList if the distance is small enough: @see information.SharedVariables.DISTANCE_TO_REMOVE.
 	 */
-	public void setNewCursor(Cursor cursor){
-		this.setCursor(cursor);
+	public Point getClosestMarkingPoint(Point p, int distanceParameter){
+		try {
+			if(isVisible){ // return null if not visible
+				int min_distance=Integer.MAX_VALUE;
+				Point min_point=null;
+				Iterator<Point> pIterator = this.coordinateList.iterator();
+				while(pIterator.hasNext()){
+					Point i= pIterator.next();
+					int x_distance= p.x-i.x;
+					if(x_distance <0)
+						x_distance*=-1;
+
+					int y_distance= p.y-i.y;
+					if(y_distance < 0)
+						y_distance*=-1;
+					if(x_distance+y_distance < min_distance){
+						min_distance=x_distance+y_distance;
+						if(min_distance <= distanceParameter)
+							min_point=i;
+					}
+				}
+				if(min_point != null)
+			//	System.out.println("given point: "+p.x +" " +p.y + " found: " +min_point.x+ " "+ min_point.y);
+				return min_point;
+				}
+			return null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in MarkingPanel: getting closest Marking Point: "+e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the coordinate list.
+	 *
+	 * @return the coordinate list
+	 */
+	public ArrayList<Point> getCoordinateList() {
+		return coordinateList;
 	}
 
 	/**
@@ -72,28 +110,6 @@ public class MarkingPanel extends JPanel {
 	public boolean isVisible() {
 		return isVisible;
 	}
-
-	/* (non-Javadoc)
-	 * @see javax.swing.JComponent#setVisible(boolean)
-	 */
-	public void setVisible(boolean isVisible) {
-		this.isVisible = isVisible;
-	}
-
-	/**
-	 * Sets the marking panel properties.
-	 *
-	 * @param mLayer the new marking panel properties
-	 */
-	public void setMarkingPanelProperties(MarkingLayer mLayer){	
-		this.paintColor=mLayer.getColor();
-		this.thickness=mLayer.getThickness();
-		mLayer.getOpacity();
-		this.shapeID= mLayer.getShapeID();
-		mLayer.getSize();
-		this.shapeDrawer=new ShapeDrawer(mLayer, mLayer.getSize(), mLayer.getThickness(), mLayer.getOpacity(), mLayer.getColor());
-	}
-
 
 	/* (non-Javadoc)
 	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
@@ -162,52 +178,6 @@ public class MarkingPanel extends JPanel {
 
 }
 
-	/**
-	 *  Calculates closest Point from coordinatelist to given point. Calculates Manhattan distance.
-	 * @param p Point where coordinatelist Points are compared
-	 * @return return the closest point from coordinateList if the distance is small enough: @see information.SharedVariables.DISTANCE_TO_REMOVE.
-	 */
-	public Point getClosestMarkingPoint(Point p, int distanceParameter){
-		try {
-			if(isVisible){ // return null if not visible
-				int min_distance=Integer.MAX_VALUE;
-				Point min_point=null;
-				Iterator<Point> pIterator = this.coordinateList.iterator();
-				while(pIterator.hasNext()){
-					Point i= pIterator.next();
-					int x_distance= p.x-i.x;
-					if(x_distance <0)
-						x_distance*=-1;
-
-					int y_distance= p.y-i.y;
-					if(y_distance < 0)
-						y_distance*=-1;
-					if(x_distance+y_distance < min_distance){
-						min_distance=x_distance+y_distance;
-						if(min_distance <= distanceParameter)
-							min_point=i;
-					}
-				}
-				if(min_point != null)
-			//	System.out.println("given point: "+p.x +" " +p.y + " found: " +min_point.x+ " "+ min_point.y);
-				return min_point;
-				}
-			return null;
-		} catch (Exception e) {
-			LOGGER.severe("Error in MarkingPanel: getting closest Marking Point: "+e.getMessage());
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	/**
-	 * Returns the coordinate list.
-	 *
-	 * @return the coordinate list
-	 */
-	public ArrayList<Point> getCoordinateList() {
-		return coordinateList;
-	}
 
 	/**
 	 * Sets the coordinate list.
@@ -216,5 +186,35 @@ public class MarkingPanel extends JPanel {
 	 */
 	public void setCoordinateList(ArrayList<Point> coordinateList) {
 		this.coordinateList = coordinateList;
+	}
+
+	/**
+	 * Sets the marking panel properties.
+	 *
+	 * @param mLayer the new marking panel properties
+	 */
+	public void setMarkingPanelProperties(MarkingLayer mLayer){	
+		this.paintColor=mLayer.getColor();
+		this.thickness=mLayer.getThickness();
+		mLayer.getOpacity();
+		this.shapeID= mLayer.getShapeID();
+		mLayer.getSize();
+		this.shapeDrawer=new ShapeDrawer(mLayer, mLayer.getSize(), mLayer.getThickness(), mLayer.getOpacity(), mLayer.getColor());
+	}
+
+	/**
+	 * Sets the new cursor.
+	 *
+	 * @param cursor the new new cursor
+	 */
+	public void setNewCursor(Cursor cursor){
+		this.setCursor(cursor);
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#setVisible(boolean)
+	 */
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
 	}
 }
