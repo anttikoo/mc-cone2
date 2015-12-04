@@ -20,7 +20,7 @@ public class ImagePanel extends JPanel {
 	private BufferedImage image_to_shown;
 	private Point location; // the top left corner of image to be drawn
 
-
+	
 	/**
 	 *  Class constructor.
 	 *

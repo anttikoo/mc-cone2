@@ -2,103 +2,102 @@ package gui.panels;
 
 import information.ID;
 import information.MarkingLayer;
-import information.SharedVariables;
-
-import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
-
 import javax.swing.JPanel;
-
 import operators.ShapeDrawer;
 
+/**
+ * The Class MarkingPanel. Draws the markings of single MarkingLayer over image. 
+ */
 public class MarkingPanel extends JPanel {
-	private String name;
 	private int id;
 	private Color paintColor;
 	private float thickness;
-	private float opacity;
 	private int shapeID; // ID.SHAPE_CIRCLE, ID.SHAPE_CROSS, etc...
-	private int shapeSize;
 	private ArrayList<Point> coordinateList;
-//	private BasicStroke strokeThick;
-//	private BasicStroke strokeThin;
-	private int rule_alpha;
 	private boolean isVisible=true;
 	private Graphics2D g2d;
 	private ShapeDrawer shapeDrawer;
-
-
-
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 
-
+	/**
+	 * Instantiates a new marking panel.
+	 *
+	 * @param mLayer the MarkingLayer
+	 */
 	public MarkingPanel(MarkingLayer mLayer){
 		this.setOpaque(false); // layer has to be transparent
-	//	this.setBackground(new Color(0,0,0,0));
 		this.id=mLayer.getLayerID();
 		this.paintColor=mLayer.getColor();
 		this.thickness=mLayer.getThickness();
-		this.opacity=mLayer.getOpacity();
+		mLayer.getOpacity();
 		this.shapeID= mLayer.getShapeID();
-		this.shapeSize=mLayer.getSize();
-//		this.strokeThin=new BasicStroke(this.thickness);
-//		this.strokeThick=new BasicStroke(this.thickness*3);
+		mLayer.getSize();
 		setCoordinateList(new ArrayList<Point>());
-		this.rule_alpha=AlphaComposite.SRC_OVER;
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		this.shapeDrawer=new ShapeDrawer(mLayer, mLayer.getSize(), mLayer.getThickness(), mLayer.getOpacity(), mLayer.getColor());
-
-
 	}
 
+	/**
+	 * Sets the new cursor.
+	 *
+	 * @param cursor the new new cursor
+	 */
 	public void setNewCursor(Cursor cursor){
 		this.setCursor(cursor);
 	}
 
+	/**
+	 * Returns the ID of the MarkingLayer of this MarkingPanel.
+	 *
+	 * @return the id
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.Component#isVisible()
+	 */
 	public boolean isVisible() {
 		return isVisible;
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#setVisible(boolean)
+	 */
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
 	}
 
-	public void setMarkingPanelProperties(MarkingLayer mLayer){
-		//this.id=mLayer.getLayerID();
+	/**
+	 * Sets the marking panel properties.
+	 *
+	 * @param mLayer the new marking panel properties
+	 */
+	public void setMarkingPanelProperties(MarkingLayer mLayer){	
 		this.paintColor=mLayer.getColor();
 		this.thickness=mLayer.getThickness();
-		this.opacity=mLayer.getOpacity();
+		mLayer.getOpacity();
 		this.shapeID= mLayer.getShapeID();
-		this.shapeSize=mLayer.getSize();
-	//	this.strokeThin=new BasicStroke(this.thickness);
-	//	this.strokeThick=new BasicStroke(this.thickness*3);
+		mLayer.getSize();
 		this.shapeDrawer=new ShapeDrawer(mLayer, mLayer.getSize(), mLayer.getThickness(), mLayer.getOpacity(), mLayer.getColor());
 	}
 
-/*
-	public void setId(int id) {
-		this.id = id;
-	}
-*/
+
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 
@@ -169,38 +168,52 @@ public class MarkingPanel extends JPanel {
 	 * @return return the closest point from coordinateList if the distance is small enough: @see information.SharedVariables.DISTANCE_TO_REMOVE.
 	 */
 	public Point getClosestMarkingPoint(Point p, int distanceParameter){
-		if(isVisible){ // return null if not visible
-			int min_distance=Integer.MAX_VALUE;
-			Point min_point=null;
-			Iterator<Point> pIterator = this.coordinateList.iterator();
-			while(pIterator.hasNext()){
-				Point i= pIterator.next();
-				int x_distance= p.x-i.x;
-				if(x_distance <0)
-					x_distance*=-1;
+		try {
+			if(isVisible){ // return null if not visible
+				int min_distance=Integer.MAX_VALUE;
+				Point min_point=null;
+				Iterator<Point> pIterator = this.coordinateList.iterator();
+				while(pIterator.hasNext()){
+					Point i= pIterator.next();
+					int x_distance= p.x-i.x;
+					if(x_distance <0)
+						x_distance*=-1;
 
-				int y_distance= p.y-i.y;
-				if(y_distance < 0)
-					y_distance*=-1;
-				if(x_distance+y_distance < min_distance){
-					min_distance=x_distance+y_distance;
-					if(min_distance <= distanceParameter)
-						min_point=i;
+					int y_distance= p.y-i.y;
+					if(y_distance < 0)
+						y_distance*=-1;
+					if(x_distance+y_distance < min_distance){
+						min_distance=x_distance+y_distance;
+						if(min_distance <= distanceParameter)
+							min_point=i;
+					}
 				}
-
-
-			}
-			if(min_point != null)
-		//	System.out.println("given point: "+p.x +" " +p.y + " found: " +min_point.x+ " "+ min_point.y);
-			return min_point;
-			}
-		return null;
+				if(min_point != null)
+			//	System.out.println("given point: "+p.x +" " +p.y + " found: " +min_point.x+ " "+ min_point.y);
+				return min_point;
+				}
+			return null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in MarkingPanel: getting closest Marking Point: "+e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
 	}
 
+	/**
+	 * Returns the coordinate list.
+	 *
+	 * @return the coordinate list
+	 */
 	public ArrayList<Point> getCoordinateList() {
 		return coordinateList;
 	}
 
+	/**
+	 * Sets the coordinate list.
+	 *
+	 * @param coordinateList the new coordinate list
+	 */
 	public void setCoordinateList(ArrayList<Point> coordinateList) {
 		this.coordinateList = coordinateList;
 	}
