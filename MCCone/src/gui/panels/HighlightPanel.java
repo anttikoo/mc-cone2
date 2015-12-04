@@ -3,24 +3,20 @@ package gui.panels;
 import gui.Color_schema;
 import information.ID;
 import information.MarkingLayer;
-
-import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import javax.swing.JPanel;
-
 import operators.ShapeDrawer;
 
 
 
 
+/**
+ * The Class HighlightPanel. Draws highlight shape on shape when mouse hovered over.
+ */
 public class HighlightPanel extends JPanel{
 	private Point highlightPoint;
 	private float thickness;
@@ -29,11 +25,19 @@ public class HighlightPanel extends JPanel{
 	private Graphics2D g2d;
 	private ShapeDrawer shapeDrawer=null;
 
+	/**
+	 * Instantiates a new highlight panel.
+	 */
 	public HighlightPanel() {
 		this.opacity= 0.7f;
 		this.setOpaque(false);
 	}
 
+	/**
+	 * Sets the MarkingLayer, which markings are viewed.
+	 *
+	 * @param layer the new layer
+	 */
 	public void setLayer(MarkingLayer layer){
 		if(layer != null){
 			this.shapeDrawer=new ShapeDrawer(layer, layer.getSize()+2, layer.getThickness(),this.opacity, layer.getColor());
@@ -45,6 +49,9 @@ public class HighlightPanel extends JPanel{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		if(this.highlightPoint != null && this.shapeDrawer !=null){
@@ -115,6 +122,11 @@ public class HighlightPanel extends JPanel{
 }
 
 
+	/**
+	 * Updates highlighted point.
+	 *
+	 * @param highlightPoint the highlight Point
+	 */
 	public void updateHighlightPoint(Point highlightPoint) {
 
 		this.highlightPoint = highlightPoint;
