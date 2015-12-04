@@ -638,19 +638,25 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 	}
 	
-
 	
-	
+	/**
+	 * Updates the preview grid dimension. This will be launched in startup, 
+	 * when selected new index in dimension combobox or when randomSlider is moved.
+	 *
+	 * @param updateType the update type
+	 */
 	private void updateGridDimensionFromComboBox(int updateType){
 		int index=0;
 		SingleGridSize sgs=null;
 		switch(updateType){
+		// at startup of this GridPropertiesPanel
 			case ID.GPANEL_STARTUP:
 				if(this.templateGP != null)
 					index = getIndexOfGridSizeList(this.templateGP.getGridRowCount(), this.templateGP.getGridColumnCount());
 				break;
-			case ID.GPANEL_GRID_SIZE_CHANGED:
 				 // user pressed new index of combobox
+			case ID.GPANEL_GRID_SIZE_CHANGED:
+				
 				index = this.gridComboBox.getSelectedIndex();
 				// get new template GP, because the column and row are changed
 				if(this.gridSizes != null && this.gridSizes.size()>index){
@@ -660,7 +666,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 					}
 				}
 				break;
-				
+				//random slider moved
 			case ID.GPANEL_RANDOM_PROCENT_CHANGED:
 				index = this.gridComboBox.getSelectedIndex();
 				if(this.gridSizes != null && this.gridSizes.size()>index){
@@ -673,7 +679,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			
 		
 		}
-		
+		// if gridSizes has values -> update Grid
 		if(this.gridSizes != null && this.gridSizes.size()>index){
 			if(sgs==null)
 				sgs= this.gridSizes.get(index);
@@ -686,7 +692,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			
 		}
 
-		//this.gridPanel.repaint();
+		
 	}
 	
 	/**
@@ -704,17 +710,16 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		this.gridPanel.removeAll();
 		this.gridPanel.revalidate();
 		boolean usedTemplateGridProperties = false;
-	//	if(gridON){
+	
 			this.gridPanel.setLayout(new GridLayout(r, c, 1, 1));
 			this.gridPanel.revalidate();
-		//	int maxSize=Math.min((int)((gridPanel.getPreferredSize().getWidth()-((c-1)*10))/(double)c), (int)((gridPanel.getPreferredSize().getHeight()-((r-1)*10))/(double)r));
 			int maxSize=Math.min((int)(backGridExamplePanel.getPreferredSize().getWidth()/(double)c), (int)((backGridExamplePanel.getPreferredSize().getHeight()-35)/(double)r));
 			int maxGridPanelWidth= maxSize*c;
 			int maxGridPanelHeight= maxSize*r;
 			this.gridPanel.setMaximumSize(new Dimension(maxGridPanelWidth,maxGridPanelHeight));
 			this.gridPanel.setMinimumSize(new Dimension(maxGridPanelWidth,maxGridPanelHeight));
 			this.gridPanel.setPreferredSize(new Dimension(maxGridPanelWidth,maxGridPanelHeight));
-		//	GridProperties firstGP=getFirstGridPropertiesWithGridON();
+		
 			
 			for(int i=1;i<= r;i++){
 				for(int j=1;j<= c;j++){
@@ -730,7 +735,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			}
 			if(!usedTemplateGridProperties) // no any present properties found -> create random selections
 				setRandomGridShown(r,c);
-	//	}
+
 		backGridExamplePanel.repaint();
 
 	}
