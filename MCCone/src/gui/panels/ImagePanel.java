@@ -64,20 +64,7 @@ public class ImagePanel extends JPanel {
 
 	}
 
-	/*
-	public void setImageWithImagePath(String imagePath){
-		try {
-			File imageFile=new File(imagePath);
-			this.image_to_shown = ImageIO.read(imageFile);
-		} catch (IOException e) {
-			LOGGER.severe("Error in setting image from String path:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-
-		}
-
-	}
-	*/
-
-
+	
 	public void setImageLocation(Point p){
 		this.location=p;
 	}
