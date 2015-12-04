@@ -2,48 +2,22 @@ package gui.panels;
 
 import gui.Color_schema;
 import information.PositionedImage;
-
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.logging.Logger;
-
-import javax.imageio.ImageIO;
-import javax.media.jai.*;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import javax.swing.KeyStroke;
-
 import com.sun.media.jai.widget.DisplayJAI;
 
 /**
- * Contains the image and the painting methods for it
+ * Contains the image and the painting methods for it.
  * @author Antti Kurronen
  *
  */
@@ -56,7 +30,10 @@ public class ImagePanel extends JPanel {
 
 
 	/**
-	 *  Class constructor
+	 *  Class constructor.
+	 *
+	 * @param im the image of panel
+	 * @param id the id
 	 */
 	public ImagePanel(BufferedImage im, int id){
 		this.image_to_shown = im;
@@ -65,9 +42,7 @@ public class ImagePanel extends JPanel {
 		this.layer_ID=id;
 		this.setLayout(null);
 		this.location=new Point(0,0);
-
-
-		setUpInPutMap();
+		
 	}
 
 	/**
@@ -89,17 +64,6 @@ public class ImagePanel extends JPanel {
 
 	}
 
-	public void setUpInPutMap(){
-		InputMap inputMap= this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		inputMap.put(KeyStroke.getKeyStroke(""),new AbstractAction() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-
-			}
-		});
-	}
 	/*
 	public void setImageWithImagePath(String imagePath){
 		try {
