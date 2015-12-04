@@ -695,16 +695,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		
 	}
 	
-	/**
-	 * Returns SingleGridSize object by given index.
-	 * @param index index of gridSizes-list (list of combobox items)
-	 * @return SingleGridSize object that contains column and row, etc.
-	 */
-	private SingleGridSize getGridSizeByIndex(int index){
-		SingleGridSize sgs=null;
-		sgs= this.gridSizes.get(index);
-		return sgs;
-	}
+	
 
 	private void updateGridSize(int r, int c){
 		this.gridPanel.removeAll();
