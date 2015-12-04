@@ -1042,8 +1042,7 @@ public String getImageLayerName() {
 				countingJPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
 				countingJPanel.add(Box.createRigidArea(new Dimension(5,0)));
 
-				//Add closing box to right of markinginfo
-			
+				//Add closing box to right of markinginfo	
 				closeJButton = new JButton(getImageIcon("/images/close_small.png"));
 				closeJButton.setAlignmentY(Component.CENTER_ALIGNMENT);
 				closeJButton.setPreferredSize(new Dimension(18,18));
@@ -1060,7 +1059,6 @@ public String getImageLayerName() {
 				countingJPanel.add(Box.createRigidArea(new Dimension(3,0)));
 
 				this.add(visibleMarkingJButton); //
-
 				this.add(shapeJButton);
 				this.add(gridButton);
 				this.add(editMarkingTitleJButton);
@@ -1149,7 +1147,6 @@ public String getImageLayerName() {
 		}
 
 		
-
 	}
 
 }
