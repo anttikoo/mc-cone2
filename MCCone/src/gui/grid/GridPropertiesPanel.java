@@ -638,16 +638,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 	}
 	
-	private int[] getRowAndColumnFromListByIndex(){
-		if(this.gridSizes != null && gridSizes.size()>0){
-			SingleGridSize sgs = this.gridSizes.get(this.gridComboBox.getSelectedIndex());
-			if(sgs != null){
-				return new int[] {sgs.getRows(),sgs.getColumns()};
-				
-			}
-		}
-		return null;
-	}
+
 	
 	
 	private void updateGridDimensionFromComboBox(int updateType){
