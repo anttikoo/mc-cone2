@@ -95,7 +95,7 @@ public class ImagePanel extends JPanel {
 	/**
 	 * Sets the image.
 	 *
-	 * @param pi the new image
+	 * @param pi the new PositionedImage
 	 */
 	public void setImage(PositionedImage pi){
 		if(pi != null){
