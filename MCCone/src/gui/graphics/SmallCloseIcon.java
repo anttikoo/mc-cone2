@@ -7,18 +7,30 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.net.URL;
-
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+/**
+ * The Class SmallCloseIcon. Icon for close button. Size 16px.
+ */
 public class SmallCloseIcon implements Icon {
 	private boolean selected=false;
+	
+	/**
+	 * Instantiates a new small close icon.
+	 *
+	 * @param selected boolean is button of icon selected
+	 */
 	public SmallCloseIcon(boolean selected){
 		this.selected=selected;
 	}
-	  public void paintIcon(Component component, Graphics g, int x, int y) {
+	  
+  	/* (non-Javadoc)
+  	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, int, int)
+  	 */
+  	public void paintIcon(Component component, Graphics g, int x, int y) {
 		  x =0;y =0;
 	    AbstractButton abstractButton = (AbstractButton)component;
 	    ButtonModel buttonModel = abstractButton.getModel();
@@ -31,21 +43,36 @@ public class SmallCloseIcon implements Icon {
 
 	    g2d.dispose();
 	  }
-	  public int getIconWidth() {
+	  
+  	/* (non-Javadoc)
+  	 * @see javax.swing.Icon#getIconWidth()
+  	 */
+  	public int getIconWidth() {
 	    return 16;
 	  }
-	  public int getIconHeight() {
+	  
+  	/* (non-Javadoc)
+  	 * @see javax.swing.Icon#getIconHeight()
+  	 */
+  	public int getIconHeight() {
 	    return 16;
 	  }
 
-	  private Image createImage(String path, String description) {
+	  /**
+  	 * Creates the Image from given file path.
+  	 *
+  	 * @param path the path
+  	 * @param description the description
+  	 * @return the image
+  	 */
+  	private Image createImage(String path, String description) {
 	        URL imageURL = SmallCloseIcon.class.getResource(path);
 	        Image icn = null;
 
 
 	        if (imageURL == null) {
 	            if(icn==null){
-	                //System.out.println("path: "+path);
+	            
 	                icn = new ImageIcon (SmallCloseIcon.class.getResource(path.replace("..",""))).getImage();
 	                if(icn != null)
 	                    return icn;
