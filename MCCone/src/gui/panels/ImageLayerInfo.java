@@ -1109,13 +1109,7 @@ public String getImageLayerName() {
 			return marking_layer_name;
 		}
 
-		/**
-		 * Increases the markinglayerId value with one and updates JLabel showing it.
-		 */
-		public void increaseMarking_layer_id_with_one() {
-			this.marking_layer_id++;
-			this.countJLabel.setText(""+this.marking_layer_id);
-		}
+		
 
 		/**
 		 * Checks if is marking layer selected.
