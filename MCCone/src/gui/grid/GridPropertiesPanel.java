@@ -148,9 +148,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 		buttonPanel.add(on_button);
 		buttonPanel.add(off_button);
-//		buttonBackPanel.add(buttonPanel);
-//		buttonBackPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 1));
-		//updateGridDimensionFromComboBox
 		upperBackPanel.add(buttonPanel, BorderLayout.CENTER);
 
 
@@ -233,17 +230,13 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-			//	comboSelectedIndex=((JComboBox<String>)e.getSource()).getSelectedIndex();
 				SwingUtilities.invokeLater(new Runnable() {
 
 					@Override
 					public void run() {
 						updateGridDimensionFromComboBox(ID.GPANEL_GRID_SIZE_CHANGED);
-
 					}
 				});
-
-
 			}
 		});
 		
@@ -336,9 +329,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			this.gridComboBox.setEnabled(gridON);
 			if(gridON){
 				this.gridPanel.setVisible(true);
-			//	if(this.gridPanel.getComponentCount()==0){
-					updateGridDimensionFromComboBox(ID.GPANEL_STARTUP);
-			//	}
+				updateGridDimensionFromComboBox(ID.GPANEL_STARTUP);		
 				this.gridPanel.setBackground(Color_schema.grey_150);
 				this.gridLabel.setForeground(Color_schema.white_230);
 				this.comboLabel.setForeground(Color_schema.white_230);
@@ -359,13 +350,10 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				this.randomSlider.setEnabled(false);
 				this.randomSlider.setForeground(Color_schema.dark_40);
 				this.randomSlider.putClientProperty("JSlider.isFilled", Boolean.FALSE);
-				
-				
-				
-				
+		
 			}
 			this.backGridExamplePanel.repaint();
-		//	updateGridDimensionFromComboBox();
+		
 	}
 
 	/**
@@ -397,10 +385,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		gridPanel.setMinimumSize(new Dimension(panelWidth,280));
 		gridPanel.setPreferredSize(new Dimension(panelWidth,280));
 		gridPanel.setBackground(Color_schema.grey_150);
-	//	updateGridDimensionFromComboBox();
-	//	initUnSelectedGridCells();
 		backGridExamplePanel.add(gridPanel);
-
 		enableComponents();
 
 		return backGridExamplePanel;
@@ -422,7 +407,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		double value=((double)this.randomSlider.getValue())/100.0;
 		double selectedCells= Math.ceil(((double)cellsCount)*value); // round selected number to next upper integer value
 		int partOfCellsCount= (int)selectedCells;
-	//	int partOfCellsCount = cellsCount*(this.randomSlider.getValue()/100);
 		if(partOfCellsCount==0)
 			partOfCellsCount=1;
 		
@@ -589,29 +573,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	}
 
 
-	/** 
-	 * Returns first Gridproperties, which is set to be visible and found from markinglayer under same Imagelayer. 
-	 * Otherwise any Gridproperties is returned if found. If no any Gridproperties is not found, null is returned.
-	 * @return Gridproperties
-	 * @see GridProperties
-	 */
-/*	private GridProperties getFirstGridPropertiesWithGridON(int r, int c){
-		if(this.markingLayerList != null && this.markingLayerList.size()>0){
-			MarkingLayer layer = getFirstMarkingLayerWithGridON();
-			if(layer != null){
-				GridProperties gp=layer.getGridProperties();
-				if( gp != null && r > 0 && c > 0){ // specific column and row number			
-					if(gp.getGridRowCount()==r && gp.getGridColumnCount()==c){
-						return gp;
-					}
-				}
-				
-			}
-		}
 
-		return null;
-	}
-*/
 	/**
 	 * Finds any GridProperties, that are found from given MarkingLayer-list (modified at same time as Gridproperties of this MarkingLayer)
 	 * Returns found GridProperties, otherwise null is returned.
@@ -660,20 +622,6 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		return false;
 	}
 
-
-/*
-	private void updateGridDimensionFromLayer(){
-		GridProperties gp= getFirstGridPropertiesWithGridON();
-		if(gp != null){
-			this.gridPanel.setLayout(new GridLayout(gp.getGridRowCount(), gp.getGridColumnCount(), 10, 10));
-
-
-		}
-
-		this.gridPanel.repaint();
-	}
-	*/
-
 	private int getIndexOfGridSizeList(int row, int column){
 		if(this.gridSizes != null && gridSizes.size()>0){
 			for(int i=0; i<this.gridSizes.size();i++){
@@ -700,6 +648,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		}
 		return null;
 	}
+	
 	
 	private void updateGridDimensionFromComboBox(int updateType){
 		int index=0;
