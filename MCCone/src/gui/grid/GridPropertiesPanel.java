@@ -697,6 +697,12 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	
 	
 
+	/**
+	 * Updates Preview Grid dimension and repaints it.
+	 *
+	 * @param r the amount of rows
+	 * @param c the amount of columns
+	 */
 	private void updateGridSize(int r, int c){
 		this.gridPanel.removeAll();
 		this.gridPanel.revalidate();
