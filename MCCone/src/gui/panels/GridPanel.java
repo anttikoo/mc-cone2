@@ -2,21 +2,21 @@ package gui.panels;
 
 import gui.Color_schema;
 import information.GridProperties;
-import information.ID;
 import information.PositionedRectangle;
 import information.SharedVariables;
-
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.util.Iterator;
-
 import javax.swing.JPanel;
 
+/**
+ * The Class GridPanel. This Panel is drawn over image to show the grid. 
+ * Draws lines of grid and grey boxes on unselected grid cells.
+ */
 public class GridPanel extends JPanel {
 	private GridProperties gridProperty;
 	private Graphics2D g2d;
@@ -31,24 +31,38 @@ public class GridPanel extends JPanel {
 	private final float extra_dim_transparency_soft=0.1f;
 	private float used_transparency_hard=basic_transparency_hard;
 	private float used_transparency_soft=basic_transparency_soft;
-	private boolean showGrid=true;
+	private boolean showGrid=true; // is grid set as ON
 
+	/**
+	 * Instantiates a new grid panel.
+	 */
 	public GridPanel(){
 		this.setOpaque(false);
 		this.gridProperty=null;
 
-
 	}
 
+	/**
+	 * Sets the extra dim transparency. Set the unselected grid cells to transparent.
+	 */
 	public void setExtraDimTransparency(){
 		this.used_transparency_hard=extra_dim_transparency_hard;
 		this.used_transparency_soft=extra_dim_transparency_soft;
 	}
+	
+	/**
+	 * Sets the basic transparency. Sets the transparency of unselected grid cell to normal state.
+	 */
 	public void setBasicTransparency(){
 		this.used_transparency_hard=basic_transparency_hard;
 		this.used_transparency_soft=basic_transparency_soft;
 	}
 
+	/**
+	 * Sets the grid properties.
+	 *
+	 * @param gp the new GridProperties
+	 */
 	public void setGridProperties(GridProperties gp){
 		this.gridProperty=gp;
 		if(this.gridProperty==null){
@@ -56,6 +70,9 @@ public class GridPanel extends JPanel {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		if(this.gridProperty != null && this.gridProperty.isGridON() && isShowGrid()){
@@ -77,15 +94,8 @@ public class GridPanel extends JPanel {
 		RenderingHints rh= new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setRenderingHints(rh);
 		g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,used_transparency_hard));
-/*
-		Iterator<Integer> rowIterator = this.gridProperty.getRowLineYs().iterator();
-		while(rowIterator.hasNext()){
-			int y= rowIterator.next();
-		//	g2.drawLine(5, y, this.getBounds().width-5, y);
-			drawLine(5, y, this.gridProperty.getHorizontalLineLength()-5, y);
 
-		}
-		*/
+		// draw lines composing the grid.
 		for(int r=0;r<this.gridProperty.getRowLineYs().size();r++){
 			int y = this.gridProperty.getRowLineYs().get(r);
 			if(r==0 || r== this.gridProperty.getRowLineYs().size()-1)
@@ -100,23 +110,12 @@ public class GridPanel extends JPanel {
 			else
 				drawLine(x, 5, x, this.gridProperty.getVerticalLineLength()-10,g2);
 		}
-		/*
-		Iterator<Integer> columnIterator = this.gridProperty.getColumnLineXs().iterator();
-		while(columnIterator.hasNext()){
-			int x= columnIterator.next();
-		//	g2.drawLine(x, 5, x, this.getBounds().height-5);
-			drawLine(x, 5, x, this.gridProperty.getVerticalLineLength()-5);
-		}
-		*/
-
+		
+		// draw grey boxes on unselected grid cells.
 		g2.setPaint(backGroundColor);
 		Iterator<PositionedRectangle> recIterator = this.gridProperty.getPositionedRectangleList().iterator();
 		while(recIterator.hasNext()){
-			/*
-			g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,0.7f));
-			Rectangle rec= recIterator.next();
-			g2.fillRect(rec.x, rec.y, rec.width, rec.height);
-			*/
+			
 			PositionedRectangle pr = recIterator.next();
 			if(!pr.isSelected())
 			drawRectangle(pr,g2);
@@ -180,10 +179,6 @@ private void drawEdgeLine(int x1, int y1, int x2, int y2, Graphics2D g2){
 		int small_height=rec.height-40;
 		g2.fillRect(small_x, small_y, small_width, small_height);
 		g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,used_transparency_soft));
-	/*	g2.setPaint(Color.red);
-		g2.drawLine(small_x,small_y, small_x+small_width, small_y+small_height);
-		g2.drawLine(small_x+small_width,small_y, small_x, small_y+small_height);
-	*/
 		g2.setPaint(backGroundColor);
 		g2.fillRect(rec.x, rec.y, rec.width, rec.height);
 
@@ -198,6 +193,7 @@ private void drawEdgeLine(int x1, int y1, int x2, int y2, Graphics2D g2){
 	}
 
 	/**
+	 * 
 	 * @param showGrid boolean to set grid visible or invisible
 	 */
 	public void setShowGrid(boolean showGrid) {
