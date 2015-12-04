@@ -2,34 +2,35 @@ package gui.grid;
 
 import gui.Color_schema;
 import information.Fonts;
-import information.SharedVariables;
-
-import java.awt.AlphaComposite;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * The Class GridRectangle. Contains data of single Grid cell: position and is selected.
+ */
 public class GridRectangle extends JPanel {
  private Dimension grid_row_column;
  private int row;
  private int column;
- private boolean isShown=true;
+ private boolean isSelected=true;
 private JLabel label;
 
- public GridRectangle(int r, int c, boolean used){
-	 this.isShown=used;
+ /**
+  * Instantiates a new grid rectangle.
+  *
+  * @param r the row position
+  * @param c the column position
+  * @param selected boolean is grid cell selected
+  */
+ public GridRectangle(int r, int c, boolean selected){
+	 this.isSelected=selected;
 	 this.setBounds(0,0,100, 100);
 	 this.setRow(r);
 	 this.setColumn(c);
-//	 this.setGrid_row_column(new Dimension(r,c));
 	 this.setBackground(Color_schema.orange_medium);
 	 this.setLayout(new GridBagLayout());
 
@@ -40,72 +41,62 @@ private JLabel label;
 	 this.setToolTipText("This grid cell is used.");
 
 	 setUpMouseListener();
-	// this.setBorder(BorderFactory.createLineBorder(Color_schema.white_230, 2));
 	 updatePanel();
  }
 
 
-/*
-
- @Override
- protected void paintComponent(Graphics g) {
-
-     try {
-			// Allow super to paint
-			super.paintComponent(g);
-			if(isShown){
-				// Apply our own painting effect
-				Graphics2D g2d = (Graphics2D) g.create();
-
-
-				g2d.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyMode, 0.8F));
-			//	g2d.setComposite(AlphaComposite.SrcIn.derive(0.8f));			// THIS WORKING IN LINUX
-
-
-				g2d.setColor(getBackground());
-				g2d.fill(getBounds());
-
-				g2d.dispose();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
- }
-*/
- public boolean isShown() {
-	return isShown;
+ /**
+  * Checks if is grid selected.
+  *
+  * @return true, if is selected
+  */
+ public boolean isSelected() {
+	return isSelected;
 }
 
-public void setShown(boolean isShown) {
-	this.isShown = isShown;
+/**
+ * Sets the shown.
+ *
+ * @param selected boolean is grid cell selected
+ */
+public void setSelected(boolean selected) {
+	this.isSelected = selected;
 }
 
 
-
+/**
+ * Gets the grid_row_column.
+ *
+ * @return the Dimension grid_row_column
+ */
 public Dimension getGrid_row_column() {
 	return grid_row_column;
 }
 
 
-
-
-
+/**
+ * Sets the grid_row_column.
+ *
+ * @param grid_row_column the new grid_row_column
+ */
 public void setGrid_row_column(Dimension grid_row_column) {
 	this.grid_row_column = grid_row_column;
 }
 
 
+/**
+ * Sets up the mouseListener.
+ */
 private void setUpMouseListener(){
 
 	 this.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				if(isShown())
-					setShown(false);
+				if(isSelected())
+					setSelected(false);
 				else
-					setShown(true);
+					setSelected(true);
 
 				updatePanel();
 			}
@@ -117,13 +108,13 @@ private void setUpMouseListener(){
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
+				
 
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
+				
 
 			}
 
@@ -139,8 +130,11 @@ private void setUpMouseListener(){
 
 
 
+/**
+ * Updates the color and tooltiptext of JPanel of this grid cell.
+ */
 public void updatePanel(){
-	if(isShown){
+	if(isSelected){
 		this.setBackground(Color_schema.orange_medium);
 		 label.setForeground(Color_schema.dark_30);
 		 label.setText("+");
@@ -156,21 +150,41 @@ public void updatePanel(){
 }
 
 
+/**
+ * Returns the column.
+ *
+ * @return the column
+ */
 public int getColumn() {
 	return column;
 }
 
 
+/**
+ * Sets the column.
+ *
+ * @param column the new column
+ */
 public void setColumn(int column) {
 	this.column = column;
 }
 
 
+/**
+ * returns the row in grid.
+ *
+ * @return the row
+ */
 public int getRow() {
 	return row;
 }
 
 
+/**
+ * Sets the row in grid.
+ *
+ * @param row the new row
+ */
 public void setRow(int row) {
 	this.row = row;
 }

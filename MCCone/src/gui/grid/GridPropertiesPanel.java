@@ -413,7 +413,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				if(countSelectedGridRectangle(rows, columns)<partOfCellsCount){
 					GridRectangle gr = getRandomGridRectangle(rows, columns);
 					if(gr != null){
-						gr.setShown(true);
+						gr.setSelected(true);
 						gr.updatePanel();
 					}
 				}
@@ -432,7 +432,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		for(int r=1;r<=rowCount;r++){
 			for(int c=1;c<=columnCount;c++){
 				GridRectangle gr= getGridRectangle(r, c);
-				gr.setShown(false);	
+				gr.setSelected(false);	
 				gr.updatePanel();
 			}		
 		}
@@ -452,7 +452,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			int randomRow = rand.nextInt((rowCount - 1) + 1) + 1;
 			int randomColumn = rand.nextInt((columnCount - 1) + 1) + 1;
 			GridRectangle gr= getGridRectangle(randomRow, randomColumn);
-			if(gr.isShown())
+			if(gr.isSelected())
 				return getRandomGridRectangle(rowCount, columnCount);
 			else
 				return gr;
@@ -474,7 +474,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		for(int r=1;r<=rowCount;r++){
 			for(int c=1;c<=columnCount;c++){
 				GridRectangle gr= getGridRectangle(r, c);
-				if(!gr.isShown()){
+				if(!gr.isSelected()){
 					count_unselected++;
 				}
 			}		
@@ -496,7 +496,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		for(int r=1;r<=rowCount;r++){
 			for(int c=1;c<=columnCount;c++){
 				GridRectangle gr= getGridRectangle(r, c);
-				if(gr.isShown()){
+				if(gr.isSelected()){
 					count_selected++;
 				}
 			}		
@@ -804,7 +804,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				for(int c=1; c<= sgs.getColumns();c++){
 						GridRectangle gr = getGridRectangle(r, c);
 						if(gr != null){							
-							PositionedRectangle pRec = new PositionedRectangle(x, y, sgs.getGridCellSize(), sgs.getGridCellSize(), r,c, gr.isShown());
+							PositionedRectangle pRec = new PositionedRectangle(x, y, sgs.getGridCellSize(), sgs.getGridCellSize(), r,c, gr.isSelected());
 							gridProperty.addSinglePositionedRectangle(pRec);
 						}
 				//	}
