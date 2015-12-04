@@ -1078,7 +1078,6 @@ public String getImageLayerName() {
 		}
 
 
-
 		/**
 		 * Returns the counting text width.
 		 *
@@ -1087,8 +1086,6 @@ public String getImageLayerName() {
 		private int getCountingTextWidth(){
 			return getWidthOfText(this.countJLabel.getFont(), this.countJLabel);
 		}
-
-
 
 
 		/**
@@ -1151,14 +1148,7 @@ public String getImageLayerName() {
 			this.isVisibleLayer = isVisibleLayer;
 		}
 
-		/**
-		 * Updates the markinglayerId value and JLabel showing it
-		 * @param marking_layer_id int value of counted markings
-		 */
-		public void updateMarking_layer_id(int marking_layer_id) {
-			this.marking_layer_id = marking_layer_id;
-			this.countJLabel.setText(""+this.marking_layer_id);
-		}
+		
 
 	}
 
