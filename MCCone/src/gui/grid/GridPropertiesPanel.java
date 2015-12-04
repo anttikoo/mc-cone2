@@ -211,8 +211,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 		}
 		if(gridComboBox.getItemCount() >0){
-			//GridProperties gp = getFirstGridPropertiesWithGridON();
-			
+					
 			if(this.templateGP != null){
 
 				int index= getIndexOfGridSizeList(this.templateGP.getGridRowCount(), this.templateGP.getGridColumnCount());
@@ -352,8 +351,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				this.randomSlider.putClientProperty("JSlider.isFilled", Boolean.FALSE);
 		
 			}
-			this.backGridExamplePanel.repaint();
-		
+			this.backGridExamplePanel.repaint();		
 	}
 
 	/**
@@ -424,6 +422,12 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	}
 	
 	
+	/**
+	 * Set all positions of GRID as unselected.
+	 *
+	 * @param rowCount amount of rows.
+	 * @param columnCount amount of columns
+	 */
 	private void unselectAllCells(int rowCount,int columnCount){
 		for(int r=1;r<=rowCount;r++){
 			for(int c=1;c<=columnCount;c++){
@@ -434,6 +438,13 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		}
 	}
 	
+	/**
+	 * Returns the random grid rectangle.
+	 *
+	 * @param rowCount the row count
+	 * @param columnCount the column count
+	 * @return the random grid rectangle
+	 */
 	private GridRectangle getRandomGridRectangle(int rowCount, int columnCount){
 		if(countUnselectedGridRectangle(rowCount, columnCount)>0){
 		
@@ -447,10 +458,16 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				return gr;
 		}
 		return null;
-		
-		
+			
 	}
 	
+	/**
+	 * Count amount of unselected grid rectangle.
+	 *
+	 * @param rowCount the row count
+	 * @param columnCount the column count
+	 * @return the int
+	 */
 	private int countUnselectedGridRectangle(int rowCount, int columnCount){
 		int count_unselected=0;
 		
@@ -466,6 +483,13 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		
 	}
 	
+	/**
+	 * Count amount of selected grid rectangle.
+	 *
+	 * @param rowCount the row count
+	 * @param columnCount the column count
+	 * @return the int
+	 */
 	private int countSelectedGridRectangle(int rowCount, int columnCount){
 		int count_selected=0;
 		
@@ -477,8 +501,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				}
 			}		
 		}
-		return count_selected;
-		
+		return count_selected;		
 	}
 	
 	/** 
@@ -514,11 +537,8 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				if(returnGP == null){
 					returnGP= getGPFromMarkingLayerList(this.gui.getAllMarkingLayers(), r,c,checkRandomProcent); 
 					
-				}
-				
-			}
-		
-		
+				}		
+			}	
 		return returnGP;
 	}
 	
@@ -602,6 +622,11 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 
 
+	/**
+	 * Returns the first marking layer with grid on (active GRID).
+	 *
+	 * @return the first MarkingLayer with grid on
+	 */
 	private MarkingLayer getFirstMarkingLayerWithGridON(){
 		if(this.markingLayerList != null && this.markingLayerList.size()>0){
 		Iterator<MarkingLayer> miterator=this.markingLayerList.iterator();
@@ -630,12 +655,9 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				if(sgs.getRows() == row && sgs.getColumns() == column){
 					return i;
 				}
-
 			}
-
 		}
 		return -1;
-
 	}
 	
 	
@@ -688,15 +710,11 @@ public class GridPropertiesPanel extends PropertiesDialog {
 					updateGridSize(sgs.getRows(), sgs.getColumns());
 			//	}
 
-			}
-			
-		}
-
-		
+			}		
+		}	
 	}
 	
 	
-
 	/**
 	 * Updates Preview Grid dimension and repaints it.
 	 *
@@ -717,7 +735,8 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			this.gridPanel.setMinimumSize(new Dimension(maxGridPanelWidth,maxGridPanelHeight));
 			this.gridPanel.setPreferredSize(new Dimension(maxGridPanelWidth,maxGridPanelHeight));
 		
-			
+			// go through all positions of grid: rows (i) and columns (j)
+			// add selected or unselected cell to grid positions
 			for(int i=1;i<= r;i++){
 				for(int j=1;j<= c;j++){
 					if(this.templateGP != null && this.templateGP.getGridColumnCount()==c && this.templateGP.getGridRowCount()==r){
@@ -738,6 +757,9 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	}
 	
 	
+	/**
+	 * Updates Icons of Buttons for ON and OFF demonstrating highlight effect.
+	 */
 	private void updateOnOffButtonIcons(){
 		try {
 			if(gridON){
@@ -755,11 +777,16 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 		//	LOGGER.fine("grid on: "+gridON);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			LOGGER.severe("Error in Buttons of GridProperties -view");
 			e.printStackTrace();
 		}
 	}
 
+	
+	/** 
+	 * Hides the GridProperties dialog and saves (if wanted) the made changes to MarkingLayer -objects.
+	 * @param saveChanges boolean will changes be saved.
+	 */
 	protected void hideDialog(boolean saveChanges){
 		if(saveChanges){
 
@@ -775,21 +802,8 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				gridProperty.addRowLineY(y);
 				x=sgs.getWidthAlign(); // start new row at left
 				for(int c=1; c<= sgs.getColumns();c++){
-				//	if(r==1) // add only once
-				//	gridProperty.addColumnLineX(x);
-				//	if(r< sgs.getRows() && c<sgs.getColumns()){ // in last row and column no rectangles created
 						GridRectangle gr = getGridRectangle(r, c);
-						if(gr != null){
-							/*
-							Rectangle rec = new Rectangle(x, y, sgs.getGridCellSize(), sgs.getGridCellSize());
-							if(gr.isShown()){
-								gridProperty.addSelectedRectangle(rec);
-							}
-							else{
-								gridProperty.addUnselectedRectangle(rec);
-								gridProperty.addUnselectedGridCellNumbers((r-1)*sgs.getColumns()+c);
-							}
-							*/
+						if(gr != null){							
 							PositionedRectangle pRec = new PositionedRectangle(x, y, sgs.getGridCellSize(), sgs.getGridCellSize(), r,c, gr.isShown());
 							gridProperty.addSinglePositionedRectangle(pRec);
 						}
@@ -821,11 +835,18 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		dispose();
 	}
 
+	/**
+	 * Returns the grid rectangle with given value of row and column of grid.
+	 *
+	 * @param r the row
+	 * @param c the column
+	 * @return the grid rectangle
+	 */
 	private GridRectangle getGridRectangle(int r, int c){
 		if(this.gridPanel != null && this.gridPanel.getComponentCount()>0){
 
 			Component[] grs= gridPanel.getComponents();
-
+			//go through components
 			for(int i=0; i<grs.length;i++){
 
 				GridRectangle gr =(GridRectangle)grs[i];
