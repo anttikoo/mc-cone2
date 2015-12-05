@@ -6,6 +6,7 @@ import gui.GUI;
 import gui.MouseListenerCreator;
 import gui.ProgressBallsDialog;
 import gui.ShadyMessageDialog;
+import gui.WindowLocator;
 import gui.file.OpenFileDialog;
 import gui.file.OpenImageFilesDialog;
 import gui.graphics.MediumCloseIcon;
@@ -108,6 +109,7 @@ private ProgressBallsDialog progressBallsDialog;
 private JDialog visibleDialog=null; // childDialog which may be progress, info or any dialog.
 private JButton exportJButton;
 private Dimension wgbDimension; // Dimension of whole printable area where images are positioned
+private Component parentComponent=null;
 
 	/**
 	 * Class constructor. Opens window, where use can download Images from ImageLayers and image-files and export them to file.
@@ -116,11 +118,12 @@ private Dimension wgbDimension; // Dimension of whole printable area where image
 	 * @param gui GUI-object to connect Graphical interface
 	 */
 	public ImageSetCreator(JFrame frame, TaskManager taskManager, GUI gui){
-		//	super(frame, true); this not working right
+			super(frame, true); //this not working right
 		try {
 			
 			this.taskManager=taskManager;
 			this.gui=gui;
+			this.parentComponent=frame;
 			this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 			this.drawImagePanels=new ArrayList<SingleDrawImagePanel>();
 			this.presentColumnNumber=1;
@@ -134,7 +137,7 @@ private Dimension wgbDimension; // Dimension of whole printable area where image
 			//this.progressWihoutButtons = new ProgressBallsDialog(new JFrame(), "Opening images", "", ID.CANCEL, this); 
 			this.addMouseListener(this);
 			
-			
+			openImagesAtStrartup();
 
 		} catch (Exception e) {
 			LOGGER.severe("Error in initializing ImageSetCreator: "+e.getMessage());
@@ -247,11 +250,22 @@ private Dimension wgbDimension; // Dimension of whole printable area where image
 	}
 	public void showDialog(){
 		this.setVisible(true);
+		
+	}
+	
+	private void openImagesAtStrartup(){
 		//open the window to select images from layers
-		if(this.taskManager != null && this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size()>0){
-			createImagesFromPresentImageLayers();
-			setImagesToGrid();
-		}
+				if(this.taskManager != null && this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size()>0){
+					
+					SwingUtilities.invokeLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							createImagesFromPresentImageLayers();
+							setImagesToGrid();				
+						}
+					});			
+				}
 	}
 
 	/**
@@ -834,7 +848,7 @@ private Dimension wgbDimension; // Dimension of whole printable area where image
 	 * Initializes JPanels and other graphical components of this ImageSetCreator-object.
 	 */
 	private void initComponents() throws Exception{	
-			this.setBounds(gui.getBounds());
+			this.setBounds(WindowLocator.getVisibleWindowBounds(this.parentComponent));
 			this.setUndecorated(true);
 			this.setBackground(new Color(0,0,0,0));
 			this.setContentPane(new ContentPane());
