@@ -5,6 +5,7 @@ import gui.ContentPane;
 import gui.GUI;
 import gui.MouseListenerCreator;
 import gui.ShadyMessageDialog;
+import gui.WindowLocator;
 import gui.file.CSVfilter;
 import gui.file.FileManager;
 import gui.file.ImageFilter;
@@ -120,6 +121,7 @@ protected int oneImagePathHeight;
 protected int oneMarkingHeight;
 protected SelectFileDialog selectFileDialog;
 protected JButton saveJButton;
+private Component parentComponent=null;
 
 
 
@@ -128,7 +130,7 @@ protected JButton saveJButton;
 		super(frame, true);
 		try{
 			this.savingType=savingTypeID;
-
+			this.parentComponent=frame;
 			setPanelHeights();
 			notInformedSuccessfullSaving=true;
 			this.imageLayerList =  iList;
@@ -156,7 +158,7 @@ protected JButton saveJButton;
 		super(d, true);
 		try{
 			this.savingType=savingTypeID;
-
+			this.parentComponent=d;
 			setPanelHeights();
 			notInformedSuccessfullSaving=true;
 			this.imageLayerList =  iList;
@@ -179,7 +181,7 @@ protected JButton saveJButton;
 
 	private void initComponents() throws Exception{
 		
-		this.setBounds(gui.getBounds());
+		this.setBounds(WindowLocator.getVisibleWindowBounds(this.parentComponent));
 	//	LOGGER.fine("this class: "+this.getClass().toString()+ "this bounds: " +this.getBounds());
 		this.setUndecorated(true);
 		this.setBackground(new Color(0,0,0,0));
