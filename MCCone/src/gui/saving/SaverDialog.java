@@ -385,33 +385,6 @@ public JPanel initSaveButton(String saveTitle) throws Exception{
 }
 
 
-private String getFirstProperSavingPath(){
-	String imagePath="";
-
-	if(this.imageLayerList != null && this.imageLayerList.size()>0){
-		Iterator<ImageLayer> iIterator=this.imageLayerList.iterator();
-		while(iIterator.hasNext()){
-			ImageLayer iLayer=(ImageLayer)iIterator.next();
-			if(iLayer != null)
-				if(iLayer.getMarkingsFilePath() != null && iLayer.getMarkingsFilePath().length()>0){
-						return iLayer.getMarkingsFilePath();
-				}
-				else{ //
-					if(iLayer.getImageFilePath() != null && iLayer.getImageFilePath().length()>0 && imagePath.length()==0)
-						imagePath=iLayer.getImageFilePath();
-				}
-
-
-		} // no proper MarkingPath found -> return first found imagePath if exists
-		if(imagePath.length()>0)
-			return imagePath;
-	}
-	return System.getProperty("user.home");
-}
-
-
-
-
 
 	public JPanel initImageViewPanel(String title){
 		// SETUP THE Panel which shows the list of images and markings
@@ -482,11 +455,10 @@ private String getFirstProperSavingPath(){
 		try {
 			JPanel imageButtonJPanel = new JPanel();
 			imageButtonJPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-//	addFilePathsJPanel.setLayout(new BoxLayout(addFilePathsJPanel, BoxLayout.LINE_AXIS));
 			imageButtonJPanel.setBackground(Color_schema.dark_35);
 			imageButtonJPanel.setMinimumSize(new Dimension(200,50));
 			imageButtonJPanel.setMaximumSize(new Dimension(200,50));
-//	addImagesJPanel.setMaximumSize(new Dimension(400,40));
+
 			// Select file path for all ImageLayers
 			selectFileJButton = new JButton(label);
 			selectFileJButton.setPreferredSize(new Dimension(250,30));
@@ -498,7 +470,7 @@ private String getFirstProperSavingPath(){
 					try {
 						selectPathForAllSingleImagePanels();
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
+						
 						e1.printStackTrace();
 					}
 				}
@@ -508,7 +480,7 @@ private String getFirstProperSavingPath(){
 			imageButtonJPanel.add(selectFileJButton);
 			return imageButtonJPanel;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			LOGGER.fine("Error initializing BrowsingPanel: "+ e.getMessage());
 			e.printStackTrace();
 			return null;
@@ -660,22 +632,6 @@ private String getFirstProperSavingPath(){
 
 	}
 
-	private void setAllMarkingSelection(){
-		Component[] imPanelList= imageScrollPanel.getComponents();
-		if(imPanelList != null && imPanelList.length>0){
-			this.allSelected=!this.allSelected;
-			 for (int i = 0; i < imPanelList.length; i++) {
-				((SingleImagePanel)imPanelList[i]).setAllMarkingSelections(this.allSelected);
-			}
-			 if(this.allSelected)
-				 this.selectAllMarkingsJButton.setText("Unselect All Markings");
-			 else
-				 this.selectAllMarkingsJButton.setText("Select All Markings");
-
-		}
-
-
-	}
 
 	protected void setFilePathsForAll(String path){
 		//go through all panels and set path
