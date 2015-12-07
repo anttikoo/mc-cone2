@@ -16,7 +16,7 @@ public class ExImaSingleImagePanel extends SingleImagePanel{
 
 	public ExImaSingleImagePanel(ImageLayer imageLayer, SaverDialog saverDialog) {
 		super(imageLayer, saverDialog);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public ArrayList<Integer> getAllSelectedMarkingLayerIDs(){

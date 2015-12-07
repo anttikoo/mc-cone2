@@ -100,6 +100,7 @@ public class ExportImage extends SaverDialog{
 
 	protected void startSavingProcess(int exportID, int exportType){
 		try {
+			boolean wantedExport=false;
 			ShadyMessageDialog dialog;
 			setAllMarkingLayerBackgroundsToDefault();
 				double sizeMultiplier=gui.getSizeMultiplier();
@@ -115,24 +116,27 @@ public class ExportImage extends SaverDialog{
 					// create new LayersOfPath objects and add them to list
 					 for (int i = 0; i < imPanelList.length; i++) {
 						ExImaSingleImagePanel imp= (ExImaSingleImagePanel)imPanelList[i];
-						ArrayList<MarkingLayer> selectedMarkingLayers = imp.getAllSelectedMarkingLayers();
-						// check first is the file path accepted
-						if( (imp.getFileValidity() == ID.FILE_OK || imp.getFileValidity() == ID.FILE_NEW_FILE))
-							filePathAccepted=true;
-						if(selectedMarkingLayers != null && selectedMarkingLayers.size()>0 ){
-							hasSelectedMarkingLayers=true;
-							if( (imp.getFileValidity() == ID.FILE_OK || imp.getFileValidity() == ID.FILE_NEW_FILE)){
-								// update the grid drawing to MarkingLayers of ImageLayer in imp
-								imp.updateGridDrawing();
-								ArrayList<Integer> savedMarkingIDList=imageCreator.createImage(imp.getImageLayer(), imp.getAllSelectedMarkingLayerIDs(), imp.getProperFilePathForSaving());
-								if(savedMarkingIDList != null && savedMarkingIDList.size()>0){
-									successfullIDs.addAll(savedMarkingIDList);
-									// save to ImageLayer the exporting path -> remembers next time when starting exporting
-									imp.getImageLayer().setExportImagePath(imp.getProperFilePathForSaving());
-
+						if(imp.isSelected()){
+							wantedExport=true;
+							ArrayList<MarkingLayer> selectedMarkingLayers = imp.getAllSelectedMarkingLayers();
+							// check first is the file path accepted
+							if( (imp.getFileValidity() == ID.FILE_OK || imp.getFileValidity() == ID.FILE_NEW_FILE))
+								filePathAccepted=true;
+							if(selectedMarkingLayers != null && selectedMarkingLayers.size()>0 ){
+								hasSelectedMarkingLayers=true;
+								if( (imp.getFileValidity() == ID.FILE_OK || imp.getFileValidity() == ID.FILE_NEW_FILE)){
+									// update the grid drawing to MarkingLayers of ImageLayer in imp
+									imp.updateGridDrawing();
+									ArrayList<Integer> savedMarkingIDList=imageCreator.createImage(imp.getImageLayer(), imp.getAllSelectedMarkingLayerIDs(), imp.getProperFilePathForSaving());
+									if(savedMarkingIDList != null && savedMarkingIDList.size()>0){
+										successfullIDs.addAll(savedMarkingIDList);
+										// save to ImageLayer the exporting path -> remembers next time when starting exporting
+										imp.getImageLayer().setExportImagePath(imp.getProperFilePathForSaving());
+	
+									}
 								}
 							}
-						}
+					 	}
 
 					 }
 
@@ -145,13 +149,17 @@ public class ExportImage extends SaverDialog{
 					}
 					else{
 						String info =  "unacceptable file path and lack of selected MarkingLayers.";
-						if(filePathAccepted && !hasSelectedMarkingLayers){
-							info =  "lack of selected MarkingLayers.";
+						if(wantedExport){
+							if(filePathAccepted && !hasSelectedMarkingLayers){
+								info =  "lack of selected MarkingLayers.";
+							}
+							else{
+								if(!filePathAccepted && hasSelectedMarkingLayers)
+								info =  "unacceptable file path.";
+							}
 						}
-						else{
-							if(!filePathAccepted && hasSelectedMarkingLayers)
-							info =  "unacceptable file path.";
-						}
+						else
+							info =  " no any images selected.";
 						dialog = new ShadyMessageDialog(this, "No Images Exported", "No any images exported possible due to "+info, ID.OK, this);
 						dialog.showDialog();
 					}

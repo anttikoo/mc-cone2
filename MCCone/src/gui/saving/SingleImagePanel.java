@@ -260,7 +260,6 @@ public class SingleImagePanel extends JPanel{
 		browseJButton.setFocusable(false);
 		browseJButton.setToolTipText("Select file");
 
-	//	initActionsToButtons(browseJButton, ID.OPEN_MARKING_FILE);
 
 		browseJButton.addActionListener(new ActionListener() {
 
@@ -269,17 +268,10 @@ public class SingleImagePanel extends JPanel{
 				try {
 					saverDialog.selectPathForSingleImagePanel(properFilePath, imageLayer.getLayerID());
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
+				
 					e1.printStackTrace();
 				}
-/*
-				ImageAndMarkingPanel iamp = (ImageAndMarkingPanel)((JPanel)((JButton)e.getSource()).getParent().getParent()).getParent();
-				JFrame openfileFrame = new JFrame();
-				// create the dialog for
 
-				SelectFileDialog open_dialog = new SelectFileDialog(openfileFrame, getProperFileForMarkings(), ID.SINGLE_MARKING, iamp, ID.FILE_TYPE_XML);
-				open_dialog.setVisible(true);
-*/
 			}
 		});
 		MouseListenerCreator.addMouseListenerToNormalButtons(browseJButton);
