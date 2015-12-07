@@ -382,12 +382,12 @@ public class ExportResults extends SaverDialog{
 					 // set colors of dialog and show messages to show successfull exports
 					 if(successFullyExported){
 						 setSuccesfullSavingBackgrounds(successfullIDs);
-						 ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "Exporting succesfull", "Successfully exported MarkingLayers are at green background.  ", ID.OK, this);
+						 ShadyMessageDialog dialog = new ShadyMessageDialog(this, "Exporting succesfull", "Successfully exported MarkingLayers are at green background.  ", ID.OK, this);
 						 dialog.showDialog();
 						 dialog=null;
 					 }
 					 else{
-						 ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "Exporting not succesfull", "Exporting not successfull propably due to unacceptable file path.", ID.OK, this);
+						 ShadyMessageDialog dialog = new ShadyMessageDialog(this, "Exporting not succesfull", "Exporting not successfull propably due to unacceptable file path.", ID.OK, this);
 						 dialog.showDialog();
 					 }
 				}
