@@ -19,26 +19,201 @@ import javax.swing.JPanel;
 import operators.XMLreadManager;
 import operators.XMLwriteManager;
 
+/**
+ * The Class SaveMarkings extends SaverDialog. 
+ * Opens dialog window for selecting ImageLayers and MarkingLayers to save data in xml-file.
+ * 
+ */
 public class SaveMarkings extends SaverDialog{
 	private XMLwriteManager xmlWriteManager;
 	private ArrayList<String> imageLayersNamesForFileSelection;
 
+	/**
+	 * Instantiates a new object of SaveMarkings.
+	 *
+	 * @param frame the parent JFrame
+	 * @param gui the GUI
+	 * @param iList the list of ImageLayers
+	 */
 	public SaveMarkings(JFrame frame, GUI gui, ArrayList<ImageLayer> iList) {
 		super(frame, gui, iList,ID.SAVE_MARKINGS);
-		//xmlWriteManager=new XMLwriteManager();
 		this.imageLayersNamesForFileSelection=null;
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.saving.SaverDialog#checkFileValidity(java.io.File)
+	 */
 	protected int checkFileValidity(File file){
 		return FileManager.checkFile(file, SelectFileDialog.createFileFilterList(this.savingType), true);
 	}
 
+	/**
+	 * Collect all names of ImageLayers.
+	 *
+	 * @return the ArrayList of names of ImageLayers.
+	 */
+	private ArrayList<String> collectAllImageLayerNames(){
+		ArrayList<String> list=new ArrayList<String>();
+		Component[] imPanelList= imageScrollPanel.getComponents();
+		//go through all panels of ImageLayers
+		if(imPanelList != null && imPanelList.length>0){
+			 for (int i = 0; i < imPanelList.length; i++) {
+				list.add(((SingleImagePanel)imPanelList[i]).getImageLayerName());
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns a name of selected ImageLayer given by layer ID.
+	 *
+	 * @param id the id of ImageLayer.
+	 * @return the ArrayList containing single name of selected ImageLayer.
+	 */
+	private ArrayList<String> collectSingleSelectedImageLayerName(int id){
+		ArrayList<String> list=new ArrayList<String>();
+		Component[] imPanelList= imageScrollPanel.getComponents();
+
+		if(imPanelList != null && imPanelList.length>0){
+			 for (int i = 0; i < imPanelList.length; i++) {
+				if(((SingleImagePanel)imPanelList[i]).hasSelectedMarkingLayer() && ((SingleImagePanel)imPanelList[i]).getLayerID() == id){
+					list.add(((SingleImagePanel)imPanelList[i]).getImageLayerName());
+				}
+			}
+		}
+		return list;
+	}
+
+	/* (non-Javadoc)
+	 * @see gui.saving.SaverDialog#createSingleImagePanel(information.ImageLayer)
+	 */
+	protected SingleImagePanel createSingleImagePanel(ImageLayer layer){
+		return new SMSingleImagePanel(layer, this);
+	}
+
+
+	/**
+	 * Checks for image layers found by given file path.
+	 *
+	 * @param fileName the path of the file.
+	 * @return true, if successful
+	 */
+	public boolean hasImageLayersFound(String fileName){
+		XMLreadManager readManager=new XMLreadManager();
+	//	return XMLreadManager.foundImageLayer(file, imageLayersNamesForFileSelection);
+		return readManager.foundImageLayer(fileName, imageLayersNamesForFileSelection);
+	}
+
+	/* (non-Javadoc)
+	 * @see gui.saving.SaverDialog#initBrowsingPanelWithLabel()
+	 */
+	protected JPanel initBrowsingPanelWithLabel() throws Exception{
+		return initBrowsingPanel(this.savingType, "Browse file for for all");
+	}
+
+
+	/* (non-Javadoc)
+	 * @see gui.saving.SaverDialog#initImageViewPanelWithTitle()
+	 */
+	public JPanel initImageViewPanelWithTitle(){
+		return initImageViewPanel("Save Markings");
+	}
+
+	/* (non-Javadoc)
+	 * @see gui.saving.SaverDialog#initSaveButtonWithTitle()
+	 */
+	protected JPanel initSaveButtonWithTitle() throws Exception{
+		return initSaveButton("Save Markings");
+	}
+
+	/* (non-Javadoc)
+	 * @see gui.saving.SaverDialog#initSelectFileDialog()
+	 */
+	protected void initSelectFileDialog() throws Exception{
+		String path = gui.getPresentFolder();
+		if(path== null)
+			path = System.getProperty("user.home");
+		this.selectFileDialog = new MarkingsSelectFileDialog(this.gui, path, this.backPanel, this.savingType);
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see gui.saving.SaverDialog#selectPathForAllSingleImagePanels()
+	 */
+	protected void selectPathForAllSingleImagePanels() throws Exception{
+		if(this.selectFileDialog == null)
+			initSelectFileDialog();
+		//get proper path of first SingleImagePanel
+		String path = getfirstProperPathOfSingleImagePanels();
+		this.selectFileDialog.setProperFilePathForSaving(path);
+		this.selectFileDialog.setImageLayerNamesForXMLSearch(collectAllImageLayerNames());
+	//	this.selectFileDialog.setMultiFileSelectionEnabled(false);
+		this.selectFileDialog.setVisible(true);
+		if(this.selectFileDialog.fileWritingType != ID.CANCEL && this.selectFileDialog.fileWritingType != ID.ERROR){
+			setFileWritingType(this.selectFileDialog.getFileWritingType());
+
+			setFilePathsForAll(this.selectFileDialog.getSelectedFilePath());
+			setMarkingLayerBackgroundsToDefault(ID.IMAGELAYER_UNDEFINED); // sets for all imagePanels
+
+		}
+		this.selectFileDialog.setVisible(false);
+		this.selectFileDialog.dispose();
+		this.imageLayersNamesForFileSelection=null;
+
+
+	}
+	
+	/* (non-Javadoc)
+	 * @see gui.saving.SaverDialog#selectPathForSingleImagePanel(java.lang.String, int)
+	 */
+	protected void selectPathForSingleImagePanel(String properPath, int panelID) throws Exception{
+		if(this.selectFileDialog == null)
+			initSelectFileDialog();
+		this.selectFileDialog.setProperFilePathForSaving(properPath);
+		this.selectFileDialog.setImageLayerNamesForXMLSearch(collectSingleSelectedImageLayerName(panelID));
+		this.selectFileDialog.setVisible(true);
+
+		if(this.selectFileDialog.fileWritingType != ID.CANCEL && this.selectFileDialog.fileWritingType != ID.ERROR){
+			setFileWritingType(this.selectFileDialog.getFileWritingType());
+			setFilePathForSingleImagePanel(this.selectFileDialog.getSelectedFilePath(), panelID);
+			setMarkingLayerBackgroundsToDefault(panelID); // sets for single imagepanel
+		}
+			this.selectFileDialog.setVisible(false);
+		this.selectFileDialog.dispose();
+		this.imageLayersNamesForFileSelection=null;
+
+	}
+
+	/* (non-Javadoc)
+	 * @see gui.saving.SaverDialog#setSaveButtonEnabledByFileValidity(int)
+	 */
+	protected void setSaveButtonEnabledByFileValidity(int vID){ // vID is not used
+		// go through all SingleImagePanels and if any has fileValidity ok -> enable saveButton
+		Component[] imPanelList= imageScrollPanel.getComponents();
+
+		if(imPanelList != null && imPanelList.length>0){
+			 for (int i = 0; i < imPanelList.length; i++) {
+				 int filVal=((SingleImagePanel)imPanelList[i]).getFileValidity();
+				if(filVal==ID.FILE_OK || filVal == ID.FILE_NEW_FILE){
+					this.saveJButton.setEnabled(true);
+					return;
+				}
+
+			}
+		}
+		this.saveJButton.setEnabled(false);
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see gui.saving.SaverDialog#startSavingProcess(int, int)
+	 */
 	protected void startSavingProcess(int savingID, int exportType){
 		boolean wantedToSave=false;
 		try {
 			ShadyMessageDialog dialog;
 			setAllMarkingLayerBackgroundsToDefault();
-		//	ArrayList<Integer> unsavedLayers=new ArrayList<Integer>();
 			ArrayList<Integer> successFullysavedLayers=new ArrayList<Integer>();
 			ArrayList<LayersOfPath> layerOfPathList=new ArrayList<LayersOfPath>();
 			//go through all panels and pick imageLayers and MarkingLayers which will be saved
@@ -77,7 +252,6 @@ public class SaveMarkings extends SaverDialog{
 										newLOP.addImageLayer(newIlayer);
 										layerOfPathList.add(newLOP);
 									}
-	
 								}
 								else{ // empty
 									// create new LayersOfPath object
@@ -93,12 +267,9 @@ public class SaveMarkings extends SaverDialog{
 	
 						}else{
 							LOGGER.warning("File Saving Path: "+imp.getProperFilePathForSaving()+ " is not valid. Change saving file.");
-						}
-					
+						}				
 				 	}
 				}
-
-
 			}
 			// all selected MarkingLayers are added to ImageLayers which are added to LayersOfPath -objects
 			// start saving content of each LayersOfPath to xml-file
@@ -113,8 +284,7 @@ public class SaveMarkings extends SaverDialog{
 					if(xmlWriteManager.startWritingProcess(lop)){
 						successFullysavedLayers.addAll(xmlWriteManager.getSuccessfullySavedMarkingLayers());
 						updateImageLayerXMLpath(lop, xmlWriteManager.getSuccessfullySavedMarkingLayers());
-					}
-				//	unsavedLayers.addAll(xmlWriteManager.getUnsavedMarkingLayers());
+					}			
 				}
 
 				setSuccesfullSavingBackgrounds(successFullysavedLayers);
@@ -125,7 +295,6 @@ public class SaveMarkings extends SaverDialog{
 						dialog.showDialog();
 					}
 				}
-
 			}
 			else{
 				if(wantedToSave){
@@ -145,10 +314,16 @@ public class SaveMarkings extends SaverDialog{
 			LOGGER.severe("Error in starting to save Markings: "+ e.getMessage());
 			e.printStackTrace();
 		}
-
-
 	}
 
+	/**
+	 * Sets the xml-file path to ImageLayer-object. 
+	 * Paths are given in LayersOfPath -object containing path and list of ImageLayers which data has been saved successfully.
+	 *
+	 * @param lop LayersOfPath object
+	 * @param successfullysavedMarkings IDs of the successfully saved MarkingLayers.
+	 * @throws Exception the exception
+	 */
 	private void updateImageLayerXMLpath(LayersOfPath lop, ArrayList<Integer> successfullysavedMarkings) throws Exception{
 
 		Iterator<ImageLayer> iIterator = this.imageLayerList.iterator();
@@ -165,134 +340,4 @@ public class SaveMarkings extends SaverDialog{
 			}
 		}
 	}
-
-	protected void setSaveButtonEnabledByFileValidity(int vID){ // vID is not used
-		// go through all SingleImagePanels and if any has fileValidity ok -> enable saveButton
-		Component[] imPanelList= imageScrollPanel.getComponents();
-
-		if(imPanelList != null && imPanelList.length>0){
-			 for (int i = 0; i < imPanelList.length; i++) {
-				 int filVal=((SingleImagePanel)imPanelList[i]).getFileValidity();
-				if(filVal==ID.FILE_OK || filVal == ID.FILE_NEW_FILE){
-					this.saveJButton.setEnabled(true);
-					return;
-				}
-
-			}
-		}
-		this.saveJButton.setEnabled(false);
-	}
-
-
-	protected void selectPathForSingleImagePanel(String properPath, int panelID) throws Exception{
-		if(this.selectFileDialog == null)
-			initSelectFileDialog();
-		this.selectFileDialog.setProperFilePathForSaving(properPath);
-		this.selectFileDialog.setImageLayerNamesForXMLSearch(collectSingleSelectedImageLayerName(panelID));
-		this.selectFileDialog.setVisible(true);
-
-		if(this.selectFileDialog.fileWritingType != ID.CANCEL && this.selectFileDialog.fileWritingType != ID.ERROR){
-			setFileWritingType(this.selectFileDialog.getFileWritingType());
-			setFilePathForSingleImagePanel(this.selectFileDialog.getSelectedFilePath(), panelID);
-			setMarkingLayerBackgroundsToDefault(panelID); // sets for single imagepanel
-		}
-			this.selectFileDialog.setVisible(false);
-		this.selectFileDialog.dispose();
-		this.imageLayersNamesForFileSelection=null;
-
-	}
-
-	protected void selectPathForAllSingleImagePanels() throws Exception{
-		if(this.selectFileDialog == null)
-			initSelectFileDialog();
-		//get properpath of first SingleImagePanel
-		String path = getfirstProperPathOfSingleImagePanels();
-		this.selectFileDialog.setProperFilePathForSaving(path);
-		this.selectFileDialog.setImageLayerNamesForXMLSearch(collectAllImageLayerNames());
-	//	this.selectFileDialog.setMultiFileSelectionEnabled(false);
-		this.selectFileDialog.setVisible(true);
-		if(this.selectFileDialog.fileWritingType != ID.CANCEL && this.selectFileDialog.fileWritingType != ID.ERROR){
-			setFileWritingType(this.selectFileDialog.getFileWritingType());
-
-			setFilePathsForAll(this.selectFileDialog.getSelectedFilePath());
-			setMarkingLayerBackgroundsToDefault(ID.IMAGELAYER_UNDEFINED); // sets for all imagePanels
-
-		}
-		this.selectFileDialog.setVisible(false);
-		this.selectFileDialog.dispose();
-		this.imageLayersNamesForFileSelection=null;
-
-
-	}
-
-	private ArrayList<String> collectAllImageLayerNames(){
-		ArrayList<String> list=new ArrayList<String>();
-		Component[] imPanelList= imageScrollPanel.getComponents();
-
-		if(imPanelList != null && imPanelList.length>0){
-			 for (int i = 0; i < imPanelList.length; i++) {
-				list.add(((SingleImagePanel)imPanelList[i]).getImageLayerName());
-			}
-		}
-
-		return list;
-	}
-
-	private ArrayList<String> collectSingleSelectedImageLayerName(int id){
-		ArrayList<String> list=new ArrayList<String>();
-		Component[] imPanelList= imageScrollPanel.getComponents();
-
-		if(imPanelList != null && imPanelList.length>0){
-			 for (int i = 0; i < imPanelList.length; i++) {
-				if(((SingleImagePanel)imPanelList[i]).hasSelectedMarkingLayer() && ((SingleImagePanel)imPanelList[i]).getLayerID() == id){
-					list.add(((SingleImagePanel)imPanelList[i]).getImageLayerName());
-				}
-
-			}
-		}
-		return list;
-	}
-
-	public boolean hasImageLayersFound(String fileName){
-		XMLreadManager readManager=new XMLreadManager();
-	//	return XMLreadManager.foundImageLayer(file, imageLayersNamesForFileSelection);
-		return readManager.foundImageLayer(fileName, imageLayersNamesForFileSelection);
-	}
-	/*
-	protected void selectPathForSingleImagePanel(String properPath, int panelID){
-		this.selectFileDialog.setProperFilePathForSaving(properPath);
-		int fileWritingType=this.selectFileDialog.showDialog();
-		if(fileWritingType != ID.CANCEL && fileWritingType != ID.ERROR){
-
-
-
-
-		}
-
-	}
-*/
-	public JPanel initImageViewPanelWithTitle(){
-		return initImageViewPanel("Save Markings");
-	}
-	protected JPanel initSaveButtonWithTitle() throws Exception{
-		return initSaveButton("Save Markings");
-	}
-
-	protected SingleImagePanel createSingleImagePanel(ImageLayer layer){
-		return new SMSingleImagePanel(layer, this);
-	}
-
-	protected JPanel initBrowsingPanelWithLabel() throws Exception{
-		return initBrowsingPanel(this.savingType, "Browse file for for all");
-	}
-
-	protected void initSelectFileDialog() throws Exception{
-		String path = gui.getPresentFolder();
-		if(path== null)
-			path = System.getProperty("user.home");
-		this.selectFileDialog = new MarkingsSelectFileDialog(this.gui, path, this.backPanel, this.savingType);
-	}
-
-
-
 }
