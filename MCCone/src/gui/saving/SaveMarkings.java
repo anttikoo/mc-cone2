@@ -34,7 +34,7 @@ public class SaveMarkings extends SaverDialog{
 	}
 
 	protected void startSavingProcess(int savingID, int exportType){
-
+		boolean wantedToSave=false;
 		try {
 			ShadyMessageDialog dialog;
 			setAllMarkingLayerBackgroundsToDefault();
@@ -47,51 +47,55 @@ public class SaveMarkings extends SaverDialog{
 				// create new LayersOfPath objects and add them to list
 				 for (int i = 0; i < imPanelList.length; i++) {
 					 SingleImagePanel imp= (SingleImagePanel)imPanelList[i];
-					if(imp.getFileValidity() == ID.FILE_OK || imp.getFileValidity() == ID.FILE_NEW_FILE){
-						ArrayList<MarkingLayer> selectedMarkingLayers=imp.getAllSelectedMarkingLayers();
-						if(selectedMarkingLayers != null && selectedMarkingLayers.size()>0){
-
-							// create new Imagelayer
-							ImageLayer newIlayer=new ImageLayer(imp.getImagePath());
-							// add selected MarkingLayers
-							newIlayer.setMarkingLayerList(selectedMarkingLayers);
-
-							if(layerOfPathList.size()>0){ // contains already some objects
-								boolean madeSave=false;
-								// go through objects of pathLayerList
-								Iterator<LayersOfPath> pathLayerIterator= layerOfPathList.iterator();
-								while(pathLayerIterator.hasNext()){
-
-									LayersOfPath lop = (LayersOfPath)pathLayerIterator.next();
-									if(lop.getXmlpath().equals(imp.getProperFilePathForSaving())){
-										 // found LayersOfPath with right xml path -> add the ImageLayer here
-										lop.addImageLayer(newIlayer);
-										madeSave=true;
+					 if(imp.isSelected()){
+						 wantedToSave=true;
+						 if(imp.getFileValidity() == ID.FILE_OK || imp.getFileValidity() == ID.FILE_NEW_FILE){
+							ArrayList<MarkingLayer> selectedMarkingLayers=imp.getAllSelectedMarkingLayers();
+							if(selectedMarkingLayers != null && selectedMarkingLayers.size()>0){
+	
+								// create new Imagelayer
+								ImageLayer newIlayer=new ImageLayer(imp.getImagePath());
+								// add selected MarkingLayers
+								newIlayer.setMarkingLayerList(selectedMarkingLayers);
+	
+								if(layerOfPathList.size()>0){ // contains already some objects
+									boolean madeSave=false;
+									// go through objects of pathLayerList
+									Iterator<LayersOfPath> pathLayerIterator= layerOfPathList.iterator();
+									while(pathLayerIterator.hasNext()){
+	
+										LayersOfPath lop = (LayersOfPath)pathLayerIterator.next();
+										if(lop.getXmlpath().equals(imp.getProperFilePathForSaving())){
+											 // found LayersOfPath with right xml path -> add the ImageLayer here
+											lop.addImageLayer(newIlayer);
+											madeSave=true;
+										}
+	
 									}
-
+									if(!madeSave){ // not found the proper LayersOfPath for the ImageLayer -> create new
+										LayersOfPath newLOP = new LayersOfPath(imp.getProperFilePathForSaving(), imp.getFileValidity());
+										newLOP.addImageLayer(newIlayer);
+										layerOfPathList.add(newLOP);
+									}
+	
 								}
-								if(!madeSave){ // not found the proper LayersOfPath for the ImageLayer -> create new
+								else{ // empty
+									// create new LayersOfPath object
 									LayersOfPath newLOP = new LayersOfPath(imp.getProperFilePathForSaving(), imp.getFileValidity());
 									newLOP.addImageLayer(newIlayer);
 									layerOfPathList.add(newLOP);
+	
 								}
-
+	
+							}else{
+								LOGGER.warning("No markings selected from ImageLayer: "+imp.getImageLayerName());
 							}
-							else{ // empty
-								// create new LayersOfPath object
-								LayersOfPath newLOP = new LayersOfPath(imp.getProperFilePathForSaving(), imp.getFileValidity());
-								newLOP.addImageLayer(newIlayer);
-								layerOfPathList.add(newLOP);
-
-							}
-
+	
 						}else{
-							LOGGER.warning("No markings selected from ImageLayer: "+imp.getImageLayerName());
+							LOGGER.warning("File Saving Path: "+imp.getProperFilePathForSaving()+ " is not valid. Change saving file.");
 						}
-
-					}else{
-						LOGGER.warning("File Saving Path: "+imp.getProperFilePathForSaving()+ " is not valid. Change saving file.");
-					}
+					
+				 	}
 				}
 
 
@@ -124,9 +128,16 @@ public class SaveMarkings extends SaverDialog{
 
 			}
 			else{
-				LOGGER.warning("No Markings selected to save!");
-				dialog = new ShadyMessageDialog(new JFrame(), "Saving not succesfull", "Check the file path is acceptable and at least one MarkingLayer is selected  ", ID.OK, this);
-				dialog.showDialog();
+				if(wantedToSave){
+					LOGGER.warning("No Markings selected to save!");
+					dialog = new ShadyMessageDialog(new JFrame(), "Saving not succesfull", "Check the file path is acceptable and at least one MarkingLayer is selected  ", ID.OK, this);
+					dialog.showDialog();
+				}
+				else{
+					LOGGER.warning("No any ImageLayers selected to save!");
+					dialog = new ShadyMessageDialog(new JFrame(), "Not selected anything to save", "Select at least one ImageLayer and MarkingLayer to be saved.", ID.OK, this);
+					dialog.showDialog();
+				}
 			}
 			dialog=null;
 			
