@@ -79,10 +79,8 @@ private Component parentComponent=null;
 			this.gui=gui;
 			initComponents();
 			initKeyListenerToDialog();
-		//	initSelectFileDialog();
 			setImageList();
 			this.revalidate();
-
 			this.setVisible(true);
 
 
@@ -95,7 +93,6 @@ private Component parentComponent=null;
 	}
 	
 	public SaverDialog(JDialog d, GUI gui, ArrayList<ImageLayer> iList, int savingTypeID){
-
 		super(d, true);
 		try{
 			this.savingType=savingTypeID;
@@ -107,10 +104,8 @@ private Component parentComponent=null;
 			this.gui=gui;
 			initComponents();
 			initKeyListenerToDialog();
-		//	initSelectFileDialog();
 			setImageList();
 			this.revalidate();
-
 			this.setVisible(true);
 
 		} catch (Exception e) {
@@ -123,7 +118,6 @@ private Component parentComponent=null;
 	private void initComponents() throws Exception{
 		
 		this.setBounds(WindowLocator.getVisibleWindowBounds(this.parentComponent));
-	//	LOGGER.fine("this class: "+this.getClass().toString()+ "this bounds: " +this.getBounds());
 		this.setUndecorated(true);
 		this.setBackground(new Color(0,0,0,0));
 		this.setContentPane(new ContentPane());
@@ -387,7 +381,6 @@ public JPanel initSaveButton(String saveTitle) throws Exception{
 		try {
 			// Panel where other panels are added
 			JPanel msBackPanel = new JPanel();
-		//	iBackPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
 			msBackPanel.setLayout(new BorderLayout());
 			msBackPanel.setBackground(Color_schema.dark_30);
 			msBackPanel.setLayout(new BorderLayout());

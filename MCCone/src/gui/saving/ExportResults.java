@@ -322,6 +322,7 @@ public class ExportResults extends SaverDialog{
 		try {
 			setAllMarkingLayerBackgroundsToDefault();
 			boolean successFullyExported = false;
+			boolean wantedToExport=false;
 			ArrayList<Integer> successfullIDs=new ArrayList<Integer>();
 			LOGGER.fine("exportID:"+exportID);
 			byteStream=new ByteArrayOutputStream();
@@ -333,36 +334,40 @@ public class ExportResults extends SaverDialog{
 					// create new LayersOfPath objects and add them to list
 					 for (int i = 0; i < imPanelList.length; i++) {
 						SingleImagePanel imp= (SingleImagePanel)imPanelList[i];
-						ArrayList<MarkingLayer> selectedMarkingLayers = imp.getAllSelectedMarkingLayers();
-						if(selectedMarkingLayers != null && selectedMarkingLayers.size()>0){
-							if(exportID==ID.FILE_TYPE_CSV){
-								if(i==0  && exportType != ID.APPEND)
-								writeCSVLineTitle();
-							}
-							else if(exportID == ID.FILE_TYPE_TEXT_FILE || exportID == ID.CLIPBOARD){
-								if(i==0  && exportType != ID.APPEND)
-									writeTXTorClipboardTitle();
-								writeTXTorClipboardLine(imp.getImageLayerName());
-							}
-
-
-							for (Iterator<MarkingLayer> iterator = selectedMarkingLayers.iterator(); iterator.hasNext();) {
-								MarkingLayer mLayer = (MarkingLayer) iterator.next();
+						if(imp.isSelected()){
+							wantedToExport=true; // at least one ImageLayer was selected to be exported
+							ArrayList<MarkingLayer> selectedMarkingLayers = imp.getAllSelectedMarkingLayers();
+							if(selectedMarkingLayers != null && selectedMarkingLayers.size()>0){
 								if(exportID==ID.FILE_TYPE_CSV){
-										writeCSVLine(imp.getImageLayerName(), mLayer.getLayerName(), mLayer.getCounts());
+									if(i==0  && exportType != ID.APPEND)
+									writeCSVLineTitle();
 								}
 								else if(exportID == ID.FILE_TYPE_TEXT_FILE || exportID == ID.CLIPBOARD){
-									writeTXTorClipboardLine(mLayer.getLayerName(), mLayer.getCounts());
+									if(i==0  && exportType != ID.APPEND)
+										writeTXTorClipboardTitle();
+									writeTXTorClipboardLine(imp.getImageLayerName());
+								}
+	
+	
+								for (Iterator<MarkingLayer> iterator = selectedMarkingLayers.iterator(); iterator.hasNext();) {
+									MarkingLayer mLayer = (MarkingLayer) iterator.next();
+									if(exportID==ID.FILE_TYPE_CSV){
+											writeCSVLine(imp.getImageLayerName(), mLayer.getLayerName(), mLayer.getCounts());
 									}
-
-								successfullIDs.add(mLayer.getLayerID());
+									else if(exportID == ID.FILE_TYPE_TEXT_FILE || exportID == ID.CLIPBOARD){
+										writeTXTorClipboardLine(mLayer.getLayerName(), mLayer.getCounts());
+										}
+	
+									successfullIDs.add(mLayer.getLayerID());
+								}
+								if(i<imPanelList.length-1 && hasSelectedMarkinglayersInBelowImageLayers(i+1) && exportID != ID.FILE_TYPE_CSV){
+									writeEmptyLine();
+									writeEmptyLine();
+								}
+	
 							}
-							if(i<imPanelList.length-1 && hasSelectedMarkinglayersInBelowImageLayers(i+1) && exportID != ID.FILE_TYPE_CSV){
-								writeEmptyLine();
-								writeEmptyLine();
-							}
-
-						}
+						
+					 	}
 
 					 }
 
@@ -380,15 +385,23 @@ public class ExportResults extends SaverDialog{
 					 byteStream.close();
 					 
 					 // set colors of dialog and show messages to show successfull exports
-					 if(successFullyExported){
+					 if(wantedToExport && successFullyExported){
 						 setSuccesfullSavingBackgrounds(successfullIDs);
 						 ShadyMessageDialog dialog = new ShadyMessageDialog(this, "Exporting succesfull", "Successfully exported MarkingLayers are at green background.  ", ID.OK, this);
 						 dialog.showDialog();
 						 dialog=null;
 					 }
 					 else{
-						 ShadyMessageDialog dialog = new ShadyMessageDialog(this, "Exporting not succesfull", "Exporting not successfull propably due to unacceptable file path.", ID.OK, this);
-						 dialog.showDialog();
+						 if(wantedToExport){
+							 ShadyMessageDialog dialog = new ShadyMessageDialog(this, "Exporting not succesfull", "Exporting not successfull propably due to unacceptable file path.", ID.OK, this);
+							 dialog.showDialog();
+							 dialog=null;
+						 }
+						 else{
+							 ShadyMessageDialog dialog = new ShadyMessageDialog(this, "Nothing to Export", "Not selected any results to be exported!", ID.OK, this);
+							 dialog.showDialog();
+							 dialog=null;
+						 }
 					 }
 				}
 

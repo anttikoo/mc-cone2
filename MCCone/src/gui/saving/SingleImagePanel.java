@@ -20,6 +20,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -51,16 +53,16 @@ public class SingleImagePanel extends JPanel{
 	private int oneImagePathHeight;
 	private int oneMarkingHeight;
 	private String properFilePath;
-
 	protected JPanel markingTableJPanel;
 	private JLabel filePathLabelValue;
-
 	private int fileValidity;
 	protected ImageLayer imageLayer;
 	private SaverDialog saverDialog;
+	private JCheckBox saveImageCheckBox;
 
 
 
+	
 
 	public SingleImagePanel(ImageLayer imageLayer, SaverDialog saverDialog){
 		try {
@@ -73,6 +75,15 @@ public class SingleImagePanel extends JPanel{
 			e.printStackTrace();
 
 		}
+	}
+	
+	public boolean isSelected(){
+		return this.saveImageCheckBox.isSelected();
+	}
+
+	public void setSelected(boolean selected){
+		this.saveImageCheckBox.setSelected(selected);
+		this.repaint();
 	}
 
 	private void setHeights(){
@@ -105,7 +116,20 @@ public class SingleImagePanel extends JPanel{
 		imageInformationJPanel.setBackground(Color_schema.dark_35);
 		imageInformationJPanel.setLayout(new BorderLayout());
 		imageInformationJPanel.setBorder(BorderFactory.createLineBorder(Color_schema.dark_50));
-
+		
+		
+		// CheckBox
+		Icon checkBoxIcon=new CheckBoxIcon();
+		// checkBox for selecting
+		saveImageCheckBox=new JCheckBox(checkBoxIcon);
+	
+		saveImageCheckBox.setSelected(true);
+	//	saveCheckBox.setForeground(Color_schema.color_white_230);
+		saveImageCheckBox.setBackground(Color_schema.dark_35);
+		saveImageCheckBox.setMaximumSize(new Dimension(25,25));
+		saveImageCheckBox.setPreferredSize(new Dimension(25,25));
+		saveImageCheckBox.setMinimumSize(new Dimension(25,25));
+		setListenerToImageCheckBox(); // listener to change of selections
 		// Set image title panel
 		JPanel titlePanel = new JPanel();
 		titlePanel.setMaximumSize(new Dimension(2000,oneImageTitleHeight));
@@ -120,6 +144,7 @@ public class SingleImagePanel extends JPanel{
 
 		titlePanel.setPreferredSize(new Dimension(labelwidth+100,oneImageTitleHeight));
 		titlePanel.add(Box.createRigidArea(new Dimension(10,0)));
+		titlePanel.add(this.saveImageCheckBox);
 		titlePanel.add(imageTitle);
 
 	//	imageTitle.validate();
@@ -152,6 +177,8 @@ public class SingleImagePanel extends JPanel{
 
 			}
 		}
+		
+	
 
 		this.setPreferredSize(new Dimension(labelwidth+100,oneImageTitleHeight+oneImagePathHeight+markingListHeight));
 
@@ -161,6 +188,19 @@ public class SingleImagePanel extends JPanel{
 
 	//	if(savingType != ID.EXPORT_RESULTS)
 		setProperFileForMarkings(this.properFilePath, false, ID.UNDEFINED);
+	}
+	
+	private void setListenerToImageCheckBox(){
+		this.saveImageCheckBox.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				
+				setAllMarkingLayerSelections(((JCheckBox)e.getSource()).isSelected());
+				
+			}
+		});
+		
 	}
 
 	protected JPanel initFilePathPanelWithLabel() throws Exception{
@@ -320,11 +360,12 @@ public class SingleImagePanel extends JPanel{
 		this.imagePath = path;
 	}
 
-	public void setAllMarkingSelections(boolean selected){
+	public void setAllMarkingLayerSelections(boolean selected){
 		Component[] ssMarkingList= markingTableJPanel.getComponents();
 		if(ssMarkingList != null && ssMarkingList.length>0){
 			for(int i=0;i<ssMarkingList.length;i++){
 				((SingleMarkingPanel)ssMarkingList[i]).setSelected(selected);
+				((SingleMarkingPanel)ssMarkingList[i]).setCheckBoxEnableState(selected);
 
 
 			}
@@ -332,6 +373,8 @@ public class SingleImagePanel extends JPanel{
 		}
 
 	}
+	
+	
 
 	protected String initProperFilePathForSaving(ImageLayer iLayer){
 		if(iLayer != null){
@@ -401,6 +444,20 @@ public class SingleImagePanel extends JPanel{
 
 		}
 		return selectedMarkingLayers;
+
+	}
+	
+	public void setSelectionOfAllMarkingLayers(boolean state){
+		
+		Component[] sMarkingList= markingTableJPanel.getComponents();
+		if(sMarkingList != null && sMarkingList.length>0){
+			for(int i=0;i<sMarkingList.length;i++){
+				SingleMarkingPanel smp= (SingleMarkingPanel)sMarkingList[i];
+				smp.setSelected(state);
+			}
+
+		}
+	
 
 	}
 

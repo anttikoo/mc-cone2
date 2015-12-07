@@ -71,7 +71,7 @@ public class SingleMarkingPanel extends JPanel{
 
 				gridDrawingSelection = initDrawGridCheckBoxPanel();
 
-				this.add(Box.createRigidArea(new Dimension(10,0)));
+				this.add(Box.createRigidArea(new Dimension(30,0)));
 				this.add(saveCheckBox);
 				this.add(Box.createRigidArea(new Dimension(5,0)));
 				this.add(markingLabelPanel);
@@ -98,6 +98,11 @@ public class SingleMarkingPanel extends JPanel{
 
 			public void setSelected(boolean selected){
 				this.saveCheckBox.setSelected(selected);
+				this.repaint();
+			}
+			
+			public void setCheckBoxEnableState(boolean state){			
+				this.saveCheckBox.setEnabled(state);
 				this.repaint();
 			}
 
