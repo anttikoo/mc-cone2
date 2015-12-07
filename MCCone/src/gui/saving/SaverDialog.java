@@ -322,38 +322,6 @@ protected SingleImagePanel createSingleImagePanel(ImageLayer layer){
 
 
 
-private ImageIcon getImageIcon(String path) {
-
-		try {
-			URL url = this.getClass().getResource(path);
-			ImageIcon img = new ImageIcon(url);
-			return img;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			LOGGER.severe("Error in getting imageIcon" +e.getClass().toString() + " :" +e.getMessage());
-			return null;
-		}
-}
-
-private ImageLayer getImageLayer(String path){
-	try {
-		LOGGER.fine("get: " +path);
-		Iterator<ImageLayer> iIterator = imageLayerList.iterator();
-		while(iIterator.hasNext()){
-			ImageLayer im = (ImageLayer)iIterator.next();
-			if(im.getImageFilePath().equals(path)){
-
-				return im;
-			}
-
-		}
-		return null;
-	} catch (Exception e) {
-		LOGGER.severe("Error in deleting imageLayer from IMAGE LIST " +e.getClass().toString() + " :" +e.getMessage());
-		return null;
-	}
-}
-
 
 private JPanel initDownPanel(){
 
