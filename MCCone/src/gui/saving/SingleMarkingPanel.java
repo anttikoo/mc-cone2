@@ -4,10 +4,8 @@ package gui.saving;
 import gui.Color_schema;
 import information.Fonts;
 import information.MarkingLayer;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -18,6 +16,9 @@ import javax.swing.JPanel;
 
 import operators.CheckBoxIcon;
 
+/**
+ * The Class SingleMarkingPanel. Contains name of MarkingLayer, checkboxes to select it and grid.
+ */
 public class SingleMarkingPanel extends JPanel{
 
 		private JCheckBox saveCheckBox;
@@ -27,9 +28,12 @@ public class SingleMarkingPanel extends JPanel{
 
 
 
+		/**
+		 * Instantiates a new single marking panel.
+		 *
+		 * @param mLayer the MarkingLayer
+		 */
 		public SingleMarkingPanel(MarkingLayer mLayer){
-		//	this.setImageLayerPath(imageLayerPath);
-		//	this.setImageLayerID(iLayerID);
 			this.mLayer=mLayer;
 
 			try {
@@ -42,22 +46,15 @@ public class SingleMarkingPanel extends JPanel{
 				this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 				Icon checkBoxIcon=new CheckBoxIcon();
 				// checkBox for selecting
-				saveCheckBox=new JCheckBox(checkBoxIcon);
-			
+				saveCheckBox=new JCheckBox(checkBoxIcon);		
 				saveCheckBox.setSelected(true);
-			//	saveCheckBox.setForeground(Color_schema.color_white_230);
 				saveCheckBox.setBackground(Color_schema.dark_35);
 				saveCheckBox.setMaximumSize(new Dimension(25,25));
 				saveCheckBox.setPreferredSize(new Dimension(25,25));
 				saveCheckBox.setMinimumSize(new Dimension(25,25));
-			//	saveCheckBox.setMargin(new Insets(0, 0, 0, 0));
-			//	ImageIcon icon= gui.getImageIcon("/images/checkBox_selected.png");
-		//		saveCheckBox.setIcon(icon);
-
 
 				// marking title
-				JLabel markingLabel = new JLabel(getMarkingName());
-				
+				JLabel markingLabel = new JLabel(getMarkingName());		
 				markingLabelPanel = new JPanel();
 				markingLabelPanel.setLayout(new BorderLayout());
 				markingLabelPanel.setMaximumSize(new Dimension(2000, 40));
@@ -68,7 +65,6 @@ public class SingleMarkingPanel extends JPanel{
 				markingLabelPanel.setPreferredSize(new Dimension(markinglabelwidth+50,40));
 				markingLabelPanel.add(markingLabel);
 				markingLabelPanel.setBackground(Color_schema.dark_35);
-
 				gridDrawingSelection = initDrawGridCheckBoxPanel();
 
 				this.add(Box.createRigidArea(new Dimension(30,0)));
@@ -79,8 +75,7 @@ public class SingleMarkingPanel extends JPanel{
 					this.add(Box.createHorizontalGlue());
 					this.add(gridDrawingSelection);
 				}
-			//	this.add(Box.createHorizontalGlue()); // when panel gets bigger the horizontal extra space comes between title and deleting button
-
+			
 			} catch (Exception e) {
 
 				e.printStackTrace();
@@ -88,6 +83,11 @@ public class SingleMarkingPanel extends JPanel{
 
 		}
 
+		/**
+		 * Initializes the JPanel for Grid CheckBox.
+		 *
+		 * @return the JPanel
+		 */
 		protected JPanel initDrawGridCheckBoxPanel(){
 			return null;
 		}
