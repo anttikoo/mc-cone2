@@ -55,9 +55,9 @@ public class SingleImagePanel extends JPanel{
 	private String properFilePath;
 	protected JPanel markingTableJPanel;
 	private JLabel filePathLabelValue;
-	private int fileValidity;
+	protected int fileValidity;
 	protected ImageLayer imageLayer;
-	private SaverDialog saverDialog;
+	protected SaverDialog saverDialog;
 	private JCheckBox saveImageCheckBox;
 
 
@@ -288,8 +288,10 @@ public class SingleImagePanel extends JPanel{
 
 
 
-	private void checkFileValidity(){
+	protected void checkFileValidity(){
 		fileValidity =  saverDialog.checkFileValidity(new File(this.properFilePath));
+		
+		// check is file already selected to other 
 	}
 
 	private void informFileValidity(boolean showMessage){
@@ -449,20 +451,23 @@ public class SingleImagePanel extends JPanel{
 		return imageLayer.getImageFileName();
 	}
 
-	public void setProperFileForMarkings(String properFile, boolean showMessage, int fileValidityID) {
+	public void setProperFileForMarkings(String properFile, boolean showMessage, int fileValidityID) {	
 		this.properFilePath = properFile;
 		this.filePathLabelValue.setText(this.properFilePath);
 		this.fileValidity=fileValidityID;
+		
 		//File file=new File(this.properFileForMarkings);
 		if(fileValidityID == ID.UNDEFINED)
 			checkFileValidity();
 
-			informFileValidity(showMessage);
+		informFileValidity(showMessage);
 		// now the target file changes -> change the markingLayer backgrounds to default
 		// the color represents the successfully saved markings into properFileForMarkings -> has to refresh color
 		setAllSingleMarkingPanelBGstoDefault();
 		this.repaint();
 	}
+	
+	
 
 
 /*

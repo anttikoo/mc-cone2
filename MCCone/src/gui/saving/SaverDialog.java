@@ -638,6 +638,23 @@ public JPanel initSaveButton(String saveTitle) throws Exception{
 		}
 
 	}
+	
+	public boolean isFilePathFound(String filePath){
+		Component[] imPanelList= imageScrollPanel.getComponents();
+		
+		if(imPanelList != null && imPanelList.length>0 && filePath != null && filePath.length()>0){
+
+			 for (int i = 0; i < imPanelList.length; i++) {
+				String otherPath = ((SingleImagePanel)imPanelList[i]).getProperFilePathForSaving();
+				if(otherPath != null && otherPath.length()>0 && otherPath.equals(filePath))
+					return true;
+			
+				
+			}
+		}
+		return false;
+		
+	}
 
 	protected void setFilePathForSingleImagePanel(String path, int panelID){
 
@@ -712,7 +729,11 @@ public JPanel initSaveButton(String saveTitle) throws Exception{
 					type="Can't create the file! Change the filename or folder.";
 					break;
 				case ID.FILE_IS_NOT_FILE:
-					type="Only Folder path is given. Give file name";
+					type="Only Folder path is given. Give file name.";
+					break;
+					
+				case ID.FILE_FILE_SELECT_BY_ANOTHER:
+					type="Given file path is already selected in another ImageLayer.";
 					break;
 
 				default:

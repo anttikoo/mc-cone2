@@ -567,6 +567,20 @@ public void setProperFilePathForSaving(String path){
 	setCurrentFileOrFolder();
 }
 
+public void setProperFolderPathForSaving(String path){	
+	try {
+		
+		if(path != null && path.length()>0){
+			File file = getFolder(path);
+			setProperFilePathForSaving(file.getAbsolutePath());			
+		}
+			
+	} catch (Exception e) {
+	
+		e.printStackTrace();
+	}
+}
+
 private String fixFileName(String fileName){
 	if(fileName != null && fileName.length()>1 && fileName.contains(".")){
 		int index=fileName.indexOf(".");

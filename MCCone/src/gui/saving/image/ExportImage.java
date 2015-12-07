@@ -6,6 +6,7 @@ import gui.MouseListenerCreator;
 import gui.ShadyMessageDialog;
 import gui.file.FileManager;
 import gui.saving.SaverDialog;
+import gui.saving.SelectFileDialog;
 import gui.saving.SingleImagePanel;
 import operators.CheckBoxIcon;
 import information.Fonts;
@@ -66,7 +67,9 @@ public class ExportImage extends SaverDialog{
 	protected void selectPathForSingleImagePanel(String properPath, int panelID) throws Exception{
 		if(this.selectFileDialog == null)
 			initSelectFileDialog();
-		this.selectFileDialog.setProperFilePathForSaving(properPath);
+		
+	//	this.selectFileDialog.setProperFilePathForSaving(properPath);
+		this.selectFileDialog.setProperFolderPathForSaving(properPath);
 
 		this.selectFileDialog.setVisible(true);
 
@@ -79,6 +82,18 @@ public class ExportImage extends SaverDialog{
 			this.selectFileDialog.dispose();
 
 
+	}
+	
+	/* Checks the validity of file and has same file selected to another ImageLayer.
+	 * @see gui.saving.SaverDialog#checkFileValidity(java.io.File)
+	 */
+	protected int checkFileValidity(File file){
+		int validity = super.checkFileValidity(file);
+		
+		if(isFilePathFound(file.getAbsolutePath())){
+			return ID.FILE_FILE_SELECT_BY_ANOTHER;
+		}
+		return validity;
 	}
 
 	protected void setSaveButtonEnabledByFileValidity(int vID){ //vID not used
