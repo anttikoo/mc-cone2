@@ -723,7 +723,7 @@ private GridPropertiesPanel gridDialog=null;
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
 
 			@SuppressWarnings("unused")
-			ExportResults exp = new ExportResults(new JFrame("DialogFrame"), this, taskManager.getImageLayerList(), id);
+			ExportResults exp = new ExportResults(this, this, taskManager.getImageLayerList(), id);
 		}
 		else{
 			showMessage( "Not starting saving", "Not saved markings, because no markings were found", ID.OK);
