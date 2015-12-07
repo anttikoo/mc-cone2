@@ -44,7 +44,7 @@ public class ExportResults extends SaverDialog{
 
 	
 	/**
-	 * Instantiates a new dialog for exporting results.
+	 * Instantiates a new dialog for exporting results. Parent Object is JDialog.
 	 *
 	 * @param d oarent JDialog
 	 * @param gui the gui
@@ -56,7 +56,7 @@ public class ExportResults extends SaverDialog{
 	}
 	
 	/**
-	 * Instantiates a new dialog for exporting results.
+	 * Instantiates a new dialog for exporting results. Parent Object is JFrame
 	 *
 	 * @param frame the frame
 	 * @param gui the gui

@@ -33,13 +33,13 @@ public class SelectAndCreateImageFiles extends ExportResults {
 	 */
 	public SelectAndCreateImageFiles(JFrame frame, GUI gui,ArrayList<ImageLayer> iList, int savingTypeID) {
 		super(frame, gui, iList, savingTypeID);
-		// TODO Auto-generated constructor stub
+		
 
 	}
 	
 	public SelectAndCreateImageFiles(JDialog d, GUI gui,ArrayList<ImageLayer> iList, int savingTypeID) {
 		super(d, gui, iList, savingTypeID);
-		// TODO Auto-generated constructor stub
+		
 
 	}
 
