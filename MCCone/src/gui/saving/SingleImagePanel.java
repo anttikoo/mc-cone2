@@ -248,13 +248,10 @@ public class SingleImagePanel extends JPanel{
 		filePathJPanel.add(Box.createHorizontalGlue());
 
 		browseJButton = new JButton(buttonTitle);
-	//	browseJButton.setAlignmentY(Component.CENTER_ALIGNMENT);
-	//	browseJButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		browseJButton.setFont(Fonts.b15);
 		int maxStringWidth = browseJButton.getFontMetrics(Fonts.b15).stringWidth(buttonTitle);
 		browseJButton.setPreferredSize(new Dimension(maxStringWidth+20,25));
 		browseJButton.setMaximumSize(new Dimension(maxStringWidth+20,25));
-	//	browseJButton.setMargin(new Insets(0, 0,0, 0));
 		browseJButton.setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 1));
 		browseJButton.setContentAreaFilled(false);
 		browseJButton.setFocusable(false);
@@ -299,50 +296,7 @@ public class SingleImagePanel extends JPanel{
 		this.saverDialog.informUserFromFileValidity(this.fileValidity, this.filePathLabelValue, showMessage);
 	}
 
-	private void informFileValidity2(boolean showMessage){
-		if(fileValidity == ID.FILE_OK || fileValidity == ID.FILE_NEW_FILE ){ // can update file or it is new file
-			filePathLabelValue.setForeground(Color_schema.white_230);
-			filePathLabelValue.setToolTipText("File path OK.");
-		}
-		else{
-			filePathLabelValue.setForeground(Color_schema.orange_dark);
-			filePathLabelValue.setToolTipText("Can't save to this file name. Select or create new file by pressing Browse-button.");
-			if(showMessage)		{
-				String type="";
-				switch (fileValidity) {
-				case ID.FILE_CANT_READ:
-					type="Can't read file! Select other file for saving.";
-					break;
-				case ID.FILE_NOT_VALID:
-					type="File is not valid XML file! Select other file for saving.";
-					break;
-				case ID.FILE_CANT_WRITE:
-					type="Can't write to file! Select other file for saving.";
-					break;
-				case ID.FILE_NOT_RIGHT_FORMAT:
-					type="FILE is not right format! Select other file for saving.";
-					break;
-				case ID.FILE_NOT_EXISTS:
-					type="Can't create the file! Change the filename or folder.";
-					break;
-				case ID.FILE_IS_NOT_FILE:
-					type="Only Folder path is given. Give file name";
-					break;
-
-				default:
-					type="Can't read or write to file! Change the file for saving."; // this should never be shown.
-					break;
-				}
-
-
-					ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "Invalid file", ""+type, ID.OK, this.saverDialog);
-					dialog.showDialog();
-					dialog=null;
-				}
-		}
-	}
-
-
+	
 
 	public void setButtonsEnabled(boolean enable){
 		saveSingleJButton.setEnabled(enable);
