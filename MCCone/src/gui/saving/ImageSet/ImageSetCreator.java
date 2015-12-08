@@ -77,13 +77,14 @@ import managers.TaskManager;
  */
 public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
+
+private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 private TaskManager taskManager;
 private GUI gui;
 private JPanel backPanel;
 private ArrayList<SingleDrawImagePanel> drawImagePanels;
 private int presentRowNumber;
 private int presentColumnNumber;
-private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 private JPanel gridPanel;
 private GridLayout gridLayout;
 private int gap;
@@ -109,7 +110,10 @@ private ProgressBallsDialog progressBallsDialog;
 private JDialog visibleDialog=null; // childDialog which may be progress, info or any dialog.
 private JButton exportJButton;
 private Dimension wgbDimension; // Dimension of whole printable area where images are positioned
-private Component parentComponent=null;
+
+	private Component parentComponent=null;
+
+
 
 	/**
 	 * Class constructor. Opens window, where use can download Images from ImageLayers and image-files and export them to file.
@@ -134,10 +138,9 @@ private Component parentComponent=null;
 			initComponents();
 			this.progressBallsDialog = new ProgressBallsDialog(new JFrame(), "Creating set of Images", "", ID.CANCEL, this);
 			// adding this progressWithoutButtons in later versions to work
-			//this.progressWihoutButtons = new ProgressBallsDialog(new JFrame(), "Opening images", "", ID.CANCEL, this); 
 			this.addMouseListener(this);
 			
-			openImagesAtStrartup();
+			openImagesAtStrartup(); // shows window for selecting ImageLayers at startup.
 
 		} catch (Exception e) {
 			LOGGER.severe("Error in initializing ImageSetCreator: "+e.getMessage());
@@ -145,12 +148,8 @@ private Component parentComponent=null;
 			this.setVisible(false);
 			this.dispose();
 		}
-
-		
-		
+	
 	}
-
-
 
 	/**
 	 * Sets actions to JMenuItems.
@@ -217,6 +216,7 @@ private Component parentComponent=null;
 
 	}
 
+
 	/**
 	 * Calculates how much window has space for ImagePanels. 
 	 * @return Dimension overall space left for ImagePanels.
@@ -228,8 +228,6 @@ private Component parentComponent=null;
 		LOGGER.fine("height"+this.browsingBackPanel.getHeight());
 		return new Dimension(width,height);
 	}
-
-
 	/**
 	 * Calculates has present grid enough cells for images and if not enough cells will method count new number for rows and columns.
 	 * @param rowColumn int[] present row and column number
@@ -248,26 +246,7 @@ private Component parentComponent=null;
 		else return rowColumn;
 
 	}
-	public void showDialog(){
-		this.setVisible(true);
-		
-	}
 	
-	private void openImagesAtStrartup(){
-		//open the window to select images from layers
-				if(this.taskManager != null && this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size()>0){
-					
-					SwingUtilities.invokeLater(new Runnable() {
-						
-						@Override
-						public void run() {
-							createImagesFromPresentImageLayers();
-							setImagesToGrid();				
-						}
-					});			
-				}
-	}
-
 	/**
 	 * Opens Confirm dialog to close ImageSet window.
 	 */
@@ -346,8 +325,7 @@ private Component parentComponent=null;
 			
 			// wait until image saved or saving is cancelled in progressBallsDialog
 			while(imageCreator.isContinueCreating() && progressBallsDialog.isShowON()){
-				createImageThread.sleep(1000);
-			
+				createImageThread.sleep(1000);		
 			}
 
 			if(progressBallsDialog.isShowON())
@@ -372,8 +350,6 @@ private Component parentComponent=null;
 		}
 	}
 
-
-
 	/**
 	 * Opens dialog window, where user can select ImageLayers and MarkingLayers to be shown in imageSet.
 	 * Creates SingleDrawImagePanels from selected images
@@ -395,9 +371,7 @@ private Component parentComponent=null;
 		}
 		visibleDialog=null;
 
-
 	}
-
 
 
 	/**
@@ -428,6 +402,8 @@ private Component parentComponent=null;
 
 	}
 
+
+
 	/**
 	 * Searches first SingleDrawImagePanel which is not positioned yet.
 	 * @return SingleDrawImagePanel which is not positioned yet.
@@ -441,9 +417,6 @@ private Component parentComponent=null;
 		}
 		return null;
 	}
-
-
-
 
 	/**
 	 * Returns a String folder path of the given file .
@@ -466,18 +439,15 @@ private Component parentComponent=null;
 	 * @return int[] the cell position in grid (row,column) 
 	 */
 	private int[] getGridPositionAtLocation(Point p){
-
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
 			SingleDrawImagePanel sdp =sdpIterator.next();
 			Rectangle location = new Rectangle(sdp.getLocationOnScreen(), sdp.getPreferredSize());
 			if(location.contains(p))
-
 				return sdp.getGridPosition();
 		}
 
 		return null;
-
 	}
 
 	/**
@@ -498,11 +468,8 @@ private Component parentComponent=null;
 				else{ // getting maximum of all panels which has image
 					if(sdp.getPanelSize().height > maxHeight)
 						maxHeight=sdp.getPanelSize().height;
-
 				}
-
 			}
-
 		}
 		if(maxHeight>0)
 			return maxHeight;
@@ -529,16 +496,12 @@ private Component parentComponent=null;
 				else{ // getting maximum width of all panels which has image
 					if(sdp.getPanelSize().height > maxWidth)
 						maxWidth=sdp.getPanelSize().width;
-
 				}
-
 			}
 		}
 		return maxWidth;
 
 	}
-
-
 
 	/**
 	 * Returns a maximum height of the title of panel.
@@ -562,6 +525,8 @@ private Component parentComponent=null;
 
 	}
 
+
+
 	/**
 	 * returns a column height of given column number.
 	 * @param row int the column number of grid.
@@ -576,12 +541,8 @@ private Component parentComponent=null;
 			SingleDrawImagePanel sdp=sdpIterator.next();
 			if(sdp.getGridPosition().length>0 && sdp.getGridPosition()[1] == column){
 				columnHeight+=sdp.getPanelSize().height;
-
-
 			}
-
 		}
-
 		return columnHeight;
 		}catch(Exception e){
 			LOGGER.severe("Error ImageSetCreator in getting grid column height: "+e.getMessage());
@@ -629,7 +590,6 @@ private Component parentComponent=null;
 		return null;
 	}
 
-	
 	/**
 	 * @return Font the selected font
 	 */
@@ -640,9 +600,7 @@ private Component parentComponent=null;
 
 	}
 
-
-
-
+	
 	/**
 	 * Imports image files which user has selected and creates @see SingleDrawImagePanel (s) of them.
 	 * @param imageFiles list of image File-object
@@ -675,6 +633,9 @@ private Component parentComponent=null;
 			e.printStackTrace();
 		}
 	}
+
+
+
 
 	/**
 	 * Initializes the Browsing Panel at below of window.
@@ -748,9 +709,6 @@ private Component parentComponent=null;
 			widthField.setPreferredSize(new Dimension(70,30));
 			widthField.setColumns(4);
 			widthField.setBorder(BorderFactory.createLineBorder(Color_schema.grey_100,  1));
-			
-			
-
 		    widthField.setToolTipText("Set imagewidth between 1-5000 pixels");
 
 		    JLabel pixelLabel1 = new JLabel("px");
@@ -768,25 +726,19 @@ private Component parentComponent=null;
 			heigthField.setMaximumSize(new Dimension(70,30));
 			heigthField.setPreferredSize(new Dimension(70,30));
 			heigthField.setColumns(4);
-			heigthField.setBorder(BorderFactory.createLineBorder(Color_schema.grey_100,  1));
-			
-			
+			heigthField.setBorder(BorderFactory.createLineBorder(Color_schema.grey_100,  1));		
 			heigthField.setToolTipText("Set image height between 1-5000 pixels."); 
 			resolutionPanel.add(widthField);
 			resolutionPanel.add(createBasicArrowButtons(widthField, ID.TEXTFIELD_WIDTH));
 			resolutionPanel.add(Box.createRigidArea(new Dimension(5,0)));
 			resolutionPanel.add(pixelLabel1);
-			resolutionPanel.add(Box.createRigidArea(new Dimension(30,0)));
-			 
-			
-			      
+			resolutionPanel.add(Box.createRigidArea(new Dimension(30,0)));		      
 
 			JLabel heightResolutionLabel = new JLabel("Image Height:");
 			heightResolutionLabel.setFont(Fonts.b16);
 
 			resolutionPanel.add(heightResolutionLabel);
 			resolutionPanel.add(Box.createRigidArea(new Dimension(10,0)));
-
 			resolutionPanel.add(heigthField);
 			resolutionPanel.add(createBasicArrowButtons(heigthField, ID.TEXTFIELD_HEIGHT));
 			resolutionPanel.add(Box.createRigidArea(new Dimension(5,0)));
@@ -797,13 +749,11 @@ private Component parentComponent=null;
 			//set DocumentFileter to widthField
 			PlainDocument w_doc = (PlainDocument) widthField.getDocument();
 			ResolutionIntFilter widthResolutionFilter= new ResolutionIntFilter(this.arrowMouseListener, ID.TEXTFIELD_WIDTH, heigthField);
-		//	w_doc.setDocumentFilter(new ResolutionIntFilter(this.arrowMouseListener, ID.TEXTFIELD_WIDTH));
 			w_doc.setDocumentFilter(widthResolutionFilter);			 
 						 
 			//set DocumentFileter to heightField
 			PlainDocument h_doc = (PlainDocument) heigthField.getDocument();
 			ResolutionIntFilter heightResolutionFilter= new ResolutionIntFilter(this.arrowMouseListener, ID.TEXTFIELD_HEIGHT, widthField);
-		//	 h_doc.setDocumentFilter(new ResolutionIntFilter(this.arrowMouseListener, ID.TEXTFIELD_HEIGHT));
 			h_doc.setDocumentFilter(heightResolutionFilter);
 			
 			widthResolutionFilter.setAnotherFilter(heightResolutionFilter);
@@ -964,11 +914,7 @@ private Component parentComponent=null;
 				}
 			});
 			menuBar.add(closeJButton);
-
-
-
 			backPanel.add(menuBar, BorderLayout.PAGE_START);
-
 			gridBackPanel = new JPanel();
 			gridBackPanel.setLayout(new GridBagLayout());
 			gridBackPanel.setBackground(Color_schema.dark_40);
@@ -976,15 +922,11 @@ private Component parentComponent=null;
 			whiteGridBackPanel = new JPanel();
 			whiteGridBackPanel.setLayout(new GridBagLayout());
 			whiteGridBackPanel.setBackground(Color_schema.white_230);
-
 			gridPanel = new JPanel();
 			gridLayout = new GridLayout(1, 1);
 			gridPanel.setLayout(gridLayout);
 			gridPanel.setBackground(Color_schema.white_230);
 			gridPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-
-
-
 			whiteGridBackPanel.add(gridPanel);
 			gridBackPanel.add(whiteGridBackPanel);
 
@@ -1000,6 +942,7 @@ private Component parentComponent=null;
 			this.repaint();
 		
 	}
+
 	/**
 	 * Refreshes Threads for saving ImageSet and showing progress.
 	 */
@@ -1007,25 +950,37 @@ private Component parentComponent=null;
 		this.progressBallsDialog.refreshDialog();
 		this.createImageThread=new Thread(this, "CreateImage_"+threadNumber++);
 	}
-
-
-
+	
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	//do nothing
 	}
 
+
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// do nothing
 
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// do nothing
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 
@@ -1035,16 +990,15 @@ private Component parentComponent=null;
 			int[] gridPoint=getGridPositionAtLocation(startPoint);
 			if(gridPoint != null){
 				this.movingPosition=gridPoint;
-
-	
 				this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			}
 				else
 					this.movingPosition=null;
-
 	}
 
-
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 
@@ -1054,19 +1008,17 @@ private Component parentComponent=null;
 			if(gridPoint != null && this.movingPosition != null){
 			
 				swithcSingleDrawPanels(gridPoint);
-
 			}
 			else{
 				if(gridPoint == null && this.movingPosition != null) {
 					// remove the panel
 					removePanel();
 				}
-
 			}
 				this.movingPosition=null;
 				this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
 	}
+
 
 	/**
 	 * Adds ImagePanels to grid cells. This happens when all ImagePanels are same size and no need to scale cell sizes.
@@ -1086,6 +1038,23 @@ private Component parentComponent=null;
 		}
 
 		this.gridPanel.repaint();
+	}
+
+	/**
+	 * Open images at startup.
+	 */
+	private void openImagesAtStrartup(){
+		//open the window to select images from layers
+				if(this.taskManager != null && this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size()>0){
+					
+					SwingUtilities.invokeLater(new Runnable() {					
+						@Override
+						public void run() {
+							createImagesFromPresentImageLayers();
+							setImagesToGrid();				
+						}
+					});			
+				}
 	}
 
 
@@ -1163,20 +1132,16 @@ private Component parentComponent=null;
 						this.presentRowNumber-=1;
 						updateGridComboBoxItems();
 					}
-
 					ShadyMessageDialog dialog = new ShadyMessageDialog(this, "Removing ImagePanel", "Remove ImagePanel from ImageSet.", ID.YES_NO, this);
 					selection=dialog.showDialog();
 					if(selection == ID.YES)
 						sdpIterator.remove();
 					dialog=null;
 				}
-
 			}
 			this.movingPosition=null;
 			if(selection== ID.YES)
 				setImagesToGrid();
-
-
 	}
 
 	@Override
@@ -1224,8 +1189,6 @@ private Component parentComponent=null;
 		if(this.selectFileDialog.fileWritingType != ID.CANCEL && this.selectFileDialog.fileWritingType != ID.ERROR){
 			// set filepath
 			this.savingPathJLabel.setText(this.selectFileDialog.getSelectedFilePath());
-
-
 		}
 			this.selectFileDialog.setVisible(false);
 		this.selectFileDialog.dispose();
@@ -1280,14 +1243,10 @@ private Component parentComponent=null;
 					// calculate dimension for SingleDrawImagePanels
 				Dimension panelDimension=calculateDrawPanelDimension();
 				Dimension maxImageDimension=null;
-		//		rowloop:
+	
 				for (int r = 1; r <= presentRowNumber; r++) {
 					for (int c = 1; c <= presentColumnNumber; c++) {
-				/*		if(importing && this.cancelImageImport.isCancelled()){ // user has cancelled importing files
-
-							break rowloop;
-						}
-				 */	
+					
 						//get,set and add SingleDrawImagePanel to GRID (may be empty Panel -> added in different way)
 						SingleDrawImagePanel sdp=getFirstUnPositionedSDP();
 						if(sdp != null){
@@ -1461,6 +1420,14 @@ private Component parentComponent=null;
 	}
 
 	/**
+	 * Sets dialog visible.
+	 */
+	public void showDialog(){
+		this.setVisible(true);
+		
+	}
+
+	/**
 	 * Changes positions in GRID of two @see SingleDrawImagePanel-objects.
 	 * @param second int[] position of @see SingleDrawImagePanel-object that is moved.
 	 */
@@ -1472,7 +1439,6 @@ private Component parentComponent=null;
 			secondPanel.setGridPosition(this.movingPosition);
 
 		}
-
 
 		this.movingPosition=null;
 		if(firstPanel.getPanelSize().width == secondPanel.getPanelSize().width && firstPanel.getPanelSize().height == secondPanel.getPanelSize().height){
@@ -1517,7 +1483,6 @@ private Component parentComponent=null;
 		this.gridPanel.setPreferredSize(dim);
 		this.gridPanel.setMinimumSize(dim);
 
-
 		int w=dim.width+this.gap*2;
 		int h=dim.height+this.gap*2;
 		wgbDimension = new Dimension(w,h);
@@ -1526,8 +1491,6 @@ private Component parentComponent=null;
 		this.whiteGridBackPanel.setMinimumSize(wgbDimension);
 		this.arrowMouseListener.setScalingFactor(wgbDimension.getHeight()/wgbDimension.getWidth()); // calculate scaling
 		this.arrowMouseListener.updateResolutions(); // updates the destination image resolution
-
-
 	}
 
 	/**
@@ -1546,7 +1509,6 @@ private Component parentComponent=null;
 			sdp.updateFont(font);
 		}
 	}
-
 	/**
 	 * 
 	 * Class ComboRenderer for rendering available fonts in Combobox. Shows font name in font style.
@@ -1595,5 +1557,4 @@ private Component parentComponent=null;
 	        }
 	    }
 	}
-
 }
