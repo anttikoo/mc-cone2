@@ -29,6 +29,9 @@ public class ExImaSingleMarkingPanel extends SingleMarkingPanel{
 		super(mlayer);
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.saving.SingleMarkingPanel#initDrawGridCheckBoxPanel()
+	 */
 	protected JPanel initDrawGridCheckBoxPanel(){
 		drawGridCheckBox=null;
 		if(this.mLayer.getGridProperties() != null && this.mLayer.getGridProperties().isGridON()){
