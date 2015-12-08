@@ -1,31 +1,39 @@
 package gui.saving.ImageSet;
 
-import information.ID;
 import information.ImageLayer;
 import information.MarkingLayer;
-
 import java.awt.Component;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import operators.ImageCreator;
 import gui.GUI;
-import gui.ShadyMessageDialog;
 import gui.saving.ExportResults;
-import gui.saving.SaverDialog;
 import gui.saving.SingleImagePanel;
 
+/**
+ * The Class SelectAndCreateImageFiles extends ExportResult to export image files.
+ */
 public class SelectAndCreateImageFiles extends ExportResults {
 	private ArrayList<BufferedImageWithName> createdImages;
 
+	
 	/**
-	 * Class constructor. Shows window where user can select ImageLayers and MarkingLayers to shown.
+	 * Instantiates a new SelectAndCreateImageFiles.
+	 *
+	 * @param d the d
+	 * @param gui the gui
+	 * @param iList the i list
+	 * @param savingTypeID the saving type id
+	 */
+	public SelectAndCreateImageFiles(JDialog d, GUI gui,ArrayList<ImageLayer> iList, int savingTypeID) {
+		super(d, gui, iList, savingTypeID);
+	}
+	
+	/**
+	 * Class constructor. Shows window where user can select ImageLayers and MarkingLayers to be exported.
 	 * @param frame parent JFrame
 	 * @param gui GUI object of Graphical interface
 	 * @param iList	ArrayList of ImageLayers that are opened in main program
@@ -34,27 +42,41 @@ public class SelectAndCreateImageFiles extends ExportResults {
 	public SelectAndCreateImageFiles(JFrame frame, GUI gui,ArrayList<ImageLayer> iList, int savingTypeID) {
 		super(frame, gui, iList, savingTypeID);
 		
-
-	}
-	
-	public SelectAndCreateImageFiles(JDialog d, GUI gui,ArrayList<ImageLayer> iList, int savingTypeID) {
-		super(d, gui, iList, savingTypeID);
-		
-
 	}
 
+	/**
+	 * Returns the created buffered images.
+	 *
+	 * @return the created buffered images
+	 */
+	public ArrayList<BufferedImageWithName> getCreatedBufferedImages(){
+		return this.createdImages;
+	}
+
+	/* (non-Javadoc)
+	 * @see gui.saving.ExportResults#initBrowsingPanelWithLabel()
+	 */
 	protected JPanel initBrowsingPanelWithLabel() throws Exception{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.saving.ExportResults#initImageViewPanelWithTitle()
+	 */
 	protected JPanel initImageViewPanelWithTitle(){
 		return initImageViewPanel("Select ImageLayer and MarkingLayers");
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.saving.ExportResults#initSaveButtonWithTitle()
+	 */
 	protected JPanel initSaveButtonWithTitle() throws Exception{
 		return initSaveButton("Create Images");
 	}
 
+	/* (non-Javadoc)
+	 * @see gui.saving.ExportResults#startSavingProcess(int, int)
+	 */
 	protected void startSavingProcess(int exportID, int exportType){
 		try {
 			createdImages=new ArrayList<BufferedImageWithName>();
@@ -69,22 +91,17 @@ public class SelectAndCreateImageFiles extends ExportResults {
 						ArrayList<MarkingLayer> selectedMarkingLayers = imp.getAllSelectedMarkingLayers();
 						if(selectedMarkingLayers != null && selectedMarkingLayers.size()>0){
 						BufferedImage created = imageCreator.createBufferedImage(imp.getImageLayer(), imp.getAllSelectedMarkingLayerIDs());
-						if(created != null)
+						if(created != null) // creation successful -> add to list.
 							this.createdImages.add(new BufferedImageWithName(created, imp.getImageLayerName()));
 
 						}
 					 }
 				}
-
 				cancelSelected();
 
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-	}
-
-	public ArrayList<BufferedImageWithName> getCreatedBufferedImages(){
-		return this.createdImages;
 	}
 
 }
