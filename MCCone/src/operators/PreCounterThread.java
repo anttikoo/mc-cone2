@@ -331,7 +331,7 @@ public class PreCounterThread implements Runnable{
 				double[] blue_ma=new double[maxLength];
 				for(int x=midPoint.x, y=midPoint.y, i=0; x < channels.getWidth() && x >= 0 && y<channels.getHeight() && y >= 0 && i<colorVectors.getSize();x+=mod_x, y+=mod_y, i++){
 					if(channels.useAlpha()){
-						colorVectors.setHasAlpha(true);
+					//	colorVectors.setHasAlpha(true);
 						alpha[i]= channels.getAlpha(x,y);
 						red[i]= channels.getRed(x,y);
 						green[i] = channels.getGreen(x,y);

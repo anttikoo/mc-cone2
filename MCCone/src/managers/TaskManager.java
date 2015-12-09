@@ -50,7 +50,7 @@ public class TaskManager {
 
 		this.xmlManager = new XMLreadManager();
 		this.informationCenter = new InformationCenter(this);
-		this.layerVisualManager = new LayerVisualManager(this);
+		this.layerVisualManager = new LayerVisualManager();
 
 
 	}
@@ -244,7 +244,7 @@ public class TaskManager {
 
 	public PositionedImage getRefreshedImage(int processingID){
 		//return this.layerVisualManager.getScaledImageFromImagePath(this.getSelectedImagePath());
-		return this.layerVisualManager.getRefreshedImage(processingID);
+		return this.layerVisualManager.getRefreshedImage();
 
 	}
 

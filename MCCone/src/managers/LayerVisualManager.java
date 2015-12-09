@@ -1,4 +1,5 @@
 package managers;
+
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -12,24 +13,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import org.imgscalr.Scalr;
-import com.sun.media.jai.util.ImageUtil;
-import gui.Color_schema;
 import gui.file.Utils;
 import information.GridProperties;
 import information.ID;
-import information.ImageLayer;
 import information.MarkingLayer;
 import information.PositionedImage;
 import information.PositionedRectangle;
 import information.ScreenCoordinatesOfMarkingLayer;
-import information.VisualEvent;
+//import information.VisualEvent;
 
 /**
  * Contains methods for organizing and setting up ImageLayers and MarkingLayers
@@ -39,298 +35,37 @@ import information.VisualEvent;
 public class LayerVisualManager {
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private int removeDistance=5;
-
-	private TaskManager taskManager;
-	//private BlockingQueue queue = new ArrayBlockingQueue(2014);
-	//private VisualEventProducer veProducer;
-	//private VisualEventExecuter veExecuter;
 	private Dimension imagePanelDimension; // the dimension of actual size of ImagePanel at screen (the topleft position is always 0,0)
-
+	
 	//the relative size of ImagePanel referred to actual size of originalImage. Is the dimension of present view of original image
 	// this dimension and relativeImageCoordinate are changed when wanted to get right part of original image shown.
 	private Rectangle relativeViewRectangle;
-
 	private BufferedImage originalImage;
-	//private Point2D relativeImagePosition; // the topleft corner of image in relativeImagePanelDimension
 
 
-	public LayerVisualManager(TaskManager taskManager){
-
-		this.taskManager=taskManager;
-
-	//	this.relativeImagePosition=new Point(0, 0); // in the start the image is drawn to top left corner of ImagePanel
-
-	/*
-		this.veExecuter=new VisualEventExecuter(queue);
-		this.veProducer = new VisualEventProducer(queue);
-		*/
-
-	}
-
-	public void setImagePanelDimension(Dimension ipd){
-		this.imagePanelDimension=ipd;
-	}
-
-	public void setSelectedBufferedImage(String imagePath) throws Exception{
-		File imageFile;
-		try {
-			if(imagePath != null){
-			imageFile=new File(imagePath);
-			this.setOriginalImageToShown(readImageFile(imageFile));
+	public boolean addSingleMarkingCoordinate(Point screenPoint, MarkingLayer selectedMarkingLayer){
+		if(selectedMarkingLayer != null ){
+			Point pointAtImage= convertRelativePointAsPointAtImage(convertScreenPointToRelativePoint(screenPoint));
+			if(pointAtImage != null && selectedMarkingLayer != null){
+				return selectedMarkingLayer.addSingleCoordinate(pointAtImage);
 			}
-			else{
-				this.setOriginalImageToShown(null);
-			}
-		} catch (IOException e) {
-			LOGGER.severe("Error in getting image from String path:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-			this.setOriginalImageToShown(null);
 		}
-		finally{imageFile=null;}
-	}
-
-	public Dimension getImageDimension(File imageFile)throws Exception{
-			BufferedImage image = readImageFile(imageFile);
-			if(image != null){
-				Dimension dim =new Dimension(image.getWidth(),image.getHeight());
-				image=null;
-				return dim;
-			}
-			throw new NullPointerException();
+		return false;
 
 	}
-
-	public BufferedImage readImageFile(File file) throws Exception{
-
-		if(Utils.getExtension(file).equals(Utils.tif) || Utils.getExtension(file).equals(Utils.tiff)){
-			PlanarImage pim=null;
-			pim= JAI.create("fileload", file.getAbsolutePath());
-			if(pim != null)
-				return pim.getAsBufferedImage();
-			else
-				throw new Exception();
-		}
-		else{
-		//	return ImageIO.read(file);
-			BufferedImage in = ImageIO.read(file);
-			BufferedImage newImage = new BufferedImage(in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_ARGB);
-
-			Graphics2D g = newImage.createGraphics();
-			g.drawImage(in, 0, 0, null);
-			g.dispose();
-			in=null;
-			return newImage;
-
-		}
-
-
-	}
-
-	public PositionedImage getRefreshedImage(int processingID){
-		// check than needed image and the panel size are initialized
-			if(this.originalImage == null || this.imagePanelDimension == null)
-				return null;
-		// is relativeViewRectangleInitialized
-		if(this.relativeViewRectangle == null){
-			return initAndscaleToImagePanel();
-		}
-		else{
-			return getZoomedImage(new Point2D.Double(this.imagePanelDimension.getWidth()/2,this.imagePanelDimension.getHeight()/2), 1.0, ID.IMAGE_PROCESSING_BEST_QUALITY);
-			//return cropWithPredefinedSettings(processingID);
-		}
-
-	}
-
-	public PositionedImage dragLayers(Point movement, int processingID){
-		try {
-			// check that all needed objects exist
-			if(this.originalImage == null || this.relativeViewRectangle == null || this.imagePanelDimension == null)
-			return null;
-
-			Point2D movementAtImage= convertScreenPointToRelativePoint(movement);
-
-
-			// calculate temperary relativeImagePanelDimension -> save it as relativeImagePanelDimension when image is created successfully
-			Rectangle tempRelativeViewRectangle= moveRelativeViewRectangle(movementAtImage);
-
-			// tempRelativeViewRectangle is proportional to ImagePanel size -> height or width may be bigger than originalImage -> calculate dimension of real cropped image
-			Dimension imageDimension= getImageDimensionInsideRectangle(tempRelativeViewRectangle);
-			// too small image
-			if(imageDimension.getWidth() <20|| imageDimension.getHeight() <20)
-				return new PositionedImage(null);
-
-			// crop the image
-			BufferedImage 	processedImage = Scalr.crop(this.originalImage, tempRelativeViewRectangle.x, tempRelativeViewRectangle.y, imageDimension.width, imageDimension.height, null);
-
-
-			return scaleToImagePanel(processedImage, tempRelativeViewRectangle, processingID);
-
-		} catch (Exception e) {
-			LOGGER.severe("Error in dragging image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-			return null;
-		}
-	}
-
 
 	/**
-	 * @param focusPoint Point at screen where focus will be changed
-	 * @param zoomValue double value how much will be zoomed in or out. eg. 0.8 or 1.2
-	 * @param processingID ID for quality of returned image fast >-> best quality
-	 * @return PositionedImage which contains the zoomed image and it's top left corner location
+	 * Calculates relative dimensions of image to fit to image panel. 
+	 *
+	 * @param scalingMode the scaling mode (FIT_TO_HEIGHT or FIT_TO_WIDTH)
+	 * @param original_width the original image width
+	 * @param original_height the original image height
+	 * @return the rectangle with new width and height
 	 */
-	public PositionedImage getZoomedImage(Point2D focusPoint, double zoomValue, int processingID){
-		BufferedImage 	processedImage;
-		Rectangle tempRelativeViewRectangle;
-		try {
-			// check that all needed objects exist
-			if(this.originalImage == null || this.relativeViewRectangle == null || this.imagePanelDimension == null)
-			return null;
-
-		//  make own calculations for scaling either height or width
-
-			// calculate temperary relativeImagePanelDimension -> save it as relativeImagePanelDimension when image is created successfully
-			tempRelativeViewRectangle= calculateTempRelativeViewRectangleFocusedOnFocusPoint(focusPoint, zoomValue);
-
-			// tempRelativeViewRectangle is proportional to ImagePanel size -> height or width may be bigger than originalImage -> calculate dimension of real cropped image
-			Dimension imageDimension= getImageDimensionInsideRectangle(tempRelativeViewRectangle);
-			if(imageDimension.getWidth() < 20 || imageDimension.getHeight() <20)
-				return new PositionedImage(null);
-
-			// crop the image
-			processedImage = Scalr.crop(this.originalImage, tempRelativeViewRectangle.x, tempRelativeViewRectangle.y, imageDimension.width, imageDimension.height, null);
-
-
-			return scaleToImagePanel(processedImage, tempRelativeViewRectangle, processingID);
-
-
-		} catch (Exception e) {
-			LOGGER.severe("Error in zooming image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-			return null;
-		}
-		finally{
-			processedImage=null;
-			tempRelativeViewRectangle=null;
-		}
-
-
-
-	}
-
-	private Rectangle moveRelativeViewRectangle(Point2D movement){
-		Rectangle tempRelativeViewRectangle = new Rectangle(this.relativeViewRectangle.x+(int)movement.getX(), this.relativeViewRectangle.y+(int)movement.getY(),
-				this.relativeViewRectangle.width, this.relativeViewRectangle.height);
-
-		if(tempRelativeViewRectangle.x + tempRelativeViewRectangle.width > this.originalImage.getWidth())
-			tempRelativeViewRectangle.x = this.originalImage.getWidth()-tempRelativeViewRectangle.width;
-
-		if(tempRelativeViewRectangle.y+tempRelativeViewRectangle.height > this.originalImage.getHeight())
-			tempRelativeViewRectangle.y= this.originalImage.getHeight()-tempRelativeViewRectangle.height;
-		if(tempRelativeViewRectangle.x<0)
-			tempRelativeViewRectangle.x=0;
-		if(tempRelativeViewRectangle.y<0)
-			tempRelativeViewRectangle.y=0;
-
-		return tempRelativeViewRectangle;
-
-	}
-
-	private Dimension getImageDimensionInsideRectangle(Rectangle rec){
-		try {
-			int h=rec.height;
-			int w=rec.width;
-			if(rec.height>this.originalImage.getHeight())
-				h= this.originalImage.getHeight();
-			if(rec.width>this.originalImage.getWidth())
-				w=this.originalImage.getWidth();
-			return new Dimension(w,h);
-		} catch (Exception e) {
-			LOGGER.severe("Error in zooming image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-			return null;
-		}
-
-	}
-
-
-
-
-	private PositionedImage scaleToImagePanel(BufferedImage processedImage, Rectangle tempRelativeView, int processingID){
-		BufferedImage scaledImage;
-		try {
-
-			//  make own calculations should image being scaled either to height or width
-			Scalr.Mode  scalingMode= (Scalr.Mode)(getScalingMode(processedImage.getWidth(), processedImage.getHeight(),this.imagePanelDimension));
-
-			// set up the quality/speed constant -> AUTOMATIC seems to produce good quality images
-			Scalr.Method processingQuality = Scalr.Method.AUTOMATIC;
-
-		//	if(processingID == ID.IMAGE_PROCESSING_BEST_QUALITY)
-		//		processingQuality = Scalr.Method.ULTRA_QUALITY;
-
-			// get new image scaled to Dimension of ImagePanel
-			scaledImage= Scalr.resize(processedImage, processingQuality, scalingMode, this.imagePanelDimension.width, this.imagePanelDimension.height, null);
-
-			if(scaledImage != null){
-				// save the used tempRelativeView as relativeViewRectangle
-				this.setRelativeViewRectangle(tempRelativeView);
-				// return PositionedImage with scaled image and position converted to screen
-				return new PositionedImage(scaledImage, convertRelativePointToScreenPoint(new Point(tempRelativeView.x, tempRelativeView.y)));
-			}
-			else
-				return null;
-
-		} catch (IllegalArgumentException e) {
-			LOGGER.severe("Error Arguments in scaling image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-			return null;
-		} catch (ImagingOpException e) {
-			LOGGER.severe("Error in imagingOP when scaling image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-			return null;
-		}
-		finally{scaledImage=null;}
-
-	}
-
-	private PositionedImage initAndscaleToImagePanel(){
-		BufferedImage scaledImage;
-		try {
-
-			//  make own calculations for scaling either height or width
-			Scalr.Mode  scalingMode= (Scalr.Mode)(getScalingMode(this.originalImage.getWidth(), this.originalImage.getHeight(),this.imagePanelDimension));
-
-			// set up the quality/speed constant
-			Scalr.Method processingQuality = Scalr.Method.ULTRA_QUALITY;
-
-			// get new image scaled to Dimension of ImagePanel
-			scaledImage= Scalr.resize(this.originalImage, processingQuality, scalingMode, this.imagePanelDimension.width, this.imagePanelDimension.height, null);
-
-			if(scaledImage != null){
-				// calculate the initial dimension of relativeViewRectangle where topleft corner coordinate is (0,0)
-				this.setRelativeViewRectangle(calculateRelativeDimensionToImagePanel(scalingMode, this.originalImage.getWidth(), this.originalImage.getHeight()));
-				// return PositionedImage with scaled image and default topleft corner position (0,0)
-				return new PositionedImage(scaledImage);
-			}
-			else
-				return null;
-
-		} catch (IllegalArgumentException e) {
-			LOGGER.severe("Error Arguments in scaling image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-			return null;
-		} catch (ImagingOpException e) {
-			LOGGER.severe("Error in imagingOP when scaling image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-			return null;
-		}
-		finally{
-			scaledImage=null;
-		}
-
-	}
-
 	private Rectangle calculateRelativeDimensionToImagePanel(Scalr.Mode scalingMode, int original_width, int original_height){
 		try {
-			// at start the relativeImagePosition should be (0,0)
-//	this.relativeImagePosition=new Point(0, 0);
-
 			int relativeHeight;
 			int relativeWidth;
-//	Scalr.Mode  scalingMode= (Scalr.Mode)(getScalingMode(this.originalImage.getWidth(), this.originalImage.getHeight()));
 			if(scalingMode == Scalr.Mode.FIT_TO_HEIGHT){
 				relativeHeight=original_height;
 				relativeWidth=(int)((double)this.imagePanelDimension.getWidth()/((double)this.imagePanelDimension.getHeight()/(double)relativeHeight));
@@ -349,40 +84,23 @@ public class LayerVisualManager {
 
 	}
 
-
 	/**
-	 * Calculates which scaling method is better to scale image with original orientation and fit to ImagePanel in best way.
-	 * @param image_width the width of image which best scaling method is examined
-	 * @param image_height the height of image which best scaling method is examined
-	 * @param iPanelDimension the Dimension of ImagePanel.
-	 * @return Scalr.Mode Enum object either FIT_TO_HEIGHT or FIT_TO_WIDTH
+	 * Calculates and returns relative view rectangle focused on focus point at image panel. 
+	 * Calculates the size of Rectangle and the position of top left corner of rectangle.
+	 * Calculation is made in different stages: 
+	 * 1. FocusPoint position at screen is converted to relative position of image panel.
+	 * 2. Relative focusPoint position is converted to position at image
+	 * 3. New size of relative Rectangle on image is calculated
+	 * 4. New position of relative Rectangle on image is calculated.
+	 *
+	 * @param focusPoint the focus point in ImagePanel
+	 * @param zoomValue the zoom value
+	 * @return the rectangle
 	 */
-	public Scalr.Mode getScalingMode(int image_width, int image_height, Dimension iPanelDimension){
-
-		try {
-			if (image_width >0 && image_height> 0  && iPanelDimension != null && iPanelDimension.getWidth() >0) {
-
-				double image_proportion = (double)image_width / (double)image_height;
-				double panel_proportion = iPanelDimension.getWidth()/ iPanelDimension.getHeight();
-
-				if (image_proportion > panel_proportion)
-					return Scalr.Mode.FIT_TO_WIDTH;
-				else
-					return Scalr.Mode.FIT_TO_HEIGHT;
-			}
-			return Scalr.Mode.FIT_TO_WIDTH;
-		} catch (Exception e) {
-			LOGGER.severe("Error in calculating scale method:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-			return Scalr.Mode.FIT_TO_WIDTH;
-		}
-
-	}
-
-	private Rectangle calculateTempRelativeViewRectangleFocusedOnFocusPoint(Point2D focusPoint, double zoomValue){
+	private Rectangle calculateRelativeViewRectangleFocusedOnFocusPoint(Point2D focusPoint, double zoomValue){
 		try {
 
 			// calculate relative location of fpoint from topleft corner of imagePanel
-//			Double[] relativeFocusPoint = new Double[2];
 			Point2D relativeFocusPoint = new Point2D.Double(focusPoint.getX()/this.imagePanelDimension.getWidth(),
 					focusPoint.getY()/this.imagePanelDimension.getHeight());
 
@@ -451,38 +169,159 @@ public class LayerVisualManager {
 
 	}
 
-
-private Point2D convertScreenPointToRelativePoint(Point2D screenPoint){
-
-		AffineTransform scaleTransform = AffineTransform.getScaleInstance(this.relativeViewRectangle.getWidth()/this.imagePanelDimension.getWidth(), this.relativeViewRectangle.getHeight()/this.imagePanelDimension.getHeight());
-	//	Point2D p = new Point2D.Double(screenPoint.getX(), screenPoint.getY());
-		Point2D relativePoint =scaleTransform.transform(screenPoint, null);
-	//	return (new Point((int)relativePoint.getX(), (int)relativePoint.getY()));
-		return relativePoint;
+	/**
+	 * Changes GRID rectangle selection state. 
+	 * Converts screen point to point at image and changes the selection of Rectangle which found at image point.
+	 *
+	 * @param gp the GridProperty
+	 * @param p the Point
+	 */
+	public void changeSelectedRectangleOfGridProperty(GridProperties gp, Point p){
+		Point imagePoint = convertScreenPointToImagePoint(p);
+		gp.changeSelectionOfPositionedRectangle(imagePoint);
 	}
 
-	public void setOriginalImageToShown(BufferedImage originalImageToShown) {
+	/**
+	 * Converts image distance to screen distance.
+	 *
+	 * @param imageDistance the image distance
+	 * @return the double distance at screen
+	 */
+	private double convertImageDistanceToScreenDistance(int imageDistance){
+		// from screen to relativeRectangle
+		return (imageDistance/this.relativeViewRectangle.getWidth()*this.imagePanelDimension.getWidth());
+	}
 
-		if(this.originalImage != null && originalImageToShown != null && (this.originalImage.getWidth() != originalImageToShown.getWidth()
-				|| this.originalImage.getHeight() != originalImageToShown.getHeight() ) ){
-			// refresh the relativeViewRectangle because the image size has changed and no earlier calculations can be used
-			this.setRelativeViewRectangle(null);
+	/**
+	 * Converts image point to relative point.
+	 *
+	 * @param imagePoint the image point
+	 * @return the relative point
+	 */
+	private Point convertImagePointToRelativePoint(Point imagePoint){
+		if (imagePoint != null){
+			Point relativePoint = new Point(imagePoint.x-this.relativeViewRectangle.x, imagePoint.y-this.relativeViewRectangle.y);
+			if(relativePoint.x>=0 && relativePoint.y >= 0)
+				return relativePoint;
 		}
-		this.originalImage = originalImageToShown;
-	}
-
-	public Rectangle getRelativeToImagePanelRectangle() {
-		return relativeViewRectangle;
-	}
-
-	public void setRelativeViewRectangle(Rectangle relativeToImagePanelRect) {
-		this.relativeViewRectangle = relativeToImagePanelRect;
+		return null;
 	}
 
 
-	public BufferedImage getOriginalImage() {
-		return this.originalImage;
+	/**
+	 * Converts image point to screen point.
+	 *
+	 * @param imagePoint the image point
+	 * @return the point at screen
+	 */
+	private Point convertImagePointToScreenPoint(Point imagePoint){
+		if(imagePoint != null){
+			Point relativePoint = convertImagePointToRelativePoint(imagePoint);
+			if(relativePoint != null)
+				return convertRelativePointToScreenPoint(relativePoint);
+		}
+		return null;
 	}
+
+	/**
+	 * Converts layer GridProperties from image to image panel. A new GridProperties object will be created and returned.
+	 *
+	 * @param gp the GridProperties object
+	 * @return the GridProperties object
+	 */
+	public GridProperties convertLayerGridPropertiesToPanel(GridProperties gp){
+		try {
+			if(gp != null){
+				GridProperties gp_converted=new GridProperties();
+				gp_converted.setGridON(gp.isGridON());
+				// for GRID add vertical lines converted from image to screen
+				Iterator<Integer> rowIterator = gp.getRowLineYs().iterator();
+				while(rowIterator.hasNext()){
+					int y= rowIterator.next();
+					gp_converted.addRowLineY(convertYinImageToYinScreen(y));
+
+				}
+				//for GRID add horizontal lines converted from image to screen
+				Iterator<Integer> columnIterator = gp.getColumnLineXs().iterator();
+				while(columnIterator.hasNext()){
+					int x= columnIterator.next();
+					gp_converted.addColumnLineX(convertXinImageToXinScreen(x));
+				}
+				//for GRID create PositioneRectangles converted from image to screen.
+				Iterator<PositionedRectangle> recIterator = gp.getPositionedRectangleList().iterator();
+				while(recIterator.hasNext()){
+					PositionedRectangle pr =recIterator.next();
+					Rectangle rec2=convertRecAtImageToRecAtScreen(pr); // get the position and size for screen
+					if(rec2 != null){
+						PositionedRectangle screenPR=new PositionedRectangle(rec2.x, rec2.y, rec2.width, rec2.height, pr.getRow(), pr.getColumn(), pr.isSelected());
+						gp_converted.addSinglePositionedRectangle(screenPR);
+						screenPR=null;
+					}
+					rec2=null;
+
+				}
+				// set line lengths to fit image panel
+				gp_converted.setHorizontalLineLength((int)convertImageDistanceToScreenDistance(this.originalImage.getWidth()));
+				gp_converted.setVerticalLineLength((int)convertImageDistanceToScreenDistance(this.originalImage.getHeight()));
+
+				return gp_converted;
+			}
+			return null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in converting GridProperties from image to screen");
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Converts size and position of Rectangle at image to Rectangle at screen.
+	 *
+	 * @param rec the Rectangle
+	 * @return the converted Rectangle
+	 * @throws Exception the exception
+	 */
+	private Rectangle convertRecAtImageToRecAtScreen(Rectangle rec) throws Exception{
+
+		if(rec.intersects(this.relativeViewRectangle)){ // does rectangles overlap
+			Rectangle2D recNew= rec.createIntersection(this.relativeViewRectangle);
+			return convertRelativeRectangleToScreenRectangle((Rectangle) recNew);
+		}
+		return null;
+
+	}
+
+
+
+
+	/**
+	 * Converts relative height to image panel height.
+	 *
+	 * @param relativeHeight the relative height
+	 * @return the int height of imagepanel
+	 */
+	private int convertRelativeHeightToPanelHeight(int relativeHeight){
+		double d= this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight();// this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight());
+		return (int)(relativeHeight*d);
+	}
+
+	/**
+	 * Convert relative length to panel length.
+	 *
+	 * @param relativeLength the relative length
+	 * @return the int
+	 */
+	private int convertRelativeLengthToPanelLength(int relativeLength){
+		double d= this.imagePanelDimension.getWidth()/this.relativeViewRectangle.getWidth();// this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight());
+		return (int)(relativeLength*d);
+	}
+
+	private Point convertRelativePointAsPointAtImage(Point2D relativePoint){
+		if(relativePoint != null)
+			return new Point(this.relativeViewRectangle.x+(int)relativePoint.getX(), this.relativeViewRectangle.y+(int)relativePoint.getY());
+		return null;
+	}
+
 
 	private Point convertRelativePointToScreenPoint(Point screenPoint){
 
@@ -497,27 +336,176 @@ private Point2D convertScreenPointToRelativePoint(Point2D screenPoint){
 		}
 	}
 
+	private Rectangle convertRelativeRectangleToScreenRectangle(Rectangle rectangle) throws Exception{
 
-	public boolean addSingleMarkingCoordinate(Point screenPoint, MarkingLayer selectedMarkingLayer){
-		if(selectedMarkingLayer != null ){
-			Point pointAtImage= convertRelativePointAsPointAtImage(convertScreenPointToRelativePoint(screenPoint));
-			if(pointAtImage != null && selectedMarkingLayer != null){
-				return selectedMarkingLayer.addSingleCoordinate(pointAtImage);
-			}
+		try {
+
+			if(rectangle != null && rectangle.getLocation() != null && rectangle.width>0 && rectangle.height>0)
+				return new Rectangle(convertImagePointToScreenPoint(rectangle.getLocation()),
+				new Dimension(convertRelativeLengthToPanelLength(rectangle.width),convertRelativeHeightToPanelHeight(rectangle.height)));
+			else
+				return null;
+		} catch (Exception e) {
+			LOGGER.severe("LayerVisualManager Error in converting relative point to screen point:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+			return null;
 		}
-		return false;
+	}
+
+
+private double convertScreenDistanceToImageDistance(int screenDistance){
+	// from screen to relativeRectangel
+	return (screenDistance/this.imagePanelDimension.getWidth()*this.relativeViewRectangle.getWidth());
+}
+
+	public Point convertScreenPointToImagePoint(Point sp){
+		return convertRelativePointAsPointAtImage(convertScreenPointToRelativePoint(sp));
+	}
+
+	private Point2D convertScreenPointToRelativePoint(Point2D screenPoint){
+	
+			AffineTransform scaleTransform = AffineTransform.getScaleInstance(this.relativeViewRectangle.getWidth()/this.imagePanelDimension.getWidth(), this.relativeViewRectangle.getHeight()/this.imagePanelDimension.getHeight());
+		//	Point2D p = new Point2D.Double(screenPoint.getX(), screenPoint.getY());
+			Point2D relativePoint =scaleTransform.transform(screenPoint, null);
+		//	return (new Point((int)relativePoint.getX(), (int)relativePoint.getY()));
+			return relativePoint;
+		}
+
+	private int convertXinImageToXinScreen(int x){
+		int relativeX= x-this.relativeViewRectangle.x;
+
+			double d= this.imagePanelDimension.getWidth()/this.relativeViewRectangle.getWidth();// this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight());
+		return (int)(relativeX*d);
+	}
+
+
+	private int convertYinImageToYinScreen(int y){
+		int relativeY= y-this.relativeViewRectangle.y;
+
+			double d= this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight();
+		return (int)(relativeY*d);
+	}
+
+	public PositionedImage dragLayers(Point movement, int processingID){
+		try {
+			// check that all needed objects exist
+			if(this.originalImage == null || this.relativeViewRectangle == null || this.imagePanelDimension == null)
+			return null;
+
+			Point2D movementAtImage= convertScreenPointToRelativePoint(movement);
+
+
+			// calculate temperary relativeImagePanelDimension -> save it as relativeImagePanelDimension when image is created successfully
+			Rectangle tempRelativeViewRectangle= moveRelativeViewRectangle(movementAtImage);
+
+			// tempRelativeViewRectangle is proportional to ImagePanel size -> height or width may be bigger than originalImage -> calculate dimension of real cropped image
+			Dimension imageDimension= getImageDimensionInsideRectangle(tempRelativeViewRectangle);
+			// too small image
+			if(imageDimension.getWidth() <20|| imageDimension.getHeight() <20)
+				return new PositionedImage(null);
+
+			// crop the image
+			BufferedImage 	processedImage = Scalr.crop(this.originalImage, tempRelativeViewRectangle.x, tempRelativeViewRectangle.y, imageDimension.width, imageDimension.height, null);
+
+
+			return scaleToImagePanel(processedImage, tempRelativeViewRectangle, processingID);
+
+		} catch (Exception e) {
+			LOGGER.severe("Error in dragging image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+			return null;
+		}
+	}
+
+
+	/**
+	 * Returns the image dimension.
+	 *
+	 * @param imageFile the image file
+	 * @return the image dimension
+	 * @throws Exception the exception
+	 */
+	public Dimension getImageDimension(File imageFile)throws Exception{
+			BufferedImage image = readImageFile(imageFile);
+			if(image != null){
+				Dimension dim =new Dimension(image.getWidth(),image.getHeight());
+				image=null;
+				return dim;
+			}
+			throw new NullPointerException();
 
 	}
 
-	public boolean removeSingleMarkingCoordinate(Point screenPoint, MarkingLayer selectedMarkingLayer){
-		if(selectedMarkingLayer != null ){
-			Point pointAtImage= convertRelativePointAsPointAtImage(convertScreenPointToRelativePoint(screenPoint));
-			if(pointAtImage != null && selectedMarkingLayer != null){
-				return selectedMarkingLayer.removeSingleCoordinate(pointAtImage);
-
-			}
+	private Dimension getImageDimensionInsideRectangle(Rectangle rec){
+		try {
+			int h=rec.height;
+			int w=rec.width;
+			if(rec.height>this.originalImage.getHeight())
+				h= this.originalImage.getHeight();
+			if(rec.width>this.originalImage.getWidth())
+				w=this.originalImage.getWidth();
+			return new Dimension(w,h);
+		} catch (Exception e) {
+			LOGGER.severe("Error in zooming image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+			return null;
 		}
-		return false;
+
+	}
+
+	public BufferedImage getOriginalImage() {
+		return this.originalImage;
+	}
+
+	/**
+	 * Returns the refreshed image which is scaled and positioned newly to ImagePanel.
+	 *
+	 * @return the refreshed image
+	 */
+	public PositionedImage getRefreshedImage(){
+		// check than needed image and the panel size are initialized
+			if(this.originalImage == null || this.imagePanelDimension == null)
+				return null;
+		// is relativeViewRectangleInitialized
+		if(this.relativeViewRectangle == null){
+			return initAndscaleToImagePanel();
+		}
+		else{
+			return getZoomedImage(new Point2D.Double(this.imagePanelDimension.getWidth()/2,this.imagePanelDimension.getHeight()/2), 1.0, ID.IMAGE_PROCESSING_BEST_QUALITY);
+		}
+
+	}
+
+	public Rectangle getRelativeToImagePanelRectangle() {
+		return relativeViewRectangle;
+	}
+
+	public int getRemoveDistance() {
+		return removeDistance;
+	}
+
+	/**
+	 * Calculates which scaling method is better to scale image with original orientation and fit to ImagePanel in best way.
+	 * @param image_width the width of image which best scaling method is examined
+	 * @param image_height the height of image which best scaling method is examined
+	 * @param iPanelDimension the Dimension of ImagePanel.
+	 * @return Scalr.Mode Enum object either FIT_TO_HEIGHT or FIT_TO_WIDTH
+	 */
+	public Scalr.Mode getScalingMode(int image_width, int image_height, Dimension iPanelDimension){
+
+		try {
+			if (image_width >0 && image_height> 0  && iPanelDimension != null && iPanelDimension.getWidth() >0) {
+
+				double image_proportion = (double)image_width / (double)image_height;
+				double panel_proportion = iPanelDimension.getWidth()/ iPanelDimension.getHeight();
+
+				if (image_proportion > panel_proportion)
+					return Scalr.Mode.FIT_TO_WIDTH;
+				else
+					return Scalr.Mode.FIT_TO_HEIGHT;
+			}
+			return Scalr.Mode.FIT_TO_WIDTH;
+		} catch (Exception e) {
+			LOGGER.severe("Error in calculating scale method:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+			return Scalr.Mode.FIT_TO_WIDTH;
+		}
 
 	}
 
@@ -562,102 +550,10 @@ private Point2D convertScreenPointToRelativePoint(Point2D screenPoint){
 
 	}
 
-	private Point convertRelativePointAsPointAtImage(Point2D relativePoint){
-		if(relativePoint != null)
-			return new Point(this.relativeViewRectangle.x+(int)relativePoint.getX(), this.relativeViewRectangle.y+(int)relativePoint.getY());
-		return null;
+	public double getSizeMultiplier(){
+	//	LOGGER.fine("widths: "+this.originalImage.getWidth()+ " "+this.imagePanelDimension.getWidth());
+		return (((double)this.originalImage.getWidth())/this.imagePanelDimension.getWidth());
 	}
-
-	private Point convertImagePointToScreenPoint(Point imagePoint){
-		if(imagePoint != null){
-			Point relativePoint = convertImagePointToRelativePoint(imagePoint);
-			if(relativePoint != null)
-				return convertRelativePointToScreenPoint(relativePoint);
-		}
-		return null;
-	}
-
-	private Point convertImagePointToRelativePoint(Point imagePoint){
-		if (imagePoint != null){
-			Point relativePoint = new Point(imagePoint.x-this.relativeViewRectangle.x, imagePoint.y-this.relativeViewRectangle.y);
-			if(relativePoint.x>=0 && relativePoint.y >= 0)
-				return relativePoint;
-		}
-		return null;
-	}
-
-	private Rectangle convertRecAtImageToRecAtScreen(Rectangle rec) throws Exception{
-
-		if(rec.intersects(this.relativeViewRectangle)){ // does rectangles overlap
-			Rectangle2D recNew= rec.createIntersection(this.relativeViewRectangle);
-		//	Rectangle2D.intersect(rec, this.relativeViewRectangle, rec);
-
-			 return convertRelativeRectangleToScreenRectangle((Rectangle) recNew);
-		//	return convertRelativeRectangleToScreenRectangle((Rectangle) rec.createIntersection(this.relativeViewRectangle));
-			//return (Rectangle)rec_converted;
-		//	return new Rectangle((int)rec_converted.getX(),(int)rec_converted.getY(),(int)rec_converted.getWidth(), (int)rec_converted.getHeight());
-		}
-		return null;
-
-	}
-
-	private Rectangle convertRelativeRectangleToScreenRectangle(Rectangle rectangle) throws Exception{
-
-		try {
-
-			if(rectangle != null && rectangle.getLocation() != null && rectangle.width>0 && rectangle.height>0)
-				return new Rectangle(convertImagePointToScreenPoint(rectangle.getLocation()),
-				new Dimension(convertRelativeLengthToPanelLength(rectangle.width),convertRelativeHeightToPanelHeight(rectangle.height)));
-			else
-				return null;
-		} catch (Exception e) {
-			LOGGER.severe("LayerVisualManager Error in converting relative point to screen point:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
-			return null;
-		}
-	}
-
-	private int convertRelativeLengthToPanelLength(int relativeLength){
-		double d= this.imagePanelDimension.getWidth()/this.relativeViewRectangle.getWidth();// this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight());
-		return (int)(relativeLength*d);
-	}
-	private int convertRelativeHeightToPanelHeight(int relativeHeight){
-		double d= this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight();// this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight());
-		return (int)(relativeHeight*d);
-	}
-
-
-	private int convertXinImageToXinScreen(int x){
-		int relativeX= x-this.relativeViewRectangle.x;
-
-			double d= this.imagePanelDimension.getWidth()/this.relativeViewRectangle.getWidth();// this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight());
-		return (int)(relativeX*d);
-	}
-
-	private int convertYinImageToYinScreen(int y){
-		int relativeY= y-this.relativeViewRectangle.y;
-
-			double d= this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight();
-		return (int)(relativeY*d);
-	}
-
-	public int getRemoveDistance() {
-		return removeDistance;
-	}
-
-	public void setRemoveDistance(int removeDistance) {
-		this.removeDistance = removeDistance;
-	}
-
-	private double convertScreenDistanceToImageDistance(int screenDistance){
-		// from screen to relativeRectangel
-		return (screenDistance/this.imagePanelDimension.getWidth()*this.relativeViewRectangle.getWidth());
-	}
-
-	private double convertImageDistanceToScreenDistance(int imageDistance){
-		// from screen to relativeRectangel
-		return (imageDistance/this.relativeViewRectangle.getWidth()*this.imagePanelDimension.getWidth());
-	}
-
 	public BufferedImage getSubImage(Point middlepoint, int size){
 		try {
 			if(this.originalImage != null){
@@ -681,79 +577,233 @@ private Point2D convertScreenPointToRelativePoint(Point2D screenPoint){
 
 	}
 
-	public double getSizeMultiplier(){
-	//	LOGGER.fine("widths: "+this.originalImage.getWidth()+ " "+this.imagePanelDimension.getWidth());
-		return (((double)this.originalImage.getWidth())/this.imagePanelDimension.getWidth());
-	}
 
-	public Point convertScreenPointToImagePoint(Point sp){
-		return convertRelativePointAsPointAtImage(convertScreenPointToRelativePoint(sp));
-	}
-
-	public void changeSelectedRectangleOfGridProperty(GridProperties gp, Point p){
-		Point imagePoint = convertScreenPointToImagePoint(p);
-		gp.changeSelectionOfPositionedRectangle(imagePoint);
-		//move UnselectedRectangle to selected
-	/*	Iterator<PositionedRectangle> recIterator = gp.getPositionedRectangleList().iterator();
-		while(recIterator.hasNext()){
-			PositionedRectangle rec =recIterator.next();
-			if(rec.contains(imagePoint)){
-				// move rectangle to selectedRectangles
-				rec.setSelected(!rec.isSelected());
-
-			}
-		}
-*/
-
-
-	}
-
-	public GridProperties convertLayerGridPropertiesToPanel(GridProperties gp){
+	/**
+	 * @param focusPoint Point at screen where focus will be changed
+	 * @param zoomValue double value how much will be zoomed in or out. eg. 0.8 or 1.2
+	 * @param processingID ID for quality of returned image fast >-> best quality
+	 * @return PositionedImage which contains the zoomed image and it's top left corner location
+	 */
+	public PositionedImage getZoomedImage(Point2D focusPoint, double zoomValue, int processingID){
+		BufferedImage 	processedImage;
+		Rectangle tempRelativeViewRectangle;
 		try {
-			if(gp != null){
-				GridProperties gp_converted=new GridProperties();
-				gp_converted.setGridON(gp.isGridON());
-
-				Iterator<Integer> rowIterator = gp.getRowLineYs().iterator();
-				while(rowIterator.hasNext()){
-					int y= rowIterator.next();
-					gp_converted.addRowLineY(convertYinImageToYinScreen(y));
-
-				}
-
-				Iterator<Integer> columnIterator = gp.getColumnLineXs().iterator();
-				while(columnIterator.hasNext()){
-					int x= columnIterator.next();
-					gp_converted.addColumnLineX(convertXinImageToXinScreen(x));
-				}
-
-				Iterator<PositionedRectangle> recIterator = gp.getPositionedRectangleList().iterator();
-				while(recIterator.hasNext()){
-					PositionedRectangle pr =recIterator.next();
-
-					Rectangle rec2=convertRecAtImageToRecAtScreen(pr); // get the position and size for screen
-					//pr.setBounds(rec2.x, rec2.y, rec2.width, rec2.height); // set the new position and size
-					if(rec2 != null){
-						PositionedRectangle screenPR=new PositionedRectangle(rec2.x, rec2.y, rec2.width, rec2.height, pr.getRow(), pr.getColumn(), pr.isSelected());
-
-						gp_converted.addSinglePositionedRectangle(screenPR);
-						screenPR=null;
-					}
-					rec2=null;
-
-				}
-
-				gp_converted.setHorizontalLineLength((int)convertImageDistanceToScreenDistance(this.originalImage.getWidth()));
-				gp_converted.setVerticalLineLength((int)convertImageDistanceToScreenDistance(this.originalImage.getHeight()));
-
-				return gp_converted;
-			}
+			// check that all needed objects exist
+			if(this.originalImage == null || this.relativeViewRectangle == null || this.imagePanelDimension == null)
 			return null;
+
+		//  make own calculations for scaling either height or width
+
+			// calculate temporary relativeImagePanelDimension -> save it as relativeImagePanelDimension when image is created successfully
+			tempRelativeViewRectangle= calculateRelativeViewRectangleFocusedOnFocusPoint(focusPoint, zoomValue);
+
+			// tempRelativeViewRectangle is proportional to ImagePanel size -> height or width may be bigger than originalImage -> calculate dimension of real cropped image
+			Dimension imageDimension= getImageDimensionInsideRectangle(tempRelativeViewRectangle);
+			if(imageDimension.getWidth() < 20 || imageDimension.getHeight() <20)
+				return new PositionedImage(null);
+
+			// crop the image
+			processedImage = Scalr.crop(this.originalImage, tempRelativeViewRectangle.x, tempRelativeViewRectangle.y, imageDimension.width, imageDimension.height, null);
+
+
+			return scaleToImagePanel(processedImage, tempRelativeViewRectangle, processingID);
+
+
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.severe("Error in zooming image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
 			return null;
 		}
+		finally{
+			processedImage=null;
+			tempRelativeViewRectangle=null;
+		}
+
+
+
+	}
+
+	private PositionedImage initAndscaleToImagePanel(){
+		BufferedImage scaledImage;
+		try {
+
+			//  make own calculations for scaling either height or width
+			Scalr.Mode  scalingMode= (Scalr.Mode)(getScalingMode(this.originalImage.getWidth(), this.originalImage.getHeight(),this.imagePanelDimension));
+
+			// set up the quality/speed constant
+			Scalr.Method processingQuality = Scalr.Method.ULTRA_QUALITY;
+
+			// get new image scaled to Dimension of ImagePanel
+			scaledImage= Scalr.resize(this.originalImage, processingQuality, scalingMode, this.imagePanelDimension.width, this.imagePanelDimension.height, null);
+
+			if(scaledImage != null){
+				// calculate the initial dimension of relativeViewRectangle where topleft corner coordinate is (0,0)
+				this.setRelativeViewRectangle(calculateRelativeDimensionToImagePanel(scalingMode, this.originalImage.getWidth(), this.originalImage.getHeight()));
+				// return PositionedImage with scaled image and default topleft corner position (0,0)
+				return new PositionedImage(scaledImage);
+			}
+			else
+				return null;
+
+		} catch (IllegalArgumentException e) {
+			LOGGER.severe("Error Arguments in scaling image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+			return null;
+		} catch (ImagingOpException e) {
+			LOGGER.severe("Error in imagingOP when scaling image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+			return null;
+		}
+		finally{
+			scaledImage=null;
+		}
+
+	}
+
+	private Rectangle moveRelativeViewRectangle(Point2D movement){
+		Rectangle tempRelativeViewRectangle = new Rectangle(this.relativeViewRectangle.x+(int)movement.getX(), this.relativeViewRectangle.y+(int)movement.getY(),
+				this.relativeViewRectangle.width, this.relativeViewRectangle.height);
+
+		if(tempRelativeViewRectangle.x + tempRelativeViewRectangle.width > this.originalImage.getWidth())
+			tempRelativeViewRectangle.x = this.originalImage.getWidth()-tempRelativeViewRectangle.width;
+
+		if(tempRelativeViewRectangle.y+tempRelativeViewRectangle.height > this.originalImage.getHeight())
+			tempRelativeViewRectangle.y= this.originalImage.getHeight()-tempRelativeViewRectangle.height;
+		if(tempRelativeViewRectangle.x<0)
+			tempRelativeViewRectangle.x=0;
+		if(tempRelativeViewRectangle.y<0)
+			tempRelativeViewRectangle.y=0;
+
+		return tempRelativeViewRectangle;
+
+	}
+
+	/**
+	 * Reads the image file, creates and returnes a BufferedImage.
+	 *
+	 * @param file the File
+	 * @return the BufferedImage
+	 * @throws Exception the exception
+	 */
+	public BufferedImage readImageFile(File file) throws Exception{
+
+		if(Utils.getExtension(file).equals(Utils.tif) || Utils.getExtension(file).equals(Utils.tiff)){
+			PlanarImage pim=null;
+			pim= JAI.create("fileload", file.getAbsolutePath());
+			if(pim != null)
+				return pim.getAsBufferedImage();
+			else
+				throw new Exception();
+		}
+		else{
+		//	return ImageIO.read(file);
+			BufferedImage in = ImageIO.read(file);
+			BufferedImage newImage = new BufferedImage(in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+			Graphics2D g = newImage.createGraphics();
+			g.drawImage(in, 0, 0, null);
+			g.dispose();
+			in=null;
+			return newImage;
+
+		}
+
+
+	}
+
+	public boolean removeSingleMarkingCoordinate(Point screenPoint, MarkingLayer selectedMarkingLayer){
+		if(selectedMarkingLayer != null ){
+			Point pointAtImage= convertRelativePointAsPointAtImage(convertScreenPointToRelativePoint(screenPoint));
+			if(pointAtImage != null && selectedMarkingLayer != null){
+				return selectedMarkingLayer.removeSingleCoordinate(pointAtImage);
+
+			}
+		}
+		return false;
+
+	}
+
+	private PositionedImage scaleToImagePanel(BufferedImage processedImage, Rectangle tempRelativeView, int processingID){
+		BufferedImage scaledImage;
+		try {
+
+			//  make own calculations should image being scaled either to height or width
+			Scalr.Mode  scalingMode= (Scalr.Mode)(getScalingMode(processedImage.getWidth(), processedImage.getHeight(),this.imagePanelDimension));
+
+			// set up the quality/speed constant -> AUTOMATIC seems to produce good quality images
+			Scalr.Method processingQuality = Scalr.Method.AUTOMATIC;
+
+		//	if(processingID == ID.IMAGE_PROCESSING_BEST_QUALITY)
+		//		processingQuality = Scalr.Method.ULTRA_QUALITY;
+
+			// get new image scaled to Dimension of ImagePanel
+			scaledImage= Scalr.resize(processedImage, processingQuality, scalingMode, this.imagePanelDimension.width, this.imagePanelDimension.height, null);
+
+			if(scaledImage != null){
+				// save the used tempRelativeView as relativeViewRectangle
+				this.setRelativeViewRectangle(tempRelativeView);
+				// return PositionedImage with scaled image and position converted to screen
+				return new PositionedImage(scaledImage, convertRelativePointToScreenPoint(new Point(tempRelativeView.x, tempRelativeView.y)));
+			}
+			else
+				return null;
+
+		} catch (IllegalArgumentException e) {
+			LOGGER.severe("Error Arguments in scaling image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+			return null;
+		} catch (ImagingOpException e) {
+			LOGGER.severe("Error in imagingOP when scaling image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+			return null;
+		}
+		finally{scaledImage=null;}
+
+	}
+
+	/**
+	 * Sets the image panel dimension.
+	 *
+	 * @param ipd the new image panel dimension
+	 */
+	public void setImagePanelDimension(Dimension ipd){
+		this.imagePanelDimension=ipd;
+	}
+
+	public void setOriginalImageToShown(BufferedImage originalImageToShown) {
+
+		if(this.originalImage != null && originalImageToShown != null && (this.originalImage.getWidth() != originalImageToShown.getWidth()
+				|| this.originalImage.getHeight() != originalImageToShown.getHeight() ) ){
+			// refresh the relativeViewRectangle because the image size has changed and no earlier calculations can be used
+			this.setRelativeViewRectangle(null);
+		}
+		this.originalImage = originalImageToShown;
+	}
+
+	public void setRelativeViewRectangle(Rectangle relativeToImagePanelRect) {
+		this.relativeViewRectangle = relativeToImagePanelRect;
+	}
+
+	public void setRemoveDistance(int removeDistance) {
+		this.removeDistance = removeDistance;
+	}
+
+	/**
+	 * Sets the selected buffered image.
+	 *
+	 * @param imagePath the new selected buffered image
+	 * @throws Exception the exception
+	 */
+	public void setSelectedBufferedImage(String imagePath) throws Exception{
+		File imageFile;
+		try {
+			if(imagePath != null){
+			imageFile=new File(imagePath);
+			this.setOriginalImageToShown(readImageFile(imageFile));
+			}
+			else{
+				this.setOriginalImageToShown(null);
+			}
+		} catch (IOException e) {
+			LOGGER.severe("Error in getting image from String path:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+			this.setOriginalImageToShown(null);
+		}
+		finally{imageFile=null;}
 	}
 
 
