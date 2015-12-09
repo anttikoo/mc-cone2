@@ -1,13 +1,9 @@
 package information;
 
-import gui.GUI;
-
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+import java.util.logging.Logger;
 
 public class Fonts {
 	public static Font inconsolata16b;
@@ -27,22 +23,41 @@ public class Fonts {
 	public static Font p18;
 	public static Font p19;
 	public static Font p20;
-	private static String fontName="Consolas";
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/**
+	 * Returns the SourceSansPro regular font.
+	 *
+	 * @param size the size of font
+	 * @return the font SourceSansPro-Regualar
+	 * @throws FontFormatException the font format exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	private static Font getSourceSansPro(float size) throws FontFormatException, IOException{
+		Font font = Font.createFont(Font.TRUETYPE_FONT, Fonts.class.getResourceAsStream("/information/fonts/SourceSansPro-Regular.otf"));
+		return font.deriveFont(size);
+	}
+	
+	/**
+	 * 
+ * Returns the SourceSansPro bold font.
+ *
+ * @param size the size of font
+ * @return the font SourceSansPro-Bold
+ * @throws FontFormatException the font format exception
+ * @throws IOException Signals that an I/O exception has occurred.
+ */
+private static Font getSourceSansProBold(float size) throws FontFormatException, IOException{
+		
+		Font font = Font.createFont(Font.TRUETYPE_FONT, Fonts.class.getResourceAsStream("/information/fonts/SourceSansPro-Bold.otf"));
+		return font.deriveFont(size);
+	}
+
+	/**
+	 * Initializes the fonts.
+	 */
 	public static void initFonts(){
-	//	String path= "/information/fonts/Inconsolata.otf";
-
 		try {
-/*
-			b14=new Font(fontName,Font.BOLD,14);
-			b15=new Font(fontName,Font.BOLD,15);
-			b16=new Font(fontName,Font.BOLD,16);
-			b17=new Font(fontName,Font.BOLD,17);
-			p14=new Font(fontName,Font.PLAIN,14);
-			p15=new Font(fontName,Font.PLAIN,15);
-			p16=new Font(fontName,Font.PLAIN,16);
-			p17=new Font(fontName,Font.PLAIN,17);
-			*/
-
 			b14=getSourceSansProBold(14.0f);
 			b15=getSourceSansProBold(15.0f);
 			b16=getSourceSansProBold(16.0f);
@@ -60,15 +75,14 @@ public class Fonts {
 			p19=getSourceSansPro(19.0f);
 			p20=getSourceSansPro(20.0f);
 
-
-
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			LOGGER.severe("Error in importing fonts");
 			e.printStackTrace();
 		}
 
 	}
-
+	
+/*//unused
 	private static Font getInconsolata(float size) throws FontFormatException, IOException{
 		Font font = Font.createFont(Font.TRUETYPE_FONT, Fonts.class.getResourceAsStream("/information/fonts/Inconsolata.otf"));
 		return font.deriveFont(size);
@@ -86,14 +100,6 @@ public class Fonts {
 		Font font = Font.createFont(Font.TRUETYPE_FONT, Fonts.class.getResourceAsStream("/information/fonts/DejaVuSansMono-Bold.ttf"));
 		return font.deriveFont(size);
 	}
-	private static Font getSourceSansProBold(float size) throws FontFormatException, IOException{
-		Font font = Font.createFont(Font.TRUETYPE_FONT, Fonts.class.getResourceAsStream("/information/fonts/SourceSansPro-Bold.otf"));
-		return font.deriveFont(size);
-	}
-
-	private static Font getSourceSansPro(float size) throws FontFormatException, IOException{
-		Font font = Font.createFont(Font.TRUETYPE_FONT, Fonts.class.getResourceAsStream("/information/fonts/SourceSansPro-Regular.otf"));
-		return font.deriveFont(size);
-	}
+	*/
 
 }
