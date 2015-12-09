@@ -13,6 +13,7 @@ public class PositionedRectangle extends Rectangle{
 	
 	/**
 	 * Instantiates a new PositionedRectangle.
+	 * 
 	 *
 	 * @param x the position x
 	 * @param y the postion y

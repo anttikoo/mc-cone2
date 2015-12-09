@@ -3,34 +3,50 @@ package information;
 import java.awt.Point;
 import java.util.ArrayList;
 
+/**
+ * The Class ScreenCoordinatesOfMarkingLayer.
+ */
 public class ScreenCoordinatesOfMarkingLayer {
 	private ArrayList<Point> coordinates;
-	private int id;
+	private int id; // ID of MarkingLayer which coordinate this is
 	
+	/**
+	 * Instantiates a new screen coordinates of marking layer.
+	 *
+	 * @param points ArrayList of  points
+	 * @param id the ID of MarkingLayer
+	 */
 	public ScreenCoordinatesOfMarkingLayer(ArrayList<Point> points, int id){
 		this.coordinates=points;
 		this.id=id;
 	}
 
-	public ArrayList<Point> getCoordinates() {
-		return coordinates;
-	}
-/*
-	public void setCoordinates(ArrayList<Point> coordinates) {
-		this.coordinates = coordinates;
-	}
-*/
-	public int getId() {
-		return id;
-	}
-	
+	/**
+	 * Adds a single coordinate.
+	 *
+	 * @param point the point
+	 */
 	public void addCoordinate(Point point){
 		if(point != null)
 			this.coordinates.add(point);
 	}
-/*
-	public void setId(int id) {
-		this.id = id;
+
+	/**
+	 * Returns the coordinates.
+	 *
+	 * @return the ArrayList of coordinates
+	 */
+	public ArrayList<Point> getCoordinates() {
+			return coordinates;
 	}
-*/
+	
+	/**
+	 * Returns the ID.
+	 *
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
 }
