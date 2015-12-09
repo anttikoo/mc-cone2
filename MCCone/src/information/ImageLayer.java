@@ -1,130 +1,43 @@
 package information;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+/**
+ * The Class ImageLayer. Contains data: unique ID, image paths, MarkingLayers. 
+ */
 public class ImageLayer {
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private int layerID;
 	private String imageFilePath;
 	private String markingsFilePath;
 	private String exportImagePath;
 	private ArrayList<MarkingLayer> markingLayerList;
 	private boolean isSelected=false;
-	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
+	/**
+	 * Instantiates a new ImageLayer. First ID will be set as -1 and later unique ID is given if ImageLayer is finalized.
+	 *
+	 * @param imagePath the image path
+	 */
 	public ImageLayer(String imagePath){
-		this.setLayerID(-1); // initialize the layerID to negative
+		this.setLayerID(-1); // initialize the layerID to negative by default
 		this.setImageFilePath(imagePath);
 		this.markingLayerList = new ArrayList<MarkingLayer>();
 	}
 
-	public String getImageFilePath() {
-		return imageFilePath;
-	}
-
-
-
 	/**
-	 * Method returns a last name of path sequence if file exists.
-	 * @return the file name without full path of file.
+	 * Adds a new MarkigLayer by copying all data.
+	 *
+	 * @param ml the ml
 	 */
-	public String getImageFileName(String path){
-		try {
-			File file = new File(path);
-			if(file.exists()){
-			//	LOGGER.fine("givin filename: " +file.getName());
-				return file.getName();
-			}
-			return "";
-		} catch (Exception e) {
-			LOGGER.severe("Error in getting Imagefile name from ImageLayer " +e.getClass().toString() + " :" +e.getMessage());
-			return "";
-		}
-	}
-
-	public String getImageFileName(){
-		return getImageFileName(this.imageFilePath);
-	}
-
-	public boolean hasSameImageName(String iPath){
-		if(iPath != null && iPath.length() >0 )
-			if(getImageFileName().equals(getImageFileName(iPath)))
-				return true;
-		return false;
-	}
-
-	public String getImageFileNameWithoutExtension(){
-		try {
-			File file = new File(this.imageFilePath);
-			if(file.exists()){
-			//	LOGGER.fine("givin filename: " +file.getName());
-				return removeExtension(file.getName());
-			}
-			return "";
-		} catch (Exception e) {
-			LOGGER.severe("Error in getting Imagefile name from ImageLayer " +e.getClass().toString() + " :" +e.getMessage());
-			return "";
-		}
-	}
-
-	  private String removeExtension (String str) {
-	        try {
-				// Handle null case specially.
-				if (str == null) return null;
-
-				// Get position of last '.'.
-				int pos = str.lastIndexOf(".");
-
-				// If there wasn't any '.' just return the string as is.
-				if (pos == -1) return str;
-
-				// Otherwise return the string, up to the dot.
-				return str.substring(0, pos);
-			} catch (Exception e) {
-				LOGGER.severe("Error in removingExtension " +e.getClass().toString() + " :" +e.getMessage());
-				return str;
-			}
-	    }
-	public String getImageFullFilePathWithoutExtension(){
-		try {
-			File file = new File(this.imageFilePath);
-			if(file.exists()){
-			//	LOGGER.fine("givin filename: " +file.getName());
-				return removeExtension(file.getAbsolutePath());
-			}
-			return "";
-		} catch (Exception e) {
-			LOGGER.severe("Error in getting Imagefile name from ImageLayer " +e.getClass().toString() + " :" +e.getMessage());
-			return "";
-		}
-	}
-
-	public String getFolderOfImage(){
-		try {
-			File file = new File(this.imageFilePath);
-			if(file.exists()){
-			//	LOGGER.fine("givin filename: " +file.getName());
-				return file.getParent();
-			}
-			return "";
-		} catch (Exception e) {
-			LOGGER.severe("Error in getting Imagefile name from ImageLayer " +e.getClass().toString() + " :" +e.getMessage());
-			return "";
-		}
-	}
-
-	public void setImageFilePath(String imageFilePath) {
-		this.imageFilePath = imageFilePath;
-	}
-
 	public void addMarkingLayer(MarkingLayer ml){
 
 		try {
 
-			// should create brand new Markinglayer and copy all values to it from ml because may be deleted elsewhere
+			// Creates a brand new Markinglayer and copy all values to it from ml because may be deleted elsewhere
 			MarkingLayer mark = new MarkingLayer(ml.getLayerName());
 
 			mark.setColor(ml.getColor());
@@ -140,14 +53,35 @@ public class ImageLayer {
 
 		} catch (Exception e) {
 			LOGGER.severe("Error in adding new MarkingLayer " +e.getClass().toString() + " :" +e.getMessage());
-
+			e.printStackTrace();
 		}
 	}
 
-	public ArrayList<MarkingLayer> getMarkingLayers(){
-		return this.markingLayerList;
+	/**
+	 * Returns the all IDs of MarkingLayers.
+	 *
+	 * @return the ArrayList of IDs of MarkingLayers
+	 */
+	public ArrayList<Integer> getAllMarkingLayerIDs(){
+		ArrayList<Integer> mLayerIDlist= new ArrayList<Integer>();
+
+		Iterator<MarkingLayer> mIterator = getMarkingLayers().iterator();
+		while(mIterator.hasNext()){
+			mLayerIDlist.add(((MarkingLayer)mIterator.next()).getLayerID());
+		}
+		return mLayerIDlist;
+
 	}
-	
+
+	/**
+	 * Returns the export image path.
+	 *
+	 * @return the export image path
+	 */
+	public String getExportImagePath() {
+		return exportImagePath;
+	}
+
 	public MarkingLayer getFirstVisibleMarkingLayer(){
 		if(this.markingLayerList != null && this.markingLayerList.size()>0){
 			Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
@@ -162,93 +96,112 @@ public class ImageLayer {
 		return null;
 	}
 
-	public void setMarkingLayerList(ArrayList<MarkingLayer> markingLayerList) {
-		this.markingLayerList = markingLayerList;
-	}
-
-	public void removeMarkingLayer(MarkingLayer markinglayer){
-		if(markinglayer !=null && this.markingLayerList != null && this.markingLayerList.size()>0){
-			Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
-			while(iIterator.hasNext()){
-				MarkingLayer ml = (MarkingLayer)iIterator.next();
-				if(ml.getLayerName().equals(markinglayer.getLayerName())){ // MarkingLayer name
-					iIterator.remove();
-				}
-
+	/**
+	 * Returns the folder of image.
+	 *
+	 * @return the folder of image
+	 */
+	public String getFolderOfImage(){
+		try {
+			File file = new File(this.imageFilePath);
+			if(file.exists()){
+				return file.getParent();
 			}
+			return "";
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting Imagefile name from ImageLayer " +e.getClass().toString() + " :" +e.getMessage());
+			return "";
 		}
 	}
 
-	public void removeAllMarkingLayers(){
-		this.markingLayerList.clear();
+	  /**
+  	 * Returns the image file name.
+  	 *
+  	 * @return the image file name
+  	 */
+  	public String getImageFileName(){
+		return getImageFileName(this.imageFilePath);
+	}
+  	
+	/**
+	 * Method returns the name part of file if file exists.
+	 * @return the file name without full path of file.
+	 */
+	public String getImageFileName(String path){
+		try {
+			File file = new File(path);
+			if(file.exists()){ //exists
+				return file.getName();
+			}
+			return "";
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting Imagefile name from ImageLayer " +e.getClass().toString() + " :" +e.getMessage());
+			return "";
+		}
 	}
 
-	public String getMarkingsFilePath() {
-		return markingsFilePath;
+	/**
+	 * Returns the image file name without extension.
+	 *
+	 * @return the image file name without extension
+	 */
+	public String getImageFileNameWithoutExtension(){
+		try {
+			File file = new File(this.imageFilePath);
+			if(file.exists()){
+			//	LOGGER.fine("givin filename: " +file.getName());
+				return removeExtension(file.getName());
+			}
+			return "";
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting Imagefile name from ImageLayer " +e.getClass().toString() + " :" +e.getMessage());
+			return "";
+		}
 	}
 
-	public void setMarkingsFilePath(String markingsFilePath) {
-		this.markingsFilePath = markingsFilePath;
+	/**
+	 * Returns the image file path.
+	 *
+	 * @return the image file path
+	 */
+	public String getImageFilePath() {
+		return imageFilePath;
 	}
 
+	/**
+	 * Returns the image full file path without extension.
+	 *
+	 * @return the image full file path without extension
+	 */
+	public String getImageFullFilePathWithoutExtension(){
+		try {
+			File file = new File(this.imageFilePath);
+			if(file.exists()){
+			//	LOGGER.fine("givin filename: " +file.getName());
+				return removeExtension(file.getAbsolutePath());
+			}
+			return "";
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting Imagefile name from ImageLayer " +e.getClass().toString() + " :" +e.getMessage());
+			return "";
+		}
+	}
+
+	/**
+	 * Returns the ID of ImageLayer .
+	 *
+	 * @return the layer id
+	 */
 	public int getLayerID() {
 		return layerID;
 	}
-
-	public void setLayerID(int layerID) {
-		this.layerID = layerID;
-	}
-
-
-
-	public ImageLayer makeCopy(){
-		try {
-			// create new ImageLayer
-			ImageLayer copyImageLayer = new ImageLayer(this.getImageFilePath());
-			// set filePath of Markings file
-			if(markingsFilePath != null && markingsFilePath.length()>0)
-				copyImageLayer.setMarkingsFilePath(this.getMarkingsFilePath());
-			// create and set copy of MarkingLayer -list
-			if(this.markingLayerList != null && this.markingLayerList.size()>0){
-				Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
-				while(iIterator.hasNext()){
-					MarkingLayer ml = (MarkingLayer)iIterator.next();
-					if(ml != null){
-						MarkingLayer copyMarkingLayer = ml.makeCopy();
-						if(copyMarkingLayer != null)
-							copyImageLayer.addMarkingLayer(copyMarkingLayer);
-					}
-
-				}
-			}
-			return copyImageLayer;
-		} catch (Exception e) {
-			LOGGER.severe("Error in creating copy of ImageLayer: " +e.getClass().toString() + " :" +e.getMessage());
-			return null;
-
-		}
-	}
-
-	public boolean isMarkingLayerInList(MarkingLayer checkMarkingLayer){
-		try {
-			if(this.markingLayerList != null && this.markingLayerList.size()>0){
-				Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
-				while(iIterator.hasNext()){
-					MarkingLayer ml = (MarkingLayer)iIterator.next();
-					if(ml != null && ml.getLayerName().equalsIgnoreCase(checkMarkingLayer.getLayerName())){
-						return true;
-
-					}
-
-				}
-			}
-			return false;
-		} catch (Exception e) {
-			LOGGER.severe("Error in searching MarkingLayer from ImageLayer: " +e.getClass().toString() + " :" +e.getMessage());
-			return true; // to be on the safe side  return true when error happens
-		}
-	}
-
+	
+	/**
+	 * Returns the MarkingLayer.
+	 *
+	 * @param mLayerID ID of MarkingLayer
+	 * @return the marking layer
+	 */
 	public MarkingLayer getMarkingLayer(int mLayerID){
 		try {
 			// go through imageLayerList and return if layerIDs match
@@ -269,7 +222,39 @@ public class ImageLayer {
 		}
 	}
 
+	/**
+	 * Returns the all  MarkingLayers.
+	 *
+	 * @return the marking layers
+	 */
+	public ArrayList<MarkingLayer> getMarkingLayers(){
+		return this.markingLayerList;
+	}
 
+	/**
+	 * Returns the file path where markings are saved (xml-file) previously.
+	 *
+	 * @return the markings file path
+	 */
+	public String getMarkingsFilePath() {
+		return markingsFilePath;
+	}
+
+	/**
+	 * Checks for is GRID USED.
+	 *
+	 * @return true, if successful
+	 */
+	public boolean hasGridOn(){
+		Iterator<MarkingLayer> mIterator = getMarkingLayers().iterator();
+		while(mIterator.hasNext()){
+			MarkingLayer layer=mIterator.next();
+			if(layer.getGridProperties()!=null && layer.getGridProperties().isGridON())
+				return true;
+		}
+
+		return false;
+	}
 
 	/**
 	 * Return true if found MaerkingLayer ID from markingLayerList of this ImageLayer.
@@ -282,45 +267,189 @@ public class ImageLayer {
 		return false;
 	}
 
+	/**
+	 * Checks for same image name.
+	 *
+	 * @param iPath the i path
+	 * @return true, if successful
+	 */
+	public boolean hasSameImageName(String iPath){
+		if(iPath != null && iPath.length() >0 )
+			if(getImageFileName().equals(getImageFileName(iPath)))
+				return true;
+		return false;
+	}
+
+	/**
+	 * Checks if is MarkingLayer in list of this ImageLayer.
+	 *
+	 * @param checkMarkingLayer the check marking layer
+	 * @return true, if is marking layer in list
+	 */
+	public boolean isMarkingLayerInList(MarkingLayer checkMarkingLayer){
+		try {
+			if(this.markingLayerList != null && this.markingLayerList.size()>0){
+				Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
+				while(iIterator.hasNext()){
+					MarkingLayer ml = (MarkingLayer)iIterator.next();
+					if(ml != null && ml.getLayerName().equalsIgnoreCase(checkMarkingLayer.getLayerName())){
+						return true;
+					}
+				}
+			}
+			return false;
+		} catch (Exception e) {
+			LOGGER.severe("Error in searching MarkingLayer from ImageLayer: " +e.getClass().toString() + " :" +e.getMessage());
+			return true; // to be on the safe side  return true when error happens
+		}
+	}
+
+	/**
+	 * Checks if is ImageLayer selected.
+	 *
+	 * @return true, if is selected
+	 */
 	public boolean isSelected() {
 		return isSelected;
 	}
 
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
-	}
-	public ArrayList<Integer> getAllMarkingLayerIDs(){
-		ArrayList<Integer> mLayerIDlist= new ArrayList<Integer>();
 
-		Iterator<MarkingLayer> mIterator = getMarkingLayers().iterator();
-		while(mIterator.hasNext()){
-			mLayerIDlist.add(((MarkingLayer)mIterator.next()).getLayerID());
+
+	/**
+	 * Makes a copy of ImageLayer.
+	 *
+	 * @return the image layer
+	 */
+	public ImageLayer makeCopy(){
+		try {
+			// create new ImageLayer
+			ImageLayer copyImageLayer = new ImageLayer(this.getImageFilePath());
+			// set filePath of Markings file
+			if(markingsFilePath != null && markingsFilePath.length()>0)
+				copyImageLayer.setMarkingsFilePath(this.getMarkingsFilePath());
+			// create and set copy of MarkingLayer -list
+			if(this.markingLayerList != null && this.markingLayerList.size()>0){
+				Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
+				while(iIterator.hasNext()){ // go through MarkingLayers
+					MarkingLayer ml = (MarkingLayer)iIterator.next();
+					if(ml != null){
+						MarkingLayer copyMarkingLayer = ml.makeCopy(); // create copy of MarkingLayer
+						if(copyMarkingLayer != null)
+							copyImageLayer.addMarkingLayer(copyMarkingLayer);
+					}
+				}
+			}
+			return copyImageLayer;
+		} catch (Exception e) {
+			LOGGER.severe("Error in creating copy of ImageLayer: " +e.getClass().toString() + " :" +e.getMessage());
+			return null;
 		}
-
-		return mLayerIDlist;
-
-
-
-
 	}
 
-	public String getExportImagePath() {
-		return exportImagePath;
+	/**
+	 * Removes the all marking layers from ImageLayer.
+	 */
+	public void removeAllMarkingLayers(){
+		this.markingLayerList.clear();
 	}
 
+	/**
+	 * Removes the extension from file path.
+	 *
+	 * @param str the String of file path
+	 * @return the string of path without extension
+	 */
+	private String removeExtension (String str) {
+	        try {
+				// Handle null case specially.
+				if (str == null) return null;
+
+				// Get position of last '.'.
+				int pos = str.lastIndexOf(".");
+
+				// If there wasn't any '.' just return the string as is.
+				if (pos == -1) return str;
+
+				// Otherwise return the string, up to the dot.
+				return str.substring(0, pos);
+			} catch (Exception e) {
+				LOGGER.severe("Error in removingExtension " +e.getClass().toString() + " :" +e.getMessage());
+				return str;
+			}
+	    }
+
+
+
+	/**
+	 * Removes the marking layer from list of ImageLayer.
+	 *
+	 * @param markinglayer the markinglayer
+	 */
+	public void removeMarkingLayer(MarkingLayer markinglayer){
+		if(markinglayer !=null && this.markingLayerList != null && this.markingLayerList.size()>0){
+			Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
+			while(iIterator.hasNext()){
+				MarkingLayer ml = (MarkingLayer)iIterator.next();
+				if(ml.getLayerName().equals(markinglayer.getLayerName())){ // MarkingLayer name
+					iIterator.remove();
+				}
+
+			}
+		}
+	}
+
+	/**
+	 * Sets the export image path.
+	 *
+	 * @param exportImagePath the new export image path
+	 */
 	public void setExportImagePath(String exportImagePath) {
 		this.exportImagePath = exportImagePath;
 	}
 
-	public boolean hasGridOn(){
-		Iterator<MarkingLayer> mIterator = getMarkingLayers().iterator();
-		while(mIterator.hasNext()){
-			MarkingLayer layer=mIterator.next();
-			if(layer.getGridProperties()!=null && layer.getGridProperties().isGridON())
-				return true;
-		}
+	/**
+	 * Sets the image file path.
+	 *
+	 * @param imageFilePath the new image file path
+	 */
+	public void setImageFilePath(String imageFilePath) {
+		this.imageFilePath = imageFilePath;
+	}
+	
+	/**
+	 * Sets the ImageLayer ID.
+	 *
+	 * @param layerID the new layer id
+	 */
+	public void setLayerID(int layerID) {
+		this.layerID = layerID;
+	}
 
-		return false;
+	/**
+	 * Sets the list of MarkingLayers.
+	 *
+	 * @param markingLayerList the new marking layer list
+	 */
+	public void setMarkingLayerList(ArrayList<MarkingLayer> markingLayerList) {
+		this.markingLayerList = markingLayerList;
+	}
+
+	/**
+	 * Sets the markings file path.
+	 *
+	 * @param markingsFilePath the new markings file path
+	 */
+	public void setMarkingsFilePath(String markingsFilePath) {
+		this.markingsFilePath = markingsFilePath;
+	}
+
+	/**
+	 * Sets the ImageLayer as selected.
+	 *
+	 * @param isSelected the new selected
+	 */
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
 	}
 
 
