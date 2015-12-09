@@ -1,5 +1,8 @@
 package information;
 
+/**
+ * The Class ID. Contains static ID integers for different String fields.
+ */
 public class ID {
 	public static final int DELETE_IMAGELAYER = 1;
 	public static final int DELETE_MARKINGLAYER = 2;
