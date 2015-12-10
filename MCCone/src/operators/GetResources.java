@@ -7,9 +7,18 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+/**
+ * The Class GetResources. A Helper class for getting ImageIcon from given path.
+ */
 public class GetResources {
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
+	/**
+	 * Returns the image icon.
+	 *
+	 * @param path the path
+	 * @return the ImageIcon
+	 */
 	public static ImageIcon getImageIcon(String path) {
 
 		try {
@@ -17,7 +26,6 @@ public class GetResources {
 			ImageIcon img = new ImageIcon(url);
 			return img;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOGGER.severe("Error in adding SingleMarkingPanel " +e.getClass().toString() + " :" +e.getMessage());
 			return null;
 		}
