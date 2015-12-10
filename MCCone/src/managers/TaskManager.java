@@ -225,7 +225,7 @@ public class TaskManager {
 	}
 
 	/**
-	 * Returns the marking layer by given ImageLayer ID and MarkingLayer ID.
+	 * Returns the MarkingLayer by given ImageLayer ID and MarkingLayer ID.
 	 *
 	 * @param iLayerID the ID of ImageLayer
 	 * @param mLayerID the ID of MarkingLayer
@@ -327,19 +327,19 @@ public class TaskManager {
 	}
 
 	/**
-	 * Returns the selected image layer.
+	 * Returns the selected ImageLayer.
 	 *
-	 * @return the selected image layer
+	 * @return the selected ImageLayer
 	 */
 	public ImageLayer getSelectedImageLayer(){
 		return this.informationCenter.getSelectedImageLayer();
 	}
 
 	/**
-	 * Returns the selected image layer at above or below.
+	 * Returns the selected ImageLayer at above or below.
 	 *
 	 * @param upOrDownID the up or down id
-	 * @return the selected image layer at up or down
+	 * @return the selected ImageLayer at up or down
 	 */
 	public int getSelectedImageLayerAtUpOrDown(int upOrDownID){
 		if(upOrDownID == ID.MOVE_DOWN){
@@ -364,19 +364,19 @@ public class TaskManager {
 	}
 
 	/**
-	 * Returns the selected marking layer.
+	 * Returns the selected MarkingLayer.
 	 *
-	 * @return the selected marking layer
+	 * @return the selected MarkingLayer
 	 */
 	public MarkingLayer getSelectedMarkingLayer(){
 		return this.informationCenter.getSelectedMarkingLayer();
 	}
 
 	/**
-	 * Returns the selected marking layer at up or down.
+	 * Returns the selected MarkingLayer at up or down.
 	 *
 	 * @param upOrDownID the up or down id
-	 * @return the selected marking layer at up or down
+	 * @return the selected MarkingLayer at up or down
 	 */
 	public int getSelectedMarkingLayerAtUpOrDown(int upOrDownID){
 		if(upOrDownID == ID.MOVE_DOWN){
@@ -420,9 +420,9 @@ public class TaskManager {
 
 
 	/**
-	 * Returns the visible marking layers.
+	 * Returns the visible MarkingLayers.
 	 *
-	 * @return the visible marking layers
+	 * @return the visible MarkingLayers
 	 */
 	public ArrayList<MarkingLayer> getVisibleMarkingLayers(){
 		return informationCenter.getVisibleMarkingLayerList();
@@ -478,7 +478,7 @@ public class TaskManager {
 	 * Checks if is ImageLayer selected.
 	 *
 	 * @param iLayerID the ID of ImageLayer
-	 * @return true, if is selected image layer
+	 * @return true, if is selected ImageLayer
 	 */
 	public boolean isSelectedImageLayer(int iLayerID){
 		return this.informationCenter.isSelectedImageLayer(iLayerID);
@@ -488,16 +488,16 @@ public class TaskManager {
 	 * Checks if is MarkingLayer selected.
 	 *
 	 * @param mLayerID the ID of MarkingLayer
-	 * @return true, if is selected marking layer
+	 * @return true, if is selected MarkingLayer
 	 */
 	public boolean isSelectedMarkingLayer(int mLayerID){
 		return this.informationCenter.isSelectedMarkingLayer(mLayerID);
 	}
 
 	/**
-	 * Checks if is selected marking layer visible.
+	 * Checks if is selected MarkingLayer visible.
 	 *
-	 * @return true, if is selected marking layer visible
+	 * @return true, if is selected MarkingLayer visible
 	 */
 	public boolean isSelectedMarkingLayerVisible(){
 		if(this.informationCenter.getSelectedMarkingLayer() == null)
@@ -640,7 +640,7 @@ public class TaskManager {
 	}
 
 	/**
-	 * Sets the marking layer selected.
+	 * Sets the MarkingLayer selected.
 	 *
 	 * @param mLayerID the ID of MarkingLayer
 	 * @return the MarkingLayer
@@ -656,7 +656,7 @@ public class TaskManager {
 	}
 
 	/**
-	 * Sets the marking layer visibility.
+	 * Sets the MarkingLayer visibility.
 	 *
 	 * @param mLayerID the m layer id
 	 * @param visible the visible
@@ -675,7 +675,7 @@ public class TaskManager {
 	}
 
 	/**
-	 * Sets the present image dimension from list of image layers.
+	 * Sets the present image dimension from list of ImageLayers.
 	 *
 	 * @param layers the list of ImageLayers
 	 */
@@ -691,7 +691,7 @@ public class TaskManager {
 	}
 
 	/**
-	 * Sets the present image dimension from single image layer.
+	 * Sets the present image dimension from single ImageLayer.
 	 *
 	 * @param layer the ImageLayer
 	 * @return true, if successful
@@ -723,7 +723,7 @@ public class TaskManager {
 	}
 
 	/**
-	 * Sets the image layer selected if not exist yet.
+	 * Sets the ImageLayer selected if not exist yet.
 	 *
 	 * @return true, if successful
 	 */
@@ -732,9 +732,9 @@ public class TaskManager {
 	}
 
 	/**
-	 * Sets the selected marking layer coordinates.
+	 * Sets the selected MarkingLayer coordinates.
 	 *
-	 * @param coordinates the new selected marking layer coordinates
+	 * @param coordinates the new selected MarkingLayer coordinates
 	 */
 	public void setSelectedMarkingLayerCoordinates(ArrayList<Point> coordinates){
 		this.informationCenter.getSelectedMarkingLayer().setCoordinateList(coordinates);
@@ -767,15 +767,13 @@ public class TaskManager {
 			setSelectedImage(null);
 	}
 
+	/**
+	 * Update selected MarkingPanel and ImageLayerInfos.
+	 */
 	public void updateSelectedMarkingPanelAndImageLayerInfos(){
-		gui.updateCoordinatesOfSelectedMarkingPanel(); // updates selectedMarkingPanel and ImageLayerInfos
+		// updates selectedMarkingPanel and ImageLayerInfos
+		gui.updateCoordinatesOfSelectedMarkingPanel(); 
 
 	}
-
-
-
-//	public BufferedImage getSelectedBufferedImage(Dimension visualPanelDimension){
-		//return layerManager.
-//	}
 
 }
