@@ -20,7 +20,6 @@ import javax.media.jai.PlanarImage;
 import org.imgscalr.Scalr;
 import gui.file.Utils;
 import information.GridProperties;
-import information.ID;
 import information.MarkingLayer;
 import information.PositionedImage;
 import information.PositionedRectangle;
@@ -38,7 +37,6 @@ import information.ScreenCoordinatesOfMarkingLayer;
  */
 public class LayerVisualManager {
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
-	private int removeDistance=5;
 	private Dimension imagePanelDimension; // the dimension of actual size of ImagePanel at screen (the topleft position is always 0,0)
 	
 	//the relative size of ImagePanel referred to actual size of originalImage. Is the dimension of present view of original image
@@ -62,7 +60,6 @@ public class LayerVisualManager {
 			}
 		}
 		return false;
-
 	}
 
 	/**
@@ -91,8 +88,6 @@ public class LayerVisualManager {
 			LOGGER.severe("Error in calculating RelatiViewRectangle dimension:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
 			return null;
 		}
-
-
 	}
 
 	/**
@@ -299,11 +294,7 @@ public class LayerVisualManager {
 			return convertRelativeRectangleToScreenRectangle((Rectangle) recNew);
 		}
 		return null;
-
 	}
-
-
-
 
 	/**
 	 * Converts relative height to ImagePanel height.
@@ -381,7 +372,6 @@ public class LayerVisualManager {
 		}
 	}
 
-
 	/**
 	 * Convert screen distance to image distance.
 	 *
@@ -429,7 +419,6 @@ public class LayerVisualManager {
 		return (int)(relativeX*d);
 	}
 
-
 	/**
 	 * Converts position y in image to position y at screen.
 	 *
@@ -470,7 +459,7 @@ public class LayerVisualManager {
 
 			// crop the image
 			BufferedImage 	processedImage = Scalr.crop(this.originalImage, tempRelativeViewRectangle.x, tempRelativeViewRectangle.y, imageDimension.width, imageDimension.height, null);
-
+			
 
 			return scaleToImagePanel(processedImage, tempRelativeViewRectangle);
 
@@ -496,13 +485,12 @@ public class LayerVisualManager {
 				return dim;
 			}
 			throw new NullPointerException();
-
 	}
 
 	/**
-	 * Returns the image dimension inside rectangle.
+	 * Returns the image dimension inside relative rectangle. If width or height of rectangle is bigger than image -> image width or height is returned.
 	 *
-	 * @param rec the rec
+	 * @param rec the relative Rectangle
 	 * @return the image dimension inside rectangle
 	 */
 	private Dimension getImageDimensionInsideRectangle(Rectangle rec){
@@ -518,7 +506,6 @@ public class LayerVisualManager {
 			LOGGER.severe("Error in zooming image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
 			return null;
 		}
-
 	}
 
 	/**
@@ -546,7 +533,6 @@ public class LayerVisualManager {
 		else{
 			return getZoomedImage(new Point2D.Double(this.imagePanelDimension.getWidth()/2,this.imagePanelDimension.getHeight()/2), 1.0);
 		}
-
 	}
 
 	/**
@@ -558,14 +544,6 @@ public class LayerVisualManager {
 		return relativeViewRectangle;
 	}
 
-	/**
-	 * Returns the removes the distance.
-	 *
-	 * @return the removes the distance
-	 */
-	public int getRemoveDistance() {
-		return removeDistance;
-	}
 
 	/**
 	 * Calculates which scaling method is better to scale image with original orientation and fit to ImagePanel in best way.
@@ -592,7 +570,6 @@ public class LayerVisualManager {
 			LOGGER.severe("Error in calculating scale method:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
 			return Scalr.Mode.FIT_TO_WIDTH;
 		}
-
 	}
 
 	/**
@@ -609,11 +586,8 @@ public class LayerVisualManager {
 			if(this.relativeViewRectangle.contains(imagePoint)){
 				tempPointList.add(convertImagePointToScreenPoint(imagePoint));
 			}
-
-
 		}
 		return tempPointList;
-
 	}
 
 	/**
@@ -632,7 +606,6 @@ public class LayerVisualManager {
 					if(ml.getCoordinateList() != null && ml.getCoordinateList().size()>0){
 						screenCoordinatesOfMarkingLayerList.add(new ScreenCoordinatesOfMarkingLayer(getScreenPointsOfMarkingLayer(ml), ml.getLayerID()));
 					}
-
 				}
 				return screenCoordinatesOfMarkingLayerList;
 			}
@@ -641,13 +614,24 @@ public class LayerVisualManager {
 			LOGGER.severe("LayerVisualManager Error in converting relative point to screen point of several MarkingLayers: " +e.getMessage());
 			return null;
 		}
-
 	}
 
+	/**
+	 * Returns the size multiplier.
+	 *
+	 * @return the size multiplier
+	 */
 	public double getSizeMultiplier(){
-	//	LOGGER.fine("widths: "+this.originalImage.getWidth()+ " "+this.imagePanelDimension.getWidth());
 		return (((double)this.originalImage.getWidth())/this.imagePanelDimension.getWidth());
 	}
+	
+	/**
+	 * Returns a part of image by given middle point at screen and size at screen.
+	 *
+	 * @param middlepoint the middle point at screen
+	 * @param size the size of image at screen
+	 * @return the sub image
+	 */
 	public BufferedImage getSubImage(Point middlepoint, int size){
 		try {
 			if(this.originalImage != null){
@@ -662,15 +646,11 @@ public class LayerVisualManager {
 				return null;
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOGGER.severe("Error in getting subImage from");
 			e.printStackTrace();
 			return null;
 		}
-
-
 	}
-
 
 	/**
 	 * @param focusPoint Point at screen where focus will be changed
@@ -698,7 +678,7 @@ public class LayerVisualManager {
 			// crop the image
 			processedImage = Scalr.crop(this.originalImage, tempRelativeViewRectangle.x, tempRelativeViewRectangle.y, imageDimension.width, imageDimension.height, null);
 
-
+			// scale to ImagePanel
 			return scaleToImagePanel(processedImage, tempRelativeViewRectangle);
 
 
@@ -710,11 +690,13 @@ public class LayerVisualManager {
 			processedImage=null;
 			tempRelativeViewRectangle=null;
 		}
-
-
-
 	}
 
+	/**
+	 * Initializes and scales image to image panel.
+	 *
+	 * @return the positioned image
+	 */
 	private PositionedImage initAndscaleToImagePanel(){
 		BufferedImage scaledImage;
 		try {
@@ -747,9 +729,14 @@ public class LayerVisualManager {
 		finally{
 			scaledImage=null;
 		}
-
 	}
 
+	/**
+	 * Moves relative view rectangle at original image by given movement at image.
+	 *
+	 * @param movement the movement at image
+	 * @return the moved Rectangle
+	 */
 	private Rectangle moveRelativeViewRectangle(Point2D movement){
 		Rectangle tempRelativeViewRectangle = new Rectangle(this.relativeViewRectangle.x+(int)movement.getX(), this.relativeViewRectangle.y+(int)movement.getY(),
 				this.relativeViewRectangle.width, this.relativeViewRectangle.height);
@@ -769,10 +756,10 @@ public class LayerVisualManager {
 	}
 
 	/**
-	 * Reads the image file, creates and returnes a BufferedImage.
+	 * Reads the image file, creates and returns a BufferedImage. Tif-files are created by packet JAI and other formats with ImageIO.
 	 *
-	 * @param file the File
-	 * @return the BufferedImage
+	 * @param file the image File
+	 * @return the created BufferedImage
 	 * @throws Exception the exception
 	 */
 	public BufferedImage readImageFile(File file) throws Exception{
@@ -795,12 +782,16 @@ public class LayerVisualManager {
 			g.dispose();
 			in=null;
 			return newImage;
-
 		}
-
-
 	}
 
+	/**
+	 * Removes the single marking coordinate.
+	 *
+	 * @param screenPoint the screen point
+	 * @param selectedMarkingLayer the selected marking layer
+	 * @return true, if successful
+	 */
 	public boolean removeSingleMarkingCoordinate(Point screenPoint, MarkingLayer selectedMarkingLayer){
 		if(selectedMarkingLayer != null ){
 			Point pointAtImage= convertRelativePointAsPointAtImage(convertScreenPointToRelativePoint(screenPoint));
@@ -813,6 +804,13 @@ public class LayerVisualManager {
 
 	}
 
+	/**
+	 * Scales image to ImagePanel and finalizes the temporary relative Rectangle to current relative Rectangle.
+	 *
+	 * @param processedImage the image to be scaled
+	 * @param tempRelativeView the unfinalized relative Rectangle
+	 * @return the PositionedImage scaled image
+	 */
 	private PositionedImage scaleToImagePanel(BufferedImage processedImage, Rectangle tempRelativeView){
 		BufferedImage scaledImage;
 		try {
@@ -823,8 +821,6 @@ public class LayerVisualManager {
 			// set up the quality/speed constant -> AUTOMATIC seems to produce good quality images
 			Scalr.Method processingQuality = Scalr.Method.AUTOMATIC;
 
-		//	if(processingID == ID.IMAGE_PROCESSING_BEST_QUALITY)
-		//		processingQuality = Scalr.Method.ULTRA_QUALITY;
 
 			// get new image scaled to Dimension of ImagePanel
 			scaledImage= Scalr.resize(processedImage, processingQuality, scalingMode, this.imagePanelDimension.width, this.imagePanelDimension.height, null);
@@ -858,6 +854,11 @@ public class LayerVisualManager {
 		this.imagePanelDimension=ipd;
 	}
 
+	/**
+	 * Sets the original image to shown.
+	 *
+	 * @param originalImageToShown the new original image to shown
+	 */
 	public void setOriginalImageToShown(BufferedImage originalImageToShown) {
 
 		if(this.originalImage != null && originalImageToShown != null && (this.originalImage.getWidth() != originalImageToShown.getWidth()
@@ -868,18 +869,20 @@ public class LayerVisualManager {
 		this.originalImage = originalImageToShown;
 	}
 
+	/**
+	 * Sets the relative view rectangle.
+	 *
+	 * @param relativeToImagePanelRect the new relative view rectangle
+	 */
 	public void setRelativeViewRectangle(Rectangle relativeToImagePanelRect) {
 		this.relativeViewRectangle = relativeToImagePanelRect;
 	}
 
-	public void setRemoveDistance(int removeDistance) {
-		this.removeDistance = removeDistance;
-	}
 
 	/**
-	 * Sets the selected buffered image.
+	 * Sets the selected buffered image that will be shown in ImagePanel.
 	 *
-	 * @param imagePath the new selected buffered image
+	 * @param imagePath the path of new image
 	 * @throws Exception the exception
 	 */
 	public void setSelectedBufferedImage(String imagePath) throws Exception{
@@ -898,10 +901,4 @@ public class LayerVisualManager {
 		}
 		finally{imageFile=null;}
 	}
-
-
-
-
-
-
 }
