@@ -152,10 +152,6 @@ public class GridPanel extends JPanel {
 	 */
 private void drawEdgeLine(int x1, int y1, int x2, int y2, Graphics2D g2){
 
-	//	g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,0.4f));
-	//	g2.setStroke(boldStroke);
-	//	g2.setPaint(boldLineColor);
-	//	g2.drawLine(x1, y1, x2, y2);
 		g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,used_transparency_hard));
 		g2.setStroke(boldStroke);
 		g2.setPaint(thinLineColor);
