@@ -1,119 +1,70 @@
 package operators;
 
 import gui.Color_schema;
-import gui.GUI;
 import gui.file.Utils;
 import gui.panels.GridPanel;
-import gui.panels.MarkingPanel;
 import gui.saving.ImageSet.SingleDrawImagePanel;
+import information.Fonts;
 import information.ID;
 import information.ImageLayer;
 import information.MarkingLayer;
-
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Shape;
-import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.AttributedCharacterIterator;
-import java.text.AttributedString;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.media.jai.JAI;
 import managers.TaskManager;
 import com.sun.media.jai.codec.TIFFEncodeParam;
 
+/**
+ * The Class ImageCreator. A Class for creating image to file. Supported image files are gif, jpg, png and tif.
+ */
 public class ImageCreator implements Runnable {
 
 	private double sizeMultiplier;
 	private TaskManager taskManager;
-
 	//for creating ImageSet in thread
 	private int gap;
 	private int rows;
 	private int columns;
 	private ArrayList<SingleDrawImagePanel> sdpList;
-	private Dimension imageDimension
-	;private Dimension singleImageDimension;
+	private Dimension imageDimension;
+	private Dimension singleImageDimension;
 	private String path;
 	private boolean continueCreating=false;
-
-
 	private boolean imageSetCreatedSuccessfully=false;
 	private Thread imageSetCreatorThread;
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
+	/**
+	 * Instantiates a new ImageCreator.
+	 *
+	 * @param sizeMultiply the size multiplier
+	 * @param taskManager the TaskManager
+	 */
 	public ImageCreator(double sizeMultiply, TaskManager taskManager){
 		this.taskManager=taskManager;
 		this.sizeMultiplier=sizeMultiply;
 	}
 
-	public ArrayList<Integer> createImage(ImageLayer imageLayer, ArrayList<Integer> mLayerIDlist, String imagePath) throws Exception{
-		try {
-			ArrayList<Integer>  drawnLayers = new ArrayList<Integer>();
-			if(imageLayer.getImageFilePath() != null){
-				File imageFile=new File(imageLayer.getImageFilePath());
-
-				BufferedImage bi=taskManager.createImageFile(imageFile);
-
-				if(bi != null){
-					singleImageDimension=new Dimension(bi.getWidth(),bi.getHeight());
-					ArrayList<MarkingLayer> layersToDraw=getPrintingLayerList(imageLayer, mLayerIDlist);
-					if(layersToDraw != null && layersToDraw.size()>0){
-						int maxShapeSize=getMaxShapeSize(layersToDraw);
-						BufferedImage biggerImage= new BufferedImage(bi.getWidth(),bi.getHeight()+maxShapeSize+15,BufferedImage.TYPE_INT_RGB);
-
-
-						Graphics2D g2d = biggerImage.createGraphics();
-						g2d.setColor(Color_schema.grey_100);
-						g2d.fillRect(0, 0, biggerImage.getWidth(), biggerImage.getHeight());
-						g2d.drawImage(bi,0,0,bi.getWidth(),bi.getHeight(),0,0,bi.getWidth(),bi.getHeight(),Color_schema.grey_100,null);
-
-
-
-						int label_x =maxShapeSize;
-						int label_y= (int) (bi.getHeight()+maxShapeSize/2+5);
-						for (Iterator<MarkingLayer> iterator = layersToDraw.iterator(); iterator.hasNext();) {
-							MarkingLayer markingLayer = (MarkingLayer) iterator.next();
-							drawnLayers.add(drawSingleMarkingLayer(g2d, markingLayer, new Point(label_x,label_y)));
-							double markingSize=(markingLayer.getSize()*sizeMultiplier);
-							label_x+=(int)markingSize;
-							label_x=drawLayerLabel(g2d, label_x, label_y, markingLayer.getLayerName(), markingLayer.getColor(), new Font("Consolas", Font.BOLD, 25));
-							if(label_x>bi.getWidth()-100){
-								label_x=maxShapeSize;
-								label_y=(int)(bi.getHeight()-maxShapeSize/2-5);
-							}
-						}
-
-						if(writeToFile(biggerImage, imagePath))
-							return drawnLayers;
-						else
-							return null;
-
-
-					}
-					//g2d.dispose();
-				}
-			}
-			return null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-	}
-
+	/**
+	 * Creates the BufferedImage.
+	 *
+	 * @param imageLayer the image layer
+	 * @param mLayerIDlist the m layer i dlist
+	 * @return the buffered image
+	 */
 	public BufferedImage createBufferedImage(ImageLayer imageLayer, ArrayList<Integer> mLayerIDlist) {
 		try {
 
@@ -121,7 +72,7 @@ public class ImageCreator implements Runnable {
 			if(imageLayer.getImageFilePath() != null){
 				File imageFile=new File(imageLayer.getImageFilePath());
 
-
+				// read image
 				BufferedImage bi=ImageIO.read(imageFile);
 
 				if(bi != null){
@@ -138,7 +89,7 @@ public class ImageCreator implements Runnable {
 						g2d.drawImage(bi,0,0,bi.getWidth(),bi.getHeight(),0,0,bi.getWidth(),bi.getHeight(),Color_schema.grey_100,null);
 
 
-
+						// draw marking example and title of MarkingLayers to bottom of image
 						int label_x =maxShapeSize;
 						int label_y= (int) (bi.getHeight()+maxShapeSize/2+5);
 						for (Iterator<MarkingLayer> iterator = layersToDraw.iterator(); iterator.hasNext();) {
@@ -146,53 +97,95 @@ public class ImageCreator implements Runnable {
 							drawnLayers.add(drawSingleMarkingLayer(g2d, markingLayer, new Point(label_x,label_y)));
 							double markingSize=(markingLayer.getSize()*sizeMultiplier);
 							label_x+=(int)markingSize;
-							label_x=drawLayerLabel(g2d, label_x, label_y, markingLayer.getLayerName(), markingLayer.getColor(), new Font("Consolas", Font.BOLD, 25));
+							label_x=drawMarkingLayerLabel(g2d, label_x, label_y, markingLayer.getLayerName(), markingLayer.getColor(), Fonts.b22);
 							if(label_x>bi.getWidth()-100){
 								label_x=maxShapeSize;
 								label_y=(int)(bi.getHeight()-maxShapeSize/2-5);
 							}
 						}
-
-
 						return biggerImage;
-
 					}
-					//g2d.dispose();
-
-
-
 				}
 			}
 			return null;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			LOGGER.severe("IOError in creating image at export!: "+e.getMessage());
 			return null;
 		}
 		catch (Exception e) {
-		// TODO Auto-generated catch block
+			LOGGER.severe("Error in creating image at export!: "+e.getMessage());
 		e.printStackTrace();
 		return null;
 	}
 	}
 
-	public void initImageSetProperties(int gap, int rows, int columns, ArrayList<SingleDrawImagePanel> sdpList, Dimension imageDimension, String path){
-		this.gap=gap;
-		this.rows=rows;
-		this.columns=columns;
-		this.sdpList=sdpList;
-		this.imageDimension=imageDimension;
-		this.path=path;
-		this.continueCreating=true;
-		this.imageSetCreatorThread=new Thread(this, "imageset");
+	/**
+	 * Creates the image.
+	 *
+	 * @param imageLayer the ImageLayer
+	 * @param mLayerIDlist the ID list of MarkingLayers to be drawn
+	 * @param imagePath the image path for new image.
+	 * @return the array the ID list of MarkingLayers with successfull drawing
+	 * @throws Exception the exception
+	 */
+	public ArrayList<Integer> createImage(ImageLayer imageLayer, ArrayList<Integer> mLayerIDlist, String imagePath) throws Exception{
+		try {
+			ArrayList<Integer>  drawnLayers = new ArrayList<Integer>();
+			if(imageLayer.getImageFilePath() != null){
+				File imageFile=new File(imageLayer.getImageFilePath());
+
+				BufferedImage bi=taskManager.createImageFile(imageFile);
+
+				if(bi != null){
+					singleImageDimension=new Dimension(bi.getWidth(),bi.getHeight());
+					ArrayList<MarkingLayer> layersToDraw=getPrintingLayerList(imageLayer, mLayerIDlist);
+					if(layersToDraw != null && layersToDraw.size()>0){
+						int maxShapeSize=getMaxShapeSize(layersToDraw);
+						BufferedImage biggerImage= new BufferedImage(bi.getWidth(),bi.getHeight()+maxShapeSize+15,BufferedImage.TYPE_INT_RGB);
+
+						Graphics2D g2d = biggerImage.createGraphics();
+						g2d.setColor(Color_schema.grey_100);
+						g2d.fillRect(0, 0, biggerImage.getWidth(), biggerImage.getHeight());
+						g2d.drawImage(bi,0,0,bi.getWidth(),bi.getHeight(),0,0,bi.getWidth(),bi.getHeight(),Color_schema.grey_100,null);
+
+						// draw marking example and title of MarkingLayers to bottom of image
+						int label_x =maxShapeSize;
+						int label_y= (int) (bi.getHeight()+maxShapeSize/2+5);
+						for (Iterator<MarkingLayer> iterator = layersToDraw.iterator(); iterator.hasNext();) {
+							MarkingLayer markingLayer = (MarkingLayer) iterator.next();
+							drawnLayers.add(drawSingleMarkingLayer(g2d, markingLayer, new Point(label_x,label_y)));
+							double markingSize=(markingLayer.getSize()*sizeMultiplier);
+							label_x+=(int)markingSize;
+							label_x=drawMarkingLayerLabel(g2d, label_x, label_y, markingLayer.getLayerName(), markingLayer.getColor(), new Font("Consolas", Font.BOLD, 25));
+							if(label_x>bi.getWidth()-100){
+								label_x=maxShapeSize;
+								label_y=(int)(bi.getHeight()-maxShapeSize/2-5);
+							}
+						}
+						// write to file and return successfully drawn MarkingLayers
+						if(writeToFile(biggerImage, imagePath))
+							return drawnLayers;
+						else
+							return null;
+
+
+					}
+					
+				}
+			}
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
-	public boolean startImageSetCreatorThread(){
-		this.setContinueCreating(true);
-		this.imageSetCreatorThread.start();
-		return isImageSetCreatedSuccessfully();
-	}
-
+	/**
+	 * Creates the image of set of images.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean createImageSet(){
 
 		try {
@@ -206,23 +199,19 @@ public class ImageCreator implements Runnable {
 
 			int x=gap, y=gap;
 			for(int r = 1; r<= rows;r++){
-				if(!continueCreating)
+				if(!continueCreating) // user may cancel the writing
 					return false;
 
 				int maxHeightOfPanel=0, y_recent = y;
 				for (int c = 1; c <= columns; c++) {
-					if(!continueCreating)
+					if(!continueCreating) //user may cancel the writing
 						return false;
 					SingleDrawImagePanel sdp = getSDPatPosition(r, c, sdpList);
 					if(sdp.getImage() != null){
 						int titlePaneHeight=(int)(sdp.getTitlePanelHeight()*this.sizeMultiplier);
-				//		Hashtable<TextAttribute, Object> map = new Hashtable<TextAttribute,Object>();
-				//		setFontAttributes(map, sdp);
-				//		AttributedString aTitle = new AttributedString(sdp.getTitle(), map);
 						Font drawingFont = new Font(sdp.getFont().getFamily(), sdp.getFont().getStyle(), (int)(sdp.getFont().getSize()*sizeMultiplier));
 						// draw title
 						drawImagetitle(g2d, x, y_recent,sdp.getTitle(), Color_schema.dark_20, drawingFont);
-					//	g2d.drawString(aTitle.getIterator(), x, y_recent);
 						g2d.setPaint(Color.white);
 						y_recent+=titlePaneHeight;
 
@@ -230,7 +219,6 @@ public class ImageCreator implements Runnable {
 						int imageHeight= (int)(sdp.getScaledImageDimension().getHeight()*sizeMultiplier);
 
 						BufferedImage bi = sdp.getScaledImage(new Dimension(imageWidth, imageHeight));
-					//	BufferedImage bi = sdp.getImage();
 						g2d.drawImage(bi,x,y_recent,x+bi.getWidth(),y_recent+ bi.getHeight(),0,0,bi.getWidth(),bi.getHeight(),null);
 
 						if(titlePaneHeight+bi.getHeight() > maxHeightOfPanel)
@@ -251,126 +239,46 @@ public class ImageCreator implements Runnable {
 				y+=maxHeightOfPanel+gap; // go one grid lower
 				x=gap; // start in left side
 			}
-			if(continueCreating)
-				return writeToFile(biggerImage, path);
-			return false;
+			if(continueCreating) //user may cancel the writing
+				return writeToFile(biggerImage, path); // write to file
+			
+			return false; // not saved the file
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
-
-
-
-
-
 	}
 
-	private void setFontAttributes(Hashtable<TextAttribute, Object> map, SingleDrawImagePanel sdp){
-		map.put(TextAttribute.FAMILY, sdp.getFont().getFamily());
-		map.put(TextAttribute.SIZE, (int)(sdp.getFont().getSize()*this.sizeMultiplier));
-
-	}
-
-
-	private SingleDrawImagePanel getSDPatPosition(int r, int c, ArrayList<SingleDrawImagePanel> sdpList){
-		Iterator<SingleDrawImagePanel> sdpIterator=sdpList.iterator();
-		while(sdpIterator.hasNext()){
-			SingleDrawImagePanel sdp=(SingleDrawImagePanel)sdpIterator.next();
-			if(sdp.getGridPosition() != null && sdp.getGridPosition()[0] == r && sdp.getGridPosition()[1] == c)
-				return sdp;
+	/**
+	 * Draws a GRID to Graphics2D object.
+	 *
+	 * @param gd the Graphics2D
+	 * @param mLayer the MarkingLayer to be drawn
+	 * @throws Exception the exception
+	 */
+	private void drawGrid(Graphics2D gd, MarkingLayer mLayer) throws Exception{
+		if(mLayer.isGridON() && singleImageDimension != null){
+			GridPanel gridPanel=new GridPanel();
+			gridPanel.setGridProperties(mLayer.getGridProperties());
+			gridPanel.setBounds(0, 0, singleImageDimension.width, singleImageDimension.height);
+			// draw the GRID
+			gridPanel.drawGrid(gd);
 		}
-		return null;
 	}
 
-	private boolean writeToFile(BufferedImage bi, String imagePath) {
-		try {
-			String extension=Utils.getExtension(imagePath);//getExtension(imagePath);
-			if(extension.equalsIgnoreCase("tiff") || extension.equalsIgnoreCase("tif")){
-				return writeToTIff(bi, imagePath);
-			}
-			else{
-				return writeToNormalFile(bi, imagePath, extension);
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-
-
-
-
-	}
-
-	private boolean writeToNormalFile(BufferedImage bi, String imagePath, String extension){
-
-	    try {
-
-			File outputfile = new File(imagePath);
-			if(!outputfile.exists())
-				outputfile.createNewFile();
-			ImageIO.write(bi, extension, outputfile);
-			return true;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-
-	}
-
-	private boolean  writeToJPG(BufferedImage bi, String path){
-
-		try {
-			TIFFEncodeParam params = new TIFFEncodeParam();
-			FileOutputStream fos = new FileOutputStream(path);
-			JAI.create("encode", bi, fos, "TIFF",params);
-			return true;
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-
-	}
-
-	private boolean  writeToTIff(BufferedImage bi, String path){
-
-		try {
-			TIFFEncodeParam params = new TIFFEncodeParam();
-			FileOutputStream fos = new FileOutputStream(path);
-			JAI.create("encode", bi, fos, "TIFF",params);
-			return true;
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-
-	}
-
-	private int drawLayerLabel(Graphics2D g2d, int x, int y, String label, Color color, Font font){
-	//	g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
-	   //   Font font = new Font("Consolas", Font.BOLD, 25);
-	      g2d.setFont(font);
-	 //     String label = mLayer.getLayerName();
-	      FontMetrics fontMetrics = g2d.getFontMetrics();
-	      int stringWidth = fontMetrics.stringWidth(label);
-	      int stringHeight = fontMetrics.getAscent();
-	      int y_b=(int)(y+stringHeight/2);
-	      g2d.setPaint(color);
-	      g2d.drawString(label, x,y_b);
-	      return x+stringWidth+30;
-
-
-	}
-
+	/**
+	 * Draws a title to Graphics2D object.Calculates the needed space for text.
+	 *
+	 * @param g2d the g2d
+	 * @param x the horizontal position
+	 * @param y the vertical position
+	 * @param label the label
+	 * @param color the color of text
+	 * @param font the font of text
+	 * @return the int the height of needed space for text
+	 */
 	private int drawImagetitle(Graphics2D g2d, int x, int y, String label, Color color, Font font){
-	//	g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
-	   //   Font font = new Font("Consolas", Font.BOLD, 25);
 	      g2d.setFont(font);
-	 //     String label = mLayer.getLayerName();
 	      FontMetrics fontMetrics = g2d.getFontMetrics();
 	      int stringWidth = fontMetrics.stringWidth(label);
 	      int stringHeight = fontMetrics.getAscent();
@@ -378,20 +286,40 @@ public class ImageCreator implements Runnable {
 	      g2d.setPaint(color);
 	      g2d.drawString(label, x,y_b);
 	      return x+stringWidth+30;
-
-
 	}
 
-	private int getMaxShapeSize(ArrayList<MarkingLayer> mLayers){
-		int max_size=0;
-		for (Iterator<MarkingLayer> iterator = mLayers.iterator(); iterator.hasNext();) {
-			MarkingLayer markingLayer = (MarkingLayer) iterator.next();
-			if(markingLayer.getSize()>max_size)
-				max_size=markingLayer.getSize();
-		}
-		return max_size;
+	/**
+	 * Draws MarkingLayer label to a Graphics2D object. Calculates the needed space for text.
+	 *
+	 * @param g2d the Graphics 2D
+	 * @param x the horizontal position
+	 * @param y the vertical position
+	 * @param label the label
+	 * @param color the color of text
+	 * @param font the font
+	 * @return the int height of needed space for label
+	 */
+	private int drawMarkingLayerLabel(Graphics2D g2d, int x, int y, String label, Color color, Font font){
+	      g2d.setFont(font);
+	      FontMetrics fontMetrics = g2d.getFontMetrics();
+	      int stringWidth = fontMetrics.stringWidth(label); // get width of text
+	      int stringHeight = fontMetrics.getAscent(); // get height
+	      int y_b=(int)(y+stringHeight/2);
+	      g2d.setPaint(color);
+	      g2d.drawString(label, x,y_b); // draw String
+	      return x+stringWidth+30;
 	}
 
+
+	/**
+	 * Draws single MarkingLayer to Graphics2D object.
+	 *
+	 * @param g2d the Graphics2D object
+	 * @param ml the MarkingLayer
+	 * @param labelMarkPoint the position of drawed shape
+	 * @return the int ID of successfully drawed MarkingLayer 
+	 * @throws Exception the exception
+	 */
 	private int drawSingleMarkingLayer(Graphics2D g2d, MarkingLayer ml, Point labelMarkPoint) throws Exception{
 		if(ml.isDrawGridToImage())
 			drawGrid(g2d, ml);
@@ -400,16 +328,12 @@ public class ImageCreator implements Runnable {
 		if(thickness<1)
 			thickness=1;
 		ShapeDrawer shapeDrawer=new ShapeDrawer(ml, size, thickness, ml.getOpacity(), ml.getColor());
-
-	//	g2d.setPaint(ml.getColor()); // already set
 		Iterator<Point> coordinateIterator=null;
 		if(ml.isDrawGridToImage()){
 			coordinateIterator =ml.getCoordinateList().iterator();
 		}
 		else
 			coordinateIterator =ml.getCoordinateListIgnoringGrid().iterator();
-
-
 
 		 switch(ml.getShapeID())
          {
@@ -466,56 +390,108 @@ public class ImageCreator implements Runnable {
              	break;
          }
 		 return ml.getLayerID();
-		// g2d.dispose();
 	}
 
-	private void drawGrid(Graphics2D gd, MarkingLayer mLayer) throws Exception{
-		if(mLayer.isGridON() && singleImageDimension != null){
-			GridPanel gridPanel=new GridPanel();
-			gridPanel.setGridProperties(mLayer.getGridProperties());
-			gridPanel.setBounds(0, 0, singleImageDimension.width, singleImageDimension.height);
-			gridPanel.drawGrid(gd);
 
+	/**
+	 * Returns the max shape size of MarkingLayers in given list.
+	 *
+	 * @param mLayers the list of MarkingLayers
+	 * @return the maximum shape size
+	 */
+	private int getMaxShapeSize(ArrayList<MarkingLayer> mLayers){
+		int max_size=0;
+		for (Iterator<MarkingLayer> iterator = mLayers.iterator(); iterator.hasNext();) {
+			MarkingLayer markingLayer = (MarkingLayer) iterator.next();
+			if(markingLayer.getSize()>max_size)
+				max_size=markingLayer.getSize();
 		}
+		return max_size;
 	}
 
-
+	/**
+	 * Returns the list of MarkingLayers which has selected to be drawn.
+	 *
+	 * @param il the ImageLayer
+	 * @param selected_mLayers List of IDs of selected MarkingLayers
+	 * @return the printing layer list
+	 */
 	private ArrayList<MarkingLayer> getPrintingLayerList(ImageLayer il, ArrayList<Integer> selected_mLayers){
 		ArrayList<MarkingLayer> layersToDraw = new ArrayList<MarkingLayer>();
 		for (Iterator<Integer> iterator = selected_mLayers.iterator(); iterator.hasNext();) {
 			int selected_mLayerID = (int) iterator.next();
-
+			// go through MarkingLayer of single ImageLayer
 			Iterator<MarkingLayer> mIterator= il.getMarkingLayers().iterator();
 			while(mIterator.hasNext()){
 				MarkingLayer ml=mIterator.next();
 				if(ml.getLayerID()==selected_mLayerID){
 					layersToDraw.add(ml);
 				}
-
-
 			}
-
 		}
 		return layersToDraw;
-
 	}
 
-	  private String getExtension(String str) throws Exception{
+	/**
+	 * Returns the SingleDrawImagePanel at position (row, column) of set of images.
+	 *
+	 * @param r the row
+	 * @param c the c
+	 * @param sdpList the sdp list
+	 * @return the SD pat position
+	 */
+	private SingleDrawImagePanel getSDPatPosition(int r, int c, ArrayList<SingleDrawImagePanel> sdpList){
+		Iterator<SingleDrawImagePanel> sdpIterator=sdpList.iterator();
+		while(sdpIterator.hasNext()){
+			SingleDrawImagePanel sdp=(SingleDrawImagePanel)sdpIterator.next();
+			if(sdp.getGridPosition() != null && sdp.getGridPosition()[0] == r && sdp.getGridPosition()[1] == c)
+				return sdp;
+		}
+		return null;
+	}
 
-			// Handle null case specially.
-			if (str == null) return null;
+	/**
+	 * Initializes the image set properties.
+	 *
+	 * @param gap the gap
+	 * @param rows the rows
+	 * @param columns the columns
+	 * @param sdpList the SingleDrawImagePanel list
+	 * @param imageDimension the image dimension to be exported
+	 * @param path the path of exported Image
+	 */
+	public void initImageSetProperties(int gap, int rows, int columns, ArrayList<SingleDrawImagePanel> sdpList, Dimension imageDimension, String path){
+		this.gap=gap;
+		this.rows=rows;
+		this.columns=columns;
+		this.sdpList=sdpList;
+		this.imageDimension=imageDimension;
+		this.path=path;
+		this.continueCreating=true;
+		this.imageSetCreatorThread=new Thread(this, "imageset");
+	}
 
-			// Get position of last '.'.
-			int pos = str.lastIndexOf(".");
+	/**
+	 * Checks if is continue creating.
+	 *
+	 * @return true, if is continue creating
+	 */
+	public boolean isContinueCreating() {
+		return continueCreating;
+	}
 
-			// If there wasn't any '.' just return the string as is.
-			if (pos == -1) return null;
+	/**
+	 * Checks if is image set created successfully.
+	 *
+	 * @return true, if is image set created successfully
+	 */
+	public boolean isImageSetCreatedSuccessfully() {
+		return imageSetCreatedSuccessfully;
+	}
 
-			// Otherwise return the string, up to the dot.
-			return str.substring(pos+1, str.length()).trim();
-
-	    }
-
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		this.imageSetCreatedSuccessfully= createImageSet();
@@ -523,17 +499,90 @@ public class ImageCreator implements Runnable {
 
 	}
 
-	public boolean isImageSetCreatedSuccessfully() {
-		return imageSetCreatedSuccessfully;
-	}
-
-	public boolean isContinueCreating() {
-		return continueCreating;
-	}
-
+	/**
+	 * Sets the continue creating.
+	 *
+	 * @param continueCreating the new continue creating
+	 */
 	public void setContinueCreating(boolean continueCreating) {
 		this.continueCreating = continueCreating;
 	}
 
 
+	/**
+	 * Starts Thread of ImageSetCreator.
+	 *
+	 * @return true, if successful
+	 */
+	public boolean startImageSetCreatorThread(){
+		this.setContinueCreating(true);
+		this.imageSetCreatorThread.start();
+		return isImageSetCreatedSuccessfully();
+	}
+
+	/**
+	 * Writes image to file.
+	 *
+	 * @param bi the bi
+	 * @param imagePath the image path
+	 * @return true, if successful
+	 */
+	private boolean writeToFile(BufferedImage bi, String imagePath) {
+		try {
+			// if tif write in own method
+			String extension=Utils.getExtension(imagePath);
+			if(extension.equalsIgnoreCase("tiff") || extension.equalsIgnoreCase("tif")){
+				return writeToTIff(bi, imagePath);
+			}
+			else{ // not tif
+				return writeToNormalFile(bi, imagePath, extension);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Writes to normal files: gif, jpg, png.
+	 *
+	 * @param bi the BufferedImage
+	 * @param imagePath the image path
+	 * @param extension the extension of file
+	 * @return true, if successful
+	 */
+	private boolean writeToNormalFile(BufferedImage bi, String imagePath, String extension){
+
+	    try {
+
+			File outputfile = new File(imagePath);
+			if(!outputfile.exists())
+				outputfile.createNewFile();
+			ImageIO.write(bi, extension, outputfile);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Writes to tiff to file.
+	 *
+	 * @param bi the BufferedImage
+	 * @param path the path
+	 * @return true, if successful
+	 */
+	private boolean  writeToTIff(BufferedImage bi, String path){
+
+		try {
+			TIFFEncodeParam params = new TIFFEncodeParam();
+			FileOutputStream fos = new FileOutputStream(path);
+			JAI.create("encode", bi, fos, "TIFF",params);
+			return true;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

@@ -34,7 +34,7 @@ public class MarkingLayer{
 	private String layerName;
 	private Color color;
 	private int shapeID;
-	private int size;
+	private int size; // size of marking
 	private int thickness;
 	private float opacity;
 	private boolean isVisible=true;
