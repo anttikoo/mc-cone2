@@ -507,7 +507,7 @@ private GridPropertiesPanel gridDialog=null;
 		// clean precoutingManager
 		if(this.taskManager.getImageLayerList() == null || this.taskManager.getImageLayerList().size()==0 ||
 				this.taskManager.getAllMarkingLayers()== null || this.taskManager.getAllMarkingLayers().size() == 0){
-			this.taskManager.cleanPrecoutingManager();
+			this.taskManager.cleanPrecountingManager();
 			this.preCountButton.setEnabled(false);
 		}
 		else{
@@ -517,7 +517,7 @@ private GridPropertiesPanel gridDialog=null;
 			if(this.taskManager.getPrecountThreadManager() != null){
 				if(this.taskManager.getPrecountThreadManager().getiLayerID() != this.taskManager.getSelectedImageLayer().getLayerID() ||
 						this.taskManager.getPrecountThreadManager().getmLayerID() != this.taskManager.getSelectedMarkingLayer().getLayerID()){
-					this.taskManager.cleanPrecoutingManager();
+					this.taskManager.cleanPrecountingManager();
 				}
 
 			}
@@ -1585,7 +1585,7 @@ private GridPropertiesPanel gridDialog=null;
 			setMarkingsOfHighlightLayer();
 
 			// update the BufferedImage of ImagePanel
-			this.imagePanel.setImage(this.taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
+			this.imagePanel.setImage(this.taskManager.getRefreshedImage());
 			this.imagePanel.repaint();
 
 			// update markingLayers
@@ -1682,7 +1682,7 @@ private GridPropertiesPanel gridDialog=null;
 			this.taskManager.updateImageOfSelectedImageLayer();
 
 			// update ImageLayer: if no image found null is returned and only background is paint in ImagePanel
-			this.imagePanel.setImage(this.taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
+			this.imagePanel.setImage(this.taskManager.getRefreshedImage());
 				this.imagePanel.repaint();
 
 			cleanPreCountingIfNecessary();
@@ -1826,7 +1826,7 @@ private GridPropertiesPanel gridDialog=null;
 	
 			  updateImagePanelSize();
 	
-			  imagePanel.setImage(taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
+			  imagePanel.setImage(taskManager.getRefreshedImage());
 			  updateCoordinatesOfVisibleMarkingPanels();
 			  updateGridPanel();
 			  removeHighLightPoint();
@@ -2040,7 +2040,7 @@ public void setSelectedImageLayerAndImage(int iLayerID){
 		this.taskManager.changeSelectedImageLayer(iLayerID);
 		
 		// scale the image with best quality (in LayerVisualManager) and send it to ImagePanel
-		this.imagePanel.setImage(this.taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
+		this.imagePanel.setImage(this.taskManager.getRefreshedImage());
 
 		// update ImageLayerInfo to show selected ImageLayer title in right way
 		//update highlight panel
@@ -2082,7 +2082,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 		// updated LayerInfos
 		updateImageLayerInfos();
 
-		this.taskManager.cleanPrecoutingManager();
+		this.taskManager.cleanPrecountingManager();
 
 		//clean precountingThreadManager, because MarkingLayer changed
 		cleanPreCountingIfNecessary();
