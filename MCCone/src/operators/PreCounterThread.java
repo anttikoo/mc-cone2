@@ -2,6 +2,7 @@ package operators;
 
 import information.ColorChannelVectors;
 import information.ImageColorChannels;
+import information.SharedVariables;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -23,15 +24,11 @@ import math.geom2d.Point2D;
 import gui.ProgressBallsDialog;
 
 public class PreCounterThread implements Runnable{
-//	private ProgressBallsDialog progressBalls;
 	private BufferedImage subImage;
 	private BufferedImage originalImage;
-
 	private Thread counterThread;
 	private boolean continueCounting=true;
 	private boolean cancelledInside=false;
-
-
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private ArrayList<Integer> colorList;
 	private byte[] originalImagePixels;
@@ -39,33 +36,25 @@ public class PreCounterThread implements Runnable{
 	private ArrayList<Point> finalCoordinates;
 	private ArrayList<Point> finalCentroidCoordinates;
 	private TaskManager taskManger;
-
-
 	private PreCountThreadManager pctm;
 	private ArrayList<Integer> current_colorList;
-
 	private ArrayList<Point> current_finalCoordinates;
 	private ArrayList<Point> copy_of_current_finalCoordinates;
 	private ArrayList<Point> current_finalCentroidCoordinates;
-
-
-
 	private int current_gap =2;
 	private int min_distance_between_cells_boundaries=5;
-	//private int minPoints=5;
 	private int pixel_color_relaxation=3; // from 0 - 5 is ok
 	private int max_coordinate_number_in_cell=Integer.MIN_VALUE;
-//	private int current_min_coordinate_number_in_cell=Integer.MAX_VALUE;
 	private int current_max_coordinate_number_in_cell=Integer.MIN_VALUE;
-	private final int global_min_cell_diameter =10; // this is global minimum for cell diameter: 10 pixels
-	private final int global_min_coordinate_number_in_cell =10; // this is global minimum for coordinate number
+	private final int global_min_cell_diameter =SharedVariables.GLOBAL_MIN_CELL_DIAMETER; // this is global minimum for cell diameter
+	private final int global_min_coordinate_number_in_cell =SharedVariables.GLOBAL_MIN_COORDINATE_NUMBER_IN_CELL; // this is global minimum for coordinate number
 	private int max_cell_size=0; // only initial value which is changed when user picks bigger cells
 	private int current_max_cell_size;
 	private int current_min_cell_size;
 	private int min_cell_size=Integer.MAX_VALUE;
 	private double cellSizeMinScalingFactor=0.5;
 	private double cellSizeMaxScalingFactor=1.5;
-	private int maxCellNumberInCellGroup=5;
+	private int maxCellNumberInCellGroup=10;
 
 
 
@@ -206,8 +195,6 @@ public class PreCounterThread implements Runnable{
 	private void abortExecution(String title, String message){
 		if(cancelledInside)
 			this.taskManger.showMessageToUser(title, message);
-
-
 		clean();
 	}
 
@@ -469,11 +456,16 @@ public class PreCounterThread implements Runnable{
 			//initalize the current_max_coordinate_number_in_cell
 			this.current_max_coordinate_number_in_cell=countCoordinatesInCell(((double)this.current_max_cell_size)/2.0, this.current_gap);
 
-			int gap_candidate=1;
+			int gap_candidate=0;
 			doLoop:
 			do{
+				if(gap_candidate>=SharedVariables.MAX_GAP){
+					
+					break doLoop;
+				}
 				// count new gap by increasing by one
 				gap_candidate++;
+				
 				int minCoordinatesInCell=countCoordinatesInCell(((double)this.current_min_cell_size)/2.0, gap_candidate);
 				if(minCoordinatesInCell >= this.global_min_coordinate_number_in_cell){
 					this.current_gap=gap_candidate;
