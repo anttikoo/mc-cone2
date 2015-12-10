@@ -2,13 +2,7 @@ package managers;
 import java.io.IOException;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
-import java.util.logging.Formatter;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-
 import gui.LogFrame;
 import operators.SystemConsoleHandler;
 import operators.TextFileFormatter;
@@ -22,14 +16,10 @@ import operators.programConsoleHandler;
  *
  */
 public class ProgramLogger {
-
-
   static private FileHandler fileHandler;
-  static private FileHandler fileHandler2;
   static private ConsoleHandler consoleHandler;
   static private ConsoleHandler systemConsoleHandler;
   static private TextFileFormatter fileFormatter;
-//  static private SimpleFormatter simpleFormatter;
 
 
   /**
@@ -43,8 +33,6 @@ public class ProgramLogger {
 
 	//set the logger
     Logger logger = Logger.getLogger("MCCLogger");
-  //  logger.setLevel(Level.INFO);
-
     consoleHandler=new programConsoleHandler(logFrame);
     systemConsoleHandler=new SystemConsoleHandler();
     // add handler to logger
