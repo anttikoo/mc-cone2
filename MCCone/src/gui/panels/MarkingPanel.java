@@ -44,6 +44,7 @@ public class MarkingPanel extends JPanel {
 		this.shapeID= mLayer.getShapeID();
 		mLayer.getSize();
 		setCoordinateList(new ArrayList<Point>());
+		// set cursor to hair cursor
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		this.shapeDrawer=new ShapeDrawer(mLayer, mLayer.getSize(), mLayer.getThickness(), mLayer.getOpacity(), mLayer.getColor());
 	}
