@@ -666,7 +666,7 @@ private GridPropertiesPanel gridDialog=null;
 			//count movement compared to previous point.
 			Point movementXY= new Point(this.guiListener.getPreviousDraggingPoint().x -x,this.guiListener.getPreviousDraggingPoint().y - y);
 			//get part of image to print to screen
-			PositionedImage pi = this.taskManager.dragLayers(movementXY, ID.IMAGE_PROCESSING_FAST);
+			PositionedImage pi = this.taskManager.dragLayers(movementXY);
 			if(pi != null && pi.getImage() != null){
 				this.imagePanel.setImage(pi);
 				updateCoordinatesOfVisibleMarkingPanels();
@@ -2681,7 +2681,7 @@ public void setSelectedMarkingLayer(int mLayerID){
  * @param processinID int ID quality of Image (ID.IMAGE_PROCESSING_BEST_QUALITY, etc.)
  */
 public void zoomAndUpdateImage(Point midPoint, double zoomValue, int processinID){
-	PositionedImage im = taskManager.getZoomedImage(midPoint, zoomValue, processinID);
+	PositionedImage im = taskManager.getZoomedImage(midPoint, zoomValue);
 	if(im != null && im.getImage() != null){
 		this.imagePanel.setImage(im);
 

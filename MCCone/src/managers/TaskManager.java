@@ -248,8 +248,8 @@ public class TaskManager {
 
 	}
 
-	public PositionedImage dragLayers(Point movement, int processingID){
-		return this.layerVisualManager.dragLayers(movement, processingID);
+	public PositionedImage dragLayers(Point movement){
+		return this.layerVisualManager.dragLayers(movement);
 	}
 
 
@@ -310,8 +310,8 @@ public class TaskManager {
 	}
 
 
-	public PositionedImage getZoomedImage(Point midP, double zoomValue, int processingID ){
-		return this.layerVisualManager.getZoomedImage(midP, zoomValue, processingID);
+	public PositionedImage getZoomedImage(Point midP, double zoomValue){
+		return this.layerVisualManager.getZoomedImage(midP, zoomValue);
 	}
 
 	public MarkingLayer getSelectedMarkingLayer(){

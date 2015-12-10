@@ -25,10 +25,14 @@ import information.MarkingLayer;
 import information.PositionedImage;
 import information.PositionedRectangle;
 import information.ScreenCoordinatesOfMarkingLayer;
-//import information.VisualEvent;
+
 
 /**
- * Contains methods for organizing and setting up ImageLayers and MarkingLayers
+ * Contains functionality for image handling. 
+ * The view of image at ImagePanel is a relative part of original image (relativeViewRectangle), which is scaled to ImagePanel.
+ * When making changes (zoom, move, etc.) has the point at ImagePanel be converted to Point in relativeView and then converted to point 
+ * at original image. In same way the image that will be shown in ImagePanel will be first calculated at present relative view and then
+ * taken the right sized and positioned image from original image -> scaled to the ImagePanel.
  * @author Antti Kurronen
  *
  */
@@ -43,6 +47,13 @@ public class LayerVisualManager {
 	private BufferedImage originalImage;
 
 
+	/**
+	 * Adds the single marking coordinate.
+	 *
+	 * @param screenPoint the screen point
+	 * @param selectedMarkingLayer the selected marking layer
+	 * @return true, if successful
+	 */
 	public boolean addSingleMarkingCoordinate(Point screenPoint, MarkingLayer selectedMarkingLayer){
 		if(selectedMarkingLayer != null ){
 			Point pointAtImage= convertRelativePointAsPointAtImage(convertScreenPointToRelativePoint(screenPoint));
@@ -295,10 +306,10 @@ public class LayerVisualManager {
 
 
 	/**
-	 * Converts relative height to image panel height.
+	 * Converts relative height to ImagePanel height.
 	 *
 	 * @param relativeHeight the relative height
-	 * @return the int height of imagepanel
+	 * @return the int height of ImagePanel
 	 */
 	private int convertRelativeHeightToPanelHeight(int relativeHeight){
 		double d= this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight();// this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight());
@@ -306,16 +317,22 @@ public class LayerVisualManager {
 	}
 
 	/**
-	 * Convert relative length to panel length.
+	 * Convert relative length to ImagePanellength.
 	 *
 	 * @param relativeLength the relative length
-	 * @return the int
+	 * @return the int relative length
 	 */
 	private int convertRelativeLengthToPanelLength(int relativeLength){
 		double d= this.imagePanelDimension.getWidth()/this.relativeViewRectangle.getWidth();// this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight());
 		return (int)(relativeLength*d);
 	}
 
+	/**
+	 * Convert relative point as point at image.
+	 *
+	 * @param relativePoint the relative point
+	 * @return the point relative Point
+	 */
 	private Point convertRelativePointAsPointAtImage(Point2D relativePoint){
 		if(relativePoint != null)
 			return new Point(this.relativeViewRectangle.x+(int)relativePoint.getX(), this.relativeViewRectangle.y+(int)relativePoint.getY());
@@ -323,19 +340,32 @@ public class LayerVisualManager {
 	}
 
 
-	private Point convertRelativePointToScreenPoint(Point screenPoint){
+	/**
+	 * Convert relative point to screen point.
+	 *
+	 * @param relativePoint the Point at relative Rectangle
+	 * @return the Point at screen
+	 */
+	private Point convertRelativePointToScreenPoint(Point relativePoint){
 
 		try {
 			AffineTransform scaleTransform = AffineTransform.getScaleInstance(this.imagePanelDimension.getWidth()/this.relativeViewRectangle.getWidth(), this.imagePanelDimension.getHeight()/this.relativeViewRectangle.getHeight());
-			Point2D p = new Point2D.Double(screenPoint.getX(), screenPoint.getY());
-			Point2D relativePoint =scaleTransform.transform(p, null);
-			return new Point((int)relativePoint.getX(),(int)relativePoint.getY());
+			Point2D p = new Point2D.Double(relativePoint.getX(), relativePoint.getY());
+			Point2D screenPoint2D =scaleTransform.transform(p, null);
+			return new Point((int)screenPoint2D.getX(),(int)screenPoint2D.getY());
 		} catch (Exception e) {
 			LOGGER.severe("LayerVisualManager Error in converting relative point to screen point:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
 			return null;
 		}
 	}
 
+	/**
+	 * Converts relative rectangle to screen rectangle.
+	 *
+	 * @param rectangle the relative rectangle
+	 * @return the rectangle at screen
+	 * @throws Exception the exception
+	 */
 	private Rectangle convertRelativeRectangleToScreenRectangle(Rectangle rectangle) throws Exception{
 
 		try {
@@ -352,24 +382,46 @@ public class LayerVisualManager {
 	}
 
 
-private double convertScreenDistanceToImageDistance(int screenDistance){
-	// from screen to relativeRectangel
-	return (screenDistance/this.imagePanelDimension.getWidth()*this.relativeViewRectangle.getWidth());
-}
+	/**
+	 * Convert screen distance to image distance.
+	 *
+	 * @param screenDistance the screen distance
+	 * @return the double
+	 */
+	private double convertScreenDistanceToImageDistance(int screenDistance){
+		// from screen to relativeRectangel
+		return (screenDistance/this.imagePanelDimension.getWidth()*this.relativeViewRectangle.getWidth());
+	}
 
+	/**
+	 * Converts a screen point to point at image.
+	 *
+	 * @param sp the Point at screen
+	 * @return the Point at original image
+	 */
 	public Point convertScreenPointToImagePoint(Point sp){
 		return convertRelativePointAsPointAtImage(convertScreenPointToRelativePoint(sp));
 	}
 
+	/**
+	 * Converts screen point to relative point.
+	 *
+	 * @param screenPoint the screen point
+	 * @return the point2 d
+	 */
 	private Point2D convertScreenPointToRelativePoint(Point2D screenPoint){
 	
 			AffineTransform scaleTransform = AffineTransform.getScaleInstance(this.relativeViewRectangle.getWidth()/this.imagePanelDimension.getWidth(), this.relativeViewRectangle.getHeight()/this.imagePanelDimension.getHeight());
-		//	Point2D p = new Point2D.Double(screenPoint.getX(), screenPoint.getY());
 			Point2D relativePoint =scaleTransform.transform(screenPoint, null);
-		//	return (new Point((int)relativePoint.getX(), (int)relativePoint.getY()));
 			return relativePoint;
 		}
 
+	/**
+	 * Convert x position in image to x position in screen.
+	 *
+	 * @param x the x
+	 * @return the int
+	 */
 	private int convertXinImageToXinScreen(int x){
 		int relativeX= x-this.relativeViewRectangle.x;
 
@@ -378,6 +430,12 @@ private double convertScreenDistanceToImageDistance(int screenDistance){
 	}
 
 
+	/**
+	 * Converts position y in image to position y at screen.
+	 *
+	 * @param y the y position in image
+	 * @return the int y position at screen
+	 */
 	private int convertYinImageToYinScreen(int y){
 		int relativeY= y-this.relativeViewRectangle.y;
 
@@ -385,7 +443,14 @@ private double convertScreenDistanceToImageDistance(int screenDistance){
 		return (int)(relativeY*d);
 	}
 
-	public PositionedImage dragLayers(Point movement, int processingID){
+	/**
+	 * Calculates and creates a new image to be shown in ImagePanel when dragged layers.
+	 *
+	 * @param movement the Point where position of image is moved at screen
+	 * @param processingID the processing id
+	 * @return the positioned image
+	 */
+	public PositionedImage dragLayers(Point movement){
 		try {
 			// check that all needed objects exist
 			if(this.originalImage == null || this.relativeViewRectangle == null || this.imagePanelDimension == null)
@@ -407,7 +472,7 @@ private double convertScreenDistanceToImageDistance(int screenDistance){
 			BufferedImage 	processedImage = Scalr.crop(this.originalImage, tempRelativeViewRectangle.x, tempRelativeViewRectangle.y, imageDimension.width, imageDimension.height, null);
 
 
-			return scaleToImagePanel(processedImage, tempRelativeViewRectangle, processingID);
+			return scaleToImagePanel(processedImage, tempRelativeViewRectangle);
 
 		} catch (Exception e) {
 			LOGGER.severe("Error in dragging image:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
@@ -434,6 +499,12 @@ private double convertScreenDistanceToImageDistance(int screenDistance){
 
 	}
 
+	/**
+	 * Returns the image dimension inside rectangle.
+	 *
+	 * @param rec the rec
+	 * @return the image dimension inside rectangle
+	 */
 	private Dimension getImageDimensionInsideRectangle(Rectangle rec){
 		try {
 			int h=rec.height;
@@ -450,6 +521,11 @@ private double convertScreenDistanceToImageDistance(int screenDistance){
 
 	}
 
+	/**
+	 * Returns the original image.
+	 *
+	 * @return the original image
+	 */
 	public BufferedImage getOriginalImage() {
 		return this.originalImage;
 	}
@@ -468,15 +544,25 @@ private double convertScreenDistanceToImageDistance(int screenDistance){
 			return initAndscaleToImagePanel();
 		}
 		else{
-			return getZoomedImage(new Point2D.Double(this.imagePanelDimension.getWidth()/2,this.imagePanelDimension.getHeight()/2), 1.0, ID.IMAGE_PROCESSING_BEST_QUALITY);
+			return getZoomedImage(new Point2D.Double(this.imagePanelDimension.getWidth()/2,this.imagePanelDimension.getHeight()/2), 1.0);
 		}
 
 	}
 
+	/**
+	 * Returns the relative to image panel rectangle.
+	 *
+	 * @return the relative to image panel rectangle
+	 */
 	public Rectangle getRelativeToImagePanelRectangle() {
 		return relativeViewRectangle;
 	}
 
+	/**
+	 * Returns the removes the distance.
+	 *
+	 * @return the removes the distance
+	 */
 	public int getRemoveDistance() {
 		return removeDistance;
 	}
@@ -509,6 +595,12 @@ private double convertScreenDistanceToImageDistance(int screenDistance){
 
 	}
 
+	/**
+	 * Returns the screen points of marking layer.
+	 *
+	 * @param mLayer the m layer
+	 * @return the screen points of marking layer
+	 */
 	public ArrayList<Point> getScreenPointsOfMarkingLayer(MarkingLayer mLayer){
 		ArrayList<Point> tempPointList=new ArrayList<Point>(); // list for keeping points inside relativeViewRectangle
 		Iterator<Point> pointIterator= mLayer.getCoordinateList().iterator();
@@ -525,8 +617,10 @@ private double convertScreenDistanceToImageDistance(int screenDistance){
 	}
 
 	/**
+	 * Returns the screen points of marking layers.
+	 *
 	 * @param mLayers ArrayList of MarkingLayers which coordinates are converted
-	 * @return
+	 * @return the screen points of marking layers
 	 */
 	public ArrayList<ScreenCoordinatesOfMarkingLayer> getScreenPointsOfMarkingLayers(ArrayList<MarkingLayer> mLayers){
 		try {
@@ -581,10 +675,9 @@ private double convertScreenDistanceToImageDistance(int screenDistance){
 	/**
 	 * @param focusPoint Point at screen where focus will be changed
 	 * @param zoomValue double value how much will be zoomed in or out. eg. 0.8 or 1.2
-	 * @param processingID ID for quality of returned image fast >-> best quality
 	 * @return PositionedImage which contains the zoomed image and it's top left corner location
 	 */
-	public PositionedImage getZoomedImage(Point2D focusPoint, double zoomValue, int processingID){
+	public PositionedImage getZoomedImage(Point2D focusPoint, double zoomValue){
 		BufferedImage 	processedImage;
 		Rectangle tempRelativeViewRectangle;
 		try {
@@ -606,7 +699,7 @@ private double convertScreenDistanceToImageDistance(int screenDistance){
 			processedImage = Scalr.crop(this.originalImage, tempRelativeViewRectangle.x, tempRelativeViewRectangle.y, imageDimension.width, imageDimension.height, null);
 
 
-			return scaleToImagePanel(processedImage, tempRelativeViewRectangle, processingID);
+			return scaleToImagePanel(processedImage, tempRelativeViewRectangle);
 
 
 		} catch (Exception e) {
@@ -720,7 +813,7 @@ private double convertScreenDistanceToImageDistance(int screenDistance){
 
 	}
 
-	private PositionedImage scaleToImagePanel(BufferedImage processedImage, Rectangle tempRelativeView, int processingID){
+	private PositionedImage scaleToImagePanel(BufferedImage processedImage, Rectangle tempRelativeView){
 		BufferedImage scaledImage;
 		try {
 
