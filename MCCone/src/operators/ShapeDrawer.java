@@ -1,10 +1,8 @@
 package operators;
 
-import gui.Color_schema;
 import information.ID;
 import information.MarkingLayer;
 import information.SharedVariables;
-
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -14,61 +12,21 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * The Class ShapeDrawer. Draws shape to Graphics2D object with given size, color, thickness and opacity.
+ */
 public class ShapeDrawer {
 	private BasicStroke strokeThick;
 	private BasicStroke strokeThin;
 	private int rule_alpha;
 	private Color shapeColor;
 	private boolean isPreview=false;
-	
-
-
-
 	private float thickness;
 	private float opacity;
 	private int shapeID; // ID.SHAPE_CIRCLE, ID.SHAPE_CROSS, etc...
 	private int shapeSize;
 
 
-	public float getOpacity() {
-		return opacity;
-	}
-
-	public void setOpacity(float opacity) {
-		this.opacity = opacity;
-	}
-	
-	public int getShapeSize() {
-		return shapeSize;
-	}
-
-	public void setShapeSize(int shapeSize) {
-		this.shapeSize = shapeSize;
-	}
-	
-	public float getThickness() {
-		return thickness;
-	}
-	
-	public void setThickness(float thickness) {
-		this.thickness = thickness;
-		this.strokeThin=new BasicStroke(this.thickness);
-		this.strokeThick=new BasicStroke(this.thickness*3);
-	}
-
-	public ShapeDrawer(MarkingLayer ml, int size, int thick, float opacity, Color shapeColor){
-		this.shapeColor=shapeColor;
-		this.rule_alpha=SharedVariables.transparencyModeOVER;
-		this.thickness=thick;
-		this.opacity= opacity;
-		this.setShapeID(ml.getShapeID());
-		this.shapeSize=size;
-		this.strokeThin=new BasicStroke(this.thickness);
-		this.strokeThick=new BasicStroke(this.thickness*3);
-
-	}
-	
-	
 	/**
 	 * Instantiates a new shape drawer. Sets the isPreview to true and causes to print the marking without thick lines.
 	 *
@@ -90,56 +48,107 @@ public class ShapeDrawer {
 		this.isPreview=true;
 	}
 
-	public void increaseThickness(){
-		this.thickness+=2;
-		this.strokeThick=new BasicStroke((thickness*3));
-		this.strokeThin = new BasicStroke((this.thickness));
-	}
+	/**
+	 * Instantiates a new shape drawer.
+	 *
+	 * @param ml the MarkingLayer
+	 * @param size the size of shape
+	 * @param thick the thickness of shape
+	 * @param opacity the opacity of shape
+	 * @param shapeColor the shape color
+	 */
+	public ShapeDrawer(MarkingLayer ml, int size, int thick, float opacity, Color shapeColor){
+		this.shapeColor=shapeColor;
+		this.rule_alpha=SharedVariables.transparencyModeOVER;
+		this.thickness=thick;
+		this.opacity= opacity;
+		this.setShapeID(ml.getShapeID());
+		this.shapeSize=size;
+		this.strokeThin=new BasicStroke(this.thickness);
+		this.strokeThick=new BasicStroke(this.thickness*3);
 
+	}
+	
+	/**
+	 * Decreases thickness.
+	 */
 	public void decreaseThickness(){
 		this.thickness-=2;
 		this.strokeThick=new BasicStroke((thickness*3));
 		this.strokeThin = new BasicStroke((this.thickness));
 	}
-	
-	public int getRule_alpha() {
-		return rule_alpha;
-	}
 
-	public void setRule_alpha(int rule_alpha) {
-		this.rule_alpha = rule_alpha;
-	}
-	
-	public Graphics2D drawShape(Graphics2D g2d, int x, int y){
-		switch (shapeID){
-			case ID.SHAPE_CIRCLE:
-				return drawCircle(g2d,x, y);
-				
-			case ID.SHAPE_CROSS:
-				return drawCross(g2d,x, y);
-				
-			case ID.SHAPE_DIAMOND:
-				return drawDiamond(g2d,x, y);	
-				
-			case ID.SHAPE_OVAL:
-				return drawOval(g2d,x, y);	
-				
-			case ID.SHAPE_PLUS:
-				return drawPlus(g2d,x, y);	
-				
-			case ID.SHAPE_SQUARE:
-				return drawSquare(g2d,x, y);
-				
-			case ID.SHAPE_TRIANGLE:
-				return drawTriangle(g2d,x, y);	
-				
-			
-			
-		}
+	/**
+	 * Draws circle.
+	 *
+	 * @param g2d the Graphics2D object.
+	 * @param x the top left horizontal point of shape
+	 * @param y the y top left vertical point of shape
+	 * @return the Graphics2D object.
+	 */
+	public Graphics2D drawCircle(Graphics2D g2d, int x, int y){
+		x=(int)((double)x-((double)shapeSize)/2);
+		y=(int)((double)y-((double)shapeSize)/2);
 		
-		return g2d; // should newer be reached here
-	}
+		g2d.setPaint(this.shapeColor);
+		
+		 // print thick part only if not showin preview marking style
+    	if(!isPreview){ 
+			g2d.setStroke(strokeThick); // set thickness bigger
+		     g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
+			 // draw transparent thick circle
+			 g2d.draw(new Ellipse2D.Double(x, y, shapeSize, shapeSize));	 
+    	}
+    	
+    	//draw thin circle
+		 g2d.setStroke(strokeThin);
+		 g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
+		 g2d.draw(new Ellipse2D.Double(x, y, shapeSize, shapeSize));
 
+		 return g2d;
+	}
+	
+	/**
+	 * Draws a cross.
+	 *
+	 * @param g2d the Graphics2D object.
+	 * @param x the top left horizontal point of shape
+	 * @param y the y top left vertical point of shape
+	 * @return the Graphics2D object.
+	 */
+	public Graphics2D drawCross(Graphics2D g2d, int x, int y){
+		Point[] cornerPoints = getCornerPoints(x, y);
+		Point upleft =cornerPoints[0];
+		Point upright = cornerPoints[1];
+		Point downright = cornerPoints[2];
+		Point downleft = cornerPoints[3];
+
+
+	 
+
+	     GeneralPath polyline = new GeneralPath(GeneralPath.WIND_NON_ZERO, 4);
+
+	    	polyline.moveTo (upleft.x, upleft.y);
+	    	polyline.lineTo(downright.x, downright.y);
+	    	polyline.moveTo (downleft.x, downleft.y);
+	    	polyline.lineTo(upright.x, upright.y);
+   	
+	    	g2d.setPaint(this.shapeColor);
+	    	
+	    	// print thick part only if not showin preview marking style
+	    	if(!isPreview){  
+		    	g2d.setStroke(strokeThick); // set thickness bigger  
+			    g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));	    	
+		    	// draw the line
+		    	g2d.draw(polyline);
+	    	}
+			g2d.setStroke(strokeThin);
+			g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
+			g2d.draw(polyline);
+
+			return g2d;
+	}
+	
 	/**
 	 * Draw diamond.
 	 *
@@ -183,6 +192,37 @@ public class ShapeDrawer {
 
 	}
 
+	/**
+	 * Draws a oval.
+	 *
+	 * @param g2d the Graphics2D object.
+	 * @param x the top left horizontal point of shape
+	 * @param y the y top left vertical point of shape
+	 * @return the Graphics2D object.
+	 */
+	public Graphics2D drawOval(Graphics2D g2d, int x, int y){
+		x=(int)((double)x-((double)shapeSize)/2);
+		y=(int)((double)y-((double)shapeSize)/2);
+		
+		g2d.setPaint(this.shapeColor);
+		
+		// print thick part only if not showin preview marking style
+    	if(!isPreview){  
+			g2d.setStroke(strokeThick); // set thickness bigger
+		    g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));		    
+		    // draw thick ellipse
+			g2d.draw(new Ellipse2D.Double(x, y+shapeSize*0.2, shapeSize, shapeSize*0.6));
+    	}
+    	
+		g2d.setStroke(strokeThin);
+		g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
+		// draw transparent thin rectangle
+		g2d.draw(new Ellipse2D.Double(x, y+shapeSize*0.2, shapeSize, shapeSize*0.6));
+
+		return g2d;
+	}
+	
+	
 	/**
 	 * Draws a plus.
 	 *
@@ -228,77 +268,31 @@ public class ShapeDrawer {
 
 	}
 
-	/**
-	 * Draws a cross.
-	 *
-	 * @param g2d the Graphics2D object.
-	 * @param x the top left horizontal point of shape
-	 * @param y the y top left vertical point of shape
-	 * @return the Graphics2D object.
-	 */
-	public Graphics2D drawCross(Graphics2D g2d, int x, int y){
-		Point[] cornerPoints = getCornerPoints(x, y);
-		Point upleft =cornerPoints[0];
-		Point upright = cornerPoints[1];
-		Point downright = cornerPoints[2];
-		Point downleft = cornerPoints[3];
-
-
-	 
-
-	     GeneralPath polyline = new GeneralPath(GeneralPath.WIND_NON_ZERO, 4);
-
-	    	polyline.moveTo (upleft.x, upleft.y);
-	    	polyline.lineTo(downright.x, downright.y);
-	    	polyline.moveTo (downleft.x, downleft.y);
-	    	polyline.lineTo(upright.x, upright.y);
-   	
-	    	g2d.setPaint(this.shapeColor);
-	    	
-	    	// print thick part only if not showin preview marking style
-	    	if(!isPreview){  
-		    	g2d.setStroke(strokeThick); // set thickness bigger  
-			    g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));	    	
-		    	// draw the line
-		    	g2d.draw(polyline);
-	    	}
-			g2d.setStroke(strokeThin);
-			g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
-			g2d.draw(polyline);
-
-			return g2d;
-	}
-	
-	
-
-	/**
-	 * Draws a oval.
-	 *
-	 * @param g2d the Graphics2D object.
-	 * @param x the top left horizontal point of shape
-	 * @param y the y top left vertical point of shape
-	 * @return the Graphics2D object.
-	 */
-	public Graphics2D drawOval(Graphics2D g2d, int x, int y){
-		x=(int)((double)x-((double)shapeSize)/2);
-		y=(int)((double)y-((double)shapeSize)/2);
-		
-		g2d.setPaint(this.shapeColor);
-		
-		// print thick part only if not showin preview marking style
-    	if(!isPreview){  
-			g2d.setStroke(strokeThick); // set thickness bigger
-		    g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));		    
-		    // draw thick ellipse
-			g2d.draw(new Ellipse2D.Double(x, y+shapeSize*0.2, shapeSize, shapeSize*0.6));
-    	}
-    	
-		g2d.setStroke(strokeThin);
-		g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
-		// draw transparent thin rectangle
-		g2d.draw(new Ellipse2D.Double(x, y+shapeSize*0.2, shapeSize, shapeSize*0.6));
-
-		return g2d;
+	public Graphics2D drawShape(Graphics2D g2d, int x, int y){
+		switch (shapeID){
+			case ID.SHAPE_CIRCLE:
+				return drawCircle(g2d,x, y);
+				
+			case ID.SHAPE_CROSS:
+				return drawCross(g2d,x, y);
+				
+			case ID.SHAPE_DIAMOND:
+				return drawDiamond(g2d,x, y);	
+				
+			case ID.SHAPE_OVAL:
+				return drawOval(g2d,x, y);	
+				
+			case ID.SHAPE_PLUS:
+				return drawPlus(g2d,x, y);	
+				
+			case ID.SHAPE_SQUARE:
+				return drawSquare(g2d,x, y);
+				
+			case ID.SHAPE_TRIANGLE:
+				return drawTriangle(g2d,x, y);	
+					
+		}	
+		return g2d; // should newer be reached here
 	}
 
 	/**
@@ -331,39 +325,9 @@ public class ShapeDrawer {
 
 		return g2d;
 	}
-
+	
 	/**
-	 * Draw circle.
-	 *
-	 * @param g2d the Graphics2D object.
-	 * @param x the top left horizontal point of shape
-	 * @param y the y top left vertical point of shape
-	 * @return the Graphics2D object.
-	 */
-	public Graphics2D drawCircle(Graphics2D g2d, int x, int y){
-		x=(int)((double)x-((double)shapeSize)/2);
-		y=(int)((double)y-((double)shapeSize)/2);
-		
-		g2d.setPaint(this.shapeColor);
-		
-		 // print thick part only if not showin preview marking style
-    	if(!isPreview){ 
-			g2d.setStroke(strokeThick); // set thickness bigger
-		     g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
-			 // draw transparent thick circle
-			 g2d.draw(new Ellipse2D.Double(x, y, shapeSize, shapeSize));	 
-    	}
-    	
-    	//draw thin circle
-		 g2d.setStroke(strokeThin);
-		 g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
-		 g2d.draw(new Ellipse2D.Double(x, y, shapeSize, shapeSize));
-
-		 return g2d;
-	}
-
-	/**
-	 * Draw triangle.
+	 * Draws triangle.
 	 *
 	 * @param g2d the Graphics2D object.
 	 * @param x the top left horizontal point of shape
@@ -405,9 +369,23 @@ public class ShapeDrawer {
 			return g2d;
 	}
 
-
 	/**
-	 * Gets the middle points.
+	 * Returns the corner points.
+	 *
+	 * @param x the horizontal position
+	 * @param y the vertical position
+	 * @return the corner points
+	 */
+	private Point[] getCornerPoints(int x,int y){
+		Point upLeft = new Point((int)((double)x-((double)shapeSize)/2),(int)((double)y-((double)shapeSize)/2));
+		Point upright = new Point((int)((double)x+((double)shapeSize)/2),(int)((double)y-((double)shapeSize)/2));
+		Point downright = new Point((int)((double)x+((double)shapeSize)/2),(int)((double)y+((double)shapeSize)/2));
+		Point downleft = new Point((int)((double)x-((double)shapeSize)/2),(int)((double)y+((double)shapeSize)/2));
+		return new Point[]{upLeft,upright,downright,downleft};
+	}
+	
+	/**
+	 * Returns the middle point by given positions and shape size.
 	 *
 	 * @param x the x
 	 * @param y the y
@@ -422,27 +400,96 @@ public class ShapeDrawer {
 	}
 
 	/**
-	 * Gets the corner points.
+	 * Returns the opacity.
 	 *
-	 * @param x the x
-	 * @param y the y
-	 * @return the corner points
+	 * @return the opacity
 	 */
-	private Point[] getCornerPoints(int x,int y){
-		Point upLeft = new Point((int)((double)x-((double)shapeSize)/2),(int)((double)y-((double)shapeSize)/2));
-		Point upright = new Point((int)((double)x+((double)shapeSize)/2),(int)((double)y-((double)shapeSize)/2));
-		Point downright = new Point((int)((double)x+((double)shapeSize)/2),(int)((double)y+((double)shapeSize)/2));
-		Point downleft = new Point((int)((double)x-((double)shapeSize)/2),(int)((double)y+((double)shapeSize)/2));
-		return new Point[]{upLeft,upright,downright,downleft};
+	public float getOpacity() {
+		return opacity;
 	}
 
 	/**
-	 * Gets the shape id.
+	 * Returns the rule_alpha. Used for AlphaComposite.
+	 *
+	 * @return the rule_alpha
+	 */
+	public int getRule_alpha() {
+		return rule_alpha;
+	}
+
+	/**
+	 * Returns the shape color.
+	 *
+	 * @return the shape color
+	 */
+	public Color getShapeColor() {
+		return shapeColor;
+	}
+	
+	
+
+	/**
+	 * Returns the shape id.
 	 *
 	 * @return the shape id
 	 */
 	public int getShapeID() {
 		return shapeID;
+	}
+
+	/**
+	 * Returns the shape size.
+	 *
+	 * @return the shape size
+	 */
+	public int getShapeSize() {
+		return shapeSize;
+	}
+
+	/**
+	 * Returns the thickness.
+	 *
+	 * @return the thickness
+	 */
+	public float getThickness() {
+		return thickness;
+	}
+
+	/**
+	 * Increasse thickness.
+	 */
+	public void increaseThickness(){
+		this.thickness+=2;
+		this.strokeThick=new BasicStroke((thickness*3));
+		this.strokeThin = new BasicStroke((this.thickness));
+	}
+
+
+	/**
+	 * Sets the opacity.
+	 *
+	 * @param opacity the new opacity
+	 */
+	public void setOpacity(float opacity) {
+		this.opacity = opacity;
+	}
+
+	/**
+	 * Sets the rule_alpha for AlphaComposite.
+	 *
+	 * @param rule_alpha the new rule_alpha
+	 */
+	public void setRule_alpha(int rule_alpha) {
+		this.rule_alpha = rule_alpha;
+	}
+
+	/**
+	 * Sets the shape color.
+	 *
+	 * @param shapeColor the new shape color
+	 */
+	public void setShapeColor(Color shapeColor) {
+		this.shapeColor = shapeColor;
 	}
 
 	/**
@@ -454,11 +501,23 @@ public class ShapeDrawer {
 		this.shapeID = shapeID;
 	}
 	
-	public Color getShapeColor() {
-		return shapeColor;
+	/**
+	 * Sets the shape size.
+	 *
+	 * @param shapeSize the new shape size
+	 */
+	public void setShapeSize(int shapeSize) {
+		this.shapeSize = shapeSize;
 	}
 
-	public void setShapeColor(Color shapeColor) {
-		this.shapeColor = shapeColor;
+	/**
+	 * Sets the thickness.
+	 *
+	 * @param thickness the new thickness
+	 */
+	public void setThickness(float thickness) {
+		this.thickness = thickness;
+		this.strokeThin=new BasicStroke(this.thickness);
+		this.strokeThick=new BasicStroke(this.thickness*3);
 	}
 }
