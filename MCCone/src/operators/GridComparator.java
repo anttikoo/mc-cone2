@@ -1,8 +1,6 @@
 package operators;
 
 import gui.saving.ImageSet.SingleDrawImagePanel;
-
-import java.awt.Point;
 import java.util.Comparator;
 
 /**
@@ -14,6 +12,9 @@ public class GridComparator implements Comparator<SingleDrawImagePanel>{
 
 
 
+	/* (non-Javadoc)
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
 	@Override
 	public int compare(SingleDrawImagePanel o1, SingleDrawImagePanel o2) {
 		if(o1.getGridPosition() != null && o2.getGridPosition() != null){
@@ -28,13 +29,8 @@ public class GridComparator implements Comparator<SingleDrawImagePanel>{
 				return -1;
 			}
 			else return 1;
-
-
 		}
 		else
 			return 0;
 	}
-
-
-
 }
