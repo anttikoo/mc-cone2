@@ -453,7 +453,7 @@ public class GUIListener extends MouseInputAdapter {
 				gui.setCursorOverLeftPanel(ID.CURSOR_CROSS_HAIR);
 				previousDraggingPoint=null; // no more dragging -> initialize the previousdragging point
 				// update visible image and markings
-				gui.setImage(taskManager.getRefreshedImage(ID.IMAGE_PROCESSING_BEST_QUALITY));
+				gui.setImage(taskManager.getRefreshedImage());
 				gui.updateCoordinatesOfVisibleMarkingPanels();
 				
 		        gui.paintLayers();
