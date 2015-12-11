@@ -1,11 +1,16 @@
 package operators;
 
-import java.awt.Point;
 import java.util.Comparator;
 
+/**
+ * The Class WeightPointComparator. Compares WeightPoints by the weight value.
+ */
 public class WeightPointComparator implements Comparator<WeightPoint>{
 
 
+	/* (non-Javadoc)
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
 	@Override
 	public int compare(WeightPoint p1, WeightPoint p2) {
 		// compare weights and produces descending order
@@ -20,7 +25,5 @@ public class WeightPointComparator implements Comparator<WeightPoint>{
 		}
 		return 0; // equal point
 	}
-
-	
 
 }
