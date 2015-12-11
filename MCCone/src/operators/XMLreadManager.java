@@ -22,121 +22,192 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+/**
+ * The Class XMLreadManager. Parser for xml file containing information of ImageLayers and its MarkingLayers.
+ * SaxParser is used in parsing.
+ */
 public class XMLreadManager {
+private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 private SAXParserFactory saxParserFactory;
 private SAXParser saxParser;
-private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
+	/**
+	 * Instantiates a new XMLreadManager.
+	 */
 	public XMLreadManager(){
 		initSAXparser();
 	}
 
-	private void initSAXparser(){
-		saxParserFactory = SAXParserFactory.newInstance();
-		saxParserFactory.setValidating(true);
-		saxParserFactory.setNamespaceAware(false);
-		try{
-		saxParser = saxParserFactory.newSAXParser();
-
-		} catch (ParserConfigurationException | SAXException e) {
-	        e.printStackTrace();
-	    }
-	}
-
-	public ImageLayer getMarkingsOfXML(File xmlFile, ImageLayer imageLayer){
-		//SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+	/**
+	 * Parses xml-file to find is any ImageLayers found with given list of names of ImageLayers.
+	 *
+	 * @param xmlFileName the path of XML file.
+	 * @param imageLayerNameList the list of names of ImageLayers
+	 * @return true, if successfully found data of ImageLayer
+	 */
+	public boolean foundImageLayer(String xmlFileName, ArrayList<String> imageLayerNameList){
 	    try {
-	     //   SAXParser saxParser = saxParserFactory.newSAXParser();
-	        MarkingsHandler handler = new MarkingsHandler(imageLayer);
-	        XMLReader reader = saxParser.getXMLReader();
-	        reader.setEntityResolver(new EntityResolver() {
-    @Override
-    public InputSource resolveEntity(String publicId, String systemId)
-            throws SAXException, IOException {
-    	LOGGER.fine("publicID: "+publicId + " systemID: "+systemId);
-        if (systemId.contains("layers.dtd")) {
-        //	LOGGER.fine("went to get inputsource dtd");
-        	return new InputSource(GUI.class.getResourceAsStream("/information/dtd/layers.dtd"));
-
-        }
-        else{
-        	LOGGER.warning("Reading Markings, but not found dtd file:");
-        	return null;
-        }
-    }
-});
-	        reader.setErrorHandler(new XMLerrorHandler());
-	        reader.setContentHandler(handler);
-	        reader.parse(new InputSource(xmlFile.getAbsolutePath()));
-	        //saxParser.parse(xmlFile, handler);
-	        //Get processed ImageLayer -> may contain markings imported from xml file
-	       return  handler.getImageLayer();
-
-	    } catch (SAXException | IOException e) {
-	    	LOGGER.severe("Error in importing markings for single ImageLayers " +e.getClass().toString() + " :" +e.getMessage());
-	        return null;
-	    }
-	}
-
-public ArrayList<ImageLayer> getMarkingsOfXML(File xmlFile, ArrayList<ImageLayer> imageLayerList){
-	  //SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-	    try {
-	     //   SAXParser saxParser = saxParserFactory.newSAXParser();
-	        MarkingsHandler handler = new MarkingsHandler(imageLayerList);
-	        XMLReader reader = saxParser.getXMLReader();
+	    	// Handler for ImageLayers
+	        SearchImageLayersHandler searchHandler = new SearchImageLayersHandler(imageLayerNameList); 
+	        // XMLReader
+	        XMLReader reader = saxParser.getXMLReader(); 
+	        // XMLerrorHandler
 	        XMLerrorHandler errorHandler=new XMLerrorHandler();
-	        reader.setEntityResolver(new EntityResolver() {
-    @Override
-    public InputSource resolveEntity(String publicId, String systemId)
-            throws SAXException, IOException {
-    	LOGGER.fine("publicID: "+publicId + " systemID: "+systemId);
-        if (systemId.contains("layers.dtd")) {
-        //	LOGGER.fine("went to get inputsource dtd");
-        	return new InputSource(GUI.class.getResourceAsStream("/information/dtd/layers.dtd"));
-
-        }
-        else{
-        	return null;
-        }
-    }
-});
+	        // set how to validate the xml file against dtd -> errors will be handled in XMLerrorHandler
+	        reader.setEntityResolver(new EntityResolver() { 
+	
+				/* (non-Javadoc)
+				 * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String, java.lang.String)
+				 */
+				@Override
+				public InputSource resolveEntity(String publicId, String systemId)
+				        throws SAXException, IOException {
+					LOGGER.fine("publicID: "+publicId + " systemID: "+systemId);
+				    if (systemId.contains("layers.dtd")) {
+				    	return new InputSource(GUI.class.getResourceAsStream("/information/dtd/layers.dtd"));
+				    }
+				    else{
+				    	return null;
+				    }
+				}
+	        });
 	        reader.setErrorHandler(errorHandler);
-	        reader.setContentHandler(handler);
-	        reader.parse(new InputSource(xmlFile.getAbsolutePath()));
-	        // saxParser.parse(xmlFile, handler);
+	        reader.setContentHandler(searchHandler);
+	        reader.parse(new InputSource(xmlFileName)); // parse -> validates and reads if valid.
 	        //Get list of ImageLayers which may contain imported markings
 	        if(!errorHandler.isErrorsFound())
-	        	return handler.getImageLayerList();
+	        	return searchHandler.isFoundImageLayer();
 	        else
-	        	return null;
+	        	return false;
 
 	    } catch (SAXException | IOException e) {
-	    	LOGGER.severe("Error in importing markings for array of ImageLayers " +e.getClass().toString() + " :" +e.getMessage());
-	    	return null;
+	    	LOGGER.severe("Error in searching ImageLayers!" + e.getMessage());
+	    	return false;
 	    }
-}
+	}
+
+	/**
+	 *  Parses xml-file to find given list of ImageLayers and updated data of them.
+	 *
+	 * @param xmlFile the xml-file
+	 * @param imageLayerList the list of ImageLayers
+	 * @return the list of ImageLayers with updated data
+	 */
+	public ArrayList<ImageLayer> getMarkingsOfXML(File xmlFile, ArrayList<ImageLayer> imageLayerList){
+		    try {
+		    	// Handler for ImageLayers
+		        MarkingsHandler handler = new MarkingsHandler(imageLayerList);
+		        // XMLReader
+		        XMLReader reader = saxParser.getXMLReader();
+		        // XMLerrorHandler
+		        XMLerrorHandler errorHandler=new XMLerrorHandler();
+		        // set entityResolver to validate the xml file against dtd -> errors will be handled in XMLerrorHandler
+		        reader.setEntityResolver(new EntityResolver() {
+				    @Override
+				    public InputSource resolveEntity(String publicId, String systemId)
+				            throws SAXException, IOException {
+				    	LOGGER.fine("publicID: "+publicId + " systemID: "+systemId);
+				        if (systemId.contains("layers.dtd")) {
+				        	return new InputSource(GUI.class.getResourceAsStream("/information/dtd/layers.dtd")); // get the dtd-file
+				        }
+				        else{
+				        	return null;
+				        }
+				    }
+				});
+		        reader.setErrorHandler(errorHandler);
+		        reader.setContentHandler(handler);
+		        reader.parse(new InputSource(xmlFile.getAbsolutePath()));  // parse -> validates and reads if valid.
+		        //Get list of ImageLayers which may contain imported markings
+		        if(!errorHandler.isErrorsFound())
+		        	return handler.getImageLayerList();
+		        else
+		        	return null;
+	
+		    } catch (SAXException | IOException e) {
+		    	LOGGER.severe("Error in importing markings for array of ImageLayers " +e.getClass().toString() + " :" +e.getMessage());
+		    	return null;
+		    }
+	}
+
+		/**
+		 * Parses xml-file to find given single found ImageLayer and updated data of it.
+		 *
+		 * @param xmlFile the xml-file
+		 * @param imageLayer the image layer
+		 * @return the ImageLayer with updated data
+		 */
+		public ImageLayer getMarkingsOfXML(File xmlFile, ImageLayer imageLayer){
+		    try {
+		    	// Handler for ImageLayers
+		        MarkingsHandler handler = new MarkingsHandler(imageLayer);
+		        // XMLReader
+		        XMLReader reader = saxParser.getXMLReader();
+		        // set entityResolver to validate the xml file against dtd -> errors will be handled in XMLerrorHandler
+		        reader.setEntityResolver(new EntityResolver() {
+					@Override
+					public InputSource resolveEntity(String publicId, String systemId)
+							throws SAXException, IOException {
+							LOGGER.fine("publicID: "+publicId + " systemID: "+systemId);
+						    if (systemId.contains("layers.dtd")) {
+						    	return new InputSource(GUI.class.getResourceAsStream("/information/dtd/layers.dtd"));	
+						    }
+						    else{
+						    	LOGGER.warning("Reading Markings, but not found dtd file:");
+						    	return null;
+							}
+						}
+				});
+		        // set XMLerrorHandler
+		        reader.setErrorHandler(new XMLerrorHandler());
+		        reader.setContentHandler(handler);
+		        reader.parse(new InputSource(xmlFile.getAbsolutePath())); // parse -> validates and reads file if valid
+		        
+		        //Get processed ImageLayer -> may contain markings imported from xml file
+		       return  handler.getImageLayer();
+		
+		    } catch (SAXException | IOException e) {
+		    	LOGGER.severe("Error in importing markings for single ImageLayers " +e.getClass().toString() + " :" +e.getMessage());
+		        return null;
+		    }
+		}
+		
 	    /**
-	     * Method for validate xml file.
+    	 * Initializes the SaxParser.
+    	 */
+    	private void initSAXparser(){
+			saxParserFactory = SAXParserFactory.newInstance();
+			saxParserFactory.setValidating(true);
+			saxParserFactory.setNamespaceAware(false);
+			try{
+			saxParser = saxParserFactory.newSAXParser();
+
+			} catch (ParserConfigurationException | SAXException e) {
+		        e.printStackTrace();
+		    }
+		}
+
+	    /**
+	     * Method for validate xml-file.
 	     * @param xmlFile The File which is validated.
 	     * @return true if file is valid, false otherwise.
 	     */
 	    public boolean isFileValid(File xmlFile){
-	  	  //SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 	  	    try {
-	  	     //   SAXParser saxParser = saxParserFactory.newSAXParser();
+	  	    	// Handler for ImageLayers
 	  	        ValidationHandler handler = new ValidationHandler();
+	  	      // set XMLReader
 	  	        XMLReader reader = saxParser.getXMLReader();
 
 	  	        XMLerrorHandler errorHandler=new XMLerrorHandler();
+	  	      // set entityResolver to validate the xml file against dtd -> errors will be handled in XMLerrorHandler
 		        reader.setEntityResolver(new EntityResolver() {
 		            @Override
 		            public InputSource resolveEntity(String publicId, String systemId)
 		                    throws SAXException, IOException {
 		            	LOGGER.fine("publicID: "+publicId + " systemID: "+systemId);
 		                if (systemId.contains("layers.dtd")) {
-		                //	LOGGER.fine("went to get inputsource dtd");
 		                	return new InputSource(GUI.class.getResourceAsStream("/information/dtd/layers.dtd"));
-
 		                }
 		                else{
 		                	LOGGER.fine("not found dtd");
@@ -146,9 +217,8 @@ public ArrayList<ImageLayer> getMarkingsOfXML(File xmlFile, ArrayList<ImageLayer
 		        });
 	  	        reader.setErrorHandler(errorHandler);
 	  	        reader.setContentHandler(handler);
-	  	        reader.parse(new InputSource(xmlFile.getAbsolutePath()));
+	  	        reader.parse(new InputSource(xmlFile.getAbsolutePath())); // validates file
 
-	  	        // saxParser.parse(xmlFile, handler);
 	  	        //return boolean is valid file
 	  	        LOGGER.fine("validated the file, found errors: "+errorHandler.isErrorsFound());
 	  	       return !errorHandler.isErrorsFound();
@@ -160,10 +230,15 @@ public ArrayList<ImageLayer> getMarkingsOfXML(File xmlFile, ArrayList<ImageLayer
 
 	}
 
-	    public boolean isStreamValid(ByteArrayOutputStream bStream){
-		  	  //SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+
+	    /**
+    	 * Checks if is stream valid.
+    	 *
+    	 * @param bStream the ByteStream
+    	 * @return true, if is stream of xml-file  valid
+    	 */
+    	public boolean isStreamValid(ByteArrayOutputStream bStream){
 		  	    try {
-		  	     //   SAXParser saxParser = saxParserFactory.newSAXParser();
 		  	        ValidationHandler handler = new ValidationHandler();
 		  	        XMLReader reader = saxParser.getXMLReader();
 
@@ -189,7 +264,7 @@ public ArrayList<ImageLayer> getMarkingsOfXML(File xmlFile, ArrayList<ImageLayer
 		  	        reader.setErrorHandler(errorHandler);
 		  	        reader.setContentHandler(handler);
 		  	        reader.parse(new InputSource(new ByteArrayInputStream(bStream.toByteArray())));
-		  	        // saxParser.parse(xmlFile, handler);
+	
 		  	        //return boolean is valid file
 		  	      LOGGER.fine("validated the stream, found errors: "+errorHandler.isErrorsFound());
 		  	       return !errorHandler.isErrorsFound();
@@ -200,44 +275,5 @@ public ArrayList<ImageLayer> getMarkingsOfXML(File xmlFile, ArrayList<ImageLayer
 		  	    }
 
 		}
-
-
-	    public boolean foundImageLayer(String xmlFileName, ArrayList<String> imageLayerNameList){
-	    	  //SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-		    try {
-		     //   SAXParser saxParser = saxParserFactory.newSAXParser();
-		        SearchImageLayersHandler searchHandler = new SearchImageLayersHandler(imageLayerNameList);
-		        XMLReader reader = saxParser.getXMLReader();
-		        XMLerrorHandler errorHandler=new XMLerrorHandler();
-		        reader.setEntityResolver(new EntityResolver() {
-	    @Override
-	    public InputSource resolveEntity(String publicId, String systemId)
-	            throws SAXException, IOException {
-	    	LOGGER.fine("publicID: "+publicId + " systemID: "+systemId);
-	        if (systemId.contains("layers.dtd")) {
-	        //	LOGGER.fine("went to get inputsource dtd");
-	        	return new InputSource(GUI.class.getResourceAsStream("/information/dtd/layers.dtd"));
-
-	        }
-	        else{
-	        	return null;
-	        }
-	    }
-	});
-		        reader.setErrorHandler(errorHandler);
-		        reader.setContentHandler(searchHandler);
-		        reader.parse(new InputSource(xmlFileName));
-		        // saxParser.parse(xmlFile, handler);
-		        //Get list of ImageLayers which may contain imported markings
-		        if(!errorHandler.isErrorsFound())
-		        	return searchHandler.isFoundImageLayer();
-		        else
-		        	return false;
-
-		    } catch (SAXException | IOException e) {
-		    	LOGGER.severe("Error in searching ImageLayers!" + e.getMessage());
-		    	return false;
-		    }
-	    }
 
 }
