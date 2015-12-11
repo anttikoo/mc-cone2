@@ -39,7 +39,6 @@ import javax.swing.SwingUtilities;
 		private JPanel openDialogBackPanel;
 		protected JFileChooser fileChooser;
 		private JButton cancelFileChooserJButton;
-	//	private int typeOfImport;
 		private JButton addFileChooserJButton;
 		protected String imageLayerPath;
 		private Rectangle parentComponentBounds;
@@ -49,9 +48,12 @@ import javax.swing.SwingUtilities;
 		private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 		/**
-		 * Class constructor for Dialog. The Dialog is JFilechooser which gives to select image files
-		 * @param frame owner frame
-		 * @param aild	AddImageLayerDialog object which called this constructor
+		 * Class constructor for Dialog. The Dialog is JFilechooser which gives to select image files.
+		 *
+		 * @param frame owner JFrame
+		 * @param parentComponentBounds the parent component bounds
+		 * @param backPanelBounds the back panel bounds
+		 * @param presentFolder the present folder
 		 */
 		public OpenFileDialog(JFrame frame, Rectangle parentComponentBounds, Rectangle backPanelBounds, String presentFolder){
 			super(frame, true);
@@ -59,7 +61,6 @@ import javax.swing.SwingUtilities;
 			this.parentComponentBounds=parentComponentBounds;
 			this.parentComponentBackPanelBounds=backPanelBounds;
 			this.presentFolder=getFolderString(presentFolder);
-		//	this.typeOfImport = ID.OPEN_IMAGE_FILE; // the constructor with no imagePath -> selecting ImageFile
 			initFileDialog();
 		}
 		
@@ -79,8 +80,6 @@ import javax.swing.SwingUtilities;
 			this.parentComponentBounds=parentComponentBounds;
 			this.parentComponentBackPanelBounds=backPanelBounds;
 			this.presentFolder=getFolderString(presentFolder);
-		
-		//	this.typeOfImport = ID.OPEN_IMAGE_FILE; // the constructor with no imagePath -> selecting ImageFile
 			initFileDialog();
 		}
 
