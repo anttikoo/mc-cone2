@@ -339,19 +339,14 @@ public class ShapeDrawer {
 		Point downright = new Point((int)((double)x+((double)shapeSize)/2),(int)((double)y+((double)shapeSize)/2));
 		Point downleft = new Point((int)((double)x-((double)shapeSize)/2),(int)((double)y+((double)shapeSize)/2));
 
-
-	 g2d.setStroke(strokeThick); // set thickness bigger
-
-	     
-
-	     GeneralPath polyline = new GeneralPath(GeneralPath.WIND_NON_ZERO, 4);
+		g2d.setStroke(strokeThick); // set thickness bigger
+		
+	    GeneralPath polyline = new GeneralPath(GeneralPath.WIND_NON_ZERO, 4);
 
 	    	polyline.moveTo (up.x, up.y);
 	    	polyline.lineTo(downright.x, downright.y);
-
 	    	polyline.lineTo(downleft.x, downleft.y);
 	    	polyline.closePath();
-	    //	polyline.lineTo(up.x, up.y);
 	    	g2d.setPaint(this.shapeColor);
 	    	
 	    	
