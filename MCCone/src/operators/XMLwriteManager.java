@@ -62,51 +62,19 @@ import javax.xml.transform.stream.StreamSource;
 
 
 /**
- * Writes brand new or modifies existing xml-file. Uses StaX for reading + writing the file and validation is checked by SAX
+ * Writes brand new or modified xml-file. Uses StaX for reading and writing the file.
  * @author Antti Kurronen
  *
  */
 public class XMLwriteManager {
-
-
-
-	//private final String layers ="layers";
-/*	private final String imagelayer ="imagelayer";
-	private final String markinglayer ="markinglayer";
-	private final String markingname ="markingname";
-	private final String imagename ="imagename";
-	private final String coordinates ="coordinates";
-	private final String color ="color";
-	private final String singlecoordinate ="singlecoordinate";
-	private final String shape ="shape";
-	private final String opacity ="opacity";
-	private final String thickness ="thickness";
-	private final String size ="size";
-	private final QName qnameLayers=new QName(XMLtags.layers);
-	private final QName qnameImageLayer=new QName(imagelayer);
-	private final QName qnameImageName=new QName(imagename);
-	private final QName qnameMarkingName=new QName(markingname);
-	private final QName qnameMarkingLayer=new QName(markinglayer);
-	private final QName qnameCoordinates=new QName(coordinates);
-	private final QName qnameColor=new QName(color);
-	private final QName qnameSingleCoordinate=new QName(singlecoordinate);
-	private final QName qnameShape=new QName(shape);
-	private final QName qnameOpacity=new QName(opacity);
-	private final QName qnameThickness=new QName(thickness);
-	private final QName qnameSize=new QName(size);
-*/	private StartElement se;
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	private StartElement se;
 	private EndElement ee;
-	private Characters ce;
-
-
 	private XMLEventReader xer;
 	private XMLEventWriter xew;
 	private XMLEvent end;
-	private XMLEvent tab;
 	private XMLEventFactory xef;
 	private LayersOfPath layersOfPath;
-	private String tempFileName ="temp.xml";
-	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private Attribute att;
 	private int savingType;
 	private ArrayList<Integer>unsavedMarkingLayers;
@@ -114,13 +82,9 @@ public class XMLwriteManager {
 	private ByteArrayOutputStream byteStream;
 	private XMLreadManager rm;
 
-
-
-
-
+	
 	/**
-	 * Constructor for modifying existing file.
-	 * @param xmlFile the File to be modified.
+	 * Instantiates a new XMLWriteManager.
 	 */
 	public XMLwriteManager(){
 		this.layersOfPath=null;
@@ -128,6 +92,353 @@ public class XMLwriteManager {
 		this.unsavedMarkingLayers=new ArrayList<Integer>();
 		this.successfullySavedMarkingLayers=new ArrayList<Integer>();
 		rm = new XMLreadManager();
+	}
+
+	/**
+	 * Closes XMLEventReader input.
+	 *
+	 * @throws Exception the exception
+	 */
+	private void closeInput() throws Exception{
+		xer.close();
+	}
+
+	/**
+	 * Closes XMLEventWriter output.
+	 *
+	 * @throws Exception the exception
+	 */
+	private void closeOutput() throws Exception{
+		xew.flush();
+		xew.close();
+		byteStream.flush();
+	}
+
+	/**
+	 * Combine content of ImageLayer with xml-file. Reads xml-file file 
+	 *
+	 * @param iLayer the ImageLayer
+	 */
+	private void combineImageLayerContentWithXMLfile(ImageLayer iLayer){
+
+		try {
+			// go through markingLayers of xml file
+			while(xer.hasNext()){
+				XMLEvent event= xer.nextEvent();
+				if(event.isStartElement() && event.asStartElement().getName().equals(XMLtags.qnameMarkingLayer)){
+					se=event.asStartElement();
+					String mLayerName=se.getAttributeByName(XMLtags.qnameMarkingName).getValue();
+					MarkingLayer mLayer = getMarkingLayerByName(mLayerName, iLayer);
+					if(mLayer != null){ // MarkingLayer found -> either overwrite or skip
+						int overwriteOrSkip= ID.UNDEFINED;
+						if(savingType != ID.UNDEFINED) // remembering the rule from previous selection
+							overwriteOrSkip=savingType;
+						else{ // undefined -> ask from user
+						// ask from user should overwrite MarkingLayer
+						overwriteOrSkip=inquireSavingType(); // construct later
+						if(overwriteOrSkip == ID.OVERWRITE_REMEMBER_SELECTION || overwriteOrSkip == ID.SKIP_REMEMBER_SELECTION)
+							this.savingType=overwriteOrSkip; // remembers next time
+						}
+						if(overwriteOrSkip==ID.OVERWRITE || overwriteOrSkip == ID.OVERWRITE_REMEMBER_SELECTION){
+							// overwrite -> write from MarkingLayer-object
+							if(writeMarkingLayer(mLayer)){
+								iLayer.removeMarkingLayer(mLayer); // written successfully -> remove
+								successfullySavedMarkingLayers.add(mLayer.getLayerID());
+							}
+							else{ // error in saving MarkingLayer
+								unsavedMarkingLayers.add(mLayer.getLayerID());
+							}
+							skipReadingMarkingLayer(); // XMLreader goes to endElement of markinglayer
+						}
+						else{ // skip -> Write from XML-file
+							writeMarkingLayerFromXMLfile(se);
+						}
+					}
+					else{// not found the MarkingLayer -> write from file
+						writeMarkingLayerFromXMLfile(se);
+					}
+				}else // has read the whole imageLayer content from xml-file
+					if(event.isEndElement() && event.asEndElement().getName().equals(XMLtags.qnameImageLayer)){
+
+						// write the rest MarkingLayers of iLayer
+						Iterator<MarkingLayer> mIterator =iLayer.getMarkingLayers().iterator();
+						while(mIterator.hasNext()){
+							MarkingLayer markingLayer= mIterator.next();
+							if(writeMarkingLayer(markingLayer)){
+								mIterator.remove(); // written successfully -> remove
+								successfullySavedMarkingLayers.add(markingLayer.getLayerID());
+							}
+							else{ // error in saving MarkingLayer
+								unsavedMarkingLayers.add(markingLayer.getLayerID());
+							}
+						}
+						xew.add(event); // write endElement </imagelayer>
+						return; // go back for reading imagelayers
+					}
+
+			}
+		} catch (XMLStreamException e) {
+			LOGGER.severe("Error in combining ImageLayer data with data of xml-file!");
+			e.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.severe("Error in combining ImageLayer data with data of xml-file!");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Returns the DTTEvent.
+	 *
+	 * @return the DTD
+	 */
+	private DTD getDTDevent(){
+		try {
+		/*  NOT USED
+			InputStream in= getClass().getResourceAsStream("/information/dtd/layers.dtd");
+			Scanner s = new Scanner(in).useDelimiter("\\A");
+			String dtdFIleString= s.hasNext() ? s.next() : "";	
+			in.close();
+			s.close();
+		*/
+			 
+		String fileStr = "<!DOCTYPE layers SYSTEM \"layers.dtd\">";
+		return xef.createDTD(fileStr);
+		
+		} catch (Exception e) {
+			LOGGER.severe("error in getting DTDEvent!");
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the ImageLayer by given name.
+	 *
+	 * @param iName the name of ImageLayer
+	 * @return the ImageLayer
+	 * @throws Exception the exception
+	 */
+	private ImageLayer getImageLayerByName(String iName) throws Exception{
+		if(iName != null && iName.length()>0 && this.layersOfPath.getImageLayerList() != null
+				&& this.layersOfPath.getImageLayerList().size()>0){
+			Iterator<ImageLayer> iIterator = this.layersOfPath.getImageLayerList().iterator();
+			while(iIterator.hasNext()){
+				ImageLayer iLayer= iIterator.next();
+				if(iName.equals(iLayer.getImageFileName()))
+					return iLayer;
+			}
+		}
+		return null;
+
+
+	}
+
+	/**
+	 * Returns the MarkingLayer by name.
+	 *
+	 * @param mName the name of MarkingLayer
+	 * @param iLayer the ImageLayer
+	 * @return the MarkingLayer
+	 * @throws Exception the exception
+	 */
+	private MarkingLayer getMarkingLayerByName(String mName, ImageLayer iLayer) throws Exception{
+		if(mName != null && mName.length()>0 && iLayer.getMarkingLayers() != null && iLayer.getMarkingLayers().size()>0){
+			// go through all markinglayers of imageLayer
+			Iterator<MarkingLayer> mIterator = iLayer.getMarkingLayers().iterator();
+			while(mIterator.hasNext()){
+				MarkingLayer ml= mIterator.next();
+				if(mName.equals(ml.getLayerName()))
+					return ml;
+			}
+		}
+		return null;
+
+	}
+
+	/**
+	 * Returns the successfully saved marking layers.
+	 *
+	 * @return the successfully saved marking layers
+	 */
+	public ArrayList<Integer> getSuccessfullySavedMarkingLayers() {
+		return successfullySavedMarkingLayers;
+	}
+
+	/**
+	 * Returns the unsaved marking layers.
+	 *
+	 * @return the unsaved marking layers
+	 */
+	public ArrayList<Integer> getUnsavedMarkingLayers() {
+		return unsavedMarkingLayers;
+	}
+
+	/**
+	 * Initializes the input from given file.
+	 *
+	 * @param filePath the file path
+	 */
+	private void initInput(String filePath){
+
+		try {
+			XMLInputFactory inputFactory=XMLInputFactory.newInstance();
+			InputStream in = new FileInputStream(filePath);
+
+			inputFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
+			inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+			inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, false);
+
+			xer = inputFactory.createXMLEventReader(in);
+
+		} catch (FileNotFoundException e) {
+			LOGGER.severe("XML-file not found! " +e.getMessage());
+			e.printStackTrace();
+		} catch (FactoryConfigurationError e) {
+			e.printStackTrace();
+		}
+		catch (XMLStreamException e) {
+			LOGGER.severe("Error in reading xml-file: stream error. "+e.getMessage());
+		e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Initializes the output.
+	 */
+	private void initOutput(){
+		 try {
+			// create an XMLOutputFactory
+			XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
+			byteStream = new ByteArrayOutputStream();
+			// create eventWriter
+			xew = outputFactory.createXMLEventWriter(byteStream);
+
+			xef = XMLEventFactory.newInstance();
+			end = xef.createDTD("\n");
+			xef.createDTD("\t");
+
+		 } catch (FactoryConfigurationError e) {
+			e.printStackTrace();
+		} catch (XMLStreamException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Inquire saving type. !! This method is not completed.!!
+	 * !!Waiting to testing and would users want to select for every MarkingLayer to overwrite !!
+	 *
+	 * @return the int ID of savingType
+	 */
+	private int inquireSavingType(){
+		return ID.OVERWRITE; // overwrites always
+
+	}
+
+	/**
+	 * Read and write.
+	 *
+	 * @throws Exception the exception
+	 */
+	private void readAndWrite() throws Exception{
+
+		while(xer.hasNext()){
+			XMLEvent event= xer.nextEvent();
+
+			if(event.isStartElement()){
+				se= event.asStartElement();
+				if(se.getName().equals(XMLtags.qnameImageLayer)){
+					String iLayerName= se.getAttributeByName(XMLtags.qnameImageName).getValue();
+					ImageLayer iLayer=getImageLayerByName(iLayerName);
+					if(iLayer != null){ // ImageLayer found -> save StartElement and go for markinglayers
+						xew.add(se); // write StartElement
+						xew.add(end);
+						combineImageLayerContentWithXMLfile(iLayer); // write the whole ImageLayer data with combined to data from xml-file.
+						removeImageLayer(iLayer); // saved ImageLayer -> remove from list
+
+
+					}else{ // ImageLayer not found -> write only the StartElement to file
+						xew.add(se); // startElement
+					}
+
+				}
+				else{// if(se.getName().equals(qnameLayers)){ // layers
+					xew.add(se); // startElement
+				}
+
+			}
+			else
+				if(event.isEndDocument()){
+					// write rest imageLayers from LayersOfPath object
+					// write end document tag to end
+					xew.add(event);
+					return;
+
+				}
+				else if(event.getEventType() == XMLEvent.DTD){
+					LOGGER.fine("XML: DTD");
+					xew.add(event);
+					xew.add(end);
+
+					}
+					else // end elements
+						if(event.isEndElement()){
+	
+							EndElement ee = event.asEndElement();
+		
+							if(ee.getName().equals(XMLtags.qnameLayers)){
+								if(this.layersOfPath.getImageLayerList()!= null && this.layersOfPath.getImageLayerList().size()>0){
+									Iterator<ImageLayer> iIterator=this.layersOfPath.getImageLayerList().iterator();
+									while(iIterator.hasNext()){
+										ImageLayer iLayer=iIterator.next();
+										writeImageLayerFromImageLayer(iLayer);						
+									}
+								}
+							}
+							xew.add(ee);
+	
+						}
+						else{// write all other events identically to file
+							if(event.isStartDocument())
+							{
+								xew.add(event);
+								xew.add(end);
+							}
+							else
+								xew.add(event);
+						}
+		}
+		LOGGER.fine("XML data written to memory successfully");
+	}
+
+
+	/**
+	 * Removes the ImageLayer from ArrayList.
+	 *
+	 * @param iLayer the i layer
+	 * @throws Exception the exception
+	 */
+	private void removeImageLayer(ImageLayer iLayer) throws Exception{
+		if(iLayer != null && this.layersOfPath.getImageLayerList() != null
+				&& this.layersOfPath.getImageLayerList().size()>0){
+			this.layersOfPath.getImageLayerList().remove(iLayer);
+
+		}
+	}
+
+	/**
+	 * Skips reading MarkingLayer. Reads xml-document until end element od MarkingLayer is reached.
+	 */
+	private void skipReadingMarkingLayer(){
+		try {
+			while(xer.hasNext()){
+				XMLEvent event=xer.nextEvent();
+				if(event.isEndElement() && event.asEndElement().getName().equals(XMLtags.qnameMarkingLayer))
+					return;
+			}
+		} catch (XMLStreamException e) {
+			LOGGER.severe("Error in writing XML file: skipping Marking Layer produced error: " +e.getMessage());
+		}
 
 	}
 
@@ -167,7 +478,6 @@ public class XMLwriteManager {
 				this.layersOfPath=null;
 				return writeStreamToFile(f);
 
-
 			}
 			this.layersOfPath=null;
 			return false; // nothing saved
@@ -181,113 +491,80 @@ public class XMLwriteManager {
 		}
 	}
 
-
-	private boolean writeStreamToFile(File file){
-		try {
-			System.out.println(byteStream.toString());
-			rm=new XMLreadManager();
-			if(rm.isStreamValid(byteStream)){
-			/*	TransformerFactory tFactory=TransformerFactory.newInstance();
-
-				Transformer transformer = tFactory.newTransformer();
-				transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-			//	transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "layers.dtd");
-				transformer.setURIResolver(null); // disable validation
-
-				ByteArrayInputStream byteIn = new ByteArrayInputStream(byteStream.toByteArray());
-				StreamSource source = new StreamSource(byteIn);
-
-				StreamResult out = new StreamResult(file);
-				transformer.transform(source, out);
-				*/
-				FileOutputStream fStreamIn = new FileOutputStream(file);
-				fStreamIn.write(byteStream.toByteArray());
-				fStreamIn.flush();
-				fStreamIn.close();
-				byteStream.close();
-			//	byteIn.close();
-
-				return true;
-			}
-			else{
-				byteStream.close();
-				return false;
-
-			}
-
-
-
-		}
-		 catch (Exception e) {
-			 LOGGER.severe("Error in writingStream to file: " +e.getMessage());
-			return false;
-
-		}
-
-
-	}
-/*
-	public int checkFile(File file){
-		if(file != null){
-			if(file.exists()){
-				if(file.isFile()){
-					XMLfilter filter = new XMLfilter();
-					if(filter.accept(file)){
-
-						if(file.canRead()){
-							if(file.length()>0){ // is just created file
-								XMLreadManager rm=new XMLreadManager();
-								if(rm.isFileValid(file)){
-									if(file.canWrite()){
-										return ID.FILE_OK; // can update the file
-									}
-									else
-										return ID.FILE_CANT_WRITE;
-								}else // if is not valid file
-									return ID.FILE_NOT_VALID;
-							}else
-								return ID.FILE_NEW_FILE;
-						}else // if can't read
-							return ID.FILE_CANT_READ;
-					}else // if is not  XML file
-						return ID.FILE_NOT_XML;
-				}else //if file is folder
-					return ID.FILE_IS_NOT_FILE;
-			}else // if file not exist
-				return ID.FILE_NOT_EXISTS;
-		}else
-			return ID.FILE_CANT_READ;
-	}
-*/
-
 	/**
-	 *  Writes all ImageLayer-objects of layersOfPath to XML-file.
+	 * Writes grid data to xml file inside <grid> tags.
+	 *
+	 * @param gridProperty the GridProperties
+	 * @throws Exception the exception
 	 */
-	private void writeNewDocument() throws Exception{
-		// create
-		StartDocument startDocument = xef.createStartDocument();
-	   xew.add(startDocument);
-	   xew.add(end);
-	   xew.add(getDTDevent());
-	   xew.add(end);
-	   xew.add(xef.createStartElement("", "", XMLtags.layers));
-	   xew.add(end);
+	private void writeGridToMarkingLayer(GridProperties gridProperty) throws Exception{
+			// write starelement
+			xew.add(xef.createStartElement("", "", XMLtags.grid));
+			xew.add(end);
 
-	   // add inserting ImageLayers
+			xew.add(xef.createStartElement("", "", XMLtags.grid_on));
+			if(gridProperty.isGridON())
+			xew.add(xef.createCharacters(XMLtags.value_true));
+			else
+				xew.add(xef.createCharacters(XMLtags.value_false));
+			xew.add(xef.createEndElement("", "", XMLtags.grid_on));
+			xew.add(end);
 
-	   Iterator<ImageLayer> iterator = this.layersOfPath.getImageLayerList().iterator();
-	   while(iterator.hasNext()){
-		   ImageLayer iLayer = iterator.next();
-		  writeImageLayerFromImageLayer(iLayer);
-		//	iterator.remove();  // when saved -> remove   (not necessary)
-	   }
+			if(gridProperty.getRowLineYs() != null && gridProperty.getRowLineYs().size()>0 &&
+					gridProperty.getColumnLineXs() != null && gridProperty.getColumnLineXs().size()>0){
 
-	   xew.add(xef.createEndElement("", "", XMLtags.layers));
-	   xew.add(end);
-	   EndDocument endDocument=xef.createEndDocument();
-	   xew.add(endDocument);
+				xew.add(xef.createStartElement("", "", XMLtags.lines));
+				xew.add(end);
+				// write vertical lines
+				for (Iterator<Integer> iterator = gridProperty.getColumnLineXs().iterator(); iterator.hasNext();) {
+					int x = (int) iterator.next();
+					xew.add(xef.createStartElement("", "", XMLtags.x));
+					xew.add(xef.createCharacters(""+x));
+					xew.add(xef.createEndElement("", "", XMLtags.x));
+					xew.add(end);
+				}
+				// write horizontal lines
+				for (Iterator<Integer> iterator = gridProperty.getRowLineYs().iterator(); iterator.hasNext();) {
+					int y = (int) iterator.next();
+					xew.add(xef.createStartElement("", "", XMLtags.y));
+					xew.add(xef.createCharacters(""+y));
+					xew.add(xef.createEndElement("", "", XMLtags.y));
+					xew.add(end);
+				}
 
+				xew.add(xef.createEndElement("", "", XMLtags.lines));
+				xew.add(end);
+			}
 
+			if(gridProperty.getPositionedRectangleList() != null && gridProperty.getPositionedRectangleList().size()>0){
+				xew.add(xef.createStartElement("", "", XMLtags.rectangles));
+				xew.add(end);
+				// write Rectangles of GRID
+				for (Iterator<PositionedRectangle> iterator = gridProperty.getPositionedRectangleList().iterator(); iterator.hasNext();) {
+					PositionedRectangle pRectangle = iterator.next();
+					String selection=XMLtags.value_false;
+					if(pRectangle.isSelected())
+						selection=XMLtags.value_true;
+					xew.add(xef.createStartElement("", "", XMLtags.rec));
+					att = xef.createAttribute(XMLtags.selected, selection);
+					xew.add(att);
+					// write attributes
+					xew.add(xef.createAttribute(XMLtags.column, ""+pRectangle.getColumn()));
+					xew.add(xef.createAttribute(XMLtags.row, ""+pRectangle.getRow()));
+					xew.add(xef.createAttribute(XMLtags.x, ""+pRectangle.x));
+					xew.add(xef.createAttribute(XMLtags.y, ""+pRectangle.y));
+					xew.add(xef.createAttribute(XMLtags.width, ""+pRectangle.width));
+					xew.add(xef.createAttribute(XMLtags.height, ""+pRectangle.height));
+					xew.add(xef.createEndElement("", "", XMLtags.rec));
+					xew.add(end);
+				}
+
+				xew.add(xef.createEndElement("", "", XMLtags.rectangles));
+				xew.add(end);
+			}
+
+			xew.add(xef.createEndElement("", "", XMLtags.grid));
+			xew.add(end);
 
 	}
 
@@ -409,7 +686,7 @@ public class XMLwriteManager {
 
 
 
-//  add endElement of MarkingLayer
+				//  add endElement of MarkingLayer
 				ee=xef.createEndElement("", "", XMLtags.markinglayer);
 				xew.add(ee);
 				xew.add(end);
@@ -422,314 +699,11 @@ public class XMLwriteManager {
 
 	}
 
-	private void writeGridToMarkingLayer(GridProperties gridProperty) throws Exception{
-			xew.add(xef.createStartElement("", "", XMLtags.grid));
-			xew.add(end);
-
-			xew.add(xef.createStartElement("", "", XMLtags.grid_on));
-			if(gridProperty.isGridON())
-			xew.add(xef.createCharacters(XMLtags.value_true));
-			else
-				xew.add(xef.createCharacters(XMLtags.value_false));
-			xew.add(xef.createEndElement("", "", XMLtags.grid_on));
-			xew.add(end);
-
-			if(gridProperty.getRowLineYs() != null && gridProperty.getRowLineYs().size()>0 &&
-					gridProperty.getColumnLineXs() != null && gridProperty.getColumnLineXs().size()>0){
-
-				xew.add(xef.createStartElement("", "", XMLtags.lines));
-				xew.add(end);
-
-				for (Iterator<Integer> iterator = gridProperty.getColumnLineXs().iterator(); iterator.hasNext();) {
-					int x = (int) iterator.next();
-					xew.add(xef.createStartElement("", "", XMLtags.x));
-					xew.add(xef.createCharacters(""+x));
-					xew.add(xef.createEndElement("", "", XMLtags.x));
-					xew.add(end);
-				}
-				for (Iterator<Integer> iterator = gridProperty.getRowLineYs().iterator(); iterator.hasNext();) {
-					int y = (int) iterator.next();
-					xew.add(xef.createStartElement("", "", XMLtags.y));
-					xew.add(xef.createCharacters(""+y));
-					xew.add(xef.createEndElement("", "", XMLtags.y));
-					xew.add(end);
-				}
-
-				xew.add(xef.createEndElement("", "", XMLtags.lines));
-				xew.add(end);
-			}
-
-			if(gridProperty.getPositionedRectangleList() != null && gridProperty.getPositionedRectangleList().size()>0){
-
-				xew.add(xef.createStartElement("", "", XMLtags.rectangles));
-				xew.add(end);
-
-
-				//	xew.add(xef.createStartElement("", "", XMLtags.selected_rec));
-				//	xew.add(end);
-					for (Iterator<PositionedRectangle> iterator = gridProperty.getPositionedRectangleList().iterator(); iterator.hasNext();) {
-						PositionedRectangle pRectangle = iterator.next();
-					//	String recString= pRectangle.x+","+pRectangle.y+","+pRectangle.width+","+pRectangle.height;
-						String selection=XMLtags.value_false;
-						if(pRectangle.isSelected())
-							selection=XMLtags.value_true;
-						xew.add(xef.createStartElement("", "", XMLtags.rec));
-
-					//	xew.add(xef.createAttribute(XMLtags.selected, selection));
-						att = xef.createAttribute(XMLtags.selected, selection);
-						xew.add(att);
-						xew.add(xef.createAttribute(XMLtags.column, ""+pRectangle.getColumn()));
-						xew.add(xef.createAttribute(XMLtags.row, ""+pRectangle.getRow()));
-						xew.add(xef.createAttribute(XMLtags.x, ""+pRectangle.x));
-						xew.add(xef.createAttribute(XMLtags.y, ""+pRectangle.y));
-						xew.add(xef.createAttribute(XMLtags.width, ""+pRectangle.width));
-						xew.add(xef.createAttribute(XMLtags.height, ""+pRectangle.height));
-					//	xew.add(xef.createCharacters(recString));
-						xew.add(xef.createEndElement("", "", XMLtags.rec));
-						xew.add(end);
-					}
-				//	xew.add(xef.createEndElement("", "", XMLtags.selected_rec));
-				//	xew.add(end);
-
-/*
-				if(gridProperty.getUnselectedRectangles() != null && gridProperty.getUnselectedRectangles().size()>0){
-					xew.add(xef.createStartElement("", "", XMLtags.unselected_rec));
-					xew.add(end);
-					for (Iterator<Rectangle> iterator = gridProperty.getUnselectedRectangles().iterator(); iterator.hasNext();) {
-						Rectangle rectangle = iterator.next();
-						String recString= rectangle.x+","+rectangle.y+","+rectangle.width+","+rectangle.height;
-						xew.add(xef.createStartElement("", "", XMLtags.rec));
-						xew.add(xef.createCharacters(recString));
-						xew.add(xef.createEndElement("", "", XMLtags.rec));
-						xew.add(end);
-					}
-					xew.add(xef.createEndElement("", "", XMLtags.unselected_rec));
-					xew.add(end);
-				}
-
-				if(gridProperty.getUnselectedGridCellNumbers() != null && gridProperty.getUnselectedGridCellNumbers().size()>0){
-					xew.add(xef.createStartElement("", "", XMLtags.unselected_rec_numbers));
-					xew.add(end);
-					for (Iterator<Integer> iterator = gridProperty.getUnselectedGridCellNumbers().iterator(); iterator.hasNext();) {
-						int num = iterator.next();
-
-						xew.add(xef.createStartElement("", "", XMLtags.num));
-						xew.add(xef.createCharacters(""+num));
-						xew.add(xef.createEndElement("", "", XMLtags.num));
-						xew.add(end);
-					}
-					xew.add(xef.createEndElement("", "", XMLtags.unselected_rec_numbers));
-					xew.add(end);
-				}
-*/
-
-				xew.add(xef.createEndElement("", "", XMLtags.rectangles));
-				xew.add(end);
-			}
-
-
-			xew.add(xef.createEndElement("", "", XMLtags.grid));
-			xew.add(end);
-
-	}
-
-	private DTD getDTDevent(){
-		try {
-			InputStream in= getClass().getResourceAsStream("/information/dtd/layers.dtd");
-			 Scanner s = new Scanner(in).useDelimiter("\\A");
-			   String dtdFIleString= s.hasNext() ? s.next() : "";
-
-		String fileStr = "<!DOCTYPE layers SYSTEM \"layers.dtd\">";
-			//String dtdFIleString= new String(Files.readAllBytes(Paths.get("/information/dtd/layers.dtd")));
-		in.close();s.close();
-			return xef.createDTD(fileStr);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	private void readAndWrite() throws Exception{
-
-
-		while(xer.hasNext()){
-			XMLEvent event= xer.nextEvent();
-
-		//	LOGGER.fine(event.toString()+ " et:" + event.getEventType() + " ee:"+ XMLEvent.END_ELEMENT+ " ed: "+XMLEvent.END_DOCUMENT);
-			if(event.isStartElement()){
-				se= event.asStartElement();
-				if(se.getName().equals(XMLtags.qnameImageLayer)){
-					String iLayerName= se.getAttributeByName(XMLtags.qnameImageName).getValue();
-					ImageLayer iLayer=getImageLayerByName(iLayerName);
-					if(iLayer != null){ // ImageLayer found -> save StartElement and go for markinglayers
-						xew.add(se); // write StartElement
-						xew.add(end);
-					//	xew.add(tab);
-						combineImageLayerContentWithXMLfile(iLayer);
-						removeImageLayer(iLayer); // saved ImageLayer -> remove from list
-
-
-					}else{ // ImageLayer not found -> write only the StartElement to file
-						xew.add(se);
-					//	xew.add(tab);
-					}
-
-				}
-				else{// if(se.getName().equals(qnameLayers)){ // layers
-					xew.add(se);
-				//	xew.add(tab);
-				}
-
-			}
-			else
-				if(event.isEndDocument()){
-					// write rest imageLayers from LayersOfPath object
-
-
-					// write enddocument tag to end
-					xew.add(event);
-					return;
-
-				}
-				else if(event.getEventType() == XMLEvent.DTD){
-					LOGGER.fine("XML: DTD");
-					xew.add(event);
-					xew.add(end);
-
-				}
-				else // end elements
-					if(event.isEndElement()){
-
-					EndElement ee = event.asEndElement();
-
-					if(ee.getName().equals(XMLtags.qnameLayers)){
-						if(this.layersOfPath.getImageLayerList()!= null && this.layersOfPath.getImageLayerList().size()>0){
-							Iterator<ImageLayer> iIterator=this.layersOfPath.getImageLayerList().iterator();
-							while(iIterator.hasNext()){
-								ImageLayer iLayer=iIterator.next();
-								writeImageLayerFromImageLayer(iLayer);
-								//iIterator.remove(); // remove when saved (this is not necessary)
-
-							}
-
-						}
-					}
-
-
-					xew.add(ee);
-				//	xew.add(tab);
-
-					}
-					else{// write all other events identically to file
-						if(event.isStartDocument())
-						{
-							xew.add(event);
-							xew.add(end);
-						}
-						else
-							xew.add(event);
-					//	xew.add(tab);
-
-					}
-
-
-
-		}
-		LOGGER.fine("XML data written to memory successfully");
-	}
-
-	private void combineImageLayerContentWithXMLfile(ImageLayer iLayer){
-
-		try {
-			// go through markingLayers of xml file
-			while(xer.hasNext()){
-				XMLEvent event= xer.nextEvent();
-				if(event.isStartElement() && event.asStartElement().getName().equals(XMLtags.qnameMarkingLayer)){
-					se=event.asStartElement();
-					String mLayerName=se.getAttributeByName(XMLtags.qnameMarkingName).getValue();
-					MarkingLayer mLayer = getMarkingLayerByName(mLayerName, iLayer);
-					if(mLayer != null){ // MarkingLayer found -> either overwrite or skip
-						int overwriteOrSkip= ID.UNDEFINED;
-						if(savingType != ID.UNDEFINED) // remembering the rule from previous selection
-							overwriteOrSkip=savingType;
-						else{ // undefined -> ask from user
-						// ask from user should overwrite MarkingLayer
-						overwriteOrSkip=inquireSavingType(); // construct later
-						if(overwriteOrSkip == ID.OVERWRITE_REMEMBER_SELECTION || overwriteOrSkip == ID.SKIP_REMEMBER_SELECTION)
-							this.savingType=overwriteOrSkip; // remembers next time
-						}
-						if(overwriteOrSkip==ID.OVERWRITE || overwriteOrSkip == ID.OVERWRITE_REMEMBER_SELECTION){
-							// overwrite -> write from MarkingLayer-object
-							if(writeMarkingLayer(mLayer)){
-								iLayer.removeMarkingLayer(mLayer); // written successfully -> remove
-								successfullySavedMarkingLayers.add(mLayer.getLayerID());
-							}
-							else{ // error in saving MarkingLayer
-								unsavedMarkingLayers.add(mLayer.getLayerID());
-							}
-							skipReadingMarkingLayer(); // XMLreader goes to endElement of markinglayer
-						}
-						else{ // skip -> Write from XML-file
-							writeMarkingLayerFromXMLfile(se);
-						}
-
-
-					}
-					else{// not found the MarkingLayer -> write from file
-						writeMarkingLayerFromXMLfile(se);
-					}
-				}else // has read the whole imageLayer content from xml-file
-					if(event.isEndElement() && event.asEndElement().getName().equals(XMLtags.qnameImageLayer)){
-
-						// write the rest MarkingLayers of iLayer
-						Iterator<MarkingLayer> mIterator =iLayer.getMarkingLayers().iterator();
-						while(mIterator.hasNext()){
-							MarkingLayer markingLayer= mIterator.next();
-							if(writeMarkingLayer(markingLayer)){
-								mIterator.remove(); // written successfully -> remove
-								successfullySavedMarkingLayers.add(markingLayer.getLayerID());
-							}
-							else{ // error in saving MarkingLayer
-								unsavedMarkingLayers.add(markingLayer.getLayerID());
-							}
-						}
-						xew.add(event); // write endElement </imagelayer>
-						return; // go back for reading imagelayers
-					}
-
-
-			}
-		} catch (XMLStreamException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-
-	}
-
-	private int inquireSavingType(){
-		return ID.OVERWRITE;
-
-	}
-
-	private void skipReadingMarkingLayer(){
-		try {
-			while(xer.hasNext()){
-				XMLEvent event=xer.nextEvent();
-				if(event.isEndElement() && event.asEndElement().getName().equals(XMLtags.qnameMarkingLayer))
-					return;
-			}
-		} catch (XMLStreamException e) {
-			// TODO Auto-generated catch block
-			LOGGER.severe("Error in writing XML file: skipping Marking Layer produced error: " +e.getMessage());
-		}
-
-	}
-
+	/**
+	 * Write marking layer from XML-file.
+	 *
+	 * @param firstElement the first element
+	 */
 	private void writeMarkingLayerFromXMLfile(StartElement firstElement){
 
 		try {
@@ -741,129 +715,67 @@ public class XMLwriteManager {
 					return;
 			}
 		} catch (XMLStreamException e) {
-			// TODO Auto-generated catch block
 			LOGGER.severe("Error in writing XML file: copying markinglayer from file produced error: " +e.getMessage());
 		}
 	}
 
+	/**
+	 *  Writes all ImageLayer-objects of layersOfPath to XML-file.
+	 */
+	private void writeNewDocument() throws Exception{
+		// create
+		StartDocument startDocument = xef.createStartDocument();
+		xew.add(startDocument);
+		xew.add(end);
+		xew.add(getDTDevent());
+		xew.add(end);
+		xew.add(xef.createStartElement("", "", XMLtags.layers));
+		xew.add(end);
+	
+	   // add inserting ImageLayers
+	
+	   Iterator<ImageLayer> iterator = this.layersOfPath.getImageLayerList().iterator();
+	   while(iterator.hasNext()){
+		   ImageLayer iLayer = iterator.next();
+		  writeImageLayerFromImageLayer(iLayer);
+	   }
+	
+	   xew.add(xef.createEndElement("", "", XMLtags.layers));
+	   xew.add(end);
+	   EndDocument endDocument=xef.createEndDocument();
+	   xew.add(endDocument);
 
-	private void initInput(String filePath){
 
+
+	}
+
+	/**
+	 * Writes stream to file. The xml-code is given as ByteArrayOutPutStream and saved to xml-file.
+	 *
+	 * @param file the File to be saved.
+	 * @return true, if saving successful
+	 */
+	private boolean writeStreamToFile(File file){
 		try {
-			XMLInputFactory inputFactory=XMLInputFactory.newInstance();
-			InputStream in = new FileInputStream(filePath);
-
-			inputFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
-
-			inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
-			inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, false);
-
-
-			xer = inputFactory.createXMLEventReader(in);
-
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FactoryConfigurationError e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (XMLStreamException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-		}
-	}
-
-	private void initOutput(){
-		 try {
-			// create an XMLOutputFactory
-			XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
-			byteStream = new ByteArrayOutputStream();
-			// create eventWriter
-			xew = outputFactory.createXMLEventWriter(byteStream);
-
-
-			xef = XMLEventFactory.newInstance();
-			end = xef.createDTD("\n");
-			tab = xef.createDTD("\t");
-
-
-
-		 } catch (FactoryConfigurationError e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (XMLStreamException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-
-
-	private void closeInput() throws Exception{
-		xer.close();
-	}
-
-	private void closeOutput() throws Exception{
-		xew.flush();
-		xew.close();
-		byteStream.flush();
-	}
-
-	private void renameTo(String oldFileName, String newFileName) throws IOException{
-		Path path = Paths.get(oldFileName);
-		Path path2 = Paths.get(newFileName);
-
-		if((new File(newFileName)).canWrite()){
-			Files.move(path,path2,StandardCopyOption.REPLACE_EXISTING);
-		}
-	}
-
-	private ImageLayer getImageLayerByName(String iName) throws Exception{
-		if(iName != null && iName.length()>0 && this.layersOfPath.getImageLayerList() != null
-				&& this.layersOfPath.getImageLayerList().size()>0){
-			Iterator<ImageLayer> iIterator = this.layersOfPath.getImageLayerList().iterator();
-			while(iIterator.hasNext()){
-				ImageLayer iLayer= iIterator.next();
-				if(iName.equals(iLayer.getImageFileName()))
-					return iLayer;
+			
+			rm=new XMLreadManager();
+			if(rm.isStreamValid(byteStream)){
+				FileOutputStream fStreamIn = new FileOutputStream(file);
+				fStreamIn.write(byteStream.toByteArray());
+				fStreamIn.flush();
+				fStreamIn.close();
+				byteStream.close();
+				return true;
+			}
+			else{
+				byteStream.close();
+				return false;
 			}
 		}
-		return null;
-
-
-	}
-
-	private void removeImageLayer(ImageLayer iLayer) throws Exception{
-		if(iLayer != null && this.layersOfPath.getImageLayerList() != null
-				&& this.layersOfPath.getImageLayerList().size()>0){
-			this.layersOfPath.getImageLayerList().remove(iLayer);
-
+		 catch (Exception e) {
+			 LOGGER.severe("Error in writingStream to file: " +e.getMessage());
+			return false;
 		}
 	}
-
-	private MarkingLayer getMarkingLayerByName(String mName, ImageLayer iLayer) throws Exception{
-		if(mName != null && mName.length()>0 && iLayer.getMarkingLayers() != null && iLayer.getMarkingLayers().size()>0){
-			Iterator<MarkingLayer> mIterator = iLayer.getMarkingLayers().iterator();
-			while(mIterator.hasNext()){
-				MarkingLayer ml= mIterator.next();
-				if(mName.equals(ml.getLayerName()))
-					return ml;
-			}
-		}
-		return null;
-
-	}
-
-	public ArrayList<Integer> getUnsavedMarkingLayers() {
-		return unsavedMarkingLayers;
-	}
-
-	public ArrayList<Integer> getSuccessfullySavedMarkingLayers() {
-		return successfullySavedMarkingLayers;
-	}
-
-
 
 }
