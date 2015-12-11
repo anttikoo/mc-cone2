@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import gui.LogFrame;
 
 
 /**
@@ -14,9 +13,6 @@ import gui.LogFrame;
  */
 public class TextFileFormatter extends Formatter{
 
-	public TextFileFormatter(){
-
-	}
 
 	/* (non-Javadoc)
 	 * @see java.util.logging.Formatter#format(java.util.logging.LogRecord)
