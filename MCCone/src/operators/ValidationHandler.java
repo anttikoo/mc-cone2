@@ -1,42 +1,76 @@
 package operators;
 
-import gui.ShadyMessageDialog;
-import information.ID;
-import information.ImageLayer;
-import information.MarkingLayer;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.logging.Logger;
-
-import javax.security.sasl.SaslException;
-import javax.swing.JFrame;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * XML Handler for validating xml file. Parses the file, but doesn't save the information anywhere.
+ * XML Handler for validating xml file. Parses the file, but doesn't save the information anywhere. 
+ * If everything fine -> no errors and file validated.
  * @author Antti Kurronen
  *
  */
 public class ValidationHandler extends DefaultHandler {
 
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");	
-	
-	/**
-	 * @param Empty constructor
-	 */
-	public ValidationHandler(){
-		
-	}
-
 	private boolean isColor =false;
-	private boolean isCoordinate =false;
 	private boolean isSingleCoordinate =false;
 	private boolean isShape =false;
 	
+    /* (non-Javadoc)
+     * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+     */
+    @Override
+    public void characters(char ch[], int start, int length) throws SAXException {
+ 
+        if (isColor) {
+            //age element, set Employee age
+            String color=(new String(ch, start, length));
+            isColor = false;
+        } else if (isSingleCoordinate) {
+            String Point=(new String(ch, start, length));
+            isSingleCoordinate = false;
+        } else if (isShape) {
+        	int shapeID = getIntFromString(new String(ch, start, length));
+        	
+            isShape = false;
+        }
+    }
+    
+    /* (non-Javadoc)
+     * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Override
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+        if (qName.equalsIgnoreCase("imagelayer")) {
+            //do nothing
+           
+        }
+        else if (qName.equalsIgnoreCase("markinglayer")) {
+        	 // do nothing
+             }      	
+        }
+    
+    
+    /**
+     * Returns the int from string.
+     *
+     * @param s the String
+     * @return the int from string
+     */
+    private int getIntFromString(String s){
+    	try {
+			return Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			LOGGER.warning("Error in converting string to int: " +e.getClass().toString() + " :" +e.getMessage());
+			return -1;
+		}
+    }
+    
+    /* (non-Javadoc)
+     * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+     */
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes)
             throws SAXException {
@@ -63,44 +97,6 @@ public class ValidationHandler extends DefaultHandler {
 	            isShape = true;
 	        }
         }
-    }
-    
-    @Override
-    public void endElement(String uri, String localName, String qName) throws SAXException {
-        if (qName.equalsIgnoreCase("imagelayer")) {
-            //do nothing
-           
-        }
-        else if (qName.equalsIgnoreCase("markinglayer")) {
-        	 // do nothing
-             }      	
-        }
-    
-    
-    @Override
-    public void characters(char ch[], int start, int length) throws SAXException {
- 
-        if (isColor) {
-            //age element, set Employee age
-            String color=(new String(ch, start, length));
-            isColor = false;
-        } else if (isSingleCoordinate) {
-            String Point=(new String(ch, start, length));
-            isSingleCoordinate = false;
-        } else if (isShape) {
-        	int shapeID = getIntFromString(new String(ch, start, length));
-        	
-            isShape = false;
-        }
-    }
-    
-    private int getIntFromString(String s){
-    	try {
-			return Integer.parseInt(s);
-		} catch (NumberFormatException e) {
-			LOGGER.warning("Error in converting string to int: " +e.getClass().toString() + " :" +e.getMessage());
-			return -1;
-		}
     }
 	
 }
