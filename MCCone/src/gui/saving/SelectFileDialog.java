@@ -49,21 +49,41 @@ import javax.swing.filechooser.FileFilter;
  *
  */
 public class SelectFileDialog extends JDialog{
-	final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
+	/** The Constant LOGGER. */
+	final static Logger LOGGER = Logger.getLogger("MCCLogger");	
 	
-	
+	/** The select file dialog back panel. */
 	private JPanel selectFileDialogBackPanel;
+	
+	/** The file chooser. */
 	private JFileChooser fileChooser;
+	
+	/** The JButton for cancel file choosing. */
 	private JButton cancelFileChooserJButton;
+	
+	/** The JButton SELECT. */
 	private JButton addFileChooserJButton;
+	
+	/** The proper saving file or folder path. */
 	private String properSavingFileOrFolderPath;
-	private int fileType;	// ID.EXPORT_IMAGE, ID.SAVE_MARKINGS, ID.FILE_TYPE_CSV or ID.FILE_TYPE_TEXT_FILE
+	
+	/** The file type. ID.EXPORT_IMAGE, ID.SAVE_MARKINGS, ID.FILE_TYPE_CSV or ID.FILE_TYPE_TEXT_FILE.*/
+	private int fileType;
+	
+	/** The file filters. */
 	private ArrayList<FileFilter> fileFilters;
+	
+	/** The selected file path. */
 	private String selectedFilePath;
-	public int fileWritingType; // ID.OVERWRITE, ID.APPEND or ID.FILE_NEW_FILE
+	
+	/** The file writing type. ID.OVERWRITE, ID.APPEND or ID.FILE_NEW_FILE. */
+	public int fileWritingType;  
+	
+	/** The back panel component. */
 	private JComponent backPanelComponent;
 	
+	/** The owner frame. */
 	private JFrame ownerFrame;
 
 

@@ -39,7 +39,11 @@ import javax.swing.JPanel;
  * The Class ExportResults a dialog for exporting selected results.
  */
 public class ExportResults extends SaverDialog{ 
+	
+	/** The byte stream for to export. */
 	private ByteArrayOutputStream byteStream;
+	
+	/** The JLabel for saving path. */
 	private JLabel savingPathJLabel;
 
 	

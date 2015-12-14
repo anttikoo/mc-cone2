@@ -23,7 +23,7 @@ public class MarkingPanel extends JPanel {
 	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
-	/** The id. */
+	/** The ID of MarkingLayer. */
 	private int id;
 	
 	/** The paint color. */

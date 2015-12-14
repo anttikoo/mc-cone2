@@ -9,6 +9,8 @@ import operators.XMLreadManager;
  * The Class MarkingsSelectFileDialog.
  */
 public class MarkingsSelectFileDialog extends SelectFileDialog {
+	
+	/** The names of ImageLayers for xml search. */
 	private ArrayList<String> imageLayerNamesForXMLSearch;
 
 

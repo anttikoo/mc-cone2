@@ -20,9 +20,17 @@ import operators.CheckBoxIcon;
  * The Class SingleMarkingPanel. Contains name of MarkingLayer, checkboxes to select it and grid.
  */
 public class SingleMarkingPanel extends JPanel{
+	
+	/** The save check box. */
 	private JCheckBox saveCheckBox;
+	
+	/** The MarkingLayer. */
 	protected MarkingLayer mLayer;
+	
+	/** The marking label panel. */
 	private JPanel markingLabelPanel;
+	
+	/** The JPanel for checkbox to select should GRID to be drawn. */
 	private JPanel gridDrawingSelection;
 
 

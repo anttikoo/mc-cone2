@@ -50,23 +50,59 @@ public class SaverDialog extends JDialog{
 
 
 final static Logger LOGGER = Logger.getLogger("MCCLogger");
+
+/** The GUI. */
 protected GUI gui;
+
+/** The back panel. Shows the visible window. */
 protected JPanel backPanel;
+
+/** The cancel JButton. */
 private JButton cancelJButton;
+
+/** The image scroll panel. */
 protected JPanel imageScrollPanel;
+
+/** The list of ImageLayers. */
 protected ArrayList<ImageLayer> imageLayerList;
+
+/** The image scrolling pane. */
 private JScrollPane imageScrollingPane;
+
+/** The select file j button. */
 protected JButton selectFileJButton;
+
+/** The boolean for showing has successful saving informed already to user. */
 protected boolean notInformedSuccessfullSaving;
+
+/** The exporting path. */
 public String exportingPath="";
+
+/** The title label. */
 private JLabel titleLabel;
-protected int savingType; // ID.SAVE_MARKINGS, ID.EXPORT_IMAGE, ID.FILE_TYPE_TEXT_FILE, ID.FILE_TYPE_CSV or ID.CLIPBOARD
-private int fileWritingType; // ID.FILE_NEW_FILE, ID.OVERWRITE, ID.APPEND
+
+/** The saving type. ID.SAVE_MARKINGS, ID.EXPORT_IMAGE, ID.FILE_TYPE_TEXT_FILE, ID.FILE_TYPE_CSV or ID.CLIPBOARD */
+protected int savingType;  
+
+/** The file writing type. ID.FILE_NEW_FILE, ID.OVERWRITE, ID.APPEND */
+private int fileWritingType; 
+
+/** The one image title height. */
 protected int oneImageTitleHeight;
+
+/** The one image path height. */
 protected int oneImagePathHeight;
+
+/** The one marking height. */
 protected int oneMarkingHeight;
+
+/** The select file dialog. */
 protected SelectFileDialog selectFileDialog;
+
+/** The save JButton. */
 protected JButton saveJButton;
+
+/** The parent component. */
 private Component parentComponent=null;
 
 

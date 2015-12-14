@@ -25,7 +25,11 @@ import operators.XMLwriteManager;
  * 
  */
 public class SaveMarkings extends SaverDialog{
+	
+	/** The xml writing manager. */
 	private XMLwriteManager xmlWriteManager;
+	
+	/** The names of ImageLayers for file selection. */
 	private ArrayList<String> imageLayersNamesForFileSelection;
 
 	/**

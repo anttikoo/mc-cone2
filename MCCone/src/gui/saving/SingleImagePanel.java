@@ -32,20 +32,50 @@ import operators.CheckBoxIcon;
  * presenting MarkingLayers.
  */
 public class SingleImagePanel extends JPanel{
+	
+	/** The Constant LOGGER. */
 	final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The image path. */
 	private String imagePath;
+	
+	/** The list of MarkingLayers. */
 	private ArrayList<MarkingLayer> markingLayerList;
+	
+	/** The save single JButton. */
 	private JButton saveSingleJButton;
+	
+	/** The JButton for browsing. */
 	private JButton browseJButton;
+	
+	/** The one image title height. */
 	private int oneImageTitleHeight;
+	
+	/** The one image path height. */
 	private int oneImagePathHeight;
+	
+	/** The one marking height. */
 	private int oneMarkingHeight;
+	
+	/** The proper file path. */
 	private String properFilePath;
+	
+	/** The marking table JPanel. */
 	protected JPanel markingTableJPanel;
+	
+	/** The file path label value. */
 	private JLabel filePathLabelValue;
+	
+	/** The file validity. ID.FILE_CANT_READ, ID.FILE_NOT_VALID... */
 	protected int fileValidity;
+	
+	/** The ImageLayer. */
 	protected ImageLayer imageLayer;
+	
+	/** The saver dialog for saving file. */
 	protected SaverDialog saverDialog;
+	
+	/** The check box to check saving image. */
 	private JCheckBox saveImageCheckBox;
 
 
