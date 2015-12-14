@@ -81,10 +81,16 @@ import managers.ProgramLogger;
  */
 
 public class GUI extends JFrame{
+	
+/** The Constant LOGGER for Logging purposes. */
 private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+
+/** The log frame. */
 public static LogFrame logFrame;
+
+/** The task manager. Mediates the job to worker classes*/
 public TaskManager taskManager;
-private Dimension screenSize;
+
 private JMenuBar menubar;
 private JSplitPane doublePanel;
 protected JPanel leftPanel;
@@ -1402,7 +1408,7 @@ private GridPropertiesPanel gridDialog=null;
 	private void initWindowPropertiesAndListeners() throws Exception{
 
 		try {
-			screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // maybe never used
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // maybe never used
 			// change colors of menus and tooltips
 			
 			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
