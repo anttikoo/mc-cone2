@@ -14,6 +14,8 @@ import javax.swing.ImageIcon;
  * The Class BigCloseIcon. Icon for close buttons. Size 18px.
  */
 public class BigCloseIcon implements Icon {
+	
+	/** The selected. Is Icon selected.*/
 	private boolean selected=false;
 	
 	/**

@@ -11,14 +11,32 @@ import javax.swing.ImageIcon;
  * The Class Utils. Contains some variables of file extensions and methdods to manage them.
  */
 public class Utils {
+    
+    /** The Constant for file extension jpeg. */
     public final static String jpeg = "jpeg";
+    
+    /** The Constant for file extension jpg. */
     public final static String jpg = "jpg";
+    
+    /** The Constant for file extension gif. */
     public final static String gif = "gif";
+    
+    /** The Constant for file extension tiff. */
     public final static String tiff = "tiff";
+    
+    /** The Constant for file extension tif. */
     public final static String tif = "tif";
+    
+    /** The Constant for file extension png. */
     public final static String png = "png";
+    
+    /** The Constant for file extension xml. */
     public final static String xml= "xml";
+    
+    /** The Constant for file extension csv. */
     public final static String csv= "csv";
+    
+    /** The Constant for file extension txt. */
     public final static String txt= "txt";
 
 

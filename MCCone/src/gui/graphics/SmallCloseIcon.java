@@ -14,6 +14,8 @@ import javax.swing.ImageIcon;
  * The Class SmallCloseIcon. Icon for close button. Size 16px.
  */
 public class SmallCloseIcon implements Icon {
+	
+	/** The selected. Is Icon selected. */
 	private boolean selected=false;
 	
 	/**

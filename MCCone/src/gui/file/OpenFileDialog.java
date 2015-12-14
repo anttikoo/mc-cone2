@@ -36,15 +36,35 @@ import javax.swing.SwingUtilities;
 	 *
 	 */
 	public class OpenFileDialog extends JDialog{
+		
+		/** The open dialog back panel. */
 		private JPanel openDialogBackPanel;
+		
+		/** The file chooser. */
 		protected JFileChooser fileChooser;
+		
+		/** The JButton for cancelling file choosing. */
 		private JButton cancelFileChooserJButton;
+		
+		/** The add file chooser j button. */
 		private JButton addFileChooserJButton;
+		
+		/** The path of the image of ImageLayer. */
 		protected String imageLayerPath;
+		
+		/** The parent component bounds. */
 		private Rectangle parentComponentBounds;
+		
+		/** The parent component back panel bounds. */
 		private Rectangle parentComponentBackPanelBounds;
+		
+		/** The present folder. */
 		protected String presentFolder;
+		
+		/** The selected files. */
 		protected File[] selectedFiles=null;
+		
+		/** The Constant LOGGER. */
 		private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 		/**
