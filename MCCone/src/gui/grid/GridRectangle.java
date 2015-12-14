@@ -13,10 +13,20 @@ import javax.swing.JPanel;
  * The Class GridRectangle. Contains data of single Grid cell: position and is selected.
  */
 public class GridRectangle extends JPanel {
+ 
+ /** The grid row and column number. */
  private Dimension grid_row_column;
+ 
+ /** The row. */
  private int row;
+ 
+ /** The column. */
  private int column;
+ 
+ /** The is selected. */
  private boolean isSelected=true;
+
+/** The label. */
 private JLabel label;
 
  /**

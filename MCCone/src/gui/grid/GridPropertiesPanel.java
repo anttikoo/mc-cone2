@@ -44,20 +44,50 @@ import gui.PropertiesDialog;
  *
  */
 public class GridPropertiesPanel extends PropertiesDialog {
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The list of MarkingLayers. */
 	private ArrayList<MarkingLayer> markingLayerList;
+	
+	/** The grid on. Shows is GRID used or not */
 	private boolean gridON;
+	
+	/** The ON button. */
 	private JButton on_button;
+	
+	/** The OFF button. */
 	private JButton off_button;
+	
+	/** The list of SingleGridSizes. */
 	private ArrayList<SingleGridSize> gridSizes;
+	
+	/** The grid panel where example grid is. */
 	private JPanel gridPanel;
+	
+	/** The grid combo box. */
 	private JComboBox<String> gridComboBox;
+	
+	/** The slider for random selection. */
 	private JSlider randomSlider;
+	
+	/** The back grid example panel. */
 	private JPanel backGridExamplePanel;
+	
+	/** The grid label. */
 	private JLabel gridLabel;
+	
+	/** The combo label. */
 	private JLabel comboLabel;
-	private GridProperties templateGP=null; // GridProperty which data is used as template for selected markingLayer(s) 
+	
+	/** The template GridProprties. GridProperty which data is used as template for selected markingLayer(s)  */
+	private GridProperties templateGP=null; 
+	
+	/** The slider label. */
 	private JLabel sliderLabel;
+	
+	/** The slider value label. */
 	private JLabel sliderValueLabel;
 	
 	/**
