@@ -1,40 +1,42 @@
 package operators;
 
-import gui.ShadyMessageDialog;
 import information.GridProperties;
-import information.ID;
 import information.ImageLayer;
 import information.MarkingLayer;
 import information.PositionedRectangle;
-
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
-
-import javax.security.sasl.SaslException;
-import javax.swing.JFrame;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * XML Handler for checking does xml file contains ImageLayer element and markingLayers related to it.
+ * XML Handler for checking does xml file contains ImageLayer element and its markingLayers.
  * @author Antti Kurronen
  *
  */
 public class MarkingsHandler extends DefaultHandler {
 
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private ArrayList<ImageLayer> imageLayerList = null;
 	private ImageLayer singleImageLayer=null;
 	private ImageLayer selectedImageLayer=null;
 	private MarkingLayer selectedMarkingLayer=null;
 	private GridProperties gridProperty=null;
-//	private PositionedRectangle positionedRectangle=null;
-	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
-
+	private boolean isColor =false;
+	private boolean isSingleCoordinate =false;
+	private boolean isThickness =false;
+	private boolean isOpacity =false;
+	private boolean isSize =false;
+	private boolean isShape =false;
+	private boolean isGrid_on=false;
+	private boolean isX =false;
+	private boolean isY =false;
+	
 	/**
+	 * Instantiates a new markings handler.
+	 *
 	 * @param imageLayerList  ArrayList of ImageLayer objects which markings are searched
 	 */
 	public MarkingsHandler(ArrayList<ImageLayer> imageLayerList){
@@ -48,130 +50,11 @@ public class MarkingsHandler extends DefaultHandler {
 		this.singleImageLayer=singleImageLayer;
 	}
 
-	//private boolean isFoundImageLayer =false;
-	//private boolean isImageName =false;
-	//private boolean isMarkingLayer =false;
-	private boolean isColor =false;
-//	private boolean isCoordinate =false;
-	private boolean isSingleCoordinate =false;
-	private boolean isThickness =false;
-	private boolean isOpacity =false;
-	private boolean isSize =false;
-	private boolean isShape =false;
-//	private boolean isGrid =false;
-	private boolean isGrid_on=false;
-//	private boolean isLines =false;
-	private boolean isX =false;
-	private boolean isY =false;
-//	private boolean isRectangles =false;
-	private boolean isSelectedRec =false;
-	private boolean isUnSelectedRec =false;
-//	private boolean isUnSelectedRecNumbers =false;
-//	private boolean isRec =false;
-//	private boolean isNum=false;
 
-    @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes)
-            throws SAXException {
-
-        if (qName.equalsIgnoreCase(XMLtags.imagelayer)) {
-            String i_name = attributes.getValue(XMLtags.imagename);
-         // try to find image name from imageLayerList or single Imagelayer -> if found set as selectedImageLayer
-            searchImageLayer(i_name);
-
-        } else if ( this.selectedImageLayer != null) { // go only lower nodes if wanted ImageLayer was found and set as selected
-            //set boolean values for fields, will be used in setting Employee variables
-
-	         if (qName.equalsIgnoreCase(XMLtags.markinglayer)) {
-
-	            //create new markinglayer to add information
-	        	 this.selectedMarkingLayer = new MarkingLayer(attributes.getValue(XMLtags.markingname));
-	          //  this.isMarkingLayer= true;
-
-	        } else if (qName.equalsIgnoreCase(XMLtags.color)) {
-	           isColor = true;
-	        } else if (qName.equalsIgnoreCase(XMLtags.singlecoordinate)) {
-	            isSingleCoordinate = true;
-	        } else if (qName.equalsIgnoreCase(XMLtags.shape)) {
-	            isShape = true;
-	        }else if (qName.equalsIgnoreCase(XMLtags.size)) {
-	            isSize = true;
-	        }else if (qName.equalsIgnoreCase(XMLtags.opacity)) {
-	            isOpacity = true;
-	        }else if (qName.equalsIgnoreCase(XMLtags.thickness)) {
-	            isThickness = true;
-	        }else if (qName.equalsIgnoreCase(XMLtags.grid)) {
-	        	this.gridProperty=new GridProperties(); // init GridProperties
-	        }
-	        else if (qName.equalsIgnoreCase(XMLtags.grid_on)) {
-	            isGrid_on = true;
-	        }
-	        else if (qName.equalsIgnoreCase(XMLtags.x)) {
-	            isX = true;
-	        }
-	        else if (qName.equalsIgnoreCase(XMLtags.y)) {
-	            isY = true;
-	        } /*
-	        else if (qName.equalsIgnoreCase(XMLtags.selected_rec)) {
-	            isSelectedRec = true;
-	        }
-	        else if (qName.equalsIgnoreCase(XMLtags.unselected_rec)) {
-	            isUnSelectedRec = true;
-	        }
-*/
-	        else if (qName.equalsIgnoreCase(XMLtags.rec)) {
-	        	if(this.gridProperty != null){
-	        		PositionedRectangle posRec=new PositionedRectangle(
-        			getIntFromString(attributes.getValue(XMLtags.x)),
-        			getIntFromString(attributes.getValue(XMLtags.y)),
-        			getIntFromString(attributes.getValue(XMLtags.width)),
-        			getIntFromString(attributes.getValue(XMLtags.height)),
-        			getIntFromString(attributes.getValue(XMLtags.row)),
-        			getIntFromString(attributes.getValue(XMLtags.column)),
-        			getBooleanFromString(attributes.getValue(XMLtags.selected)));
-	        		this.gridProperty.addSinglePositionedRectangle(posRec);
-	        	}
-	        }
-
-
-        }
-    }
-
-
-
-    @Override
-    public void endElement(String uri, String localName, String qName) throws SAXException {
-        if (qName.equalsIgnoreCase(XMLtags.imagelayer)) {
-            //Got all information for selectedImagelayer -> set null;
-            this.selectedImageLayer = null;
-          //  this.isFoundImageLayer=false;
-        }
-        else if (qName.equalsIgnoreCase(XMLtags.markinglayer)) {
-        	 if(this.selectedImageLayer != null && this.selectedMarkingLayer != null){
-
-
-             	this.selectedImageLayer.addMarkingLayer(this.selectedMarkingLayer);
-             }
-
-        	this.selectedMarkingLayer = null;
-        }
-        else if (qName.equalsIgnoreCase(XMLtags.grid)) {
-       	 if(this.selectedMarkingLayer != null){
-       		 this.selectedMarkingLayer.setGridProperties(this.gridProperty);
-       		 this.gridProperty=null;
-          }
-        }/*
-        else if (qName.equalsIgnoreCase(XMLtags.selected_rec)) {
-          	 isSelectedRec=false;
-
-           }
-        else if (qName.equalsIgnoreCase(XMLtags.unselected_rec)) {
-         	 isUnSelectedRec=false;
-          }
-*/
-    }
-
-    @Override
+	/* (non-Javadoc)
+	 * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+	 */
+	@Override
     public void characters(char ch[], int start, int length) throws SAXException {
 
         if (isColor) {
@@ -220,47 +103,40 @@ public class MarkingsHandler extends DefaultHandler {
         	this.gridProperty.addRowLineY(y);
             isY= false;
         }
-        /*
-        else if (isRec) {
-        		this.gridProperty.addSinglePositionedRectangle(getRectangleFromString(new String(ch, start, length)));
+    }
 
-            isRec= false;
+
+    /* (non-Javadoc)
+     * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Override
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+        if (qName.equalsIgnoreCase(XMLtags.imagelayer)) {
+            //Got all information for selectedImagelayer -> set null;
+            this.selectedImageLayer = null;
+          //  this.isFoundImageLayer=false;
         }
-         */
+        else if (qName.equalsIgnoreCase(XMLtags.markinglayer)) {
+        	 	if(this.selectedImageLayer != null && this.selectedMarkingLayer != null){
+        	 		this.selectedImageLayer.addMarkingLayer(this.selectedMarkingLayer);
+             }
 
+        	this.selectedMarkingLayer = null;
+        }
+        else if (qName.equalsIgnoreCase(XMLtags.grid)) {
+       	 if(this.selectedMarkingLayer != null){
+       		 this.selectedMarkingLayer.setGridProperties(this.gridProperty);
+       		 this.gridProperty=null;
+          }
+        }
     }
-/*
-    private PositionedRectangle getRectangleFromString(String s){
-    	try {
-			if(s != null && s.length()>0 && s.contains(",")){
-				String[] values=s.trim().split(",");
-				if(values.length==6){
-					int x=getIntFromString(values[0]);
-					int y=getIntFromString(values[1]);
-					int w=getIntFromString(values[2]);
-					int h=getIntFromString(values[3]);
-					int r=getIntFromString(values[4]);
-					int c=getIntFromString(values[5]);
-					if(x>=0 && y>=0 && w>0 && h>0 && r>0 && c>0)
-						return new PositionedRectangle(x,y,w,h,r,c,isSelectedRec);
-					else
-						return null;
 
-				}
-				else
-					return null;
-
-			}
-			else
-				return null;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			LOGGER.warning("Rectangle not read from String");
-			return null;
-		}
-
-    }
-*/
+    /**
+     * Returns the boolean from string.
+     *
+     * @param s the String
+     * @return the boolean from string
+     */
     private boolean getBooleanFromString(String s){
     	if(s.equals(XMLtags.value_true))
     		return true;
@@ -268,14 +144,12 @@ public class MarkingsHandler extends DefaultHandler {
     		return false;
     }
 
-    private int getIntFromString(String s){
-    	try {
-			return Integer.parseInt(s);
-		} catch (NumberFormatException e) {
-			LOGGER.fine("Error in converting string to int: " +e.getClass().toString() + " :" +e.getMessage());
-			return -1;
-		}
-    }
+    /**
+     * Returns the float from string.
+     *
+     * @param s the String
+     * @return the float from string
+     */
     private Float getFloatFromString(String s){
     	try {
 			return Float.parseFloat(s);
@@ -285,6 +159,46 @@ public class MarkingsHandler extends DefaultHandler {
 		}
     }
 
+    /**
+     * Returns the ImageLayer.
+     *
+     * @return the ImageLayer
+     */
+    public ImageLayer getImageLayer(){
+    	return this.singleImageLayer;
+    }
+    
+    /**
+     * Returns the list of ImageLayers.
+     *
+     * @return the list of ImageLayers
+     */
+    public ArrayList<ImageLayer> getImageLayerList(){
+    	return this.imageLayerList;
+    }
+
+    /**
+     * Returns the int from string.
+     *
+     * @param s the String
+     * @return the Integer from string
+     */
+    private int getIntFromString(String s){
+    	try {
+			return Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			LOGGER.fine("Error in converting string to int: " +e.getClass().toString() + " :" +e.getMessage());
+			return -1;
+		}
+    }
+
+ 
+    /**
+     * Searches ImageLayer by name.
+     *
+     * @param i_name the name of the ImageLayer
+     * @throws SAXException the SAX exception
+     */
     private void searchImageLayer(String i_name) throws SAXException{
     	try {
     		// selectedImageLayer should be already null,
@@ -317,39 +231,63 @@ public class MarkingsHandler extends DefaultHandler {
 
     }
 
- /*
-    /**
-     * @param mName String MarkingLayer name which will be searched
-     * @return boolean is name found from MarkingLayerlist of selectedImageLayer
+    /* (non-Javadoc)
+     * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
-  /*  private boolean searchMarkingLayer(String mName){
-    	try {
-			if(this.selectedImageLayer != null && this.selectedImageLayer.getMarkingLayers() != null
-					&& this.selectedImageLayer.getMarkingLayers().size()>0){
-				Iterator<MarkingLayer> iIterator = this.selectedImageLayer.getMarkingLayers().iterator();
-				while(iIterator.hasNext()){
-					MarkingLayer ml = (MarkingLayer)iIterator.next();
-					if(ml != null && ml.getLayerName().equalsIgnoreCase(mName)){
-						return true;
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes attributes)
+            throws SAXException {
 
-					}
-				}
-			}
-			return false;
-		} catch (Exception e) {
-			LOGGER.severe("Error in going trough MarkingLayerList: " +e.getClass().toString() + " :" +e.getMessage());
-			return false;
-		}
+        if (qName.equalsIgnoreCase(XMLtags.imagelayer)) {
+            String i_name = attributes.getValue(XMLtags.imagename);
+         // try to find image name from imageLayerList or single Imagelayer -> if found set as selectedImageLayer
+            searchImageLayer(i_name);
 
+        } else if ( this.selectedImageLayer != null) { // go only lower nodes if wanted ImageLayer was found and set as selected
+            //set boolean values for fields, will be used in setting Employee variables
+
+	         if (qName.equalsIgnoreCase(XMLtags.markinglayer)) {
+
+	            //create new markinglayer to add information
+	        	 this.selectedMarkingLayer = new MarkingLayer(attributes.getValue(XMLtags.markingname));
+
+	        } else if (qName.equalsIgnoreCase(XMLtags.color)) {
+	           isColor = true;
+	        } else if (qName.equalsIgnoreCase(XMLtags.singlecoordinate)) {
+	            isSingleCoordinate = true;
+	        } else if (qName.equalsIgnoreCase(XMLtags.shape)) {
+	            isShape = true;
+	        }else if (qName.equalsIgnoreCase(XMLtags.size)) {
+	            isSize = true;
+	        }else if (qName.equalsIgnoreCase(XMLtags.opacity)) {
+	            isOpacity = true;
+	        }else if (qName.equalsIgnoreCase(XMLtags.thickness)) {
+	            isThickness = true;
+	        }else if (qName.equalsIgnoreCase(XMLtags.grid)) {
+	        	this.gridProperty=new GridProperties(); // init GridProperties
+	        }
+	        else if (qName.equalsIgnoreCase(XMLtags.grid_on)) {
+	            isGrid_on = true;
+	        }
+	        else if (qName.equalsIgnoreCase(XMLtags.x)) {
+	            isX = true;
+	        }
+	        else if (qName.equalsIgnoreCase(XMLtags.y)) {
+	            isY = true;
+	        } 
+	        else if (qName.equalsIgnoreCase(XMLtags.rec)) {
+	        	if(this.gridProperty != null){
+	        		PositionedRectangle posRec=new PositionedRectangle(
+        			getIntFromString(attributes.getValue(XMLtags.x)),
+        			getIntFromString(attributes.getValue(XMLtags.y)),
+        			getIntFromString(attributes.getValue(XMLtags.width)),
+        			getIntFromString(attributes.getValue(XMLtags.height)),
+        			getIntFromString(attributes.getValue(XMLtags.row)),
+        			getIntFromString(attributes.getValue(XMLtags.column)),
+        			getBooleanFromString(attributes.getValue(XMLtags.selected)));
+	        		this.gridProperty.addSinglePositionedRectangle(posRec);
+	        	}
+	        }
+        }
     }
- */
-    public ArrayList<ImageLayer> getImageLayerList(){
-    	return this.imageLayerList;
-    }
-
-    public ImageLayer getImageLayer(){
-    	return this.singleImageLayer;
-    }
-
-
 }
