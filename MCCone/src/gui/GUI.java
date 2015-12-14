@@ -91,31 +91,81 @@ public static LogFrame logFrame;
 /** The task manager. Mediates the job to worker classes*/
 public TaskManager taskManager;
 
+/** The menubar. */
 private JMenuBar menubar;
+
+/** The double panel. Contains all panels below menubar. */
 private JSplitPane doublePanel;
+
+/** The left panel.  Contains visualpanel and downBarPanel*/
 protected JPanel leftPanel;
+
+/** The visual panel. Contains the panel showing image, markings, grid.*/
 protected JPanel visualPanel;
+
+/** The down bar panel. Contains zoom slider and button for precounting*/
 protected JPanel downBarPanel;
+
+/** The layers. JLayeredPane containing all panels of visualPanel.*/
 private JLayeredPane layers;
+
+/** The image panel. Shows image*/
 private ImagePanel imagePanel;
+
+/** The right panel. Contains the info of the ImageLayers*/
 private JPanel rightPanel;
-private JPanel layersLabelJPanel;
+
+
+/** The JPAnel for lists of ImageLayerInfos */
 private JPanel layerInfoListJPanel;
+
+/** The JPAnel for button adding Images at rightPanel */
 private JPanel addImageLayerJPanel;
+
+/** The JButton for precounting */
 private JButton preCountButton;
+
+/** The menu_show_all_markings. */
 private JMenuItem menu_show_all_markings;
+
+/** The menu_edit_set_marking_properties. */
 private JMenuItem menu_edit_set_marking_properties;
+
+/** The zoom slider. */
 private JSlider zoomSlider;
+
+/** The zoom value label. */
 private JLabel zoomValueLabel;
+
+/** The listener for GUI. */
 private GUIListener guiListener;
+
+/** The glass pane for precounting. Shows square and round for picking cell */
 private PrecountGlassPane glassPane;
+
+/** The slider panel. */
 private JPanel sliderPanel;
+
+/** The slider listener. */
 private SliderListener sliderListener;
+
+/** The highlight panel. Highligtning drawed on this JPanel.*/
 private HighlightPanel highlightPanel;
+
+/** The grid panel. */
 private GridPanel gridPanel;
+
+/** The right panel width. */
 private int rightPanelWidth=0;
+
+/** The listener for Components of GUI. This is used for getting modality work in linux. 
+ * Manages the printing of child panels, because in linux the modality is not working fully.*/
 private GUIcomponentListener guiComponentListener=null;
+
+/** The shady message dialog. */
 private ShadyMessageDialog shadyMessageDialog=null;
+
+/** The grid dialog. */
 private GridPropertiesPanel gridDialog=null;
 
 
@@ -1363,7 +1413,7 @@ private GridPropertiesPanel gridDialog=null;
 			  this.guiListener.addKeyInputMap(this.rightPanel, ID.RIGHT_PANEL);
 
 			  // panel containing "LAYERS" -JLabel
-			  layersLabelJPanel = new JPanel();
+			  JPanel layersLabelJPanel = new JPanel();
 			  layersLabelJPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 			  layersLabelJPanel.setBackground(Color_schema.imagePanel_bg);
 
