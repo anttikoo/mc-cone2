@@ -12,9 +12,17 @@ import operators.PreCounterThread;
 public class PreCountThreadManager {
 
 	private PreCounterThread preCounter;
+	
+	/** The progress balls dialog. */
 	private ProgressBallsDialog progressBallsDialog;
+	
+	/** The ID of MarkingLayer. */
 	private int mLayerID=-1;
+	
+	/** The ID of ImageLayer. */
 	private int iLayerID=-1;
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
 	/**

@@ -27,11 +27,23 @@ import operators.XMLreadManager;
  * @author Antti Kurronen
  */
 public class TaskManager {
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The XmlReadManager for reading XML. */
 	private XMLreadManager xmlManager;
+	
+	/** The information center. */
 	private InformationCenter informationCenter;
+	
+	/** The layer visual manager. Contains methods for manipulating images. */
 	private LayerVisualManager layerVisualManager;
+	
+	/** The GUI. */
 	private GUI gui; // object of graphical interface
+	
+	/** The PreCountThreadManager for managing precounting process. */
 	private PreCountThreadManager preCountThreadManager = null;
 	
 	

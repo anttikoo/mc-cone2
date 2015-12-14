@@ -36,7 +36,11 @@ import information.ScreenCoordinatesOfMarkingLayer;
  *
  */
 public class LayerVisualManager {
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The image panel dimension. */
 	private Dimension imagePanelDimension; // the dimension of actual size of ImagePanel at screen (the topleft position is always 0,0)
 	
 	//the relative size of ImagePanel referred to actual size of originalImage. Is the dimension of present view of original image

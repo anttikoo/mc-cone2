@@ -16,9 +16,17 @@ import operators.programConsoleHandler;
  *
  */
 public class ProgramLogger {
+  
+  /** The file handler. */
   static private FileHandler fileHandler;
+  
+  /** The console handler. */
   static private ConsoleHandler consoleHandler;
+  
+  /** The system console handler. */
   static private ConsoleHandler systemConsoleHandler;
+  
+  /** The file formatter. */
   static private TextFileFormatter fileFormatter;
 
 
