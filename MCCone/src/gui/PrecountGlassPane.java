@@ -12,7 +12,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.JSplitPane;
@@ -23,7 +22,6 @@ import javax.swing.JSplitPane;
  * Selector contains circle where the cell should be fitted in and around the circle is a rectangle which shouldn't contain other cells.
  */
 public class PrecountGlassPane extends JComponent{
-	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private int rectangleSize=100;
 	private JSplitPane doublePanel;
 	private Point centerPoint=null;
@@ -73,7 +71,6 @@ public class PrecountGlassPane extends JComponent{
 	}
 
 
-
 	/**
 	 * Gets the rectangle size.
 	 *
@@ -90,9 +87,6 @@ public class PrecountGlassPane extends JComponent{
 
 		// 70% transparent Alpha
 		g2d.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER, 0.7F));	
-		//g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9F));		// THIS WORKING ONLY IN WINDOWS
-		//g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7F));			// THIS WORKING IN LINUX
-
 		g2d.setColor(Color_schema.dark_40);
 		g2d.fill(determineRightPanelBounds());
 		g2d.fill(this.menubar.getBounds());

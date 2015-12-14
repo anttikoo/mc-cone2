@@ -3,8 +3,6 @@ package gui;
 import information.Fonts;
 import information.ID;
 import information.MarkingLayer;
-import information.SharedVariables;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -34,8 +32,6 @@ import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.metal.MetalComboBoxUI;
-
-import operators.ShapeDrawer;
 
 /**
  * The Class MarkingProperties. Opens the dialog for setting properties of markings.
@@ -598,6 +594,7 @@ public void setSelectedThickness(int selectedThickness) {
  * which are corresponding to shapeID values of int[] chapeIDs -array.
  * @return JComboBox-object for selecting Shapes of Markings
  */
+@SuppressWarnings("unchecked")
 private JComboBox<Integer> setUpComboBox(){
 
 	try {
@@ -827,6 +824,7 @@ protected void setUpComboBoXPanel(){
 	 * @author Antti Kurronen
 	 *
 	 */
+	@SuppressWarnings("rawtypes")
 	class ComboBoxIconRenderer extends JLabel implements ListCellRenderer {
 
 

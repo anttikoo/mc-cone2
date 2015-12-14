@@ -17,7 +17,7 @@ public class MCCone {
 			
 			@Override
 			public void run() {
-				GUI gui =new GUI();
+				new GUI();
 				
 			}
 		});

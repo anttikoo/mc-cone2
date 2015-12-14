@@ -9,9 +9,6 @@ import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -76,19 +73,14 @@ public class InfoDialog extends PropertiesDialog{
 		URL infoURL = InformationCenter.class.getResource("/information/html/program_info.html");
 		if (infoURL != null) {
 		    try {
-		     // String path = infoURL.getFile();
-		    	String codeString = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html lang=\"en-us\"><title color=\"#EDEDED\">INFO of MC-Cone </title><body text=\"#EDEDED\" bgcolor=\"#282828\"><div><img src=\"/images/MC-Cone_small_200.png\" width=\"171\" height=\"200\" alt=\"MC-Cone icon\" align=\"left\"/><p ><strong>MC-Cone</strong> <br>Version: 0.1 <br></p> </div><div><p>Developed by: Antti Kurronen <br>License: <a href=\"http://www.gnu.org/copyleft/gpl.html\" style=\"color:#FFAD33\">GNU GENERAL PUBLIC LICENSE v3.0</a> <br>Home page: <a href=\"http://mc-cone.com\" style=\"color:#FFAD33\">MC-Cone.com</a><br>Contact: info@mc-cone.com</p></div></body></html>";
-		        
+		     
+		    	String codeString = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html lang=\"en-us\"><title color=\"#EDEDED\">INFO of MC-Cone </title><body text=\"#EDEDED\" bgcolor=\"#282828\"><div><img src=\"/images/MC-Cone_small_200.png\" width=\"171\" height=\"200\" alt=\"MC-Cone icon\" align=\"left\"/><p ><strong>MC-Cone</strong> <br>Version: 0.1 <br></p> </div><div><p>Developed by: Antti Kurronen <br>License: <a href=\"http://www.gnu.org/copyleft/gpl.html\" style=\"color:#FFAD33\">GNU GENERAL PUBLIC LICENSE v3.0</a> <br>Home page: <a href=\"http://mc-cone.com\" style=\"color:#FFAD33\">MC-Cone.com</a><br>Contact: info@mc-cone.com</p></div></body></html>";	        
 		        String imagePath = InformationCenter.class.getResource("/images/MC-Cone_small_200.png").toString();
-		        String codeText = getPageAsString(infoURL.getFile());
 		        String newCodeText= codeString.replaceFirst("/images/MC-Cone_small_200.png", imagePath);
-		       LOGGER.fine("page text: "+codeString+ " imagePath: "+imagePath);
+		        LOGGER.fine("page text: "+codeString+ " imagePath: "+imagePath);
 		        
 		        editor.setText(newCodeText);
-		        
-		     //   editor.setPage(infoURL);
-		        
-		        
+		        		 		        		        
 		    } catch (Exception e) {
 		    	LOGGER.severe("Attempted to read a bad URL: " + infoURL);
 		    }
@@ -181,19 +173,5 @@ public class InfoDialog extends PropertiesDialog{
 		}
 	}
 	
-	private String getPageAsString(String url){
-		StringBuilder contentBuilder = new StringBuilder();
-		try {
-		    BufferedReader in = new BufferedReader(new FileReader(url));
-		    String str;
-		    while ((str = in.readLine()) != null) {
-		        contentBuilder.append(str);
-		    }
-		    in.close();
-		} catch (IOException e) {
-		}
-		return contentBuilder.toString();
-	}
-
 
 }
