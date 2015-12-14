@@ -14,7 +14,11 @@ import javax.swing.JPanel;
  *
  */
 public class ImagePanel extends JPanel {
+	
+	/** The image to be shown. */
 	private BufferedImage image_to_shown;
+	
+	/** The location Point. */
 	private Point location; // the top left corner of image to be drawn
 
 	

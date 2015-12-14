@@ -18,11 +18,23 @@ import operators.ShapeDrawer;
  * The Class HighlightPanel. Draws highlight shape on shape when mouse hovered over.
  */
 public class HighlightPanel extends JPanel{
+	
+	/** The highlighted point. */
 	private Point highlightPoint;
+	
+	/** The thickness. */
 	private float thickness;
+	
+	/** The opacity. */
 	private float opacity;
-	private int shapeID; // ID.SHAPE_CIRCLE, ID.SHAPE_CROSS, etc...
+	
+	/** The shape id. ID.SHAPE_CIRCLE, ID.SHAPE_CROSS, etc... */
+	private int shapeID;
+	
+	/** The Graphics2D object. */
 	private Graphics2D g2d;
+	
+	/** The shape drawer. */
 	private ShapeDrawer shapeDrawer=null;
 
 	/**

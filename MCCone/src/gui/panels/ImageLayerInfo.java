@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package gui.panels;
 
 import gui.Color_schema;
@@ -48,12 +51,26 @@ public class ImageLayerInfo extends JPanel{
 	
 
 private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+
+/** The ID of ImageLayer. */
 private int imageLayerID;
+
+/** The name of ImageLayer. */
 private String imageLayerName;
+
+/** The title panel. */
 private JPanel titlePanel;
+
+/** The title. */
 private JLabel title;
+
+/** The GUI. */
 private GUI gui;
+
+/** The marking area. */
 private JPanel markingArea;
+
+/** The JPanel for Button for adding new MarkingLayer. */
 private JPanel addMarkingLayerJPanel;
 
 	/**

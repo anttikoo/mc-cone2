@@ -18,20 +18,46 @@ import javax.swing.JPanel;
  * Draws lines of grid and grey boxes on unselected grid cells.
  */
 public class GridPanel extends JPanel {
+	
+	/** The grid property. */
 	private GridProperties gridProperty;
+	
+	/** The g2d. */
 	private Graphics2D g2d;
+	
+	/** The back ground color. */
 	private final Color backGroundColor=Color_schema.dark_100;
+	
+	/** The thin line color. */
 	private final Color thinLineColor=Color_schema.white_230;
 	private final Color boldLineColor=Color_schema.dark_30;
+	
+	/** The thin stroke. */
 	private final BasicStroke thinStroke=new BasicStroke(2);
+	
+	/** The bold stroke. */
 	private final BasicStroke boldStroke=new BasicStroke(4);
+	
+	/** The basic_transparency_hard. */
 	private final float basic_transparency_hard=0.7f;
+	
+	/** The basic_transparency_soft. */
 	private final float basic_transparency_soft=0.4f;
+	
+	/** The extra_dim_transparency_hard. */
 	private final float extra_dim_transparency_hard=0.2f;
+	
+	/** The extra_dim_transparency_soft. */
 	private final float extra_dim_transparency_soft=0.1f;
+	
+	/** The used_transparency_hard. */
 	private float used_transparency_hard=basic_transparency_hard;
+	
+	/** The used_transparency_soft. */
 	private float used_transparency_soft=basic_transparency_soft;
-	private boolean showGrid=true; // is grid set as ON
+	
+	/** The show grid. Shows is grid set as ON*/
+	private boolean showGrid=true; 
 
 	/**
 	 * Instantiates a new grid panel.

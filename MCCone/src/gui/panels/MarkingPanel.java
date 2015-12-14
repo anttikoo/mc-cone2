@@ -19,14 +19,32 @@ import operators.ShapeDrawer;
  * The Class MarkingPanel. Draws the markings of single MarkingLayer over image. 
  */
 public class MarkingPanel extends JPanel {
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The id. */
 	private int id;
+	
+	/** The paint color. */
 	private Color paintColor;
+	
+	/** The thickness. */
 	private float thickness;
-	private int shapeID; // ID.SHAPE_CIRCLE, ID.SHAPE_CROSS, etc...
+	
+	/** The shape ID. ID.SHAPE_CIRCLE, ID.SHAPE_CROSS, etc... */
+	private int shapeID; 
+	
+	/** The coordinate list. */
 	private ArrayList<Point> coordinateList;
+	
+	/** The is visible. shows id marking visible. */
 	private boolean isVisible=true;
+	
+	/** The g2d. */
 	private Graphics2D g2d;
+	
+	/** The shape drawer. Used for drawing the marking shapes */
 	private ShapeDrawer shapeDrawer;
 
 
