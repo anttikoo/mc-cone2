@@ -17,13 +17,29 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public class MarkingShape extends JPanel {
+	
+	/** The shape type. */
 	private int shapeType=-1;
+	
+	/** The horizontal position x. */
 	private int x;
+	
+	/** The vertical position y. */
 	private int y;
+	
+	/** The width. */
 	private int width;
+	
+	/** The height. */
 	private int height;
+	
+	/** The color. */
 	private Color color;
+	
+	/** The transparency. */
 	private float transparency;
+	
+	/** The thickness. */
 	private float thickness;
 	
 	public MarkingShape(int type){

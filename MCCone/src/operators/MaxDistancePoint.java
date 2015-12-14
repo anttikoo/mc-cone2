@@ -4,6 +4,8 @@ package operators;
  * The Class MaxDistancePoint.
  */
 public class MaxDistancePoint extends WeightPoint{
+	
+	/** The distance. */
 	private double distance=-1;
 	
 	/**
