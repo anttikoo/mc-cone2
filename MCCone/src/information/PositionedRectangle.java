@@ -6,8 +6,14 @@ import java.awt.Rectangle;
  * The Class PositionedRectangle. Contains data of GRID rectangle: row, column, position and size.
  */
 public class PositionedRectangle extends Rectangle{
+	
+	/** The row position. */
 	private int row;
+	
+	/** The column position. */
 	private int column;
+	
+	/** The selected. */
 	private boolean selected;
 
 	

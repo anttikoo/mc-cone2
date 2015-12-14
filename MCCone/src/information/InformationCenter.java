@@ -14,19 +14,48 @@ import managers.TaskManager;
  * @author Antti
  */
 public class InformationCenter {
+	
+	/** The image layer list. */
 	private ArrayList<ImageLayer> imageLayerList;
+	
+	/** The selected image layer. */
 	private ImageLayer selectedImageLayer;
+	
+	/** The selected marking layer. */
 	private MarkingLayer selectedMarkingLayer;
+	
+	/** The visible marking layer list. */
 	private ArrayList<MarkingLayer> visibleMarkingLayerList;
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
-	private int layerID = 1; // this id is used in identifying ImageLayers and MarkingLayers <-> GUI panels and layers of images and markings
+	
+	/** The layer id. This id is used in identifying ImageLayers and MarkingLayers 
+	 * <-> GUI panels and layers of images and markings. */
+	private int layerID = 1; 
+	
+	/** The present folder. */
 	private String presentFolder;
+	
+	/** The shape list. */
 	private int[] shapeList;
+	
+	/** The next free shape. */
 	private int nextFreeShape=0;
+	
+	/** The color list. */
 	private Color[] colorList;
+	
+	/** The next free color. */
 	private int nextFreeColor=0;
+	
+	/** The present image dimension. */
 	private Dimension presentImageDimension;
+	
+	/** The single grid size list. */
 	private ArrayList<SingleGridSize> singleGridSizeList;
+	
+	/** Shows has made any changes. Using this is not completed. */
 	private boolean madeChanges=false;
 
 

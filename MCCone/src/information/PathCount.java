@@ -4,7 +4,11 @@ package information;
  * The Class PathCount. Contains file path and amount how many times has saved to that path.
  */
 public class PathCount {
+	
+	/** The count. */
 	private int count;
+	
+	/** The folder path. */
 	private String folderPath;
 	
 	

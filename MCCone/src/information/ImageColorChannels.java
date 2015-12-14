@@ -4,12 +4,26 @@ package information;
  * The Class ImageColorChannels. Contains four matrixes collecting each alpha, red, green and blue color values of image pixels. 
  */
 public class ImageColorChannels {
+	
+	/** The alpha. */
 	private int[][] alpha;
+	
+	/** The red. */
 	private int[][] red;
+	
+	/** The green. */
 	private int[][] green;
+	
+	/** The blue. */
 	private int[][] blue;
+	
+	/** The width. */
 	private int width;
+	
+	/** The height. */
 	private int height;
+	
+	/** The use alpha. */
 	private boolean useAlpha=false;
 	
 	/**

@@ -6,8 +6,14 @@ import java.util.ArrayList;
  * The Class LayersOfPath. Contains list of ImageLayers and file path where the data of ImageLayers are saved. 
  */
 public class LayersOfPath {
+	
+	/** The xmlpath. */
 	private String xmlpath;
+	
+	/** The list of ImageLayers. */
 	private ArrayList<ImageLayer> imageLayerList;
+	
+	/** The file state. */
 	private int fileState;
 	
 	/**

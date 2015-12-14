@@ -7,8 +7,12 @@ import java.util.ArrayList;
  * The Class ScreenCoordinatesOfMarkingLayer.
  */
 public class ScreenCoordinatesOfMarkingLayer {
+	
+	/** The list of coordinates. */
 	private ArrayList<Point> coordinates;
-	private int id; // ID of MarkingLayer which coordinate this is
+	
+	/** The id. ID of MarkingLayer which coordinate this is. */
+	private int id; 
 	
 	/**
 	 * Instantiates a new screen coordinates of marking layer.

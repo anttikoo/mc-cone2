@@ -29,17 +29,41 @@ import operators.CoordinateComparator;
 public class MarkingLayer{
 
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The coordinate list. */
 	private ArrayList<Point> coordinateList;
+	
+	/** The layer id. */
 	private int layerID;
+	
+	/** The layer name. */
 	private String layerName;
+	
+	/** The color. */
 	private Color color;
+	
+	/** The shape id. */
 	private int shapeID;
+	
+	/** The size. */
 	private int size; // size of marking
+	
+	/** The thickness. */
 	private int thickness;
+	
+	/** The opacity. */
 	private float opacity;
+	
+	/** The is visible. */
 	private boolean isVisible=true;
+	
+	/** The is selected. */
 	private boolean isSelected=false;
+	
+	/** The grid properties. */
 	private GridProperties gridProperties=null;
+	
+	/** The draw grid to image. */
 	private boolean drawGridToImage=false;
 
 

@@ -9,12 +9,26 @@ import java.util.logging.Logger;
  * The Class ImageLayer. Contains data: unique ID, image paths, MarkingLayers. 
  */
 public class ImageLayer {
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The ID of ImageLayer. */
 	private int layerID;
+	
+	/** The image file path. */
 	private String imageFilePath;
+	
+	/** The markings file path. */
 	private String markingsFilePath;
+	
+	/** The export image path. */
 	private String exportImagePath;
+	
+	/** The marking layer list. */
 	private ArrayList<MarkingLayer> markingLayerList;
+	
+	/** The is selected. */
 	private boolean isSelected=false;
 
 	/**

@@ -7,7 +7,11 @@ import java.awt.image.BufferedImage;
  * The Class PositionedImage. Contains image and its position at window.
  */
 public class PositionedImage {
+	
+	/** The image. */
 	private BufferedImage image = null;
+	
+	/** The position. */
 	private Point position =null;
 	
 	/**
