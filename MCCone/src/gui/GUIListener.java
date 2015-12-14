@@ -35,23 +35,59 @@ import managers.TaskManager;
  *
  */
 public class GUIListener extends MouseInputAdapter {
+	
+	/** The CTRL pressed. */
 	private boolean is_CTRL_pressed = false;
+	
+	/** The space pressed. */
 	private boolean is_SPACE_pressed = false;
+	
+	/** The shift pressed. */
 	private boolean is_SHIFT_pressed=false;
+	
+	/** The is cell picking on. */
 	private boolean isCellPickingON=false;
+	
+	/** The previous dragging point.  */
 	private Point previousDraggingPoint=null;
+	
+	/** The GUI. */
 	private GUI gui;
+	
+	/** The task manager. */
 	private TaskManager taskManager;
+	
+	/** The Timer for activating SPACE. */
 	private Timer timerSPACEactivate;
+	
+	/** The Timer for inactivating SPACE. */
 	private Timer timerSPACEinactivate;
+	
+	/** The Timer for highlighting markings. */
 	private Timer hightLightTimer;
+	
+	/** The Timer for zooming. Zooming operations is restricted to every 100 ms.*/
 	private Timer zoomTimer;
+	
+	/** The content pane. Source from GUI. */
 	private Container contentPane;
+	
+	/** The glass pane. Source from GUI. */
 	private PrecountGlassPane glassPane;
+	
+	/** The JButton for precount. Source from GUI. */
 	private AbstractButton precountButton;
+	
+	/** The image panel. Source from GUI.*/
 	private ImagePanel imagePanel;
+	
+	/** The JLayeredPane for layers. Source from GUI. */
 	private JLayeredPane layers;
+	
+	/** The down bar panel. Source from GUI. */
 	private JPanel downBarPanel;
+	
+	/** The zoom slider. Source from GUI. */
 	private JSlider zoomSlider;
 
 

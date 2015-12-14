@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package gui;
 
 import information.Fonts;
@@ -39,33 +42,93 @@ import javax.swing.plaf.metal.MetalComboBoxUI;
 public class MarkingProperties extends PropertiesDialog {
 		
 	protected final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The GUI. */
 	protected GUI gui;
+	
+	/** The MarkingLayer which is modified. */
 	private MarkingLayer markingLayer;
+	
+	/** The color chooser. */
 	private JColorChooser colorChooser = null;
+	
+	/** The shape icons. List of ShapeIcons */
 	private ShapeIcon shapeIcons[];
+	
+	/** The shape box. JCombobox for shapes. */
 	private JComboBox<Integer> shapeBox;
+	
+	/** The icon_renderer. */
 	private ComboBoxIconRenderer icon_renderer;
+	
+	/** The box and sliders panel. */
 	private JPanel boxAndSlidersPanel;
+	
+	/** The combo box panel. */
 	protected JPanel comboBoxPanel;
+	
+	/** The shape i ds. The list of IDs of shapes  
+	 * ID.SHAPE_CIRCLE, ID.SHAPE_CROSS, 
+	 * ID.SHAPE_DIAMOND, ID.SHAPE_OVAL, 
+	 * ID.SHAPE_PLUS, ID.SHAPE_SQUARE, 
+	 * ID.SHAPE_TRIANGLE. */
 	private int[] shapeIDs;
+	
+	/** The selected color. */
 	protected Color selectedColor;
+	
+	/** The selected size. */
 	protected int selectedSize;
+	
+	/** The selected thickness. */
 	protected int selectedThickness;
+	
+	/** The selected opacity. */
 	protected int selectedOpacity;
+	
+	/** The selected shape id. */
 	protected int selectedShapeID;
+	
+	/** The JPanel for size slider. */
 	private JPanel sizeSliderPanel;
+	
+	/** The opacity slider panel. */
 	private JPanel opacitySliderPanel;
+	
+	/** The thickness slider panel. */
 	private JPanel thicknessSliderPanel;
+	
+	/** The size slider. */
 	private JSlider sizeSlider;
+	
+	/** The opacity slider. */
 	private JSlider opacitySlider;
+	
+	/** The thickness slider. */
 	private JSlider thicknessSlider;
+	
+	/** The size JLabel. */
 	private JLabel sizeJLabel;
+	
+	/** The opacity JLabel. */
 	private JLabel opacityJLabel;
+	
+	/** The thickness JLabel. */
 	private JLabel thicknessJLabel;
+	
+	/** The marking layer list. */
 	protected ArrayList<MarkingLayer> markingLayerList;
+	
+	/** The panel width right. */
 	private int panelWidthRight=400;
+	
+	/** The panel width left. */
 	private int panelWidthLeft=300;
+	
+	/** The layered pane. contains preview panel and the settings panel */
 	protected JLayeredPane layeredPane;
+	
+	/** The preview shapePanel. */
 	private PreviewShapePanel previewShapePanel;
 
 	/**

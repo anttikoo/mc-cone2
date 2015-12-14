@@ -27,6 +27,8 @@ import javax.swing.event.HyperlinkListener;
  * The Class InfoDialog. Opens dialog window for showing information of MC-Cone software.
  */
 public class InfoDialog extends PropertiesDialog{
+	
+	/** The Constant LOGGER. */
 	protected final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
 	public InfoDialog(JFrame frame, GUI gui, Point point) {

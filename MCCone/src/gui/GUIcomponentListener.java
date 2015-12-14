@@ -24,8 +24,10 @@ import gui.saving.ImageSet.ImageSetCreator;
  */
 public class GUIcomponentListener implements ComponentListener{
 
-/** The gui. */
+/** The GUI. */
 private GUI gui;
+
+/** The Timer of waiting for painting. */
 private Timer waitPaintingTimer;
 
 /** The child dialog. */

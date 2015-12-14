@@ -17,10 +17,20 @@ import javax.swing.text.StyledDocument;
  * @author Antti Kurronen
  */
 public class LogFrame extends JFrame{
+	
+	/** The document to be styled. */
 	private StyledDocument document;
+	
+	/** The set_ severe. Styles for SEVERE messages. */
 	private SimpleAttributeSet set_SEVERE;
+	
+	/** The set_ warning. Styles for WARNING messages.*/
 	private SimpleAttributeSet set_WARNING;
+	
+	/** The set_ info. Styles for INFO messages.*/
 	private SimpleAttributeSet set_INFO;
+	
+	/** The set_ fine. Styles for FINE messages.*/
 	private SimpleAttributeSet set_FINE;
 	private JTextPane pane;
 

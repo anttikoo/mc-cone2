@@ -15,6 +15,8 @@ import javax.swing.JPanel;
  *
  */
 public class ContentPane extends JPanel{
+	
+	/** The Constant LOGGER. for Logging purposes */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
 	
