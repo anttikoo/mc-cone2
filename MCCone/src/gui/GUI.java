@@ -810,8 +810,9 @@ private GridPropertiesPanel gridDialog=null;
 
 	/**
 	 * Returns ImageLayer by given ID.
+	 *
 	 * @param iLayerID ID of ImageLayer.
-	 * @return
+	 * @return the ImageLayer by id
 	 */
 	public ImageLayer getImageLayerByID(int iLayerID){
 		return this.taskManager.getImageLayerByID(iLayerID);
@@ -819,8 +820,9 @@ private GridPropertiesPanel gridDialog=null;
 
 	/**
 	 * returns ImageLayer, which has given MarkingLayer (MarkingLayer ID is given).
+	 *
 	 * @param markingLayerID ID of MarkingLayer.
-	 * @return
+	 * @return the ImageLayer by ID of MarkingLayer
 	 */
 	public ImageLayer getImageLayerByMarkingLayerID(int markingLayerID){
 		return this.taskManager.getImageLayerByMarkingLayerID(markingLayerID);
@@ -828,9 +830,10 @@ private GridPropertiesPanel gridDialog=null;
 
 	/**
 	 * Returns the MarkingLayer by given IDs.
+	 *
 	 * @param iLayerID ImageLayerID
 	 * @param mLayerID MarkingLayerID
-	 * @return
+	 * @return the MarkingLayer
 	 */
 	public MarkingLayer getMarkingLayer(int iLayerID, int mLayerID){
 		return this.taskManager.getMarkingLayer(iLayerID, mLayerID);
@@ -2020,7 +2023,8 @@ private void setPropertiesOfAllMarkingPanels(){
 
 /**
  * Updates properties (size, color, thickness ...) of MarkingPanel by fetching updated properties from ImageLayer at InformationCenter.
- * @param mlayerID id for MarkingPanel which properties are updated.
+ *
+ * @param mLayerID the ID of MarkingLayer
  */
 private void setPropertiesOfMarkingPanel(int mLayerID){
 	getMarkingPanelByLayerID(mLayerID).setMarkingPanelProperties(taskManager.getMarkingLayer(mLayerID));

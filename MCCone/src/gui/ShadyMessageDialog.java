@@ -75,8 +75,8 @@ public class ShadyMessageDialog extends JDialog{
 	 * @param dialog the dialog
 	 * @param title the title
 	 * @param message the message
-	 * @param int typeOfButtons the type of buttons ID
-	 * @param Component comp 
+	 * @param typeOfButtons the type of buttons
+	 * @param comp the parent Component
 	 */
 	public ShadyMessageDialog(JDialog dialog, String title, String message, int typeOfButtons, Component comp){
 		super(dialog,true);
@@ -281,7 +281,7 @@ public class ShadyMessageDialog extends JDialog{
 	/**
 	 * Gets the Text of JButton by given ID.
 	 *
-	 * @param ID the id
+	 * @param id the ID
 	 * @return the button text
 	 */
 	protected String getButtonText(int id){

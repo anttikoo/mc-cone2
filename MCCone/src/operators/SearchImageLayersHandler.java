@@ -19,7 +19,9 @@ public class SearchImageLayersHandler extends DefaultHandler {
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	/**
-	 * @param imageLayerList  ArrayList of ImageLayer objects which markings are searched
+	 * Instantiates a new search image layers handler.
+	 *
+	 * @param imageLayerNameList the list of names of ImageLayers
 	 */
 	public SearchImageLayersHandler(ArrayList<String> imageLayerNameList){
 		this.imageLayerNameList=imageLayerNameList;

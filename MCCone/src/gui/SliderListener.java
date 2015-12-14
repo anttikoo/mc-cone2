@@ -18,7 +18,6 @@ import javax.swing.event.MouseInputAdapter;
  * method is invoked. A sliding Timer is started when sliding started. This
  * Timer restricts the updating of the image to every 100 ms.
  *
- * @see SliderEvent
  */
 public class SliderListener extends MouseInputAdapter{
 	private boolean slidingON=false;

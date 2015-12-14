@@ -376,7 +376,8 @@ import javax.swing.SwingUtilities;
 
 		/**
 		 * Converts given File to directory if it is not already one.
-		 * @param f the file that may be file or folder
+		 *
+		 * @param filePath the file path
 		 * @return the folder of given file
 		 */
 		protected File getFolder(String filePath){

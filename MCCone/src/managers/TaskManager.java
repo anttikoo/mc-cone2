@@ -183,8 +183,9 @@ public class TaskManager {
 
 	/**
 	 * Returns ImageLayer by given ID.
+	 *
 	 * @param iLayerID ID of ImageLayer
-	 * @return
+	 * @return the ImageLayer by id
 	 */
 	public ImageLayer getImageLayerByID(int iLayerID) {
 		return informationCenter.getImageLayerByID(iLayerID);
@@ -192,8 +193,9 @@ public class TaskManager {
 
 	/**
 	 * returns ImageLayer, which has given MarkingLayer (MarkingLayer ID is given).
+	 *
 	 * @param markingLayerID ID of MarkingLayer.
-	 * @return
+	 * @return the ImageLayer by MarkingLayer id
 	 */
 	public ImageLayer getImageLayerByMarkingLayerID(int markingLayerID) {
 		return informationCenter.getImageLayerByMarkingLayerID(markingLayerID);
@@ -282,7 +284,6 @@ public class TaskManager {
 	/**
 	 * Returns the refreshed image.
 	 *
-	 * @param processingID the processing id
 	 * @return the refreshed image
 	 */
 	public PositionedImage getRefreshedImage(){

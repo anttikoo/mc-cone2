@@ -21,7 +21,6 @@ import gui.saving.ImageSet.ImageSetCreator;
  * the GUIcomponent event occurs, that object's appropriate
  * method is invoked.
  *
- * @see GUIcomponentEvent
  */
 public class GUIcomponentListener implements ComponentListener{
 

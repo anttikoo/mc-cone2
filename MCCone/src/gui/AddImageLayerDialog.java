@@ -1090,10 +1090,7 @@ private JPanel initImageViewPanel(){
 	}
 
 	/**
-	 *
 	 * Opens a file dialog, which type depends on which file type will be opened.
-	 * @param typeOfFile int ID which has two options: ID.OPEN_IMAGE_FILE or ID.OPEN_MARKING_FILE
-	 * @param pathIfAny String path for image where markings are added. If selecting image file this parameter is null.
 	 */
 	private void selectAndAddImages(){
 		

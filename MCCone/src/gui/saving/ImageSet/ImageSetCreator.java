@@ -529,7 +529,7 @@ private Dimension wgbDimension; // Dimension of whole printable area where image
 
 	/**
 	 * returns a column height of given column number.
-	 * @param row int the column number of grid.
+	 * @param column the column
 	 * @return int the column height
 	 */
 	private int getPanelsColumnHeight(int column){

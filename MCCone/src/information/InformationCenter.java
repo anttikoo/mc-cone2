@@ -14,7 +14,6 @@ import managers.TaskManager;
  * @author Antti
  */
 public class InformationCenter {
-	private TaskManager taskManager;
 	private ArrayList<ImageLayer> imageLayerList;
 	private ImageLayer selectedImageLayer;
 	private MarkingLayer selectedMarkingLayer;
@@ -35,7 +34,6 @@ public class InformationCenter {
 	 *  Class constructor
 	 */
 	public InformationCenter(TaskManager tm){
-		this.taskManager=tm;
 		setUpFreeShapes();
 		setUpFreeColors();
 		this.setImageLayerList(new ArrayList<ImageLayer>());
@@ -764,8 +762,9 @@ public class InformationCenter {
 
 	/**
 	 * returns ImageLayer by given ImageLayer ID.
+	 *
 	 * @param ilayerID ID of ImageLayer
-	 * @return
+	 * @return the ImageLayer by id
 	 */
 	public ImageLayer getImageLayerByID(int ilayerID){
 		try {

@@ -257,9 +257,10 @@ public class ImageLayer {
 	}
 
 	/**
-	 * Return true if found MaerkingLayer ID from markingLayerList of this ImageLayer.
+	 * Return true if found ID of MarkingLayer from markingLayerList of this ImageLayer.
+	 *
 	 * @param mLayerID ID of MarkingLayer
-	 * @return
+	 * @return true, if found MarkingLayer
 	 */
 	public boolean hasMarkingLayer(int mLayerID){
 		if(getMarkingLayer(mLayerID) != null)

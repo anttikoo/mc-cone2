@@ -22,7 +22,6 @@ import javax.swing.text.PlainDocument;
  * the arrowMouse event occurs, that object's appropriate
  * method is invoked.
  *
- * @see ArrowMouseEvent
  */
 public class ArrowMouseListener implements MouseListener {
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");

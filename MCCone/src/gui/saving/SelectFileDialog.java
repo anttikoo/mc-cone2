@@ -69,8 +69,11 @@ public class SelectFileDialog extends JDialog{
 
 	/**
 	 * Class constructor for Dialog. The Dialog is JFilechooser which gives to select image files
+	 *
 	 * @param frame owner frame
-	 * @param comp parent JComponent which called this constructor
+	 * @param path the path
+	 * @param backPanel the back panel
+	 * @param fileType the file type
 	 */
 	public SelectFileDialog(JFrame frame, String path, JComponent backPanel, int fileType){
 		super(frame, true);
@@ -396,7 +399,8 @@ private void setTextOfJTextFieldFromFileChooser(JFileChooser chooser, String tex
 
 	/**
 	 * Converts given File to directory if it is not already one.
-	 * @param f the file that may be file or folder
+	 *
+	 * @param filePath the file path
 	 * @return the folder of given file
 	 */
 	private File getFolder(String filePath){

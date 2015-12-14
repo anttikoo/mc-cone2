@@ -504,7 +504,8 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		return count_selected;		
 	}
 	
-	/** 
+	/**
+	 *  
 	 * Returns first Gridproperties of any markinglayers. 
 	 * First searching visible Gridproperties from MarkingLayers, which Gridproperties are modified at same time.
 	 * Then searching unvisible Gridproperties from MarkingLayers, which Gridproperties are modified at same time.
@@ -513,11 +514,11 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * Then searching visible Gridproperties from MarkingLayers under other Imagelayers.
 	 * Then searching unvisible Gridproperties under same Imagelayer.
 	 * Otherwise any Gridproperties is returned if found. If no any Gridproperties is not found, null is returned.
+	 *
+	 * @param r the row
+	 * @param c the column
 	 * @return Gridproperties
 	 * @see GridProperties
-	 */
-	/**
-	 * @return
 	 */
 	private GridProperties getFirstGridPropertiesFromAllMarkingLayers(int r, int c){
 		boolean checkRandomProcent=false;

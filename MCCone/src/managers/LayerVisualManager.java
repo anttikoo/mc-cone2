@@ -436,8 +436,7 @@ public class LayerVisualManager {
 	 * Calculates and creates a new image to be shown in ImagePanel when dragged layers.
 	 *
 	 * @param movement the Point where position of image is moved at screen
-	 * @param processingID the processing id
-	 * @return the positioned image
+	 * @return the PositionedImage
 	 */
 	public PositionedImage dragLayers(Point movement){
 		try {
