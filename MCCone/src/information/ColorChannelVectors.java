@@ -4,15 +4,33 @@ package information;
  * The Class ColorChannelVectors. Collects data from colors separated to red, green and blue.
  */
 public class ColorChannelVectors {
-	private int[] red_original;    // original red colors
-	private int[] green_original;  // original green colors
-	private int[] blue_original;   // original blue colors
+	
+	/** The red_original. Original red colors. */
+	private int[] red_original;    
+	
+	/** The green_original. Original green colors. */
+	private int[] green_original;  
+	
+	/** The blue_original. Original blue colors. */
+	private int[] blue_original;   
+	
+	/** The full color int_original. */
 	private int[] fullColorInt_original;
-	private double[] alpha_ma; //vector of moved average of alphas
-	private double[] red_ma;   //vector of moved average of red
-	private double[] green_ma; //vector of moved average of green
-	private double[] blue_ma;  //vector of moved average of blue
-	private int size; //size of vector
+	
+	/** The alpha_ma. Vector of moved average of alphas. */
+	private double[] alpha_ma; //
+	
+	/** The red_ma. Vector of moved average of red. */
+	private double[] red_ma;   
+	
+	/** The green_ma. Vector of moved average of green. */
+	private double[] green_ma; 
+	
+	/** The blue_ma.Vector of moved average of blue. */
+	private double[] blue_ma;  
+	
+	/** The size. Size of vector. */
+	private int size; 
 	
 	/**
 	 * Instantiates a new color channel vectors.

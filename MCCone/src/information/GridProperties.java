@@ -15,36 +15,55 @@ import java.util.logging.Logger;
  *
  */
 public class GridProperties {
-	private boolean gridON;
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The grid on. */
+	private boolean gridON;
+	
+	/** The row line y. */
 	private ArrayList<Integer> rowLineY;
-
+	
+	/** The column line x. */
 	private ArrayList<Integer> columnLineX;
+	
+	/** The positioned rectangle list. */
 	private ArrayList<PositionedRectangle> positionedRectangleList;
-//	private ArrayList<Rectangle> selectedRectangles;
-//	private ArrayList<Rectangle> unselectedRectangles;
-	private int verticalLineLength=0; // used for restrict the vertical line length
-	private int horizontalLineLength=0; // used for restrict the horizontal line length
+	
+	/** The vertical line length. Used for restrict the vertical line length. */
+	private int verticalLineLength=0; 
+	
+	/** The horizontal line length. Used for restrict the horizontal line length. */
+	private int horizontalLineLength=0; 
+	
+	/** The present image dimension. */
 	private Dimension presentImageDimension=null;
-	private int randomProcent=50;
-//	private ArrayList<Integer> unselectedGridCellNumbers;
+	
+	/** The random percent. */
+	private int randomPercent=50;
 
 
-	public int getRandomProcent() {
-		return randomProcent;
+	/**
+	 * Instantiates a new grid properties.
+	 */
+	public GridProperties(){
+		setGridON(false);
+		this.rowLineY = new ArrayList<Integer>();
+		this.columnLineX = new ArrayList<Integer>();
+		this.positionedRectangleList=new ArrayList<PositionedRectangle>();
+
 	}
 
-	public void setRandomProcent(int randomProcent) {
-		this.randomProcent = randomProcent;
-	}
-
+	/**
+	 * Instantiates a new grid properties.
+	 *
+	 * @param iDimension the i dimension
+	 */
 	public GridProperties(Dimension iDimension){
 		setGridON(false);
 		this.rowLineY = new ArrayList<Integer>();
 		this.columnLineX = new ArrayList<Integer>();
-	//	this.selectedRectangles=new ArrayList<Rectangle>();
-	//	this.unselectedRectangles=new ArrayList<Rectangle>();
-	//	this.unselectedGridCellNumbers = new ArrayList<Integer>();
 		this.positionedRectangleList=new ArrayList<PositionedRectangle>();
 		if(iDimension != null){
 			this.setPresentImageDimension(iDimension);
@@ -53,217 +72,41 @@ public class GridProperties {
 		}
 	}
 
-	public GridProperties(){
-		setGridON(false);
-		this.rowLineY = new ArrayList<Integer>();
-		this.columnLineX = new ArrayList<Integer>();
-	//	this.selectedRectangles=new ArrayList<Rectangle>();
-	//	this.unselectedRectangles=new ArrayList<Rectangle>();
-	//	this.unselectedGridCellNumbers = new ArrayList<Integer>();
-		this.positionedRectangleList=new ArrayList<PositionedRectangle>();
-
-	}
-
-
-/*
-	public GridProperties(ArrayList<Integer> yc, ArrayList<Integer> xc, boolean on){
-		setGridON(on);
-		this.rowLineY=yc;
-		this.columnLineX=xc;
-	}
-
-	public GridProperties(ArrayList<Integer> yc, ArrayList<Integer> xc, boolean on, ArrayList<Rectangle> selectedRectangles,ArrayList<Rectangle> unselectedRectangles){
-		setGridON(on);
-		this.rowLineY=yc;
-		this.columnLineX=xc;
-		this.selectedRectangles=selectedRectangles;
-		this.unselectedRectangles=unselectedRectangles;
-		this.unselectedGridCellNumbers=new ArrayList<Integer>();
-	}
-*/
-	public void addRowLineY(int y){
-		this.rowLineY.add(y);
-	}
-
+	/**
+	 * Adds the column line at horizonal position x.
+	 *
+	 * @param x the x
+	 */
 	public void addColumnLineX(int x){
 		this.columnLineX.add(x);
 	}
 
-	public void setRowLinesYList(ArrayList<Integer> yList) {
-		this.rowLineY = yList;
-	}
 
-	public ArrayList<Integer> getColumnLineXs() {
-		return columnLineX;
-	}
-
-	public void setColumnLinesXList(ArrayList<Integer> xlist) {
-		this.columnLineX = xlist;
-	}
-
-	public ArrayList<Integer> getRowLineYs() {
-		return rowLineY;
-	}
-
-	public boolean isGridON() {
-		return gridON;
-	}
-
-	public void setGridON(boolean gridON) {
-		this.gridON = gridON;
-	}
-
-	public int getGridRowCount(){
-		if(this.rowLineY != null && this.rowLineY.size()>0)
-		return this.rowLineY.size()-1;
-		else
-			return 0;
-	}
-
-	public int getGridColumnCount(){
-		if(this.columnLineX != null && this.columnLineX.size()>0)
-		return this.columnLineX.size()-1;
-		else
-			return 0;
-	}
-/*
-	public void addUnselectedRectangle(Rectangle rec){
-		this.unselectedRectangles.add(rec);
-	}
-
-	public void addSelectedRectangle(Rectangle rec){
-		this.selectedRectangles.add(rec);
-	}
-
-	public ArrayList<Rectangle> getUnselectedRectangles() {
-		return unselectedRectangles;
-	}
-
-	public ArrayList<Rectangle> getselectedRectangles() {
-		return selectedRectangles;
-	}
-
-	public void setUnselectedRectangles(ArrayList<Rectangle> unselectedRectangles) {
-		this.unselectedRectangles = unselectedRectangles;
-	}
-
-	public void setSelectedRectangles(ArrayList<Rectangle> sRectangles) {
-		this.selectedRectangles = sRectangles;
-	}
-
-	public void setUnselectedRectangleNumbers(ArrayList<Integer> unselectedRectangleNumbers) {
-		this.unselectedGridCellNumbers = unselectedRectangleNumbers;
-	}
-*/
-	public int getHorizontalLineLength() {
-		return horizontalLineLength;
-	}
-
-	public void setHorizontalLineLength(int l) {
-		this.horizontalLineLength = l;
-	}
-
-	public int getVerticalLineLength() {
-		return verticalLineLength;
-	}
-
-	public void setVerticalLineLength(int l) {
-		this.verticalLineLength = l;
-	}
-/*
-	public ArrayList<Integer> getUnselectedGridCellNumbers() {
-		return unselectedGridCellNumbers;
-	}
-
-	public void addUnselectedGridCellNumbers(int number) {
-		this.unselectedGridCellNumbers.add(number);
-	}
-
-	public boolean hasUnselectedGridCellNumber(int n){
-		Iterator<Integer> iIterator =this.unselectedGridCellNumbers.iterator();
-		while(iIterator.hasNext()){
-			if(iIterator.next() == n)
-				return true;
-		}
-		return false;
-	}
-*/
-	public boolean isSelectedGridCellAt(int r, int c){
-		Iterator<PositionedRectangle> iIterator =this.positionedRectangleList.iterator();
-		while(iIterator.hasNext()){
-			PositionedRectangle pr= iIterator.next();
-			if(pr.hasPosition(r, c))
-				return pr.isSelected();
-		}
-		return false;
-
-	}
-/*
-	public boolean isPointInsideSelectedRectangle(Point p){
-		return isPointInsideAnyRectangle(p, this.selectedRectangles);
-	}
-
-	public boolean isPointInsideUnSelectedRectangle(Point p){
-		return isPointInsideAnyRectangle(p, this.unselectedRectangles);
-	}
-*/
-	public boolean isPointInsideSelectedRectangle(Point p){
-		return isPointInsideAnyRectangle(p, true);
-	}
-
-	public boolean isPointInsideUnSelectedRectangle(Point p){
-		return isPointInsideAnyRectangle(p, false);
-	}
-
-	private boolean isPointInsideAnyRectangle(Point p, boolean searchSelected){
-		if(this.positionedRectangleList != null && positionedRectangleList.size()>0){
-			Iterator<PositionedRectangle> rIterator = this.positionedRectangleList.iterator();
-			while(rIterator.hasNext()){
-				PositionedRectangle pr=rIterator.next();
-				if(pr.contains(p)){
-					if(searchSelected){
-						if(pr.isSelected())
-							return true;
-						else
-							return false;
-					}
-					else{
-						if(pr.isSelected())
-							return false;
-						else
-							return true;
-					}
-
-				}
-			}
-		}
-		return false;
-
-	}
-/*
-	private boolean isPointInsideAnyRectangle(Point p, ArrayList<Rectangle> recList){
-		if(recList != null && recList.size()>0){
-			Iterator<Rectangle> rIterator = recList.iterator();
-			while(rIterator.hasNext()){
-				if(rIterator.next().contains(p))
-					return true;
-
-			}
-		}
-		return false;
-
-	}
-
-	public double calculateSelectedAndUnselectedRectangleRelation(){
-		if(this.selectedRectangles.size()>0)
-			return ((double)this.selectedRectangles.size()+(double)this.unselectedRectangles.size())/(double)this.selectedRectangles.size();
-		else
-			return 0;
-	}
-*/
 	/**
-	 *  Counts
-	 * @return double value multiplyer
+	 * Adds the row line at vertical position y.
+	 *
+	 * @param y the y
+	 */
+	public void addRowLineY(int y){
+		this.rowLineY.add(y);
+	}
+
+
+/**
+ * Adds the single positioned rectangle.
+ *
+ * @param positionedRectangle the positioned rectangle
+ */
+public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle) {
+		this.positionedRectangleList.add(positionedRectangle);
+	}
+
+
+	
+	/**
+	 * Calculates selected rectangle area relation.
+	 *
+	 * @return the double
 	 */
 	public double calculateSelectedRectangleAreaRelation(){
 		
@@ -282,15 +125,8 @@ public class GridProperties {
 					count_selected++;
 				else
 					count_unselected++;
-
-
 			}
-			/*
-			if(count_selected>0)
-				return ((double)count_selected+(double)count_unselected)/(double)count_selected;
-			else
-				return 0;
-				*/
+			
 			if(this.presentImageDimension != null &&  pRectangleDimension != null && count_selected>0){
 				return (((double)count_selected+(double)count_unselected)/(double)count_selected)*
 						((this.presentImageDimension.getWidth()*this.presentImageDimension.getHeight())/
@@ -322,15 +158,18 @@ public class GridProperties {
 				rec.setSelected(!rec.isSelected());
 				
 				//update the percentValue to round to the nearest multiple of 5
-				this.randomProcent= (int)((Math.round((((double)countSelectedRectangles())/ ((double)this.positionedRectangleList.size())*100))/5)*5);
+				this.randomPercent= (int)((Math.round((((double)countSelectedRectangles())/ ((double)this.positionedRectangleList.size())*100))/5)*5);
 
-				//this.randomProcent= (int)(Math.ceil(((double)countSelectedRectangles())/ ((double)this.positionedRectangleList.size())*100));
-
+				
 			}
 		}
 	}
-	
 
+	/**
+	 * Counts amount of selected rectangles.
+	 *
+	 * @return the int
+	 */
 	private int countSelectedRectangles(){
 		if(this.positionedRectangleList != null && this.positionedRectangleList.size()>0){
 			int counter=0;
@@ -347,19 +186,215 @@ public class GridProperties {
 		return 0;
 	}
 
+	/**
+	 * Returns the column line xs.
+	 *
+	 * @return the column line xs
+	 */
+	public ArrayList<Integer> getColumnLineXs() {
+		return columnLineX;
+	}
+
+	/**
+	 * Returns the grid column count.
+	 *
+	 * @return the grid column count
+	 */
+	public int getGridColumnCount(){
+		if(this.columnLineX != null && this.columnLineX.size()>0)
+		return this.columnLineX.size()-1;
+		else
+			return 0;
+	}
+
+	/**
+	 * Returns the grid row count.
+	 *
+	 * @return the grid row count
+	 */
+	public int getGridRowCount(){
+		if(this.rowLineY != null && this.rowLineY.size()>0)
+		return this.rowLineY.size()-1;
+		else
+			return 0;
+	}
+
+
+	/**
+	 * Returns the horizontal line length.
+	 *
+	 * @return the horizontal line length
+	 */
+	public int getHorizontalLineLength() {
+		return horizontalLineLength;
+	}
+
+	/**
+	 * Returns the positioned rectangle list.
+	 *
+	 * @return the positioned rectangle list
+	 */
 	public ArrayList<PositionedRectangle> getPositionedRectangleList() {
 		return positionedRectangleList;
 	}
-	public void setPositionedRectangleList(ArrayList<PositionedRectangle> positionedRectangleList) {
-		this.positionedRectangleList = positionedRectangleList;
-	}
 
-	public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle) {
-		this.positionedRectangleList.add(positionedRectangle);
-	}
+	/**
+	 * Returns the present image dimension.
+	 *
+	 * @return the present image dimension
+	 */
 	public Dimension getPresentImageDimension() {
 		return presentImageDimension;
 	}
+	
+	/**
+	 * Returns the random procent.
+	 *
+	 * @return the random procent
+	 */
+	public int getRandomProcent() {
+		return randomPercent;
+	}
+
+	/**
+	 * Returns the row line ys.
+	 *
+	 * @return the row line ys
+	 */
+	public ArrayList<Integer> getRowLineYs() {
+		return rowLineY;
+	}
+
+	/**
+	 * Returns the vertical line length.
+	 *
+	 * @return the vertical line length
+	 */
+	public int getVerticalLineLength() {
+		return verticalLineLength;
+	}
+
+	/**
+	 * Checks if is grid visible (ON).
+	 *
+	 * @return true, if is grid on
+	 */
+	public boolean isGridON() {
+		return gridON;
+	}
+	
+	/**
+	 * Checks if is point inside any rectangle.
+	 *
+	 * @param p the Point
+	 * @param searchSelected the search selected
+	 * @return true, if is point inside any rectangle
+	 */
+	private boolean isPointInsideAnyRectangle(Point p, boolean searchSelected){
+		if(this.positionedRectangleList != null && positionedRectangleList.size()>0){
+			Iterator<PositionedRectangle> rIterator = this.positionedRectangleList.iterator();
+			while(rIterator.hasNext()){
+				PositionedRectangle pr=rIterator.next();
+				if(pr.contains(p)){
+					if(searchSelected){
+						if(pr.isSelected())
+							return true;
+						else
+							return false;
+					}
+					else{
+						if(pr.isSelected())
+							return false;
+						else
+							return true;
+					}
+
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if is point inside selected rectangle.
+	 *
+	 * @param p the Point
+	 * @return true, if is point inside selected rectangle
+	 */
+	public boolean isPointInsideSelectedRectangle(Point p){
+		return isPointInsideAnyRectangle(p, true);
+	}
+
+	/**
+	 * Checks if is point inside un selected rectangle.
+	 *
+	 * @param p the p
+	 * @return true, if is point inside un selected rectangle
+	 */
+	public boolean isPointInsideUnSelectedRectangle(Point p){
+		return isPointInsideAnyRectangle(p, false);
+	}
+
+
+	/**
+	 * Checks if is selected grid cell at.
+	 *
+	 * @param r the row
+	 * @param c the column
+	 * @return true, if is selected grid cell at
+	 */
+	public boolean isSelectedGridCellAt(int r, int c){
+		Iterator<PositionedRectangle> iIterator =this.positionedRectangleList.iterator();
+		while(iIterator.hasNext()){
+			PositionedRectangle pr= iIterator.next();
+			if(pr.hasPosition(r, c))
+				return pr.isSelected();
+		}
+		return false;
+	}
+
+	/**
+	 * Sets the column lines x list.
+	 *
+	 * @param xlist the new column lines x list
+	 */
+	public void setColumnLinesXList(ArrayList<Integer> xlist) {
+		this.columnLineX = xlist;
+	}
+
+	/**
+	 * Sets the grid on.
+	 *
+	 * @param gridON the new grid on
+	 */
+	public void setGridON(boolean gridON) {
+		this.gridON = gridON;
+	}
+	
+
+	/**
+	 * Sets the horizontal line length.
+	 *
+	 * @param l the new horizontal line length
+	 */
+	public void setHorizontalLineLength(int l) {
+		this.horizontalLineLength = l;
+	}
+
+	/**
+	 * Sets the positioned rectangle list.
+	 *
+	 * @param positionedRectangleList the new positioned rectangle list
+	 */
+	public void setPositionedRectangleList(ArrayList<PositionedRectangle> positionedRectangleList) {
+		this.positionedRectangleList = positionedRectangleList;
+	}
+	
+	/**
+	 * Sets the present image dimension.
+	 *
+	 * @param presentImageDimension the new present image dimension
+	 */
 	public void setPresentImageDimension(Dimension presentImageDimension) {
 		this.presentImageDimension = presentImageDimension;
 
@@ -367,7 +402,31 @@ public class GridProperties {
 		this.verticalLineLength=presentImageDimension.height;
 	}
 
-
-
+	/**
+	 * Sets the random procent.
+	 *
+	 * @param randomProcent the new random procent
+	 */
+	public void setRandomProcent(int randomProcent) {
+		this.randomPercent = randomProcent;
+	}
+	
+	/**
+	 * Sets the row lines y list.
+	 *
+	 * @param yList the new row lines y list
+	 */
+	public void setRowLinesYList(ArrayList<Integer> yList) {
+		this.rowLineY = yList;
+	}
+	
+	/**
+	 * Sets the vertical line length.
+	 *
+	 * @param l the new vertical line length
+	 */
+	public void setVerticalLineLength(int l) {
+		this.verticalLineLength = l;
+	}
 
 }
