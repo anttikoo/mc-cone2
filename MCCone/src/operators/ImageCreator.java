@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package operators;
 
 import gui.Color_schema;
@@ -32,19 +35,43 @@ import com.sun.media.jai.codec.TIFFEncodeParam;
  */
 public class ImageCreator implements Runnable {
 
+	/** The size multiplier. */
 	private double sizeMultiplier;
+	
+	/** The task manager. */
 	private TaskManager taskManager;
-	//for creating ImageSet in thread
+	
+	/** The gap. */
 	private int gap;
+	
+	/** The rows. */
 	private int rows;
+	
+	/** The columns. */
 	private int columns;
+	
+	/** The list of SingleDrawImagePanels. */
 	private ArrayList<SingleDrawImagePanel> sdpList;
+	
+	/** The image dimension. */
 	private Dimension imageDimension;
+	
+	/** The single image dimension. */
 	private Dimension singleImageDimension;
+	
+	/** The path of exported image. */
 	private String path;
+	
+	/** The continue creating. */
 	private boolean continueCreating=false;
+	
+	/** The image set created successfully. */
 	private boolean imageSetCreatedSuccessfully=false;
+	
+	/** The Thread of creating set of images. */
 	private Thread imageSetCreatorThread;
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	/**

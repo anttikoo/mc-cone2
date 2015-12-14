@@ -18,20 +18,49 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class MarkingsHandler extends DefaultHandler {
 
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The image layer list. */
 	private ArrayList<ImageLayer> imageLayerList = null;
+	
+	/** The single image layer. */
 	private ImageLayer singleImageLayer=null;
+	
+	/** The selected image layer. */
 	private ImageLayer selectedImageLayer=null;
+	
+	/** The selected marking layer. */
 	private MarkingLayer selectedMarkingLayer=null;
+	
+	/** The grid property. */
 	private GridProperties gridProperty=null;
+	
+	/** The is color. */
 	private boolean isColor =false;
+	
+	/** The is single coordinate. */
 	private boolean isSingleCoordinate =false;
+	
+	/** The is thickness. */
 	private boolean isThickness =false;
+	
+	/** The is opacity. */
 	private boolean isOpacity =false;
+	
+	/** The is size. */
 	private boolean isSize =false;
+	
+	/** The is shape. */
 	private boolean isShape =false;
+	
+	/** The is grid_on. */
 	private boolean isGrid_on=false;
+	
+	/** The is column line. */
 	private boolean isX =false;
+	
+	/** The is row line. */
 	private boolean isY =false;
 	
 	/**

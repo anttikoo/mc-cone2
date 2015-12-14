@@ -11,6 +11,8 @@ import javax.swing.ImageIcon;
  * The Class GetResources. A Helper class for getting ImageIcon from given path.
  */
 public class GetResources {
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	/**
