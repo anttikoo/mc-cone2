@@ -6,7 +6,6 @@ import gui.ProgressBallsDialog;
  * The Class ImageImportCancelerThread. This Class is unused in version 0.1. Probably used in future releases.
  */
 public class ImageImportCancelerThread implements Runnable{
-private ImageSetCreator ics;
 private ProgressBallsDialog progressBalls;
 private Thread progressThread;
 private boolean cancelled=false;
@@ -19,7 +18,6 @@ private boolean cancelled=false;
 	 * @param pbd the pbd
 	 */
 	public ImageImportCancelerThread(ImageSetCreator isc, ProgressBallsDialog pbd){
-	this.ics=isc;
 	this.progressBalls= pbd;
 	this.progressThread=new Thread(this, "cancelling");
 	}

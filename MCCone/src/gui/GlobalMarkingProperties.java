@@ -3,22 +3,15 @@ package gui;
 import information.Fonts;
 import information.ID;
 import information.MarkingLayer;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-
 
 /**
  * 

@@ -3,7 +3,6 @@ package gui.saving.ImageSet;
 import gui.Color_schema;
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -137,7 +136,6 @@ public class SingleImage extends JComponent implements MouseListener{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d= (Graphics2D)g;
-		final Composite c = g2d.getComposite();
 	     g2d.setPaint(new Color(0,0,0,255));
          g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC, 1.0f));
 		if(this.image_to_shown != null){

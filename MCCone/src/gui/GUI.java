@@ -23,7 +23,6 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.KeyboardFocusManager;
@@ -155,10 +154,10 @@ private GridPropertiesPanel gridDialog=null;
 			
 			/*
 			 * FOR TESTING PURPOSES -> opens an image automatically -> path of image hard coded.
-			 *	
+			 *	testing();
 			 *  
 			 */
-			testing();
+			
 			
 			
 			LOGGER.info("Started MCcone! All OK.");	
@@ -704,7 +703,7 @@ private GridPropertiesPanel gridDialog=null;
 	private void exportImageSet(){
 
 			
-			@SuppressWarnings("unused")
+			
 			ImageSetCreator iCreator=new ImageSetCreator(this, this.taskManager, this);
 			this.guiComponentListener.setChildDialog(iCreator);
 			iCreator.showDialog();
@@ -722,8 +721,8 @@ private GridPropertiesPanel gridDialog=null;
 	public void exportResults(int id){
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
 
-			@SuppressWarnings("unused")
-			ExportResults exp = new ExportResults(this, this, taskManager.getImageLayerList(), id);
+			
+			 new ExportResults(this, this, taskManager.getImageLayerList(), id);
 		}
 		else{
 			showMessage( "Not starting saving", "Not saved markings, because no markings were found", ID.OK);
@@ -1520,7 +1519,7 @@ private GridPropertiesPanel gridDialog=null;
 
 			// open dialog for selecting files
 		//	JFrame dialogFrame = new JFrame("DialogFrame");
-			@SuppressWarnings("unused")
+		
 			AddImageLayerDialog addImage = new AddImageLayerDialog(this, this, taskManager.getImageLayerList());
 			this.guiComponentListener.setChildDialog(addImage);
 			addImage.showDialog();
@@ -1547,7 +1546,7 @@ private GridPropertiesPanel gridDialog=null;
 			}
 			else{
 			//	JFrame dialogFrame = new JFrame("DialogFrame");
-				@SuppressWarnings("unused")
+				
 				AddImageLayerDialog addImageDialog = new AddImageLayerDialog(this, this);
 				this.guiComponentListener.setChildDialog(addImageDialog);
 				addImageDialog.showDialog();

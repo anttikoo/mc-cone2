@@ -10,20 +10,14 @@ import information.InformationCenter;
 import information.MarkingLayer;
 import information.PositionedImage;
 import information.ScreenCoordinatesOfMarkingLayer;
-
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.JFrame;
-
 import org.imgscalr.Scalr;
-
 import operators.PreCounterThread;
 import operators.XMLreadManager;
 

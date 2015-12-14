@@ -1306,6 +1306,7 @@ private Dimension wgbDimension; // Dimension of whole printable area where image
 	/**
 	 *  Initializes the JCombobox showning available fonts for imageNames.
 	 */
+	@SuppressWarnings("unchecked")
 	private void  setUpFontBox(){
 
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -1318,8 +1319,6 @@ private Dimension wgbDimension; // Dimension of whole printable area where image
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (drawImagePanels != null && drawImagePanels.size()>0  && e.getStateChange() == ItemEvent.SELECTED) {
-                    final String fontName = fontsBox.getSelectedItem().toString();
-                 //   fontsBox.setFont(new Font(fontName, Font.PLAIN, 16));
                     updatePanelFonts();
                     refreshGridPanelSizes();
                 }
@@ -1518,21 +1517,25 @@ private Dimension wgbDimension; // Dimension of whole printable area where image
 	private class ComboRenderer extends BasicComboBoxRenderer {
 
 	    private static final long serialVersionUID = 1L;
-	    private JComboBox comboBox;
-	    final DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+	    @SuppressWarnings("rawtypes")
+		private JComboBox comboBox;
+	    @SuppressWarnings("unused")
+		final DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 	    private int row;
 
-	    private ComboRenderer(JComboBox fontsBox) {
+	    @SuppressWarnings("rawtypes")
+		private ComboRenderer(JComboBox fontsBox) {
 	        comboBox = fontsBox;
 	    }
 
-	    @Override
+	    @SuppressWarnings("rawtypes")
+		@Override
 	    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 	        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 	        if (list.getModel().getSize() > 0) {
 	            manItemInCombo();
 	        }
-	        final JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, row, isSelected, cellHasFocus);
+	    //    final JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, row, isSelected, cellHasFocus);
 	        final Object fntObj = value;
 	        final String fontFamilyName = (String) fntObj;
 	        setFont(new Font(fontFamilyName, Font.PLAIN, 16));
@@ -1542,7 +1545,8 @@ private Dimension wgbDimension; // Dimension of whole printable area where image
 	    /**
 	     * Determines the Scrollpane list and selected row for JCombobox.
 	     */
-	    private void manItemInCombo() {
+	    @SuppressWarnings({ "rawtypes", "unchecked" })
+		private void manItemInCombo() {
 	        if (comboBox.getItemCount() > 0) {
 	            final Object comp = comboBox.getUI().getAccessibleChild(comboBox, 0);
 	            if ((comp instanceof JPopupMenu)) {
@@ -1550,7 +1554,7 @@ private Dimension wgbDimension; // Dimension of whole printable area where image
 	                final JPopupMenu popup = (JPopupMenu) comp;
 	                final JScrollPane scrollPane = (JScrollPane) popup.getComponent(0);
 	                final JViewport viewport = scrollPane.getViewport();
-	                final Rectangle rect = popup.getVisibleRect();
+	             //   final Rectangle rect = popup.getVisibleRect();
 	                final Point pt = viewport.getViewPosition();
 	                row = list.locationToIndex(pt);
 	            }

@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.ActionMap;
@@ -36,7 +35,6 @@ import managers.TaskManager;
  *
  */
 public class GUIListener extends MouseInputAdapter {
-	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private boolean is_CTRL_pressed = false;
 	private boolean is_SPACE_pressed = false;
 	private boolean is_SHIFT_pressed=false;
@@ -192,13 +190,12 @@ public class GUIListener extends MouseInputAdapter {
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_CONTROL, KeyEvent.CTRL_DOWN_MASK), "ctrl_pressed");
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_CONTROL,0,true), "ctrl_released");
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), "save_pressed");
-
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK), "export_images_pressed");
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_DOWN_MASK), "manage_layers_pressed");
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK), "add_layers_pressed");
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK), "export_csv_pressed");
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, KeyEvent.CTRL_DOWN_MASK), "export_tab_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK), "export_clip_pressed");
+			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK), "export_clip_pressed");		
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.SHIFT_DOWN_MASK |KeyEvent.CTRL_DOWN_MASK ), "show_all_markings_pressed");
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.SHIFT_DOWN_MASK |KeyEvent.CTRL_DOWN_MASK ), "hide_all_markings_pressed");
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.CTRL_DOWN_MASK), "zoom_out_pressed");

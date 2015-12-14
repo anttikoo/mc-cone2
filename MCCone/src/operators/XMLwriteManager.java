@@ -1,40 +1,21 @@
 package operators;
 
-import gui.file.XMLfilter;
 import information.GridProperties;
 import information.ID;
 import information.ImageLayer;
 import information.LayersOfPath;
 import information.MarkingLayer;
 import information.PositionedRectangle;
-
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.image.ReplicateScaleFilter;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.net.URL;
-import java.nio.file.CopyOption;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Scanner;
 import java.util.logging.Logger;
-
-import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventReader;
@@ -42,22 +23,13 @@ import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.DTD;
 import javax.xml.stream.events.EndDocument;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 
 

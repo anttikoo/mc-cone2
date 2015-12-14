@@ -4,9 +4,7 @@ import gui.Color_schema;
 import information.PositionedImage;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
@@ -16,7 +14,6 @@ import javax.swing.JPanel;
  *
  */
 public class ImagePanel extends JPanel {
-	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	private BufferedImage image_to_shown;
 	private Point location; // the top left corner of image to be drawn
 

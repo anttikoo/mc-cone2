@@ -26,13 +26,16 @@ public class ValidationHandler extends DefaultHandler {
  
         if (isColor) {
             //age element, set Employee age
-            String color=(new String(ch, start, length));
+            @SuppressWarnings("unused")
+			String color=(new String(ch, start, length)); // color is not used
             isColor = false;
         } else if (isSingleCoordinate) {
-            String Point=(new String(ch, start, length));
+            @SuppressWarnings("unused")
+			String Point=(new String(ch, start, length)); // point is not used
             isSingleCoordinate = false;
         } else if (isShape) {
-        	int shapeID = getIntFromString(new String(ch, start, length));
+        	@SuppressWarnings("unused")
+			int shapeID = getIntFromString(new String(ch, start, length)); // shape is not used
         	
             isShape = false;
         }
@@ -76,7 +79,8 @@ public class ValidationHandler extends DefaultHandler {
             throws SAXException {
  
         if (qName.equalsIgnoreCase("imagelayer")) {
-            String i_name = attributes.getValue("imagename");     
+            @SuppressWarnings("unused")
+			String i_name = attributes.getValue("imagename");     
          // try to find image name from imageLayerList or single Imagelayer -> if found set as selectedImageLayer
          //   searchImageLayer(i_name); 
 
@@ -86,7 +90,8 @@ public class ValidationHandler extends DefaultHandler {
 	         if (qName.equalsIgnoreCase("markinglayer")) { 
 	        	       	 
 	            //create new markinglayer to add information
-	        	 String mn= (attributes.getValue("markingname"));	// just get attribute and don't do anything with it        	
+	        	 @SuppressWarnings("unused")
+				String mn= (attributes.getValue("markingname"));	// just get attribute and don't do anything with it        	
 	          //  this.isMarkingLayer= true;
 	            
 	        } else if (qName.equalsIgnoreCase("color")) {

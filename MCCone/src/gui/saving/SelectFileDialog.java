@@ -14,7 +14,6 @@ import gui.file.TXTfilter;
 import gui.file.XMLfilter;
 import information.Fonts;
 import information.ID;
-import information.PathCount;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
