@@ -17,6 +17,8 @@ import gui.saving.SingleImagePanel;
  * The Class SelectAndCreateImageFiles extends ExportResult to export image files.
  */
 public class SelectAndCreateImageFiles extends ExportResults {
+	
+	/** The created images. The list of BUfferedImageWithName -objects. */
 	private ArrayList<BufferedImageWithName> createdImages;
 
 	

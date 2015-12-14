@@ -6,8 +6,14 @@ import gui.ProgressBallsDialog;
  * The Class ImageImportCancelerThread. This Class is unused in version 0.1. Probably used in future releases.
  */
 public class ImageImportCancelerThread implements Runnable{
+
+/** The progress dialog. */
 private ProgressBallsDialog progressBalls;
+
+/** The progress thread. */
 private Thread progressThread;
+
+/** The cancelled. Shows is importing of image canceled. */
 private boolean cancelled=false;
 
 

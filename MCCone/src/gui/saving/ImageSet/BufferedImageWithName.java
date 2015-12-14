@@ -6,7 +6,11 @@ import java.awt.image.BufferedImage;
  * The Class BufferedImageWithName. Contains BufferedImage and name for image.
  */
 public class BufferedImageWithName {
+
+/** The image. */
 private BufferedImage image;
+
+/** The image name. */
 private String imageName;
 
 /**

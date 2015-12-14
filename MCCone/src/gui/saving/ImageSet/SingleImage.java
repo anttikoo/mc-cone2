@@ -17,11 +17,23 @@ import managers.TaskManager;
  * The Class SingleImage contains the image and its dimension to be shown in panel.
  */
 public class SingleImage extends JComponent implements MouseListener{
+	
+	/** The original image. */
 	private BufferedImage originalImage;
+	
+	/** The image_to_shown. */
 	private BufferedImage image_to_shown;
+	
+	/** The image dimension. */
 	private Dimension imageDimension;
+	
+	/** The horizontal margin. */
 	private int margin_x=0;
+	
+	/** The vertical margin. */
 	private int margin_y=0;
+	
+	/** The task manager. */
 	private TaskManager taskManager;
 
 	/**

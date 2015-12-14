@@ -18,6 +18,10 @@ public class SharedVariables {
 	public static int transparencyModeOut= AlphaComposite.SRC_OUT;
 	public static int transparencyModeATOP= AlphaComposite.SRC_ATOP;
 	public static int usedDimmingMode=transparencyModeIN;
+	public static final String widthUp = "WIDTH_UP";
+	public static final String widthDown = "WIDTH_DOWN";
+	public static final String heighthUp = "HEIGHT_UP";
+	public static final String heightDown = "HEIGHT_DOWN";
 
 	/**
 	 * Sets the transparencyIN.

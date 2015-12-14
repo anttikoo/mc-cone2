@@ -24,22 +24,44 @@ import javax.swing.text.PlainDocument;
  *
  */
 public class ArrowMouseListener implements MouseListener {
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The scaling factor. A factor for calculating image height from width conversely. */
 	public static double scalingFactor=0;
-	public final String widthUp = "WIDTH_UP";
-	public final String widthDown = "WIDTH_DOWN";
-	public final String heighthUp = "HEIGHT_UP";
-	public final String heightDown = "HEIGHT_DOWN";
+	
+	/** The width field. */
 	private JTextField widthField;
+	
+	/** The height field. */
 	private JTextField heightField;
+	
+	/** The pressing width up timer. */
 	private Timer pressingWidthUPTimer;
+	
+	/** The pressing width down timer. */
 	private Timer pressingWidthDownTimer;
+	
+	/** The pressing height up timer. */
 	private Timer pressingHeightUPTimer;
+	
+	/** The pressing height down timer. */
 	private Timer pressingHeightDownTimer;
+	
+	/** The multiplier timer. */
 	private Timer multiplierTimer;
+	
+	/** The changing values on. */
 	private boolean changingValuesON=false;
+	
+	/** The value change. */
 	private int valueChange=0;
+	
+	/** The max value change. */
 	private int maxValueChange=30;
+	
+	/** The maximum image size. */
 	private int maximumImageSize=SharedVariables.IMAGESET_EXPORT_MAX_RESOLUTION;
 
 
@@ -109,19 +131,19 @@ public class ArrowMouseListener implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		stopTimers();
-		if(((JButton)e.getSource()).getActionCommand().equals(widthUp)){
+		if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.widthUp)){
 			if(!changingValuesON)
 			updateField(1, this.widthField, this.heightField, false);
 		}
-		else if(((JButton)e.getSource()).getActionCommand().equals(widthDown)){
+		else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.widthDown)){
 			if(!changingValuesON)
 			updateField(-1, this.widthField, this.heightField, false);
 		}
-		else if(((JButton)e.getSource()).getActionCommand().equals(heighthUp)){
+		else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.heighthUp)){
 			if(!changingValuesON)
 			updateField(1, heightField, widthField, true);
 		}
-		else if(((JButton)e.getSource()).getActionCommand().equals(heightDown)){
+		else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.heightDown)){
 			if(!changingValuesON)
 			updateField(-1, heightField, widthField, true);
 		}
@@ -152,19 +174,19 @@ public class ArrowMouseListener implements MouseListener {
 		if(!this.multiplierTimer.isRunning())
 			this.multiplierTimer.start();
 
-		if(((JButton)e.getSource()).getActionCommand().equals(widthUp)){
+		if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.widthUp)){
 			if(!this.pressingWidthUPTimer.isRunning())
 				this.pressingWidthUPTimer.start();
 		}
-		else if(((JButton)e.getSource()).getActionCommand().equals(widthDown)){
+		else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.widthDown)){
 			if(!this.pressingWidthDownTimer.isRunning())
 				this.pressingWidthDownTimer.start();
 		}
-		else if(((JButton)e.getSource()).getActionCommand().equals(heighthUp)){
+		else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.heighthUp)){
 			if(!this.pressingHeightUPTimer.isRunning())
 				this.pressingHeightUPTimer.start();
 		}
-		else if(((JButton)e.getSource()).getActionCommand().equals(heightDown)){
+		else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.heightDown)){
 			if(!this.pressingHeightDownTimer.isRunning())
 				this.pressingHeightDownTimer.start();
 		}

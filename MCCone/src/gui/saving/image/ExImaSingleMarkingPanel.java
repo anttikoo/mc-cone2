@@ -18,6 +18,7 @@ import information.MarkingLayer;
  */
 public class ExImaSingleMarkingPanel extends SingleMarkingPanel{
 
+	/** The draw grid check box. */
 	private JCheckBox drawGridCheckBox;
 
 	/**

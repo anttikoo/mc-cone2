@@ -15,12 +15,26 @@ import gui.Color_schema;
  * The Class ResolutionIntFilter. Filters the input text by checking is it numerical and the values of JTextFiels will not exceed 5000.
  */
 public class ResolutionIntFilter extends DocumentFilter {
+		
+		/** The Constant LOGGER. */
 		private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+		
+		/** The arrow mouse listener. */
 		private ArrowMouseListener arrowMouseListener;
+		
+		/** The text field id. */
 		private int textFieldID=ID.TEXTFIELD_WIDTH;
+		
+		/** The another filter. */
 		private ResolutionIntFilter anotherFilter=null;
+		
+		/** The another field. */
 		private JTextField anotherField=null;
+		
+		/** The update another field. */
 		private boolean updateAnotherField=true;
+		
+		/** The maximum image size. */
 		private int maximumImageSize=SharedVariables.IMAGESET_EXPORT_MAX_RESOLUTION;
 		
 		

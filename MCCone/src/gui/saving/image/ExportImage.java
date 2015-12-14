@@ -19,7 +19,8 @@ import operators.ImageCreator;
  * The Class ExportImage. Extends SaverDialog for opening window for selecting images and MarkingLayers to be exported.
  */
 public class ExportImage extends SaverDialog{
-	//private JCheckBox showGridCheckBox;
+	
+	/** The Constant LOGGER. */
 	final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
 	

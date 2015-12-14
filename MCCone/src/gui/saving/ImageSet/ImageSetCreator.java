@@ -13,6 +13,8 @@ import gui.graphics.MediumCloseIcon;
 import gui.saving.SelectFileDialog;
 import information.Fonts;
 import information.ID;
+import information.SharedVariables;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -78,39 +80,102 @@ import managers.TaskManager;
 public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 
-private final static Logger LOGGER = Logger.getLogger("MCCLogger");
-private TaskManager taskManager;
-private GUI gui;
-private JPanel backPanel;
-private ArrayList<SingleDrawImagePanel> drawImagePanels;
-private int presentRowNumber;
-private int presentColumnNumber;
-private JPanel gridPanel;
-private GridLayout gridLayout;
-private int gap;
-public JComboBox<String>fontsBox;
-public JComboBox<Integer>fontSizeBox;
-private JComboBox<Integer> rowBox;
-private JComboBox<Integer> columnBox;
-private JPanel gridBackPanel;
-private JPanel whiteGridBackPanel;
-private JMenuBar menuBar;
-private int savingImageWidth=2000;
-private ArrowMouseListener arrowMouseListener;
-private JTextField widthField;
-private JTextField heigthField;
-private JPanel browsingBackPanel;
-private SelectFileDialog selectFileDialog;
-private JLabel savingPathJLabel;
-private String presentFolder;
-private int[] movingPosition=null;
-private Thread createImageThread;
-private int threadNumber=1;
-private ProgressBallsDialog progressBallsDialog;
-private JDialog visibleDialog=null; // childDialog which may be progress, info or any dialog.
-private JButton exportJButton;
-private Dimension wgbDimension; // Dimension of whole printable area where images are positioned
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The task manager. */
+	private TaskManager taskManager;
+	
+	/** The GUI. */
+	private GUI gui;
+	
+	/** The back panel. Contains the window components. */
+	private JPanel backPanel;
+	
+	/** The draw image panels. */
+	private ArrayList<SingleDrawImagePanel> drawImagePanels;
+	
+	/** The present row number. */
+	private int presentRowNumber;
+	
+	/** The present column number. */
+	private int presentColumnNumber;
+	
+	/** The grid panel. */
+	private JPanel gridPanel;
+	
+	/** The grid layout. */
+	private GridLayout gridLayout;
+	
+	/** The gap. */
+	private int gap;
+	
+	/** The fonts box. */
+	public JComboBox<String>fontsBox;
+	
+	/** The font size box. */
+	public JComboBox<Integer>fontSizeBox;
+	
+	/** The row box. */
+	private JComboBox<Integer> rowBox;
+	
+	/** The column box. */
+	private JComboBox<Integer> columnBox;
+	
+	/** The grid back panel. */
+	private JPanel gridBackPanel;
+	
+	/** The white grid back panel. */
+	private JPanel whiteGridBackPanel;
+	
+	/** The menu bar. */
+	private JMenuBar menuBar;
+	
+	/** The saving image width. */
+	private int savingImageWidth=2000;
+	
+	/** The arrow mouse listener. */
+	private ArrowMouseListener arrowMouseListener;
+	
+	/** The width field. */
+	private JTextField widthField;
+	
+	/** The heigth field. */
+	private JTextField heigthField;
+	
+	/** The browsing back panel. */
+	private JPanel browsingBackPanel;
+	
+	/** The select file dialog. */
+	private SelectFileDialog selectFileDialog;
+	
+	/** The saving path j label. */
+	private JLabel savingPathJLabel;
+	
+	/** The present folder. */
+	private String presentFolder;
+	
+	/** The moving position. Dragging started from this image */
+	private int[] movingPosition=null;
+	
+	/** The Thread for creating the image. */
+	private Thread createImageThread;
+	
+	/** The thread number. */
+	private int threadNumber=1;
+	
+	/** The progress balls dialog. */
+	private ProgressBallsDialog progressBallsDialog;
+	
+	/** The visible dialog. ChildDialog which may be in progress, info or any dialog. */
+	private JDialog visibleDialog=null; 
+	
+	/** The export j button. */
+	private JButton exportJButton;
+	
+	/** The wgb dimension. Dimension of whole printable area where images are positioned */
+	private Dimension wgbDimension; 
 
+	/** The parent component. */
 	private Component parentComponent=null;
 
 
@@ -278,9 +343,9 @@ private Dimension wgbDimension; // Dimension of whole printable area where image
 		//nortbutton - the upper button 
 		BasicArrowButton northButton = new BasicArrowButton(BasicArrowButton.NORTH);
 		if(fieldID== ID.TEXTFIELD_WIDTH)
-			northButton.setActionCommand(this.arrowMouseListener.widthUp);
+			northButton.setActionCommand(SharedVariables.widthUp);
 		else
-			northButton.setActionCommand(this.arrowMouseListener.heighthUp);
+			northButton.setActionCommand(SharedVariables.heighthUp);
 
 		// add listener
 		MouseListenerCreator.addMouseListenerToNormalButtons(northButton);
@@ -289,9 +354,9 @@ private Dimension wgbDimension; // Dimension of whole printable area where image
 		//southbutton - a button below
 		BasicArrowButton southButton = new BasicArrowButton(BasicArrowButton.SOUTH);
 		if(fieldID==ID.TEXTFIELD_WIDTH)
-			southButton.setActionCommand(this.arrowMouseListener.widthDown);
+			southButton.setActionCommand(SharedVariables.widthDown);
 		else
-			southButton.setActionCommand(this.arrowMouseListener.heightDown);
+			southButton.setActionCommand(SharedVariables.heightDown);
 
 		MouseListenerCreator.addMouseListenerToNormalButtons(southButton);
 

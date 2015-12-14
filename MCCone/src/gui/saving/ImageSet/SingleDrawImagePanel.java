@@ -16,14 +16,32 @@ import managers.TaskManager;
  * User can select which ImageLayers and MarkingLayers are drawn to exported images.
  */
 public class SingleDrawImagePanel extends JPanel{
+	
+	/** The single image. */
 	private SingleImage singleImage;
+	
+	/** The grid position. */
 	private int[] gridPosition=null; // row, column
+	
+	/** The title. */
 	private String title;
+	
+	/** The font. */
 	private Font font;
+	
+	/** The title panel. */
 	private JPanel titlePanel;
+	
+	/** The BufferedImage. */
 	private BufferedImage image;
+	
+	/** The task manager. */
 	private TaskManager taskManager;
+	
+	/** The title field. The title of image is written above image and is adjustable. */
 	private JTextField titleField;
+	
+	/** The panel dimension. */
 	private Dimension panelDimension;
 
 
