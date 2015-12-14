@@ -58,20 +58,43 @@ import information.*;
  */
 public class AddImageLayerDialog extends JDialog{
 	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The GUI. */
 	private GUI gui;
+	
+	/** The back panel. Contains dimming and the visible panel*/
 	private JPanel backPanel;
+	
+	/** The cancel j button. */
 	private JButton cancelJButton;
+	
+	/** The image scroll panel. */
 	private JPanel imageScrollPanel;
+	
+	/** The list of ImageLayers. */
 	private ArrayList<ImageLayer> dialogImageLayerList;
+	
+	/** The JScrollPane for scrolling images if a lot of them. */
 	private JScrollPane imageScrollingPane;
+	
+	/** The create ImageLayers JButton. */
 	private JButton createImageLayersJButton;
+	
+	/** The add image j button. */
 	private JButton addImageJButton;
+	
+	/** The type of dialog. */
 	private int typeOfDialog;
+	
+	/** The import allowed image dimension. */
 	private Dimension importAllowedImageDimension=null;
 
+	/** The visible dialog. The opened child dialog for this class */
 	private JDialog visibleDialog=null;
 
+	/** The shady message dialog. Shows messages */
 	private ShadyMessageDialog shadyMessageDialog=null;
 	
 	/**
@@ -336,7 +359,6 @@ public class AddImageLayerDialog extends JDialog{
 		button.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
@@ -360,7 +382,6 @@ public class AddImageLayerDialog extends JDialog{
 			button.addMouseListener(new MouseListener() {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					// TODO Auto-generated method stub
 				}
 				@Override
 				public void mouseEntered(MouseEvent arg0) {
@@ -384,7 +405,6 @@ public class AddImageLayerDialog extends JDialog{
 			button.addMouseListener(new MouseListener() {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					// TODO Auto-generated method stub
 				}
 				@Override
 				public void mouseEntered(MouseEvent arg0) {
@@ -408,7 +428,6 @@ public class AddImageLayerDialog extends JDialog{
 			button.addMouseListener(new MouseListener() {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					// TODO Auto-generated method stub
 				}
 				@Override
 				public void mouseEntered(MouseEvent arg0) {
@@ -431,7 +450,6 @@ public class AddImageLayerDialog extends JDialog{
 			button.addMouseListener(new MouseListener() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
 				}
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -456,7 +474,6 @@ public class AddImageLayerDialog extends JDialog{
 
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
 				}
 				@Override
 				public void mouseEntered(MouseEvent e) {
