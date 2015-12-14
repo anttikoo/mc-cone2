@@ -8,6 +8,8 @@ import java.awt.event.KeyEvent;
  *
  */
 public class MCkeyDispatcher implements KeyEventDispatcher{
+
+/** The listener for GUI. */
 GUIListener gListener;
 
 	/**

@@ -20,10 +20,17 @@ import javax.swing.event.MouseInputAdapter;
  *
  */
 public class SliderListener extends MouseInputAdapter{
+	
+	/** The sliding on. Shows is sliding moving*/
 	private boolean slidingON=false;
+	
+	/** The start value. */
 	private int startValue=0;
-//	private JSlider slider;
+
+/** The value label. */
 	JLabel valueLabel;
+	
+	/** The Timer for slider to restrict the process. */
 	private Timer sliderTimer;
 	
 	/**

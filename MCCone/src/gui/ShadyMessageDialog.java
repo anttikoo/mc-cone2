@@ -36,15 +36,35 @@ import javax.swing.KeyStroke;
  * The Class ShadyMessageDialog. Shows message and buttons for selection.
  */
 public class ShadyMessageDialog extends JDialog{
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The message. */
 	private String message;
+	
+	/** The title. */
 	private String title;
+	
+	/** The title label. */
 	private JLabel titleLabel;
+	
+	/** The type of buttons. */
 	private int typeOfButtons;
+	
+	/** The return value. */
 	private int returnValue=-1;
+	
+	/** The parent component. */
 	private Component parentComponent;
+	
+	/** The dialog back panel. */
 	private JPanel dialogBackPanel;
+	
+	/** The message panel. */
 	private JPanel messagePanel;
+	
+	/** The button panel. */
 	private JPanel buttonPanel;
 	
 

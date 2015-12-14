@@ -18,14 +18,32 @@ import javax.swing.Icon;
  * The Class ShapeIcon. Marking shape is painted to icon with given color, shape, etc.
  */
 public class ShapeIcon implements Icon {
+	
+	/** The shape type. */
 	private int shapeType;
+	
+	/** The width. */
 	private int width;
+	
+	/** The height. */
 	private int height;
+	
+	/** The color. */
 	private Color color;
+	
+	/** The opacity. */
 	private float opacity;
+	
+	/** The stroke big. */
 	private  BasicStroke strokeBig;
+    
+    /** The stroke thin. */
     private BasicStroke strokeThin;
+    
+    /** The rule_alpha for dimming graphics with Alphacomposite. */
     private int rule_alpha;
+    
+    /** The background color. */
     private Color backgroundColor;
 
 	/**

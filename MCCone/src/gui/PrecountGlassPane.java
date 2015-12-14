@@ -22,9 +22,17 @@ import javax.swing.JSplitPane;
  * Selector contains circle where the cell should be fitted in and around the circle is a rectangle which shouldn't contain other cells.
  */
 public class PrecountGlassPane extends JComponent{
+	
+	/** The rectangle size. The size of the rectangle used in picking cell. */
 	private int rectangleSize=100;
+	
+	/** The double panel. Source from GUI */
 	private JSplitPane doublePanel;
+	
+	/** The center point. */
 	private Point centerPoint=null;
+	
+	/** The menubar. Source from GUI. */
 	private JMenuBar menubar;
 
 	/**

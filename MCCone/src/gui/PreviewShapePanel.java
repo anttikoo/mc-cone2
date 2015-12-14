@@ -16,7 +16,11 @@ import operators.ShapeDrawer;
  * The Class PreviewShapePanel. Draws a preview of style of marking to left of given parent position. 
  */
 public class PreviewShapePanel extends JPanel{
+	
+	/** The shape drawer. Draws the shape of marking*/
 	private ShapeDrawer shapeDrawer;
+	
+	/** The Rectangle of the visible panel. */
 	private Rectangle recOfBackPanel;
 	
 	

@@ -28,13 +28,29 @@ import javax.swing.JPanel;
  * The Class PropertiesDialog. Dialog has static size 400 x 500px.
  */
 public class PropertiesDialog extends JDialog {
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The GUI. */
 	protected GUI gui;
+	
+	/** The top left point of pressed button or menu item. Mostly not used if everything is going ok.*/
 	protected Point topLeftPoint;
+	
+	/** The back panel showing the visible dialog. */
 	protected JPanel backPanel;
+	
+	/** The panel width of backPanel */
 	protected int panelWidth=400;
+	
+	/** The right panel width. */
 	protected int rightPanelWidth=this.panelWidth; // in MarkingProperties this will be 700
+	
+	/** The panel height. */
 	protected int panelHeight=500;
+	
+	/** The Rectangle of of backpanel. */
 	protected Rectangle recOfBackpanel;
 
 

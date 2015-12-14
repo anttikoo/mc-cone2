@@ -23,14 +23,30 @@ import managers.PreCountThreadManager;
  * The Class ProgressBallsDialog. Shows balls moving and shows that something is running.
  */
 public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable {
+	
+	/** The painted ball. Shows which ball is presently painted */
 	private int paintedBall=-1;
+	
+	/** The thread number. */
 	private int threadNumber=1;
+	
+	/** The show on. Shows is the progress balls running. */
 	private volatile boolean showON=true;
+	
+	/** The next ball bigger. Shows should the paintedBall be counted to bigger or smaller. */
 	private boolean nextBallBigger=true;
+	
+	/** The g2d. */
 	private Graphics2D g2d;
 	private JPanel ballsPanel;
+	
+	/** The PrecountThreadManager. Manages the precounting and its progress Threads. */
 	private PreCountThreadManager pctm;
+	
+	/** The painter thread. */
 	private Thread painterThread;
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	public ProgressBallsDialog(JFrame frame, String title, String message,int id, Component comp){
