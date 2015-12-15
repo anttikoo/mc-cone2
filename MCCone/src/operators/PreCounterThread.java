@@ -24,17 +24,39 @@ import math.geom2d.Point2D;
 import gui.ProgressBallsDialog;
 
 public class PreCounterThread implements Runnable{
+	
+	/** The sub image. The image that user picks inside the rectangle. */
 	private BufferedImage subImage;
+	
+	/** The original image. The image where cells will be precounted. */
 	private BufferedImage originalImage;
+	
+	/** The counter thread. Thread doing the counting. */
 	private Thread counterThread;
+	
+	/** The continue counting. Boolean to check has user stopped precounting or is precounting ready. */
 	private boolean continueCounting=true;
+	
+	/** The cancelled inside. Boolean is precounting stopped by program. */
 	private boolean cancelledInside=false;
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The color list. List of different colors that are tried to find from image.  */
 	private ArrayList<Integer> colorList;
+	
+	/** The original image pixels. */
 	private byte[] originalImagePixels;
+	
+	/** The sub image pixels. */
 	private byte[] subImagePixels;
-	private ArrayList<Point> finalCoordinates;
+	
+	
+	/** The final centroid coordinates. These coordinates are the final results and markings are painted in this positions of image. */
 	private ArrayList<Point> finalCentroidCoordinates;
+	
+	/** The task manger. */
 	private TaskManager taskManger;
 	private PreCountThreadManager pctm;
 	private ArrayList<Integer> current_colorList;
@@ -61,14 +83,10 @@ public class PreCounterThread implements Runnable{
 
 	public PreCounterThread(BufferedImage subImage, BufferedImage originalImage , TaskManager taskManager){
 		this.taskManger=taskManager;
-
-	//	this.progressBalls=pbd;
-	//	this.progressBalls.initPreCounterThread(this);
 		this.subImage=subImage;
 		this.originalImage=originalImage;
 		this.counterThread=new Thread(this, "counter");
 		this.colorList=new ArrayList<Integer>();
-		this.finalCoordinates = new ArrayList<Point>();
 		this.finalCentroidCoordinates = new ArrayList<Point>();
 	}
 
@@ -101,7 +119,6 @@ public class PreCounterThread implements Runnable{
 					if(this.current_colorList != null && this.current_colorList.size()>0){
 						LOGGER.fine("start calculating coordinates: colorlist: "+current_colorList.size()+ "using gap: " +this.current_gap+ "min:"+this.global_min_coordinate_number_in_cell+ " max: "+this.current_max_coordinate_number_in_cell);
 						// go through the image pixels of original image
-						//calculateCoordinatesStrict();
 
 						long time = System.currentTimeMillis();
 						calculateCoordinatesFlexible();
@@ -117,24 +134,17 @@ public class PreCounterThread implements Runnable{
 							cleanCollectGroupsAndCluster();
 							time2 = System.currentTimeMillis()-time;
 							LOGGER.fine("end of clustering time: "+time2);
-							//stop();
-							//clusterDataWithOPTICS();
 							if(!continueCounting){
 								abortExecution("No Cells", "No any cells found.");
 								return;
 							}
 							if(this.current_finalCentroidCoordinates != null && this.current_finalCentroidCoordinates.size()>0){
-								LOGGER.fine("finalCentroids: "+this.current_finalCentroidCoordinates.size());
-							//	this.colorList=this.current_colorList;
-		//						this.finalCoordinates=this.current_finalCoordinates;
 								this.finalCentroidCoordinates=this.current_finalCentroidCoordinates;
 
 								this.max_cell_size=this.current_max_cell_size;
 								this.min_cell_size=this.current_min_cell_size;
-							//	this.min_coordinate_number_in_cell=this.current_min_coordinate_number_in_cell;
 								this.max_coordinate_number_in_cell=this.current_max_coordinate_number_in_cell;
 								this.taskManger.setSelectedMarkingLayerCoordinates(this.finalCentroidCoordinates);
-							//	this.taskManger.setSelectedMarkingLayerCoordinates(this.current_finalCoordinates);
 
 								this.taskManger.updateSelectedMarkingPanelAndImageLayerInfos();
 								// saved found colors
@@ -183,7 +193,6 @@ public class PreCounterThread implements Runnable{
 			}
 			LOGGER.fine("ended counter thread");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			cancelInside();
 			e.printStackTrace();
 		}
@@ -202,10 +211,7 @@ public class PreCounterThread implements Runnable{
 
 
 	public void startCounting(){
-	//	progressBalls.showDialog();
-
 		this.counterThread.start();
-
 	}
 
 	public void setManager(PreCountThreadManager pctm){
@@ -238,37 +244,18 @@ public class PreCounterThread implements Runnable{
 
 	public void setProgressBallDialog(ProgressBallsDialog pbd){
 	}
-/*
-	private void calculateCentroids(){
-		if(this.finalCoordinates != null && this.finalCoordinates.size()>0){
-			ArrayList<Point> pickedPointList=new ArrayList<Point>();
-			LOGGER.fine("before pick "+this.finalCoordinates.size());
-			Point pickedPoint = this.finalCoordinates.get(0);
-			pickedPointList.add(pickedPoint);
-			this.finalCoordinates.remove(pickedPoint);
-			LOGGER.fine("after pick "+this.finalCoordinates.size());
+	
 
-			// calculate point at maximum distance of cell size
-
-
-		}
-
-
-	}
-*/
 	public void setSubImage(BufferedImage subImage){
 		this.subImage=subImage;
 	}
 
 	private void clean(){
 		this.cancelledInside=false;
-	//	this.finalCoordinates=null;
 		this.current_finalCoordinates=null;
 		this.current_colorList=null;
 		this.current_finalCentroidCoordinates=null;
 		this.current_max_cell_size=0;
-	//	this.current_min_coordinate_number_in_cell=Integer.MAX_VALUE;
-	//	this.current_max_coordinate_number_in_cell=Integer.MIN_VALUE;
 	}
 
 	public boolean isCounting() {
@@ -289,7 +276,6 @@ public class PreCounterThread implements Runnable{
 				for(int j=-1;j<=1;j++){ // up_down direction
 					if(!(i==0 && j==0)){
 						angleVectors.add(calculateColorsForVectors(channels, i, j));
-						//calculateColorsForVectors(channels, i, j);
 					}
 
 				if(!continueCounting)
@@ -318,7 +304,6 @@ public class PreCounterThread implements Runnable{
 				double[] blue_ma=new double[maxLength];
 				for(int x=midPoint.x, y=midPoint.y, i=0; x < channels.getWidth() && x >= 0 && y<channels.getHeight() && y >= 0 && i<colorVectors.getSize();x+=mod_x, y+=mod_y, i++){
 					if(channels.useAlpha()){
-					//	colorVectors.setHasAlpha(true);
 						alpha[i]= channels.getAlpha(x,y);
 						red[i]= channels.getRed(x,y);
 						green[i] = channels.getGreen(x,y);
@@ -338,36 +323,30 @@ public class PreCounterThread implements Runnable{
 
 		            MovingAverage ma = new MovingAverage(channels.getHeight()/10);
 		            int i=0;
-		        //    System.out.println("red");
 		            for (int x : red) {
 		                ma.newNum(x);
-		              //  System.out.println(""+i+" \t" + x + "\t" + ma.getAvg());
 		                red_ma[i]=ma.getAvg();
 		                i++;
 		                if(!continueCounting)
 							return null;
 		            }
-		        //    System.out.println();
 
 		            i=0;
 		            ma = new MovingAverage(channels.getHeight()/10);
-		        //    System.out.println("green");
 		            for (int x : green) {
 		                ma.newNum(x);
-		            //    System.out.println(""+i+" \t" + x + "\t" + ma.getAvg());
+		        
 		                green_ma[i]=ma.getAvg();
 		                i++;
 		                if(!continueCounting)
 							return null;
 		            }
-		      //      System.out.println();
+		  
 
 		            i=0;
-		            ma = new MovingAverage(channels.getHeight()/10);
-		        //    System.out.println("blue");
+		            ma = new MovingAverage(channels.getHeight()/10);    
 		            for (int x : blue) {
-		                ma.newNum(x);
-		             //   System.out.println(""+i+" \t" + x + "\t" + ma.getAvg());
+		                ma.newNum(x);	         
 		                blue_ma[i]=ma.getAvg();
 		                i++;
 		                if(!continueCounting)
@@ -383,14 +362,12 @@ public class PreCounterThread implements Runnable{
 		this.current_colorList=new ArrayList<Integer>();
 		if(this.colorList.size()>0)
 			this.current_colorList.addAll(this.colorList);
-	//	this.current_min_coordinate_number_in_cell=this.min_coordinate_number_in_cell;
 		this.current_max_coordinate_number_in_cell=this.max_coordinate_number_in_cell;
 		this.current_max_cell_size=this.max_cell_size;
 		this.current_min_cell_size=this.min_cell_size;
 
 
 		if(angleVectors != null && angleVectors.size()>0){
-		//	ArrayList<ColorCounts> colorCountList=new ArrayList<ColorCounts>();
 			int sumOfMaxKindexes = 0;
 			int kNumber=0;
 			int minCellSize =Integer.MAX_VALUE;
@@ -425,7 +402,6 @@ public class PreCounterThread implements Runnable{
 						minCellSize=indexOfMaxK; // stores the smallest cell size from middle to border of cell
 					for(int i= 0;i<indexOfMaxK;i++){
 						int colorInt = colorVector.getFullColorInt_original(i);
-					//	collectColors(colorCountList, colorInt);
 						addColorsIfNotFound(getRelaxedColors(this.pixel_color_relaxation, colorInt));
 
 					}
@@ -492,12 +468,7 @@ public class PreCounterThread implements Runnable{
 
 
 	}
-/*
-	private int countGap(){
-		double area = Math.PI*Math.pow(this.current_min_cell_size/2, 2); // count area of cell with minimum size
-		return (int) Math.sqrt(area/this.global_min_coordinate_number_in_cell); // count gap that the smallest cell will have pixel checking enough
-	}
-*/
+
 	private int countCoordinatesInCell(double radius, int gap_candidate){
 		double area = Math.PI*Math.pow(radius, 2);
 		return (int)(area/Math.pow(gap_candidate,2));
@@ -533,38 +504,12 @@ public class PreCounterThread implements Runnable{
 				int index = (y + x*w)*3;
 				int argb =  ( 255 << 24) | ((int)(this.subImagePixels[index+2] & 0xFF) << 16) | ((int)(this.subImagePixels[index + 1] & 0xFF) << 8) | ((int)this.subImagePixels[index] & 0xFF);
 				addColorsIfNotFound(getRelaxedColors(this.pixel_color_relaxation, argb));
-				//addSingleColorIfNotFound(argb);
-
 			}
 
 		}
 	}
 
 	}
-
-
-
-	/*
-	private void collectColors(ArrayList<ColorCounts> colorCountList, int colorInt) throws Exception{
-		boolean addedColor=false;
-		Iterator<ColorCounts> cIterator= colorCountList.iterator();
-		while(cIterator.hasNext()){
-			ColorCounts singleColorCounts=cIterator.next();
-			if(colorInt == singleColorCounts.getColorInt()){
-				// found the color
-				singleColorCounts.increaseCount();
-				addedColor=true;
-
-			}
-		}
-
-		if(!addedColor){
-			ColorCounts newColorCounts =new ColorCounts(colorInt);
-			colorCountList.add(newColorCounts);
-		}
-	}
-	*/
-
 
 
    private ImageColorChannels convertImageToChannels(BufferedImage imageIn) {
@@ -667,8 +612,7 @@ public class PreCounterThread implements Runnable{
 	   getOriginalImageAsByteArray(this.originalImage);
 
 	   this.current_finalCoordinates=new ArrayList<Point>();
-	   if(this.finalCoordinates != null && this.finalCoordinates.size()>0)
-		   this.current_finalCoordinates.addAll(this.finalCoordinates);
+
 
 	   int w= this.originalImage.getWidth();
 	   int h = this.originalImage.getHeight();
