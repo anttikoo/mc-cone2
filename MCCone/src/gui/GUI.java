@@ -220,7 +220,7 @@ private GridPropertiesPanel gridDialog=null;
 			
 			
 			
-			LOGGER.info("Started MCcone! All OK.");	
+			LOGGER.info("Started MCcone! Wellcome.");	
 			
 			//refresh window
 			this.repaint();
@@ -2605,7 +2605,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 			try {
 				createNewMarkingLayer(taskManager.getSelectedImageLayer().getLayerID());
 			} catch (Exception e) {
-				
+				LOGGER.severe("Testing method not working!");
 				e.printStackTrace();
 			}
 		

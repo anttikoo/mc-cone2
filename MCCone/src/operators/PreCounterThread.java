@@ -1055,8 +1055,7 @@ private ArrayList<Integer> getRelaxedColorsWideRange(int relaxation, int colorIn
 	}
 	return integerList;
 }
-   
-   
+    
 
    /**
     * Returns the sub image as byte array.
