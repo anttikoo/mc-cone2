@@ -9,6 +9,8 @@ import java.util.logging.LogRecord;
  * The Class programConsoleHandler. Prints messages to log.
  */
 public class programConsoleHandler extends ConsoleHandler{
+	
+	/** The log frame. */
 	private LogFrame logFrame;
 	
 	/**

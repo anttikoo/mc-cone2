@@ -11,6 +11,7 @@ public class SharedVariables {
 	public static final int DISTANCE_TO_ADD = 10;
 	public static final int GLOBAL_MIN_CELL_DIAMETER = 6;
 	public static final int GLOBAL_MIN_COORDINATE_NUMBER_IN_CELL = 4;
+	public static final double GLOBAL_CIRCULARITY = 1.8;
 	public static final int MAX_GAP = 6;
 	public static int operationSystem=ID.OS_WINDOWS;
 	public static int transparencyModeIN = AlphaComposite.SRC_IN;
