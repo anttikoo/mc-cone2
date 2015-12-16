@@ -21,8 +21,14 @@ import org.xml.sax.XMLReader;
  * SaxParser is used in parsing.
  */
 public class XMLreadManager {
+
+/** The Constant LOGGER. */
 private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+
+/** The SAXParserFactory for parsing XML document. */
 private SAXParserFactory saxParserFactory;
+
+/** The SAXParser. */
 private SAXParser saxParser;
 
 	/**

@@ -39,19 +39,47 @@ import javax.xml.stream.events.XMLEvent;
  *
  */
 public class XMLwriteManager {
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The StartElement. */
 	private StartElement se;
+	
+	/** The EndElement. */
 	private EndElement ee;
+	
+	/** The XMLEventReader. */
 	private XMLEventReader xer;
+	
+	/** The XMLEventWriter. */
 	private XMLEventWriter xew;
+	
+	/** The XMLEvent. */
 	private XMLEvent end;
+	
+	/** The XMLEventFactory. */
 	private XMLEventFactory xef;
+	
+	/** The layers of path. */
 	private LayersOfPath layersOfPath;
+	
+	/** The Attribute. */
 	private Attribute att;
+	
+	/** The saving type. For example ID.OVERWRITE. */
 	private int savingType;
+	
+	/** The unsaved marking layers. */
 	private ArrayList<Integer>unsavedMarkingLayers;
+	
+	/** The successfully saved marking layers. */
 	private ArrayList<Integer>successfullySavedMarkingLayers;
+	
+	/** The byte stream for writing XML document to file. */
 	private ByteArrayOutputStream byteStream;
+	
+	/** The XMLReadManager for reading XML document with StaX.. */
 	private XMLreadManager rm;
 
 	

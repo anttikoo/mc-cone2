@@ -10,7 +10,11 @@ import org.xml.sax.SAXParseException;
  * and if any error found saves information that error has been found.
  */
 public class XMLerrorHandler implements ErrorHandler {
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");	
+	
+	/** The found errors. Has any error occurred. */
 	private boolean foundErrors=false;
 
     /* (non-Javadoc)

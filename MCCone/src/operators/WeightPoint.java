@@ -8,6 +8,8 @@ import math.geom2d.Point2D;
  * The Class WeightPoint. Contains a weight value for point.
  */
 public class WeightPoint extends Point{
+	
+	/** The weight. */
 	private double weight;
 
 	/**

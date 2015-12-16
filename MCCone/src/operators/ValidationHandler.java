@@ -13,9 +13,16 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class ValidationHandler extends DefaultHandler {
 
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");	
+	
+	/** The is color. */
 	private boolean isColor =false;
+	
+	/** The is single coordinate. */
 	private boolean isSingleCoordinate =false;
+	
+	/** The is shape. */
 	private boolean isShape =false;
 	
     /* (non-Javadoc)

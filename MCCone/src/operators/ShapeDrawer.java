@@ -16,14 +16,32 @@ import java.awt.geom.Rectangle2D;
  * The Class ShapeDrawer. Draws shape to Graphics2D object with given size, color, thickness and opacity.
  */
 public class ShapeDrawer {
+	
+	/** The stroke thick. Thicker stroke. */
 	private BasicStroke strokeThick;
+	
+	/** The stroke thin. Thin stroke. */
 	private BasicStroke strokeThin;
+	
+	/** The rule_alpha. */
 	private int rule_alpha;
+	
+	/** The shape color. */
 	private Color shapeColor;
+	
+	/** The is preview. Is the shape drawn on preview window. */
 	private boolean isPreview=false;
+	
+	/** The thickness. */
 	private float thickness;
+	
+	/** The opacity. */
 	private float opacity;
-	private int shapeID; // ID.SHAPE_CIRCLE, ID.SHAPE_CROSS, etc...
+	
+	/** The shape ID.  ID.SHAPE_CIRCLE, ID.SHAPE_CROSS, etc... */
+	private int shapeID; 
+	
+	/** The shape size. */
 	private int shapeSize;
 
 
