@@ -42,6 +42,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -62,6 +63,8 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.iharder.dnd.FileDrop;
+import operators.CheckBoxIcon;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -1226,6 +1229,7 @@ private GridPropertiesPanel gridDialog=null;
 
 				
 			JCheckBoxMenuItem useStrictPrecounting = new JCheckBoxMenuItem("Use Strict Precounting");
+			
 			useStrictPrecounting.setSelected(false);
 			useStrictPrecounting.addChangeListener(new ChangeListener() {
 				
@@ -1513,6 +1517,7 @@ private GridPropertiesPanel gridDialog=null;
 			UIManager.put("MenuItem.selectionBackground", Color_schema.menu_selection_bg) ; //Color_schema.color_menu_selection_bg);
 			UIManager.put("CheckBoxMenuItem.background", Color_schema.dark_50);
 			UIManager.put("CheckBoxMenuItem.font", Fonts.b16);
+			UIManager.put("CheckBoxMenuItem.checkIcon", new CheckBoxIcon() );
 			UIManager.put("CheckBoxMenuItem.foreground", Color_schema.white_230);
 			UIManager.put("CheckBoxMenuItem.selectionBackground", Color_schema.menu_selection_bg) ; //Color_schema.color_menu_selection_bg);
 			UIManager.put("Panel.background", Color_schema.dark_40);
