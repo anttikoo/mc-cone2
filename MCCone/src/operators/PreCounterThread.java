@@ -724,7 +724,6 @@ public class PreCounterThread implements Runnable{
     * Goes through ColorChannelVectors and calculates the maximum sum of slopes value for each channel value at position i in vector.
     *
     * @param angleVectors the angle vectors
-    * @return the different colors
     * @throws Exception the exception
     */
    private void getDifferentColors(ArrayList<ColorChannelVectors> angleVectors) throws Exception{
@@ -906,7 +905,6 @@ public class PreCounterThread implements Runnable{
     * Returns the original image as byte array.
     *
     * @param imageIn the image in
-    * @return the original image as byte array
     */
    private void getOriginalImageAsByteArray(BufferedImage imageIn){
 		this.originalImagePixels = getImageAsByteArray(imageIn);
@@ -1064,7 +1062,6 @@ private ArrayList<Integer> getRelaxedColorsWideRange(int relaxation, int colorIn
     * Returns the sub image as byte array.
     *
     * @param imageIn the image of picked cell
-    * @return the sub image as byte array
     */
    private void getSubImageAsByteArray(BufferedImage imageIn){
 		this.subImagePixels = getImageAsByteArray(imageIn);
