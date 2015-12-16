@@ -2669,8 +2669,6 @@ public void setSelectedMarkingLayer(int mLayerID){
 		}
 	}
 
-
-
 	/**
 	 *  Refreshes GridPanel if selected MarkingLayer has Grid set as visible
 	 */
