@@ -95,14 +95,14 @@ public class PreCounterThread implements Runnable{
 	/** The current_max_coordinate_number_in_cell. */
 	private int current_max_coordinate_number_in_cell=Integer.MIN_VALUE;
 	
-	/** The global_min_cell_diameter. */
-	private final int global_min_cell_diameter =SharedVariables.GLOBAL_MIN_CELL_DIAMETER; // this is global minimum for cell diameter
+	/** The global_min_cell_diameter. This is global minimum for cell diameter */
+	private final int global_min_cell_diameter =SharedVariables.GLOBAL_MIN_CELL_DIAMETER; // 
 	
-	/** The global_min_coordinate_number_in_cell. */
-	private final int global_min_coordinate_number_in_cell =SharedVariables.GLOBAL_MIN_COORDINATE_NUMBER_IN_CELL; // this is global minimum for coordinate number
+	/** The global_min_coordinate_number_in_cell. This is global minimum for coordinate number. */
+	private final int global_min_coordinate_number_in_cell =SharedVariables.GLOBAL_MIN_COORDINATE_NUMBER_IN_CELL;  
 	
-	/** The max_cell_size. */
-	private int max_cell_size=0; // only initial value which is changed when user picks bigger cells
+	/** The max_cell_size. only initial value which is changed when user picks bigger cells */
+	private int max_cell_size=0; 
 	
 	/** The current_max_cell_size. */
 	private int current_max_cell_size;
@@ -172,7 +172,7 @@ public class PreCounterThread implements Runnable{
 
 
 	/**
-	 * Calculates centroid of WeightPoints.
+	 * Calculates centroid of group of WeightPoints.
 	 *
 	 * @param weightPointList the weight point list
 	 * @return the point
@@ -282,16 +282,15 @@ public class PreCounterThread implements Runnable{
 	}
 
 	/**
-	 * Calculate coordinates flexible.
+	 * Goes trough the pixels of original image and checks is the color found from colorList. 
+	 * If found -> coordinate of pixel saved to list.
 	 *
 	 * @throws Exception the exception
 	 */
-	private void calculateCoordinatesFlexible() throws Exception{
+	private void calculateCoordinates() throws Exception{
 		   getOriginalImageAsByteArray(this.originalImage);
 	
 		   this.current_finalCoordinates=new ArrayList<Point>();
-	
-	
 		   int w= this.originalImage.getWidth();
 		   int h = this.originalImage.getHeight();
 	
@@ -529,24 +528,31 @@ public class PreCounterThread implements Runnable{
 
 	}
 
+	/**
+	 * Creates the weighted point group. First gets the list of weighted points. 
+	 * Then calculates centroids of weighted points to get the middle point -> saved as the new final coordinate.
+	 *
+	 * @param pointGroups the point groups
+	 * @throws Exception the exception
+	 */
 	private void createWeightedPointGroup(ArrayList<Point> pointGroups) throws Exception{
 		   // create initial weighted list
 		   ArrayList<WeightPoint> weightPointList = createWeightPointList(pointGroups);
 	
 		   if(weightPointList.size()>=this.global_min_coordinate_number_in_cell){
-			   System.out.println("Max cell coordinates: "+current_max_coordinate_number_in_cell);
 				int rounds =0;
+				// sort list of weighted points
 				Collections.sort(weightPointList, new WeightPointComparator());
+				// go trough weight points
 				outerLoop:
-				while(weightPointList.size()>=global_min_coordinate_number_in_cell && rounds<=5){
-	
-					System.out.print("round: " +rounds);
+				while(weightPointList.size()>=global_min_coordinate_number_in_cell && rounds<=10){
+					// calculate center of points
 					 Point midPoint =calculateCentroid(weightPointList);
 					 // count circular data
 					 MaxDistancePoint[] maxDistanceValues=getMaxDistanceRoundValues(midPoint, this.current_max_cell_size, weightPointList);
-					 if(weightPointList.size()<= this.current_max_coordinate_number_in_cell && isCircular(maxDistanceValues)){
+					 // if amount of points is not exceeding maximum amount of point in cell and if user has selected strict precounting then check is cell circular
+					 if(weightPointList.size()<= this.current_max_coordinate_number_in_cell && (!SharedVariables.useStrickSearch || SharedVariables.useStrickSearch && isCircular(maxDistanceValues))){
 								// one cell
-						 System.out.println(" - one cell- ");
 						   this.current_finalCentroidCoordinates.add(midPoint);
 						   break outerLoop;
 					   }
@@ -554,7 +560,7 @@ public class PreCounterThread implements Runnable{
 	
 							WeightPoint w = getWeightPointWithBiggestDistance(maxDistanceValues);
 							if(w==null)
-							w = weightPointList.get(weightPointList.size()-1);
+								w = weightPointList.get(weightPointList.size()-1); // get last point of list
 	
 							WeightPoint b =null;
 							if(w != null){
@@ -564,10 +570,10 @@ public class PreCounterThread implements Runnable{
 									counter++;
 									if(b != null)
 										w=b;
-									b = getWeightPointWithBiggestWeightAtDistance(w, weightPointList, this.current_min_cell_size/2);
+									b = getWeightPointWithBiggestWeightAtDistance(w, weightPointList, this.current_min_cell_size/2); // finds the biggest weight point at distance
 								}while((w.x != b.x || w.y != b.y) && counter<100);
 	
-								if(w.x == b.x && w.y == b.y){ // p has the biggest weight -> near at center of cell
+								if(w.x == b.x && w.y == b.y){ // w has the biggest weight -> near at center of cell
 									int radius=this.current_min_cell_size/2;
 									Point p = calculateCentroid(getPointsInside(w.getPoint(), radius, weightPointList));
 									if(p == null)
@@ -575,16 +581,14 @@ public class PreCounterThread implements Runnable{
 	
 	
 									ArrayList<WeightPoint> selectedPointsForCell=new ArrayList<WeightPoint>();
-									ArrayList<WeightPoint> candidatePointList=getPointsInside(p, radius, weightPointList);
+									ArrayList<WeightPoint> candidatePointList=getPointsInside(p, radius, weightPointList); // get points at distance of radius
 									if(candidatePointList != null)
-									System.out.println(" cand1: " +candidatePointList.size());
 									if(candidatePointList != null && candidatePointList.size()>= 1 &&
 											candidatePointList.size() <=this.current_max_coordinate_number_in_cell){
 	
 										if(candidatePointList.size() >=global_min_coordinate_number_in_cell && isCircular(p, candidatePointList)){ //
 											selectedPointsForCell.addAll(candidatePointList);
 										}
-	
 											double averagePointsPerArea = ((double)candidatePointList.size())/(Math.PI*(double)radius*(double)radius);
 											double pointsPerArea=averagePointsPerArea;
 											int pointsBefore= candidatePointList.size();
@@ -592,24 +596,21 @@ public class PreCounterThread implements Runnable{
 											// search the correct cell size from min size to max size
 											candidateLoop:
 											while(pointsPerArea*1.5 > averagePointsPerArea && radius <=this.current_max_cell_size/2){
-												radius+=this.current_gap;
+												radius+=this.current_gap; // grow radius with gap value
 												if(candidatePointList != null && candidatePointList.size()>=this.global_min_coordinate_number_in_cell)
 													p=calculateCentroid(candidatePointList);
 												candidatePointList=getPointsInside(p, radius, weightPointList);
 												if(candidatePointList==null){
-													System.out.println("cand2: empty");
 													break;
 												}
-												else{
+												else{  // calculate how many points are at area grown in last loop.
 													pointsPerArea=calculateOuterRadiusArea(candidatePointList.size()-pointsBefore, radius, radius-this.current_gap);
-													if(pointsPerArea*5 > averagePointsPerArea){ // not reached to cell boundary yet
+													if(pointsPerArea*5 > averagePointsPerArea){ // not reached to cell boundary yet because lot of cells
 														averagePointsPerArea=((double)candidatePointList.size())/(Math.PI*(double)radius*(double)radius);
 														pointsBefore=candidatePointList.size();
-														System.out.println(" cand2: " +candidatePointList.size());
 	
 														if(candidatePointList.size() >=global_min_coordinate_number_in_cell &&
 															candidatePointList.size() <= this.current_max_coordinate_number_in_cell && isCircular(p, candidatePointList)){ // is points in circle
-															System.out.println("adding to selectedPoints: "+candidatePointList.size());
 															selectedPointsForCell.clear();
 															selectedPointsForCell.addAll(candidatePointList);
 	
@@ -621,27 +622,22 @@ public class PreCounterThread implements Runnable{
 												}
 											}
 	
-											if(selectedPointsForCell != null && selectedPointsForCell.size()>0)
-												System.out.println("selected point size: " +selectedPointsForCell.size());
-	
-											if(selectedPointsForCell != null && selectedPointsForCell.size()>=global_min_coordinate_number_in_cell &&
+											if(selectedPointsForCell != null && selectedPointsForCell.size()>0 && 
+											selectedPointsForCell.size()>=global_min_coordinate_number_in_cell &&
 											selectedPointsForCell.size()<=current_max_coordinate_number_in_cell){
-	
+												// calculate the centroid of cells -> the final point to be saved.
 												midPoint = calculateCentroid(selectedPointsForCell);
 												this.current_finalCentroidCoordinates.add(midPoint);
 											}
 											weightPointList.removeAll(candidatePointList); // remove selected points
 											Collections.sort(weightPointList, new WeightPointComparator());
 	
-	
-	
 									}
-								}
-	
+								} // not
 						}
 					}
 					rounds++;
-					System.out.println();
+					
 				}
 	
 	
@@ -650,28 +646,37 @@ public class PreCounterThread implements Runnable{
 		   }
 	   }
 
+	/**
+	 * Creates the weighted points from given list of points. 
+	 * The weight of point is calculated by amount of neighbor points and how far they are. 
+	 * The weight of point is proportional to distance to other points. Lot of points close -> big weight.
+	 * 
+	 *
+	 * @param pointGroups the point groups
+	 * @return the array list
+	 */
 	private ArrayList<WeightPoint> createWeightPointList(ArrayList<Point> pointGroups){
 		   ArrayList<WeightPoint> weightPointList = new ArrayList<WeightPoint>();
 		   if(pointGroups != null && pointGroups.size()>0)
 				 for (int j=0;j<pointGroups.size()-1;j++) {
 						Point point = pointGroups.get(j);
 						WeightPoint wpoint = new WeightPoint(point);
+						// set boundaries for binary search
 						int lowerBoundValue=Math.max(0,(int)wpoint.getPoint().x-this.current_max_cell_size/2);
 						int upperBoundValue=(int)(wpoint.getPoint().x+this.current_max_cell_size/2);
+						// find points close to wpoint in horizontal level
 						int[] bounds=startEndBinarySearch(pointGroups, lowerBoundValue, upperBoundValue);
 						if(bounds != null && bounds[0] >=0 && bounds[1] <pointGroups.size() && bounds[0] <= bounds[1]){
 							for (int i = bounds[0]; i <= bounds[1]; i++) {
+								// calculate distance
 								double distance = wpoint.getPoint().distance((Point)pointGroups.get(i));
 								if( distance < this.current_max_cell_size/2 && distance > 0){
-									   wpoint.increaseWeight(1/distance);
-	
+									   wpoint.increaseWeight(1/distance); // increase weight by distance
 								}
 							}
-	
-						weightPointList.add(wpoint);
+							weightPointList.add(wpoint);
 						}
 		   }
-	
 		   return weightPointList;
 	   }
 
@@ -840,6 +845,14 @@ public class PreCounterThread implements Runnable{
 
    }
 
+   /**
+    * Returns the max distance round values. The points are separated
+    *
+    * @param mP the m p
+    * @param circleSize the circle size
+    * @param pList the list
+    * @return the max distance round values
+    */
    private MaxDistancePoint[] getMaxDistanceRoundValues(Point mP, int circleSize, ArrayList<WeightPoint> pList){
 
 	   MaxDistancePoint[] maxPoints=new MaxDistancePoint[8];
@@ -1056,6 +1069,15 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
 	this.counterThread=new Thread(this, "counter");
 }
 
+   /**
+    * Calculates is given searchPoint inside a triangle composed from given points.
+    *
+    * @param midPoint the one corner for triangle
+    * @param searchPoint the point to be searched
+    * @param second the second triangle point
+    * @param third the third triangle point
+    * @return true, if found point inside triangle
+    */
    private boolean inside(Point midPoint, Point searchPoint, Point second, Point third){
 	   int[] xList= new int[] {midPoint.x, second.x, third.x};
 	   int[] yList= new int[] {midPoint.y, second.y, third.y};
@@ -1099,126 +1121,14 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
 	return continueCounting;
 }
 
-/*
-   private void createWeightedPointGroup2(ArrayList<Point> pointGroups) throws Exception{
-	   ArrayList<Point> collectedPoints=new ArrayList<Point>();
-	   // create initial weighted list
-	   ArrayList<WeightPoint> weightPointList = new ArrayList<WeightPoint>();
-	   if(pointGroups != null && pointGroups.size()>0){
-
-		  for (Iterator<Point> iterator = pointGroups.iterator(); iterator.hasNext();) {
-			Point point = (Point) iterator.next();
-			weightPointList.add(new WeightPoint(point));
-		}
-	   }
-	   if(weightPointList.size()>1){
-
-		   // calculate weights 100 times
-		   for(int i=0;i<weightIterations*weightPointList.size();i++){
-			   // randomize list
-			   double maxWeight=0;
-			   Collections.shuffle(weightPointList);
-
-			   WeightPoint wpoint = weightPointList.get(0);
-
-
-			   for(int j=1;j< weightPointList.size(); j++){
-				   WeightPoint p2=weightPointList.get(j);
-				   if(p2.getWeight()>maxWeight)
-					   maxWeight=p2.getWeight();
-				   double distance = wpoint.distance(p2);
-				   if( distance < this.current_max_cell_size/2){
-					   wpoint.increaseWeight(p2.getWeight()/distance);
-				   }
-			   }
-			   if(wpoint.getWeight()>maxWeight)
-				   maxWeight=wpoint.getWeight();
-
-			   for (Iterator<WeightPoint> iterator = weightPointList.iterator(); iterator.hasNext();) {
-				WeightPoint weightPoint = (WeightPoint) iterator.next();
-				weightPoint.decreaseWeight(maxWeight);
-
-			}
-		   }
-
-		   if(weightPointList.size()>0){
-			   // sortList
-			   Collections.sort(weightPointList, new WeightPointComparator());
-			   double weightAtMinPointIndex=0;
-			   // calculate weight at index minPoints
-			   if(weightPointList.size()>=minPoints*3)
-				   weightAtMinPointIndex = weightPointList.get(minPoints*3-1).getWeight();
-			   else
-				   weightAtMinPointIndex = weightPointList.get(weightPointList.size()-1).getWeight();
-
-			   // collect points which have big weight and are far enough from each other
-			   double weightAtPoint=0;
-
-
-			   do{
-				   WeightPoint wp= weightPointList.get(0);
-				   weightAtPoint=wp.getWeight();
-				   if(weightAtPoint >= weightAtMinPointIndex){
-					   // remove all neighbors that inside cell size
-					   ArrayList<WeightPoint> removePointList=new ArrayList<WeightPoint>();
-					   weightPointList.remove(wp);
-					   for (Iterator<WeightPoint> iterator = weightPointList.iterator(); iterator.hasNext();) {
-						WeightPoint wp2=iterator.next();
-						if(wp.distance(wp2)< this.current_max_cell_size){
-							//weightPointList.remove(wp2);
-							removePointList.add(wp2);
-						}
-					}
-					   weightPointList.removeAll(removePointList);
-					   //collectedPoints.add(wp.getPoint());
-					   this.current_finalCentroidCoordinates.add(wp.getPoint());
-				   }
-			   }while(weightAtPoint >= weightAtMinPointIndex && weightPointList.size()>0);
-		   }
-	   }else{
-		   LOGGER.fine("WeightPoint list too small");
-	   }
-	 //  return collectedPoints;
-   }
-
-   private boolean checkAndApproveMidPoints(ArrayList<ArrayList<Point2D>> pointLists){
-	   boolean allApproved=true;
-
-	   ArrayList<Point2D> midPointList = new ArrayList<Point2D>();
-	   for (Iterator<ArrayList<Point2D>> iterator = pointLists.iterator(); iterator.hasNext();) {
-			ArrayList<Point2D> pList = (ArrayList<Point2D>) iterator.next();
-
-			Point2D midP = countCenterPoint2D(pList);
-			midPointList.add(midP);
-		//	this.current_finalCentroidCoordinates.add(midP);
-			/*
-			for (Iterator<Point2D> iterator2 = pList.iterator(); iterator2.hasNext();) {
-				Point2D point = (Point2D) iterator2.next();
-
-			}
-			*/
-/*	   }
-
-	   if(midPointList.size()>1){
-		   Point2D middlePoint= countCenterPoint2D(midPointList);
-
-		   for (Iterator iterator = midPointList.iterator(); iterator.hasNext();) {
-			Point2D point2d = (Point2D) iterator.next();
-			if(point2d.distance(middlePoint) > this.current_max_cell_size*0.75){
-				allApproved=false;
-			}
-
-		}
-		   if(allApproved)
-			   this.current_finalCentroidCoordinates.add(middlePoint.getAsInt());
-
-	   }
-
-
-	   return allApproved;
-   }
-*/
-
+   /**
+    * Divides the circle given by midPoint and circle size to 8 slices and calculates in which slice the searched point is located.
+    *
+    * @param midPoint the mid point
+    * @param searchPoint the search point
+    * @param circleSize the circle size
+    * @return the int
+    */
    private int isInsideWhichSlice(Point midPoint, Point searchPoint, int circleSize){
 	   int circlePointX=Integer.MAX_VALUE;
 	   int circlePointY= Integer.MAX_VALUE;
@@ -1228,97 +1138,105 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
 	   int hPointY=midPoint.y;
 	   int quarter=0;
 
+	   // go through locations separated to four slices
 	   if(searchPoint.x >= midPoint.x){ // on the right from midpoint
 		   circlePointX= (int) (midPoint.x + Math.sin(45)*circleSize);
-		   hPointX=midPoint.x +circleSize;
+		   hPointX=midPoint.x +circleSize; // calculate third point for triangle
 		   quarter=1;
 	   }
 	   else{ // on the left from midpoint
 		   circlePointX= (int) (midPoint.x - Math.sin(45)*circleSize);
-		   hPointX=midPoint.x - circleSize;
+		   hPointX=midPoint.x - circleSize; // calculate third point for triangle
 		   quarter=3;
 	   }
 
 	   if(searchPoint.y >= midPoint.y){ // over midpoint y
 		   circlePointY= (int) (midPoint.y + Math.sin(45)*circleSize);
-		   vPointY=midPoint.y + circleSize;
+		   vPointY=midPoint.y + circleSize; // calculate third point for triangle
 		   if(quarter!=1)
 			   quarter=4;
 	   }
 	   else{ // below midpoint y
 		   circlePointY= (int) (midPoint.y - Math.sin(45)*circleSize);
-		   vPointY=midPoint.y - circleSize;
+		   vPointY=midPoint.y - circleSize; // calculate third point for triangle
 		   if(quarter ==1)
 			   quarter=2;
 
 	   }
 
+	   // go through the locations separated to 8 slices
 	   Point circlePoint=new Point(circlePointX,circlePointY);
 
 	   switch (quarter) {
 	case 1:
-
-		Point thirdPoint =new Point(vPointX,vPointY);
+		// first quarter -> check when split the quarter to two triangles:
+		Point thirdPoint =new Point(vPointX,vPointY); // the middle point in quarter slice
+		// check is inside the first triangle
 		if(inside(midPoint,searchPoint,circlePoint, thirdPoint)){
 			return 1;
 		}
-		else{
+		else{ // check is inside the second triangle
 			thirdPoint= new Point(hPointX,hPointY);
 			if(inside(midPoint,searchPoint,circlePoint,thirdPoint)){
 				return 2;
 			}
 			else{
-				return -1;
+				return -1; // not found
 			}
 		}
 
 	case 2:
-		thirdPoint =new Point(hPointX,hPointY);
+		// second quarter -> check when split the quarter to two triangles:
+		thirdPoint =new Point(hPointX,hPointY); // the middle point in quarter slice
+		// check is inside the first triangle
 		if(inside(midPoint,searchPoint,circlePoint, thirdPoint)){
 			return 3;
 		}
-		else{
+		else{ // check is inside the second triangle
 			thirdPoint= new Point(vPointX,vPointY);
 			if(inside(midPoint,searchPoint,circlePoint,thirdPoint)){
 				return 4;
 			}
 			else{
-				return -1;
+				return -1; // not found
 			}
 		}
 
 	case 3:
-		thirdPoint =new Point(vPointX,vPointY);
+		// third quarter -> check when split the quarter to two triangles:
+		thirdPoint =new Point(vPointX,vPointY); // the middle point in quarter slice
+		// check is inside the first triangle
 		if(inside(midPoint,searchPoint,circlePoint, thirdPoint)){
 			return 5;
 		}
-		else{
+		else{ // check is inside the second triangle
 			thirdPoint= new Point(hPointX,hPointY);
 			if(inside(midPoint,searchPoint,circlePoint,thirdPoint)){
 				return 6;
 			}
 			else{
-				return -1;
+				return -1; // not found
 			}
 		}
 	case 4:
-		thirdPoint =new Point(hPointX,hPointY);
+		// fourth quarter -> check when split the quarter to two triangles:
+		thirdPoint =new Point(hPointX,hPointY); // the middle point in quarter slice
+		// check is inside the first triangle
 		if(inside(midPoint,searchPoint,circlePoint, thirdPoint)){
 			return 7;
 		}
-		else{
+		else{ // check is inside the second triangle
 			thirdPoint= new Point(vPointX,vPointY);
 			if(inside(midPoint,searchPoint,circlePoint,thirdPoint)){
 				return 8;
 			}
 			else{
-				return -1;
+				return -1; // not found
 			}
 		}
 	}
 
-
-	 return -1;
+	 return -1; // not found
 
 
    }
@@ -1331,7 +1249,7 @@ public void run() {
 			ArrayList<ColorChannelVectors> angleVectors = get8Angles();
 			if(angleVectors != null && angleVectors.size()>0){
 				// get the colors
-				LOGGER.fine("start calculating differentColors: "+angleVectors.size());
+				LOGGER.fine("start calculating differentColors: "+angleVectors.size()+ "Colors: "+this.colorList.size());
 				getDifferentColors(angleVectors);
 
 				if(!continueCounting){
@@ -1344,7 +1262,7 @@ public void run() {
 					// go through the image pixels of original image
 
 					long time = System.currentTimeMillis();
-					calculateCoordinatesFlexible();
+					calculateCoordinates();
 					long time2 = System.currentTimeMillis()-time;
 					LOGGER.fine("end of calculating coordinates time: "+time2);
 					if(!continueCounting){

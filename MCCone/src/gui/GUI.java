@@ -44,6 +44,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -1223,9 +1224,22 @@ private GridPropertiesPanel gridDialog=null;
 			menu_edit_clear_all_countings.setMnemonic(KeyEvent.VK_R);
 			addActionsToMenuItems(menu_edit_clear_all_countings, ID.MENU_ITEM_EDIT_CLEAR_ALL_COUNTINGS);
 
+				
+			JCheckBoxMenuItem useStrictPrecounting = new JCheckBoxMenuItem("Use Strict Precounting");
+			useStrictPrecounting.setSelected(false);
+			useStrictPrecounting.addChangeListener(new ChangeListener() {
+				
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					SharedVariables.setUseStrickSearch(((JCheckBoxMenuItem)e.getSource()).isSelected());
+					
+				}
+			});
+			
 			menu_edit.add(menu_edit_set_marking_properties);
 			menu_edit.add(menu_edit_clear_single_countings);
 			menu_edit.add(menu_edit_clear_all_countings);
+			menu_edit.add(useStrictPrecounting);
 			
 			// SHOW MENU
 			JMenu menu_show= new JMenu("Show");
@@ -1497,6 +1511,10 @@ private GridPropertiesPanel gridDialog=null;
 			UIManager.put("MenuItem.font", Fonts.b16);
 			UIManager.put("MenuItem.foreground", Color_schema.white_230);
 			UIManager.put("MenuItem.selectionBackground", Color_schema.menu_selection_bg) ; //Color_schema.color_menu_selection_bg);
+			UIManager.put("CheckBoxMenuItem.background", Color_schema.dark_50);
+			UIManager.put("CheckBoxMenuItem.font", Fonts.b16);
+			UIManager.put("CheckBoxMenuItem.foreground", Color_schema.white_230);
+			UIManager.put("CheckBoxMenuItem.selectionBackground", Color_schema.menu_selection_bg) ; //Color_schema.color_menu_selection_bg);
 			UIManager.put("Panel.background", Color_schema.dark_40);
 			UIManager.put("ScrollBar.highlight", Color_schema.menu_selection_bg);
 			UIManager.put("ScrollPane.background", Color_schema.dark_30);

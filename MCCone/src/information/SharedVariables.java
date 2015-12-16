@@ -11,7 +11,7 @@ public class SharedVariables {
 	public static final int DISTANCE_TO_ADD = 10;
 	public static final int GLOBAL_MIN_CELL_DIAMETER = 6;
 	public static final int GLOBAL_MIN_COORDINATE_NUMBER_IN_CELL = 4;
-	public static final int MAX_GAP = 8;
+	public static final int MAX_GAP = 6;
 	public static int operationSystem=ID.OS_WINDOWS;
 	public static int transparencyModeIN = AlphaComposite.SRC_IN;
 	public static int transparencyModeOVER = AlphaComposite.SRC_OVER;
@@ -22,6 +22,26 @@ public class SharedVariables {
 	public static final String widthDown = "WIDTH_DOWN";
 	public static final String heighthUp = "HEIGHT_UP";
 	public static final String heightDown = "HEIGHT_DOWN";
+	public static boolean useStrickSearch=false;
+
+	
+	/**
+	 * Checks if is use strick search.
+	 *
+	 * @return true, if is use strick search
+	 */
+	public static boolean isUseStrickSearch() {
+		return useStrickSearch;
+	}
+
+	/**
+	 * Sets the ID of operation system.
+	 *
+	 * @param osID the new ID of operation system
+	 */
+	public static void setOS(int osID){
+		operationSystem=osID;
+	}
 
 	/**
 	 * Sets the transparencyIN.
@@ -42,10 +62,10 @@ public class SharedVariables {
 	}
 	
 	/**
-	 * Sets the used dimming mode to srcOver.
+	 * Sets the used dimming mode to srcAtop.
 	 */
-	public static void setUsedDimmingModeToSrcOver(){
-		usedDimmingMode=transparencyModeOVER;
+	public static void setUsedDimmingModeToSrcAtop(){
+		usedDimmingMode=transparencyModeATOP;
 	}
 	
 	/**
@@ -63,18 +83,18 @@ public class SharedVariables {
 	}
 	
 	/**
-	 * Sets the used dimming mode to srcAtop.
+	 * Sets the used dimming mode to srcOver.
 	 */
-	public static void setUsedDimmingModeToSrcAtop(){
-		usedDimmingMode=transparencyModeATOP;
+	public static void setUsedDimmingModeToSrcOver(){
+		usedDimmingMode=transparencyModeOVER;
 	}
 	
 	/**
-	 * Sets the ID of operation system.
+	 * Sets the use strick search.
 	 *
-	 * @param osID the new ID of operation system
+	 * @param useStrickSearch the new use strick search
 	 */
-	public static void setOS(int osID){
-		operationSystem=osID;
+	public static void setUseStrickSearch(boolean useStrickSearch) {
+		SharedVariables.useStrickSearch = useStrickSearch;
 	}
 }
