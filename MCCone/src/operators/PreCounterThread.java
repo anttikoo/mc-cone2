@@ -384,24 +384,24 @@ public class PreCounterThread implements Runnable{
 	}
 
 	/**
-	 * Cleans collect groups and cluster.
+	 * Creates groups from points by using distances between points.
+	 * 
 	 *
 	 * @throws Exception the exception
 	 */
-	private void cleanCollectGroupsAndCluster() throws Exception{
+	private void createPointGroups() throws Exception{
 		   this.copy_of_current_finalCoordinates=new ArrayList<Point>();
 		   this.copy_of_current_finalCoordinates.addAll(this.current_finalCoordinates);
 		   this.current_finalCentroidCoordinates=new ArrayList<Point>();
 		   Collections.sort(this.copy_of_current_finalCoordinates, new CoordinateComparator());
 		   while(this.continueCounting && copy_of_current_finalCoordinates.size()>0 ){ // Points are removed from list in method getNeighbourPoints
 			   int randomIndex=(int)(Math.random()*copy_of_current_finalCoordinates.size());
-			   Point firstPoint = copy_of_current_finalCoordinates.get(randomIndex);
+			   Point firstPoint = copy_of_current_finalCoordinates.get(randomIndex); // get randomly the first point
 			   Stack<Point> stack  = new Stack<Point>();
 			   stack.push(firstPoint);
 			   copy_of_current_finalCoordinates.remove(firstPoint);
-	
+			   // recursively get points to list
 			   ArrayList<Point> groupPoints = getPoints(stack, new ArrayList<Point>());
-	
 	
 			   if(groupPoints != null && groupPoints.size() >= this.global_min_coordinate_number_in_cell ){//&& groupPoints.size() < this.current_max_coordinate_number_in_cell){
 				   createWeightedPointGroup(groupPoints);
@@ -412,7 +412,7 @@ public class PreCounterThread implements Runnable{
 	/**
 	 * Collects the inner cell colors from sub image that user has picked.
 	 *
-	 * @param radius the radius
+	 * @param radius the maximum distance from middle point
 	 * @throws Exception the exception
 	 */
 	private void collectInnerCellColorsFromSubImage(int radius) throws Exception{
@@ -505,7 +505,6 @@ public class PreCounterThread implements Runnable{
 			        	return null;
 			     }
 			  }
-	
 			  return channels;
 		} catch (Exception e) {
 			LOGGER.severe("Error in transforming image to matrix");
@@ -636,11 +635,8 @@ public class PreCounterThread implements Runnable{
 								} // not
 						}
 					}
-					rounds++;
-					
+					rounds++;			
 				}
-	
-	
 		   }else{
 			   LOGGER.fine("WeightPoint list too small");
 		   }
@@ -664,7 +660,7 @@ public class PreCounterThread implements Runnable{
 						// set boundaries for binary search
 						int lowerBoundValue=Math.max(0,(int)wpoint.getPoint().x-this.current_max_cell_size/2);
 						int upperBoundValue=(int)(wpoint.getPoint().x+this.current_max_cell_size/2);
-						// find points close to wpoint in horizontal level
+						// find first and last index of points in pointGroups which are close to wpoint in horizontal level
 						int[] bounds=startEndBinarySearch(pointGroups, lowerBoundValue, upperBoundValue);
 						if(bounds != null && bounds[0] >=0 && bounds[1] <pointGroups.size() && bounds[0] <= bounds[1]){
 							for (int i = bounds[0]; i <= bounds[1]; i++) {
@@ -718,7 +714,6 @@ public class PreCounterThread implements Runnable{
 		}
 
 		return angleVectors;
-
 	}
 	continueCounting=false;
 	return null;
@@ -742,8 +737,8 @@ public class PreCounterThread implements Runnable{
 
 
 	if(angleVectors != null && angleVectors.size()>0){
-		int sumOfMaxKindexes = 0;
-		int kNumber=0;
+		int sumOfMaxKindexes = 0; 	// inital value
+		int kNumber=0;				// inital value
 		int minCellSize =Integer.MAX_VALUE;
 		Iterator<ColorChannelVectors> vIterator = angleVectors.iterator();
 		while(vIterator.hasNext()){
@@ -751,12 +746,13 @@ public class PreCounterThread implements Runnable{
 			int indexOfMaxK=0;
 			ColorChannelVectors colorVector=vIterator.next();
 			// go through vectors and for each color count k -> sum k of three colors -> save
-			int startGap =(int)(colorVector.getSize()/20);
+			int startGap =(int)(colorVector.getSize()/20); 
 			if(startGap<3)
 				startGap=3;
-			int endGap=(int)(colorVector.getSize()/4);
+			int endGap=(int)(colorVector.getSize()/4); 
 			if(endGap<5)
 				endGap=5;
+			// count maximum slope value and index of it
 			for(int gap = startGap;gap<endGap;gap++){
 				for(int i=gap+1;i<colorVector.getSize()-gap-1;i++){
 					int start_x=i-gap;
@@ -776,7 +772,7 @@ public class PreCounterThread implements Runnable{
 					minCellSize=indexOfMaxK; // stores the smallest cell size from middle to border of cell
 				for(int i= 0;i<indexOfMaxK;i++){
 					int colorInt = colorVector.getFullColorInt_original(i);
-					addColorsIfNotFound(getRelaxedColors(this.pixel_color_relaxation, colorInt));
+					addColorsIfNotFound(getRelaxedColors(this.pixel_color_relaxation, colorInt)); // collect if not already in list.
 
 				}
 			}
@@ -839,6 +835,12 @@ public class PreCounterThread implements Runnable{
 	}
 }
 
+   /**
+    * Returns the image as byte array.
+    *
+    * @param imageIn the image in
+    * @return the image as byte array
+    */
    private byte[] getImageAsByteArray(BufferedImage imageIn){
 	   BufferedImage image = convert(imageIn, BufferedImage.TYPE_3BYTE_BGR); // convert to 3byte bgr image
 		return ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
@@ -848,7 +850,7 @@ public class PreCounterThread implements Runnable{
    /**
     * Returns the max distance round values. The points are separated
     *
-    * @param mP the m p
+    * @param mP the point where other points are compared
     * @param circleSize the circle size
     * @param pList the list
     * @return the max distance round values
@@ -864,26 +866,29 @@ public class PreCounterThread implements Runnable{
 				if(maxPoints[sliceNumber-1] == null || maxPoints[sliceNumber-1].getDistance() < distance){
 					maxPoints[sliceNumber-1] = new MaxDistancePoint(searchPoint, distance);
 				}
-
 			}
 	   }
-
-
 	   return maxPoints;
    }
 
 
 
+   /**
+    * Returns the neighbor points that are close enough to given point.
+    *
+    * @param p the Point which neighbors are calculated
+    * @return the neighbor points
+    * @throws Exception the exception
+    */
    private ArrayList<Point> getNeighbourPoints(Point p) throws Exception{
 	   ArrayList<Point> neighbours=new ArrayList<Point>();
-
+	   // calculate the max distance 
 	   int maxDistance=(int)(this.current_max_cell_size/this.min_distance_between_cells_boundaries);
-	   int lowerBoundValue=Math.max(p.x-maxDistance,0);
-	   int upperBoundValue=p.x+maxDistance;
+	   int lowerBoundValue=Math.max(p.x-maxDistance,0); // minimum bounds
+	   int upperBoundValue=p.x+maxDistance;				// maximum bounds
 	   int[] startEndIndexes=startEndBinarySearch(this.copy_of_current_finalCoordinates, lowerBoundValue, upperBoundValue);
 	   if(startEndIndexes != null && startEndIndexes[0] >= 0
 			   && startEndIndexes[1] <= this.copy_of_current_finalCoordinates.size()-1 && startEndIndexes[0] < startEndIndexes[1])
-
 
 	   for (int i = startEndIndexes[0]; i <= startEndIndexes[1]; i++) {
 		   Point point = this.copy_of_current_finalCoordinates.get(i);
@@ -893,13 +898,16 @@ public class PreCounterThread implements Runnable{
 			}
 	   }
 
-
 		this.copy_of_current_finalCoordinates.removeAll(neighbours);
-
-	   return neighbours;
-
+		return neighbours;
    }
 
+   /**
+    * Returns the original image as byte array.
+    *
+    * @param imageIn the image in
+    * @return the original image as byte array
+    */
    private void getOriginalImageAsByteArray(BufferedImage imageIn){
 		this.originalImagePixels = getImageAsByteArray(imageIn);
 
@@ -927,6 +935,14 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
    }
 
 
+   /**
+    * Returns the points which distance to given mid point is smaller than given maximum distance.
+    *
+    * @param mPoint the mid point
+    * @param distance the distance
+    * @param weightPointList the list of Weightpoints
+    * @return the points inside
+    */
    public ArrayList<WeightPoint> getPointsInside(Point mPoint, int distance, ArrayList<WeightPoint> weightPointList){
 	Point2D midPoint = new Point2D(mPoint.x,mPoint.y);
 	  ArrayList<WeightPoint> pointsInside=new ArrayList<WeightPoint>();
@@ -943,11 +959,12 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
 			}
 		}
 	   return pointsInside;
-
 }
 
    /**
-    * Returns the reduced noise color. Checks that each color channel value is between 0-255.
+    * Returns the reduced noise color. R
+    * educes to every tenth value for example 30 , 50 ,100, 110, etc.
+    * Checks that each color channel value is between 0-250.
     *
     * @param colorInt the color as Integer
     * @return the reduced noise color as Integer
@@ -956,9 +973,9 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
 	int red   = (colorInt >> 16) & 0xff;
 	int green = (colorInt >>  8) & 0xff;
 	int blue  = (colorInt      ) & 0xff;
-	red = checkOverBounds(red - ( red % 10));
-	green = checkOverBounds(green - ( green % 10 ));
-	blue = checkOverBounds(blue - ( blue % 10 ) );
+	red = checkOverBounds(red - ( red % 10)); // reduces to every tenth value for example 30 , 50 ,100, 110, etc.
+	green = checkOverBounds(green - ( green % 10 )); // reduces to every tenth value for example 30 , 50 ,100, 110, etc.
+	blue = checkOverBounds(blue - ( blue % 10 ) ); // reduces to every tenth value for example 30 , 50 ,100, 110, etc.
 
 	return (255 << 24) | (red << 16) | ( green << 8) | blue;
 }
@@ -973,17 +990,22 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
     * @return the reduced noise color with relaxation
     */
    private Integer getReducedNoiseColorWithRelaxation(int colorInt, int multiply){
-
-	colorInt-= colorInt % 10;
-	colorInt += multiply*10;
-	return checkOverBounds(colorInt);
-
-
+	   colorInt-= colorInt % 10;
+	   colorInt += multiply*10;
+	   return checkOverBounds(colorInt);
 }
 
 
-
-   private ArrayList<Integer> getRelaxedColors(int relaxation, int colorInt){
+   /**
+    * Returns the relaxed colors with a very wide range of color. Changes the given color Integer to different channels of colors (red, green, blue).
+    * Relaxes each channel by getting a wider range of integer values for each channel and creates a all combinations of them.
+    *
+    * @param relaxation the relaxation
+    * @param colorInt the color int
+    * @return the relaxed colors
+    */
+   @SuppressWarnings("unused")
+private ArrayList<Integer> getRelaxedColorsWideRange(int relaxation, int colorInt){
 	ArrayList<Integer> integerList= new ArrayList<Integer>();
 	int red_relaxed;
 	int green_relaxed;
@@ -995,6 +1017,39 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
 
 	for(int i=-relaxation;i<= relaxation;i++){
 		red_relaxed=getReducedNoiseColorWithRelaxation(red, i);
+		for(int j=-relaxation;j<= relaxation;j++){
+			green_relaxed=getReducedNoiseColorWithRelaxation(green, j);
+			for(int k=-relaxation;k<= relaxation;k++){
+				blue_relaxed=getReducedNoiseColorWithRelaxation(blue, k);
+				int argb =  (255 << 24) | (red_relaxed << 16) | ( green_relaxed << 8) | blue_relaxed;
+				integerList.add(argb);
+			}
+		}
+	}
+	return integerList;
+}
+   
+   /**
+    * Returns the relaxed colors. Changes the given color Integer to different channels of colors (red, green, blue).
+    * Relaxes each channel by getting a wider range of integer values for each channel.
+    *
+    * @param relaxation the relaxation
+    * @param colorInt the color int
+    * @return the relaxed colors
+    */
+   private ArrayList<Integer> getRelaxedColors(int relaxation, int colorInt){
+	ArrayList<Integer> integerList= new ArrayList<Integer>();
+	int red_relaxed;
+	int green_relaxed;
+	int blue_relaxed;
+	// get channels
+	int red   = (colorInt >> 16) & 0xff;
+	int green = (colorInt >>  8) & 0xff;
+	int blue  = (colorInt      ) & 0xff;
+
+	// relax the channels and combine to Color Integer. The Relaxation does same relaxation to all channels. For example +1 for red, green and blue.
+	for(int i=-relaxation;i<= relaxation;i++){
+		red_relaxed=getReducedNoiseColorWithRelaxation(red, i);
 		green_relaxed=getReducedNoiseColorWithRelaxation(green, i);
 		blue_relaxed=getReducedNoiseColorWithRelaxation(blue, i);
 		int argb =  (255 << 24) | (red_relaxed << 16) | ( green_relaxed << 8) | blue_relaxed;
@@ -1002,18 +1057,36 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
 	}
 	return integerList;
 }
+   
+   
 
+   /**
+    * Returns the sub image as byte array.
+    *
+    * @param imageIn the image of picked cell
+    * @return the sub image as byte array
+    */
    private void getSubImageAsByteArray(BufferedImage imageIn){
 		this.subImagePixels = getImageAsByteArray(imageIn);
 
   }
 
 
-
+	/**
+	 * Returns the thread status.
+	 *
+	 * @return the thread status
+	 */
 	public String getThreadStatus(){
 		return this.counterThread.getState().toString();
 	}
 
+	/**
+	 * Returns the weight point with biggest distance.
+	 *
+	 * @param maxDistanceList the max distance list
+	 * @return the weight point with biggest distance
+	 */
 	private WeightPoint getWeightPointWithBiggestDistance(MaxDistancePoint[] maxDistanceList){
 	//	   double maxDistance=Double.MIN_VALUE;
 		   MaxDistancePoint maxDistancePoint=null;
@@ -1021,13 +1094,19 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
 			if(maxDistanceList[i] != null && (maxDistancePoint == null ||
 					(maxDistancePoint != null && maxDistanceList[i].getDistance() > maxDistancePoint.getDistance()))){
 				maxDistancePoint=maxDistanceList[i];
-	
 			}
-	
 		}
 		   return maxDistancePoint;
 	   }
 
+   /**
+    * Returns the weight point with biggest weight at distance.
+    *
+    * @param midPoint the mid point
+    * @param weightPointList the weight point list
+    * @param distance the distance
+    * @return the weight point with biggest weight at distance
+    */
    private WeightPoint getWeightPointWithBiggestWeightAtDistance(WeightPoint midPoint, ArrayList<WeightPoint> weightPointList, int distance){
 	   WeightPoint maxWeightPoint=null;
 	   for (Iterator<WeightPoint> iterator = weightPointList.iterator(); iterator.hasNext();) {
@@ -1045,9 +1124,9 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
    /**
     * Checks is color at image position found from colorList. The color value is reduced
     *
-    * @param r the r
-    * @param c the c
-    * @param w the w
+    * @param r the row
+    * @param c the column
+    * @param w the width of image
     * @return true, if found the color
     */
    private boolean hasCellColor(int r, int c, int w){
@@ -1063,6 +1142,9 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
    }
 
 
+   /**
+    * Initializes the Thread.
+    */
    public void initThread(){
 	this.setContinueCounting(true);
 	this.cancelledInside=false;
@@ -1087,13 +1169,24 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
 	   return slicePolygon.contains(searchPoint);
    }
 
+   /**
+    * Checks if is cancelled by program. In other words,has this Thread stopped the counting.
+    *
+    * @return true, if is cancelled inside
+    */
    public boolean isCancelledInside() {
 		return cancelledInside;
 	}
 
+   /**
+    * Checks does the group of point form a circular shape.
+    *
+    * @param maxPoints the points
+    * @return true, if is circular
+    */
    private boolean isCircular(MaxDistancePoint[] maxPoints){
-	   double maxDistance = Double.MIN_VALUE;
-	   double minDistance = Double.MAX_VALUE;
+	   double maxDistance = Double.MIN_VALUE; // initial values
+	   double minDistance = Double.MAX_VALUE; // initial values
 
 	   for (int i = 0; i < maxPoints.length; i++) {
 		MaxDistancePoint mdp= maxPoints[i];
@@ -1107,11 +1200,18 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
 		}
 	}
 
-	   if(maxDistance > minDistance*1.75)
+	   if(maxDistance > minDistance*SharedVariables.GLOBAL_CIRCULARITY) // if difference bigger than xx % -> not circular
 		   return false;
 	   return true;
    }
 
+   /**
+    * Checks if is the shape composed from WeightPoints circular.
+    *
+    * @param midPoint the mid point
+    * @param weightPointList the weight point list
+    * @return true, if is circular
+    */
    private boolean isCircular(Point midPoint, ArrayList<WeightPoint> weightPointList){
 	   MaxDistancePoint[] maxDistanceValues=getMaxDistanceRoundValues(midPoint, this.current_max_cell_size,weightPointList);
 	   return isCircular(maxDistanceValues);
@@ -1127,7 +1227,7 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
     * @param midPoint the mid point
     * @param searchPoint the search point
     * @param circleSize the circle size
-    * @return the int
+    * @return the int 
     */
    private int isInsideWhichSlice(Point midPoint, Point searchPoint, int circleSize){
 	   int circlePointX=Integer.MAX_VALUE;
@@ -1241,6 +1341,13 @@ private ArrayList<Point> getPoints(Stack<Point> stack, ArrayList<Point> groupPoi
 
    }
 
+   /* 
+    * Starts the calculation of precounting. Phases:
+    * 1. Collect colors of picked example cell
+    * 2. Collect coordinates of pixels from original image which color matches phase 1 colors
+    * 3. Group coordinates and calculate centroids which will be the coordinates for markings.
+    * @see java.lang.Runnable#run()
+    */
    @Override
 public void run() {
 	try {
@@ -1261,20 +1368,18 @@ public void run() {
 					LOGGER.fine("start calculating coordinates: colorlist: "+current_colorList.size()+ "using gap: " +this.current_gap+ "min:"+this.global_min_coordinate_number_in_cell+ " max: "+this.current_max_coordinate_number_in_cell);
 					// go through the image pixels of original image
 
-					long time = System.currentTimeMillis();
 					calculateCoordinates();
-					long time2 = System.currentTimeMillis()-time;
-					LOGGER.fine("end of calculating coordinates time: "+time2);
+	
 					if(!continueCounting){
 						abortExecution("No Coordinates", "Couldn't calculate pixel coordinates for cells. Try again.");
 						return;
 					}
 					if(this.current_finalCoordinates != null && this.current_finalCoordinates.size()>=this.global_min_coordinate_number_in_cell){ // number of Points should be more than 10
 						LOGGER.fine("start clustering: "+current_finalCoordinates.size());
-						time = System.currentTimeMillis();
-						cleanCollectGroupsAndCluster();
-						time2 = System.currentTimeMillis()-time;
-						LOGGER.fine("end of clustering time: "+time2);
+				
+						createPointGroups();
+	
+						LOGGER.fine("end of clustering");
 						if(!continueCounting){
 							abortExecution("No Cells", "No any cells found.");
 							return;
@@ -1339,96 +1444,72 @@ public void run() {
 	}
 
 }
+   
+   /**
+    * Sets the cancelled inside.
+    *
+    * @param cancelledInside the new cancelled inside
+    */
    public void setCancelledInside(boolean cancelledInside) {
 	this.cancelledInside = cancelledInside;
 }
 
 
+   /**
+    * Sets the continue counting.
+    *
+    * @param continueCounting the new continue counting
+    */
    public void setContinueCounting(boolean continueCounting) {
 	this.continueCounting = continueCounting;
 }
 
 
-/*
-   private void initClusteringMethods(){
- this.current_finalCentroidCoordinates=new ArrayList<Point>();
 
-	   opticsLoader = new OpticsDataLoader();
-
-		optics = new OPTICS();
-		optics.setMinPts(this.minPoints);
-
-		  kmeans = new KMeans();
-		  kmeans.setIterationLimit(1000);
-   }
-
-
-
-
-   private ArrayList<ArrayList<Point2D>> clusterData(ArrayList<Point> pointListIn, int type){
-		ArrayList<ArrayList<Point2D>> rlist=new ArrayList<ArrayList<Point2D>>();
-		DataSet dataset = opticsLoader.loadData(pointListIn);
-		int[] ass;
-		switch(type){
-
-		case ID.CLUSTER_KMEANS:
-			ass=kmeans.cluster(dataset, (int[])null);
-			break;
-
-		default:
-			ass = optics.cluster(dataset, (int[])null);
-			break;
-		}
-
-		if(continueCounting){
-			List<List<DataPoint>> clusterings = ClustererBase.createClusterListFromAssignmentArray(ass,dataset);
-			//ArrayList<Point> centerCoordinateList=new ArrayList<Point>();
-			for (int i = 0; i < clusterings.size(); i++) {
-				List<DataPoint> dataList =clusterings.get(i);
-				ArrayList<Point2D> pointList=new ArrayList<Point2D>();
-				for (int j = 0; j < dataList.size(); j++) {
-					DataPoint dataPoint = dataList.get(j);
-				//	System.out.println("cluster "+i+ " datapoint x: "+dataPoint.getNumericalValues().get(0)+ " y: " +dataPoint.getNumericalValues().get(1));
-					Point2D p = new Point2D(dataPoint.getNumericalValues().get(0), dataPoint.getNumericalValues().get(1));
-					pointList.add(p);
-
-				}
-				if(!continueCounting)
-					return null;
-
-				rlist.add(pointList);
-
-			}
-		}
-		return rlist;
-   }
-
-   private Point2D countCenterPoint2D(ArrayList<Point2D> pointList){
-
-		Point2D centerPoint = Point2D.centroid(pointList);
-	//	System.out.println("center:x: "+centerPoint.x()+ " y:"+centerPoint.y());
-		return centerPoint;
-	}
-
-*/
-
+   /**
+    * Sets the PreCountThreadManager.
+    *
+    * @param pctm the new manager
+    */
    public void setManager(PreCountThreadManager pctm){
 	this.pctm=pctm;
 }
 
 
 
+	/**
+	 * Sets the progress dialog.
+	 *
+	 * @param pbd the new ProgressBallsDialog
+	 */
 	public void setProgressBallDialog(ProgressBallsDialog pbd){
 	}
 
+	/**
+	 * Sets the sub image.
+	 *
+	 * @param subImage the new sub image
+	 */
 	public void setSubImage(BufferedImage subImage){
 		this.subImage=subImage;
 	}
 
+	/**
+	 * Starts the Thread for counting.
+	 */
 	public void startCounting(){
 		this.counterThread.start();
 	}
 
+	/**
+	 * Uses binary search to find starting and ending indexes of pointList which points are inside given lowerBoundValue and upperBoundValue.
+	 * Uses only horizontal values in search.
+	 *
+	 * @param pointList the point list
+	 * @param lowerBoundValue the lower bound value
+	 * @param upperBoundValue the upper bound value
+	 * @return the int[] list of found
+	 */
 	private int[] startEndBinarySearch(ArrayList<Point> pointList, int lowerBoundValue, int upperBoundValue){
 			 int imin=0;
 			 int imax=pointList.size()-1;
@@ -1438,7 +1519,6 @@ public void run() {
 			 lowerLoop:
 			 while(imax>=imin){
 				 imid=(int)imin+(imax-imin)/2; // get midpoint
-			//	 System.out.println("lower1: "+imid+" value: "+pointList.get(imid).x);
 				 if(pointList.get(imid).x == lowerBoundValue){ // found lower bound, but has the one index smaller value smaller or same
 					 if(imid == 0 || pointList.get(imid-1).x < lowerBoundValue){
 						 // found the lowerBound
@@ -1450,10 +1530,8 @@ public void run() {
 					 }
 				 }
 				 else{
-				//	 System.out.println("lower2: "+imid+" value: "+pointList.get(imid).x);
 					 if(pointList.get(imid).x < lowerBoundValue){
 					 	if(imid < pointList.size()-1){
-				//	 		System.out.println("lower2.1: "+(imid+1)+" value: "+pointList.get(imid+1).x);
 					 		if(pointList.get(imid+1).x >= lowerBoundValue){
 					 			// found the lowerbound
 					 			indexes[0]=imid+1;
@@ -1468,10 +1546,8 @@ public void run() {
 					 	}
 				 }
 				 else{
-				//	 System.out.println("lower3: "+imid+" value: "+pointList.get(imid).x);
-					 // pointList.get(imid).x > lowerBoundValue
+
 					 if(imid > 0){
-				//		 System.out.println("lower3.1: "+(imid-1)+" value: "+pointList.get(imid-1).x);
 						 if(pointList.get(imid-1).x < lowerBoundValue){
 							 indexes[0]=imid;
 					 			break lowerLoop;
@@ -1491,12 +1567,12 @@ public void run() {
 			 if(indexes[0] <0 || indexes[0] > pointList.size()-1)
 				 return null;
 	
+			 // upperBound
 			 imin=indexes[0]+1;
 			 imax=pointList.size()-1;
 			 upperLoop:
 			 while(imax>=imin){
 				 imid=(int)imin+(imax-imin)/2; // get midpoint
-			//	 System.out.println("upper1: "+imid+" value: "+pointList.get(imid).x);
 				 if(pointList.get(imid).x == upperBoundValue){
 	
 						 if(imid == pointList.size()-1 || pointList.get(imid+1).x > upperBoundValue){
@@ -1508,7 +1584,6 @@ public void run() {
 						 }
 				 }
 				 else {
-			//		 System.out.println("upper2: "+imid+" value: "+pointList.get(imid).x);
 					 if(pointList.get(imid).x < upperBoundValue){
 					 if(imid< pointList.size()-1){
 						 if(pointList.get(imid+1).x > upperBoundValue){
@@ -1526,8 +1601,6 @@ public void run() {
 					 }
 	
 				 }else{
-			//		 System.out.println("upper3: "+imid+" value: "+pointList.get(imid).x);
-					 // pointList.get(imid).x > upperBoundValue
 					 if(imid > indexes[0]){
 						if(pointList.get(imid-1).x <= upperBoundValue){
 							indexes[1]=imid-1;
@@ -1548,36 +1621,62 @@ public void run() {
 			 return indexes;
 		}
 
-private int[] startEndBinarySearchWithWeightPoints(ArrayList<WeightPoint> pointList, int lowerBoundValue, int upperBoundValue){
-	   ArrayList<Point> basicPointList= new ArrayList<Point>();
-	   if(pointList != null){
+	/**
+	 * Uses binary search to find starting and ending indexes of pointList which points are inside given lowerBoundValue and upperBoundValue.
+	 * Uses only horizontal values in search.
+	 *
+	 * @param pointList the point list
+	 * @param lowerBoundValue the lower bound value
+	 * @param upperBoundValue the upper bound value
+	 * @return the int[]
+	 */
+	private int[] startEndBinarySearchWithWeightPoints(ArrayList<WeightPoint> pointList, int lowerBoundValue, int upperBoundValue){
+		ArrayList<Point> basicPointList= new ArrayList<Point>();
+		if(pointList != null){
 		   for (Iterator<WeightPoint> iterator = pointList.iterator(); iterator.hasNext();) {
 			WeightPoint weightPoint = (WeightPoint) iterator.next();
 			basicPointList.add((Point)weightPoint);
 
-		}
-
+		   }
 		   return startEndBinarySearch(basicPointList, lowerBoundValue, upperBoundValue);
-	   }
+		}
 
 	   return null;
    }
 
-private class MovingAverage {
-    private final Queue<Double> window = new LinkedList<Double>();
-    private final int period;
-    private double sum;
+	/**
+	 * The Class MovingAverage. Contains double values in linked list and methods for counting average of values.
+	 */
+	private class MovingAverage {
+		private final Queue<Double> window = new LinkedList<Double>();
+		private final int period;
+		private double sum;
 
+    /**
+     * Instantiates a new moving average.
+     *
+     * @param period the period
+     */
     public MovingAverage(int period) {
         assert period > 0 : "Period must be a positive integer";
         this.period = period;
     }
 
+    /**
+     * Returns the average of values window list.
+     *
+     * @return the average of values.
+     */
     public double getAvg() {
         if (window.isEmpty()) return 0; // technically the average is undefined
         return sum / window.size();
     }
 
+    /**
+     * Adds new value to window list and updates the sum.
+     *
+     * @param num the value
+     */
     public void newNum(double num) {
         sum += num;
         window.add(num);
