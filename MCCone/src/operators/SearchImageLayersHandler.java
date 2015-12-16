@@ -14,8 +14,13 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class SearchImageLayersHandler extends DefaultHandler {
 
+	/** The list of ImageLayer names. */
 	private ArrayList<String> imageLayerNameList = null;
+	
+	/** The found image layer. */
 	private boolean foundImageLayer=false;
+	
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	/**
