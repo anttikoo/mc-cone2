@@ -120,6 +120,11 @@ public class GUIListener extends MouseInputAdapter {
 
 			actionMap.put("space_pressed", new AbstractAction() {
 
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
@@ -135,6 +140,11 @@ public class GUIListener extends MouseInputAdapter {
 
 				actionMap.put("space_released",new AbstractAction() {
 
+				/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
@@ -149,6 +159,11 @@ public class GUIListener extends MouseInputAdapter {
 
 				actionMap.put("shift_pressed", new AbstractAction() {
 
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						is_SHIFT_pressed=true;
@@ -157,6 +172,11 @@ public class GUIListener extends MouseInputAdapter {
 				});
 
 				actionMap.put("shift_released", new AbstractAction() {
+
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -183,6 +203,11 @@ public class GUIListener extends MouseInputAdapter {
 
 			actionMap.put("left_pressed", new AbstractAction() {
 
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// change selected ImageLayer one up
@@ -191,6 +216,11 @@ public class GUIListener extends MouseInputAdapter {
 			});
 
 			actionMap.put("right_pressed", new AbstractAction() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -201,6 +231,11 @@ public class GUIListener extends MouseInputAdapter {
 
 			actionMap.put("up_pressed", new AbstractAction() {
 
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// change selected MarkingLayer one up
@@ -209,6 +244,11 @@ public class GUIListener extends MouseInputAdapter {
 			});
 
 			actionMap.put("down_pressed", new AbstractAction() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -243,6 +283,11 @@ public class GUIListener extends MouseInputAdapter {
 
 			actionMap.put("ctrl_pressed", new AbstractAction() {
 
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					is_CTRL_pressed=true;
@@ -251,6 +296,11 @@ public class GUIListener extends MouseInputAdapter {
 			});
 
 			actionMap.put("ctrl_released", new AbstractAction() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -261,6 +311,11 @@ public class GUIListener extends MouseInputAdapter {
 			//Save markings
 			actionMap.put("save_pressed", new AbstractAction() {
 
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					gui.saveMarkings();
@@ -269,6 +324,11 @@ public class GUIListener extends MouseInputAdapter {
 			});
 				// export csv
 				actionMap.put("export_csv_pressed", new AbstractAction() {
+
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -279,6 +339,11 @@ public class GUIListener extends MouseInputAdapter {
 				// export images
 				actionMap.put("export_images_pressed", new AbstractAction() {
 
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						gui.exportImages();
@@ -287,6 +352,11 @@ public class GUIListener extends MouseInputAdapter {
 				});
 				// managing layers
 				actionMap.put("manage_layers_pressed", new AbstractAction() {
+
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -297,6 +367,11 @@ public class GUIListener extends MouseInputAdapter {
 				// adding layers
 				actionMap.put("add_layers_pressed", new AbstractAction() {
 
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						gui.openAddImageLayerDialog(null);
@@ -305,6 +380,11 @@ public class GUIListener extends MouseInputAdapter {
 				});
 				// exportin tab delimited file
 				actionMap.put("export_tab_pressed", new AbstractAction() {
+
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -315,6 +395,11 @@ public class GUIListener extends MouseInputAdapter {
 				// export results to clipboard
 				actionMap.put("export_clip_pressed", new AbstractAction() {
 
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						gui.exportResults(ID.CLIPBOARD);
@@ -323,6 +408,11 @@ public class GUIListener extends MouseInputAdapter {
 				});
 				// hiding all markings
 				actionMap.put("hide_all_markings_pressed", new AbstractAction() {
+
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -334,6 +424,11 @@ public class GUIListener extends MouseInputAdapter {
 				// showin all markings
 				actionMap.put("show_all_markings_pressed", new AbstractAction() {
 
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						gui.setVisibilityOfAllMarkingLayers(true);
@@ -343,6 +438,11 @@ public class GUIListener extends MouseInputAdapter {
 				// zooming out
 				actionMap.put("zoom_out_pressed", new AbstractAction() {
 
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						gui.zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 0.8, ID.IMAGE_PROCESSING_BEST_QUALITY);
@@ -350,6 +450,11 @@ public class GUIListener extends MouseInputAdapter {
 				});
 				// zooming in
 				actionMap.put("zoom_in_pressed", new AbstractAction() {
+
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
