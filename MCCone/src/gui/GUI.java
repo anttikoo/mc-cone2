@@ -205,6 +205,10 @@ private JMenu menu_edit;
 /** The menu export images. */
 private JMenuItem menu_export_images;
 
+private JButton zoomInButton;
+
+private JButton zoomOutButton;
+
 
 
 	/**
@@ -251,7 +255,7 @@ private JMenuItem menu_export_images;
 			 *  
 			 */
 			
-			
+			setMenuItemsEnabled(ID.IMAGELAYERS); // sets items unenabled, cos ImageLayers and MarkingLayers not found at startup
 			
 			LOGGER.info("Started MCcone! Wellcome.");	
 			
@@ -1327,7 +1331,7 @@ private JMenuItem menu_export_images;
 			menubar.add(menu_grid);
 			menubar.add(menu_help);
 			
-			setMenuItemsEnabled(ID.IMAGELAYERS); // sets items unenabled, cos ImageLayers and MarkingLayers not found at startup
+			
 
 			// add menubar to JFrame
 			this.setJMenuBar(menubar);
@@ -2114,7 +2118,7 @@ private JMenuItem menu_export_images;
 				this.menu_show_all_markings.setEnabled(true);
 				this.menu_hide_all_markings.setEnabled(true);
 				this.menu_grid.setEnabled(true);
-				
+							
 			}
 			else
 			{
@@ -2128,16 +2132,22 @@ private JMenuItem menu_export_images;
 				this.menu_show.setEnabled(false);
 				this.menu_show_all_markings.setEnabled(false);
 				this.menu_hide_all_markings.setEnabled(false);
-				
+						
 			}
 		}
 		// ImageLayers -> set also export images 
 		if(itemType== ID.IMAGELAYERS){
 			if(taskManager.hasAnyImageLayers()){
 				this.menu_export_images.setEnabled(true);
+				this.zoomSlider.setEnabled(true);
+				this.zoomInButton.setEnabled(true);
+				this.zoomOutButton.setEnabled(true);
 			}
 			else{
 				this.menu_export_images.setEnabled(false);
+				this.zoomSlider.setEnabled(false);
+				this.zoomInButton.setEnabled(false);
+				this.zoomOutButton.setEnabled(false);
 				
 			}
 		}	
@@ -2324,10 +2334,10 @@ public void setSelectedMarkingLayer(int mLayerID){
 			sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.LINE_AXIS));
 			ImageIcon imgOut = getImageIcon( "/images/out.png");
 		
-			JButton outButton= new JButton(imgOut);
-			outButton.setBorder(BorderFactory.createEmptyBorder());
-			outButton.setFocusable(false);
-			outButton.addActionListener(new ActionListener() {
+			zoomOutButton = new JButton(imgOut);
+			zoomOutButton.setBorder(BorderFactory.createEmptyBorder());
+			zoomOutButton.setFocusable(false);
+			zoomOutButton.addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -2338,10 +2348,10 @@ public void setSelectedMarkingLayer(int mLayerID){
 			});
 
 			ImageIcon imgIn = getImageIcon( "/images/in.png");		
-			JButton inButton= new JButton(imgIn);
-			inButton.setBorder(BorderFactory.createEmptyBorder());
-			inButton.setFocusable(false);
-			inButton.addActionListener(new ActionListener() {			
+			zoomInButton = new JButton(imgIn);
+			zoomInButton.setBorder(BorderFactory.createEmptyBorder());
+			zoomInButton.setFocusable(false);
+			zoomInButton.addActionListener(new ActionListener() {			
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 1.25, ID.IMAGE_PROCESSING_BEST_QUALITY);					
@@ -2367,11 +2377,11 @@ public void setSelectedMarkingLayer(int mLayerID){
 			sliderPanel.add(Box.createRigidArea(new Dimension(3,0)));
 			sliderPanel.add(zoom_label);
 			sliderPanel.add(Box.createRigidArea(new Dimension(5,0)));
-			sliderPanel.add(outButton);
+			sliderPanel.add(zoomOutButton);
 			sliderPanel.add(Box.createRigidArea(new Dimension(5,0)));
 			sliderPanel.add(zoomSlider);
 			sliderPanel.add(Box.createRigidArea(new Dimension(5,0)));
-			sliderPanel.add(inButton);
+			sliderPanel.add(zoomInButton);
 		
 
 			zoomSlider.addChangeListener(new ChangeListener() {
