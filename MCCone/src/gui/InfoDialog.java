@@ -138,17 +138,19 @@ public class InfoDialog extends PropertiesDialog{
 		JButton okButton = new JButton("OK");
 		okButton.setPreferredSize(new Dimension(120,30));
 		okButton.setBackground(Color_schema.dark_20);
-		MouseListenerCreator.addKeyListenerToButton(okButton, ID.BUTTON_ENTER);
+		
 
-		okButton.setFocusable(false);
+	//	okButton.setFocusable(false);
+		okButton.requestFocus();
 		MouseListenerCreator.addMouseListenerToNormalButtons(okButton);  // add listener when button pressed -> change visualization of button
+		
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				hideDialog(false); // close dialog -> boolean value not used but has to be given.
 			}
 		});
-
+		MouseListenerCreator.addKeyListenerToButton(okButton, ID.BUTTON_ENTER);
 		buttonPanel.add(Box.createHorizontalGlue());
 		buttonPanel.add(okButton);
 		buttonPanel.add(Box.createRigidArea(new Dimension(20,0)));

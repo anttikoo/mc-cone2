@@ -519,6 +519,7 @@ private JPanel initDownPanel(){
 		cancelJButton.setForeground(Color_schema.orange_dark);
 		initActionsToButtons(cancelJButton, ID.CANCEL);	// the action
 		MouseListenerCreator.addMouseListenerToCancelButtons(cancelJButton); // changes the colors of button when pressed
+		MouseListenerCreator.addKeyListenerToButton(cancelJButton, ID.BUTTON_CANCEL);
 
 		cancelJButton.setPreferredSize(new Dimension(100,50));
 		cancelJpanel.add(cancelJButton);
@@ -655,6 +656,7 @@ private void initKeyListenerToDialog(){
 	
 		initActionsToButtons(saveJButton, ID.SAVE);
 		MouseListenerCreator.addMouseListenerToNormalButtons(saveJButton); // changes the colors of button when pressed
+		MouseListenerCreator.addKeyListenerToButton(saveJButton, ID.BUTTON_ENTER);
 		saveDownLayerJPanel.add(saveJButton, BorderLayout.CENTER);
 		return saveDownLayerJPanel;
 	}
