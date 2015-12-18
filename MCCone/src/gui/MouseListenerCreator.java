@@ -18,7 +18,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 /**
- * Helper class for adding MouseListeners to JButtons. The listeners only affects to visual style of buttons: border, color, icon, etc.
+ * Helper class for adding MouseListeners and KeyListeners to JButtons. The listeners only affects to visual style of buttons: border, color, icon, etc.
  * @author Antti Kurronen
  *
  */
