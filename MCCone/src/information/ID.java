@@ -128,5 +128,6 @@ public class ID {
 	public static final int YES= 121;
 	public static final int YES_NO= 122;
 	public static final int YES_NO_CANCEL= 123;
+	public static final int BUTTON_ENTER= 124;
 
 }

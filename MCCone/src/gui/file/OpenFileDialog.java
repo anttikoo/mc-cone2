@@ -2,6 +2,7 @@ package gui.file;
 import gui.Color_schema;
 import gui.ContentPane;
 import gui.MouseListenerCreator;
+import information.ID;
 import information.PathCount;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -204,11 +205,14 @@ import javax.swing.SwingUtilities;
 				addActionsToFileDialogButtons(addFileChooserJButton);	// setup action when pressed
 				MouseListenerCreator.addMouseListenerToNormalButtons(addFileChooserJButton); // setup color and border changes when button pressed
 				addKeyListenerToButton(addFileChooserJButton); // when Enter pressed -> this button activated
+				MouseListenerCreator.addKeyListenerToButton(addFileChooserJButton, ID.BUTTON_ENTER);
+				
 				cancelFileChooserJButton = new JButton("CANCEL");
 				cancelFileChooserJButton.setPreferredSize(new Dimension(150,30));
 				cancelFileChooserJButton.setBackground(Color_schema.dark_20);
 				cancelFileChooserJButton.setForeground(Color_schema.orange_dark);
 				cancelFileChooserJButton.setFocusable(false);
+				MouseListenerCreator.addKeyListenerToButton(cancelFileChooserJButton, ID.BUTTON_CANCEL);
 				cancelFileChooserJButton.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {

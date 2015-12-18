@@ -3,10 +3,20 @@ package gui;
 import gui.graphics.BigCloseIcon;
 import gui.graphics.MediumCloseIcon;
 import gui.graphics.SmallCloseIcon;
+import information.ID;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 /**
  * Helper class for adding MouseListeners to JButtons. The listeners only affects to visual style of buttons: border, color, icon, etc.
@@ -15,6 +25,48 @@ import javax.swing.JButton;
  */
 public class MouseListenerCreator {
 
+	
+	/**
+	 * Adds the key listener to JButton. For accepting buttons (OK, SELECT etc.) the ENTER key is set to fire the button and for canceling buttons backspace fires the button.
+	 *
+	 * @param button the button
+	 * @return the j button
+	 */
+	public static void addKeyListenerToButton(final JButton button, int typeOfButton){
+
+		if(typeOfButton== ID.BUTTON_ENTER){
+			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+			inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
+			ActionMap actionMap = 	(button).getActionMap();
+			actionMap.put("enter_pressed", new AbstractAction() {
+	
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					button.doClick();
+	
+				}
+	
+			});
+		}
+		if(typeOfButton== ID.BUTTON_CANCEL){
+			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE,0,true), "cancel_pressed");
+			ActionMap actionMap = 	(button).getActionMap();
+			actionMap.put("cancel_pressed", new AbstractAction() {
+	
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					button.doClick();
+	
+				}
+	
+			});
+		}
+		
+		
+
+		//return button;
+	}
 
 	/**
 	 * Adds MouseListener to JButton, which has normal type, for example OK, YES, etc.
