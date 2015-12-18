@@ -2,6 +2,7 @@ package gui;
 
 
 import information.Fonts;
+import information.ID;
 import information.InformationCenter;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -137,6 +138,7 @@ public class InfoDialog extends PropertiesDialog{
 		JButton okButton = new JButton("OK");
 		okButton.setPreferredSize(new Dimension(120,30));
 		okButton.setBackground(Color_schema.dark_20);
+		MouseListenerCreator.addKeyListenerToButton(okButton, ID.BUTTON_ENTER);
 
 		okButton.setFocusable(false);
 		MouseListenerCreator.addMouseListenerToNormalButtons(okButton);  // add listener when button pressed -> change visualization of button

@@ -268,9 +268,13 @@ public class ShadyMessageDialog extends JDialog{
 			button.setForeground(Color_schema.orange_dark);
 			button.setBorder(BorderFactory.createLineBorder(Color_schema.orange_dark, 2));
 			addMouseListenerToCancelButtons(button);
+			MouseListenerCreator.addKeyListenerToButton(button, ID.BUTTON_CANCEL);
 		}
 		else{
+			
 			addMouseListenerToNormalButtons(button);
+			if(buttonID==ID.OK)
+			MouseListenerCreator.addKeyListenerToButton(button, ID.BUTTON_ENTER);
 		}
 
 		button.setFocusable(false);
