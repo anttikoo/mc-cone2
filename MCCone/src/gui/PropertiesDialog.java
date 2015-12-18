@@ -2,6 +2,8 @@ package gui;
 
 import gui.graphics.SmallCloseIcon;
 import information.Fonts;
+import information.ID;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -159,6 +161,7 @@ public class PropertiesDialog extends JDialog {
 		JButton okButton = new JButton("SAVE");
 		okButton.setPreferredSize(new Dimension(120,30));
 		okButton.setBackground(Color_schema.dark_20);
+		MouseListenerCreator.addKeyListenerToButton(okButton, ID.BUTTON_ENTER);
 
 		okButton.setFocusable(false);
 		MouseListenerCreator.addMouseListenerToNormalButtons(okButton);  // add listener when button pressed -> change visualization of button
@@ -176,6 +179,7 @@ public class PropertiesDialog extends JDialog {
 		cancelButton.setBorder(BorderFactory.createLineBorder(Color_schema.orange_dark, 2));
 		cancelButton.setFocusable(false);
 		MouseListenerCreator.addMouseListenerToCancelButtons(cancelButton); // add listener when button pressed -> change visualization of button
+		MouseListenerCreator.addKeyListenerToButton(cancelButton, ID.BUTTON_CANCEL);
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

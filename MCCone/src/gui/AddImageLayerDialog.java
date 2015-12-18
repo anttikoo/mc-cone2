@@ -857,6 +857,7 @@ private JPanel initDownPanel(){
 		createImageLayersJButton.setEnabled(false);
 		createImageLayersJButton.setPreferredSize(new Dimension(220,30));
 		createImageLayersJButton.setFocusable(false);
+		MouseListenerCreator.addKeyListenerToButton(createImageLayersJButton, ID.BUTTON_ENTER);
 
 		if(this.typeOfDialog == ID.CREATE_NEW_IMAGELAYERS){
 			initActionsToButtons(createImageLayersJButton, ID.CREATE_NEW_IMAGELAYERS);
@@ -881,6 +882,7 @@ private JPanel initDownPanel(){
 		cancelJButton.setForeground(Color_schema.orange_dark);
 		initActionsToButtons(cancelJButton, ID.CANCEL);	// the action
 		MouseListenerCreator.addMouseListenerToCancelButtons(cancelJButton); // changes the colors of button when pressed
+		MouseListenerCreator.addKeyListenerToButton(cancelJButton, ID.BUTTON_CANCEL);
 
 		cancelJButton.setPreferredSize(new Dimension(100,50));
 

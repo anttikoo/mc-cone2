@@ -695,6 +695,7 @@ private JComboBox<Integer> setUpComboBox(){
 				setSelectedShapeID(getShapeIDfromComboBoxIndex(index));
 				previewShapePanel.setShapeID(getShapeIDfromComboBoxIndex(index));
 				previewShapePanel.repaint();
+				previewShapePanel.transferFocus();
 			}
 		});
 
@@ -712,7 +713,6 @@ private JComboBox<Integer> setUpComboBox(){
 protected void setUpComboBoXPanel(){
 	// contains JComboBox-component and label
 	comboBoxPanel = new JPanel();
-	//comboBoxPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 	comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.X_AXIS));
 	comboBoxPanel.setMaximumSize(new Dimension(panelWidthRight,50));
 	comboBoxPanel.setMinimumSize(new Dimension(panelWidthRight,50));
