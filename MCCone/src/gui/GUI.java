@@ -172,6 +172,39 @@ private ShadyMessageDialog shadyMessageDialog=null;
 /** The grid dialog. */
 private GridPropertiesPanel gridDialog=null;
 
+/** The menu grid hide. */
+private JMenuItem menu_grid_hide;
+
+/** The menu grid show. */
+private JMenuItem menu_grid_show;
+
+/** The menu grid. */
+private JMenu menu_grid;
+
+/** The menu item save markings. */
+private JMenuItem menu_item_save_markings;
+
+/** The menu export results. */
+private JMenu menu_export_results;
+
+/** The menu edit clear singlecountings. */
+private JMenuItem menu_edit_clear_single_countings;
+
+/** The menu edit clear all countings. */
+private JMenuItem menu_edit_clear_all_countings;
+
+/** The menu hide all markings. */
+private JMenuItem menu_hide_all_markings;
+
+/** The menu show. */
+private JMenu menu_show;
+
+/** The menu edit. */
+private JMenu menu_edit;
+
+/** The menu export images. */
+private JMenuItem menu_export_images;
+
 
 
 	/**
@@ -697,6 +730,8 @@ private GridPropertiesPanel gridDialog=null;
 
 			//refresh precountingComponents
 			cleanPreCountingIfNecessary();
+			
+			setMenuItemsEnabled(ID.MARKINGLAYERS);
 
 		}
 
@@ -1165,12 +1200,12 @@ private GridPropertiesPanel gridDialog=null;
 			menu_item_import_markings.setToolTipText("CTRL + M");
 			addActionsToMenuItems(menu_item_import_markings, ID.MENU_ITEM_FILE_MANAGE_LAYERS);
 
-			JMenuItem menu_item_save_markings =new JMenuItem("Save Markings");
+			menu_item_save_markings = new JMenuItem("Save Markings");
 			menu_item_save_markings.setMnemonic(KeyEvent.VK_S);
 			menu_item_save_markings.setToolTipText("CTRL + S");
 			addActionsToMenuItems(menu_item_save_markings, ID.MENU_ITEM_FILE_SAVE_MARKINGS);
 
-			JMenu menu_export_results =new JMenu("Export Results to");
+			menu_export_results = new JMenu("Export Results to");
 			menu_export_results.setMnemonic(KeyEvent.VK_X);
 			
 			JMenuItem menu_item_csv_file=new JMenuItem("CSV-file");
@@ -1188,7 +1223,7 @@ private GridPropertiesPanel gridDialog=null;
 			menu_export_results.add(menu_item_tab_delimited_file);
 			menu_export_results.add(menu_item_tab_delimited_clipboard);
 
-			JMenuItem menu_export_images =new JMenuItem("Export Images");
+			menu_export_images = new JMenuItem("Export Images");
 			menu_export_images.setMnemonic(KeyEvent.VK_E);
 			menu_export_images.setToolTipText("CTRL + E");
 			JMenuItem menu_export_set_images =new JMenuItem("Export Set of Images");
@@ -1213,17 +1248,16 @@ private GridPropertiesPanel gridDialog=null;
 			menu_file.add(menu_export_set_images);
 			menu_file.add(menu_file_close_program);
 
-			// Edit-menu
-			JMenu menu_edit = new JMenu("Edit");
+			menu_edit = new JMenu("Edit");
 			menu_edit_set_marking_properties = new JMenuItem("Edit properties of all markings");
 			menu_edit_set_marking_properties.setMnemonic(KeyEvent.VK_E);
 			addActionsToMenuItems(menu_edit_set_marking_properties, ID.MENU_ITEM_EDIT_SET_MARKING_PROPERTIES);
 
-			JMenuItem menu_edit_clear_single_countings = new JMenuItem("Clear countings of selected MarkingLayer");
+			menu_edit_clear_single_countings = new JMenuItem("Clear countings of selected MarkingLayer");
 			menu_edit_clear_single_countings.setMnemonic(KeyEvent.VK_L);
 			addActionsToMenuItems(menu_edit_clear_single_countings, ID.MENU_ITEM_EDIT_CLEAR_SINGLE_COUNTING);
 
-			JMenuItem menu_edit_clear_all_countings = new JMenuItem("Clear countings of all MarkingLayers");
+			menu_edit_clear_all_countings = new JMenuItem("Clear countings of all MarkingLayers");
 			menu_edit_clear_all_countings.setMnemonic(KeyEvent.VK_R);
 			addActionsToMenuItems(menu_edit_clear_all_countings, ID.MENU_ITEM_EDIT_CLEAR_ALL_COUNTINGS);
 
@@ -1245,30 +1279,28 @@ private GridPropertiesPanel gridDialog=null;
 			menu_edit.add(menu_edit_clear_all_countings);
 			menu_edit.add(useStrictPrecounting);
 			
-			// SHOW MENU
-			JMenu menu_show= new JMenu("Show");
+			menu_show = new JMenu("Show");
 			menu_show.setMnemonic(KeyEvent.VK_S);
 			menu_show_all_markings = new JMenuItem("Show all markings");
 			addActionsToMenuItems(menu_show_all_markings, ID.MENU_ITEM_SHOW_ALL_MARKINGS);
 
 			menu_show_all_markings.setMnemonic(KeyEvent.VK_A);
-			JMenuItem menu_hide_all_markings = new JMenuItem("Hide all markings");
+			menu_hide_all_markings = new JMenuItem("Hide all markings");
 			addActionsToMenuItems(menu_hide_all_markings,ID.MENU_ITEM_HIDE_ALL_MARKINGS);
 
 			menu_show.add(menu_show_all_markings);
 			menu_show.add(menu_hide_all_markings);
 
-			// Grid menu
-			JMenu menu_grid= new JMenu("GRID");
+			menu_grid = new JMenu("GRID");
 			menu_grid.setMnemonic(KeyEvent.VK_G);
 			JMenuItem menu_grid_properties = new JMenuItem("Set Grid Properties");
 			menu_grid_properties.setMnemonic(KeyEvent.VK_P);
 			menu_grid.add(menu_grid_properties);
 			addActionsToMenuItems(menu_grid_properties, ID.MENU_ITEM_GRID_PROPERTIES);
-			JMenuItem menu_grid_hide=new JMenuItem("Fade");
+			menu_grid_hide = new JMenuItem("Fade");
 			menu_grid_hide.setMnemonic(KeyEvent.VK_F);
 			addActionsToMenuItems(menu_grid_hide, ID.FADE_GRID);
-			JMenuItem menu_grid_show=new JMenuItem("Set Opaque");
+			menu_grid_show = new JMenuItem("Set Opaque");
 			menu_grid_show.setMnemonic(KeyEvent.VK_O);
 			addActionsToMenuItems(menu_grid_show, ID.SHOW_GRID_OPAQUE);
 			menu_grid.add(menu_grid_show);
@@ -1294,11 +1326,12 @@ private GridPropertiesPanel gridDialog=null;
 			menubar.add(menu_show);
 			menubar.add(menu_grid);
 			menubar.add(menu_help);
+			
+			setMenuItemsEnabled(ID.IMAGELAYERS); // sets items unenabled, cos ImageLayers and MarkingLayers not found at startup
 
 			// add menubar to JFrame
 			this.setJMenuBar(menubar);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOGGER.severe("Error in creating GUI");
 			throw new Exception();
 		}
@@ -1671,8 +1704,11 @@ private GridPropertiesPanel gridDialog=null;
 
 			// update markingLayers
 			refreshMarkingPanels();
+				
+			setMenuItemsEnabled(ID.IMAGELAYERS);
+			
+			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOGGER.severe("Error in refreshing Layers and GUI components: "+e.getMessage());
 			e.printStackTrace();
 		}
@@ -1767,6 +1803,7 @@ private GridPropertiesPanel gridDialog=null;
 				this.imagePanel.repaint();
 
 			cleanPreCountingIfNecessary();
+			setMenuItemsEnabled(ID.IMAGELAYERS);
 			}
 
 			dialog=null;
@@ -1793,16 +1830,19 @@ private GridPropertiesPanel gridDialog=null;
 			// ask the user should the MarkingLayer being deleted
 			ShadyMessageDialog dialog = new ShadyMessageDialog(this, "DELETE", "Delete MarkingLayer:  "+markingLayerName, ID.YES_NO, this);
 			if(dialog.showDialog() == ID.YES){
-			// remove the MarkingLayer from list of InformationCenter
-			taskManager.removeMarkingLayer(imageLayerID, mLayerID);
-			// remove MarkingPanel
-			removeMarkingPanelByLayerID(mLayerID);
-
-			// update imagelayerinfos
-			updateImageLayerInfos();
-
-			// refresh precounting components
-			cleanPreCountingIfNecessary();
+				// remove the MarkingLayer from list of InformationCenter
+				taskManager.removeMarkingLayer(imageLayerID, mLayerID);
+				// remove MarkingPanel
+				removeMarkingPanelByLayerID(mLayerID);
+	
+				// update imagelayerinfos
+				updateImageLayerInfos();
+	
+				// refresh precounting components
+				cleanPreCountingIfNecessary();
+				
+				setMenuItemsEnabled(ID.MARKINGLAYERS);
+				
 			}
 			dialog=null;
 		} catch (Exception e) {
@@ -2046,13 +2086,62 @@ private GridPropertiesPanel gridDialog=null;
 
 	}
 
-/**
- * Sets the selected MarkingLayer to highlightPanel -> HighlightPanel uses information of that MarkingLayer for highlighting. 
- */
-private void setMarkingsOfHighlightLayer(){
-	MarkingLayer selectedMarkingLayer= taskManager.getSelectedMarkingLayer();
-	this.highlightPanel.setLayer(selectedMarkingLayer);
-}
+	/**
+	* Sets the selected MarkingLayer to highlightPanel -> HighlightPanel uses information of that MarkingLayer for highlighting. 
+	*/
+	private void setMarkingsOfHighlightLayer(){
+		MarkingLayer selectedMarkingLayer= taskManager.getSelectedMarkingLayer();
+		this.highlightPanel.setLayer(selectedMarkingLayer);
+	}
+	
+	/**
+	 * Sets the menu items enabled or unenabled depending on has ImageLayers or MarkingLayers available.
+	 *
+	 * @param itemType the new menu items enabled
+	 */
+	public void setMenuItemsEnabled(int itemType){
+		
+		// both imageLayers and MarkingLayers
+		if(itemType==ID.MARKINGLAYERS || itemType==ID.IMAGELAYERS ){
+			if(this.taskManager.hasAnyMarkinglayers()){
+				this.menu_item_save_markings.setEnabled(true);
+				this.menu_export_results.setEnabled(true);
+				this.menu_edit.setEnabled(true);
+				this.menu_edit_set_marking_properties.setEnabled(true);
+				this.menu_edit_clear_all_countings.setEnabled(true);
+				this.menu_edit_clear_single_countings.setEnabled(true);
+				this.menu_show.setEnabled(true);
+				this.menu_show_all_markings.setEnabled(true);
+				this.menu_hide_all_markings.setEnabled(true);
+				this.menu_grid.setEnabled(true);
+				
+			}
+			else
+			{
+				this.menu_grid.setEnabled(false);
+				this.menu_item_save_markings.setEnabled(false);
+				this.menu_export_results.setEnabled(false);
+				this.menu_edit.setEnabled(false);
+				this.menu_edit_set_marking_properties.setEnabled(false);
+				this.menu_edit_clear_all_countings.setEnabled(false);
+				this.menu_edit_clear_single_countings.setEnabled(false);
+				this.menu_show.setEnabled(false);
+				this.menu_show_all_markings.setEnabled(false);
+				this.menu_hide_all_markings.setEnabled(false);
+				
+			}
+		}
+		// ImageLayers -> set also export images 
+		if(itemType== ID.IMAGELAYERS){
+			if(taskManager.hasAnyImageLayers()){
+				this.menu_export_images.setEnabled(true);
+			}
+			else{
+				this.menu_export_images.setEnabled(false);
+				
+			}
+		}	
+	}
 
 /**
  * Sets the folder name which is previously used.

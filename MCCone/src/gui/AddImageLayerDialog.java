@@ -867,7 +867,7 @@ private JPanel initDownPanel(){
 			initActionsToButtons(createImageLayersJButton, ID.MANAGE_IMAGE_LAYERS);
 		}
 
-		addKeyListenerToButton(createImageLayersJButton); // when enter pressed -> this button activated
+		//addKeyListenerToButton(createImageLayersJButton); // when enter pressed -> this button activated
 
 		MouseListenerCreator.addMouseListenerToNormalButtons(createImageLayersJButton); // changes the colors of button when pressed
 

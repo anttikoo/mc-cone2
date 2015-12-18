@@ -445,6 +445,32 @@ public class TaskManager {
 	public PositionedImage getZoomedImage(Point midP, double zoomValue){
 		return this.layerVisualManager.getZoomedImage(midP, zoomValue);
 	}
+	
+	
+	/**
+	 * Checks is any ImageLayers stored at InformationCenter.
+	 *
+	 * @return true, if found
+	 */
+	public boolean hasAnyImageLayers(){
+		if(informationCenter.getImageLayerList() != null && informationCenter.getImageLayerList().size()>0)
+			return true;
+		else
+			return false;
+		
+	}
+	
+	/**
+	 * Checks is any MarkingLayers stored in ImageLayers at InformationCenter.
+	 *
+	 * @return true, if found
+	 */
+	public boolean hasAnyMarkinglayers(){
+		if(informationCenter.getAllMarkingLayers() != null && informationCenter.getAllMarkingLayers().size()>0)
+			return true;
+		
+		return false;
+	}
 
 	/**
 	 * Checks is image name already used.

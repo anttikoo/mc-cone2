@@ -129,5 +129,10 @@ public class ID {
 	public static final int YES_NO= 122;
 	public static final int YES_NO_CANCEL= 123;
 	public static final int BUTTON_ENTER= 124;
+	public static final int ITEM_GRID= 125;
+	public static final int ALL_ITEMS= 126;
+	public static final int MARKINGLAYERS= 127;
+	public static final int IMAGELAYERS= 128;
+	
 
 }

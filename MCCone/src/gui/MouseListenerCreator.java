@@ -4,12 +4,10 @@ import gui.graphics.BigCloseIcon;
 import gui.graphics.MediumCloseIcon;
 import gui.graphics.SmallCloseIcon;
 import information.ID;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -17,6 +15,7 @@ import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 /**
  * Helper class for adding MouseListeners to JButtons. The listeners only affects to visual style of buttons: border, color, icon, etc.
@@ -29,44 +28,55 @@ public class MouseListenerCreator {
 	/**
 	 * Adds the key listener to JButton. For accepting buttons (OK, SELECT etc.) the ENTER key is set to fire the button and for canceling buttons backspace fires the button.
 	 *
-	 * @param button the button
-	 * @return the j button
+	 * @param button the JButton
+	 * @param typeOfButton the type of button
+	 * @throws Exception the exception
 	 */
-	public static void addKeyListenerToButton(final JButton button, int typeOfButton){
+	public static void addKeyListenerToButton(final JButton button, int typeOfButton) throws Exception{
 
 		if(typeOfButton== ID.BUTTON_ENTER){
 			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		//	inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0, true), "enter_pressed");
+			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0, false), "enter_pressed");
 			ActionMap actionMap = 	(button).getActionMap();
 			actionMap.put("enter_pressed", new AbstractAction() {
 	
 				@Override
-				public void actionPerformed(ActionEvent e) {
-					button.doClick();
-	
+				public void actionPerformed(ActionEvent e) {					
+						SwingUtilities.invokeLater(new Runnable() {
+							
+							@Override
+							public void run() {								
+								button.doClick();						
+							}
+						});
 				}
 	
 			});
 		}
 		if(typeOfButton== ID.BUTTON_CANCEL){
 			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE,0,true), "cancel_pressed");
+			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE,0,false), "cancel_pressed");
 			ActionMap actionMap = 	(button).getActionMap();
 			actionMap.put("cancel_pressed", new AbstractAction() {
 	
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					button.doClick();
+					
+						SwingUtilities.invokeLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							button.doClick();
+							
+						}
+					});
 	
 				}
 	
 			});
 		}
 		
-		
-
-		//return button;
 	}
 
 	/**
