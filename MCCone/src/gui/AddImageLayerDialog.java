@@ -214,28 +214,6 @@ public class AddImageLayerDialog extends JDialog{
 
 	}
 
-	/**
-	 * Adds a KeyListener to a given JButton.
-	 * @param button JButton where to add action
-	 * @return JButton where added action
-	 */
-	private JButton addKeyListenerToButton(final JButton button){
-
-		InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
-		ActionMap actionMap = 	(button).getActionMap();
-		actionMap.put("enter_pressed", new AbstractAction() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				button.doClick();
-
-			}
-
-		});
-
-		return button;
-	}
 
 	/**
 	 * Saves imported markingLayers from copied ImageLayer to originalImageLayer. Before saving removes MarkingLayer with same name if found.
