@@ -41,6 +41,11 @@ public class MouseListenerCreator {
 			ActionMap actionMap = 	(button).getActionMap();
 			actionMap.put("enter_pressed", new AbstractAction() {
 	
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void actionPerformed(ActionEvent e) {					
 						SwingUtilities.invokeLater(new Runnable() {
@@ -60,6 +65,11 @@ public class MouseListenerCreator {
 			ActionMap actionMap = 	(button).getActionMap();
 			actionMap.put("cancel_pressed", new AbstractAction() {
 	
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					

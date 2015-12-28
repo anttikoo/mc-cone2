@@ -38,6 +38,11 @@ import javax.swing.SwingUtilities;
 	 */
 	public class OpenFileDialog extends JDialog{
 		
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 		/** The open dialog back panel. */
 		private JPanel openDialogBackPanel;
 		
@@ -271,6 +276,11 @@ import javax.swing.SwingUtilities;
 			inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
 			ActionMap actionMap = 	(button).getActionMap();
 			actionMap.put("enter_pressed", new AbstractAction() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
