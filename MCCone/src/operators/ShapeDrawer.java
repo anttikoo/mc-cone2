@@ -112,7 +112,6 @@ public class ShapeDrawer {
 		
 		 // print thick part only if not showin preview marking style
     	if(!isPreview){ 
-    		g2d.setPaint(Color.blue);
 			g2d.setStroke(strokeThick); // set thickness bigger
 		     g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity/3));
 			 // draw transparent thick circle
@@ -120,13 +119,9 @@ public class ShapeDrawer {
     	}
     	
     	//draw thin circle
-    	g2d.setPaint(this.shapeColor);
 		 g2d.setStroke(strokeThin);
 		 g2d.setComposite(AlphaComposite.getInstance(rule_alpha, this.opacity));
 		 g2d.draw(new Ellipse2D.Double(x, y, shapeSize, shapeSize));
-		 
-		 // just test
-		 g2d.fill(new Ellipse2D.Double(x, y, shapeSize, shapeSize));
 
 		 return g2d;
 	}

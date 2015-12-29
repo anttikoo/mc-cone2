@@ -158,7 +158,7 @@ public class ImageCreator implements Runnable {
 	 */
 	public ArrayList<Integer> createImage(ImageLayer imageLayer, ArrayList<Integer> mLayerIDlist, String imagePath) throws Exception{
 		try {
-			ArrayList<Integer>  drawnLayers = new ArrayList<Integer>(); // the successfully drawn layers
+			ArrayList<Integer>  drawnLayers = new ArrayList<Integer>();
 			if(imageLayer.getImageFilePath() != null){
 				File imageFile=new File(imageLayer.getImageFilePath());
 
@@ -181,9 +181,6 @@ public class ImageCreator implements Runnable {
 						int label_y= (int) (bi.getHeight()+maxShapeSize/2+5);
 						for (Iterator<MarkingLayer> iterator = layersToDraw.iterator(); iterator.hasNext();) {
 							MarkingLayer markingLayer = (MarkingLayer) iterator.next();
-							// just test
-								addRandomPoints(markingLayer, bi.getWidth(), bi.getHeight());
-							// just test
 							drawnLayers.add(drawSingleMarkingLayer(g2d, markingLayer, new Point(label_x,label_y)));
 							double markingSize=(markingLayer.getSize()*sizeMultiplier);
 							label_x+=(int)markingSize;
@@ -209,18 +206,6 @@ public class ImageCreator implements Runnable {
 			e.printStackTrace();
 			return null;
 		}
-	}
-	
-	private void addRandomPoints(MarkingLayer layer, int width, int height){
-		if(layer != null){
-			for(int i=0;i<1000;i++){
-				int x = (int)(Math.random()*width);
-				int y = (int)(Math.random()*height);
-				layer.addSingleCoordinate(new Point(x, y));
-			}
-			
-		}
-		
 	}
 
 	/**
