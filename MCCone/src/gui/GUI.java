@@ -750,7 +750,7 @@ private JButton zoomOutButton;
 
 	/**
 	 * Organizes the dragging of image and visible markings at screen.
-	 * @param e MouseEvent whic has triggered the dragging.
+	 * @param e MouseEvent which has triggered the dragging.
 	 */
 	public void dragLayers(MouseEvent e){
 		int x= e.getX();
