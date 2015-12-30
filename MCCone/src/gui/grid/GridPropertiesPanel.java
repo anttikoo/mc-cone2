@@ -853,6 +853,10 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				x+=sgs.getGridCellSize();
 			}
 			gridProperty.addColumnLineX(x); // lowest line
+			
+	
+	
+			
 
 			// save the selected gridproperties to markinglayers
 			Iterator<MarkingLayer> mIterator = this.markingLayerList.iterator();

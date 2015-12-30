@@ -9,7 +9,9 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JPanel;
 
@@ -146,6 +148,18 @@ public class GridPanel extends JPanel {
 			if(!pr.isSelected())
 			drawRectangle(pr,g2);
 		}
+		
+		// draw outer Rectangles
+		ArrayList<Rectangle> outerRecList = this.gridProperty.getOuterOfGridRectangleList();
+		if(outerRecList != null && outerRecList.size() >0){
+			Iterator<Rectangle> outerRecIterator = outerRecList.iterator();
+			while(outerRecIterator.hasNext()){
+				Rectangle rec = outerRecIterator.next();
+				drawRectangle(rec, g2);
+			}
+		}
+		
+		
 	}
 
 	/**
@@ -191,7 +205,7 @@ private void drawEdgeLine(int x1, int y1, int x2, int y2, Graphics2D g2){
 	 * @param rec PositionedRectangle object
 	 * @param g2 Graphics2D object
 	 */
-	private void drawRectangle(PositionedRectangle rec, Graphics2D g2){
+	private void drawRectangle(Rectangle rec, Graphics2D g2){
 
 		g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,used_transparency_hard));
 

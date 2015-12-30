@@ -2,6 +2,7 @@ package information;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
@@ -37,6 +38,8 @@ public class GridProperties {
 	/** The horizontal line length. Used for restrict the horizontal line length. */
 	private int horizontalLineLength=0; 
 	
+	private ArrayList<Rectangle> outerOfGridRectangleList;
+	
 	/** The present image dimension. */
 	private Dimension presentImageDimension=null;
 	
@@ -52,6 +55,7 @@ public class GridProperties {
 		this.rowLineY = new ArrayList<Integer>();
 		this.columnLineX = new ArrayList<Integer>();
 		this.positionedRectangleList=new ArrayList<PositionedRectangle>();
+		this.outerOfGridRectangleList=new ArrayList<Rectangle>();
 
 	}
 
@@ -65,6 +69,7 @@ public class GridProperties {
 		this.rowLineY = new ArrayList<Integer>();
 		this.columnLineX = new ArrayList<Integer>();
 		this.positionedRectangleList=new ArrayList<PositionedRectangle>();
+		this.outerOfGridRectangleList=new ArrayList<Rectangle>();
 		if(iDimension != null){
 			this.setPresentImageDimension(iDimension);
 			this.horizontalLineLength=iDimension.width;
@@ -93,16 +98,49 @@ public class GridProperties {
 
 
 /**
- * Adds the single positioned rectangle.
+ * Adds the single outer of grid rectangle.
  *
- * @param positionedRectangle the positioned rectangle
+ * @param rec the Rectangle
  */
-public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle) {
-		this.positionedRectangleList.add(positionedRectangle);
-	}
+public void addSingleOuterOfGridRectangle(Rectangle rec){
+	this.outerOfGridRectangleList.add(rec);
+}
 
 
 	
+	/**
+	 * Adds the single positioned rectangle.
+	 *
+	 * @param positionedRectangle the positioned rectangle
+	 */
+	public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle) {
+			this.positionedRectangleList.add(positionedRectangle);
+		}
+	
+	/**
+	 * Calculates outer rectangles showing space outside of GRID.
+	 */
+	public void calculateOuterRectangles(){
+		this.outerOfGridRectangleList=new ArrayList<Rectangle>();
+		if(rowLineY != null && rowLineY.size()>0 && columnLineX != null && columnLineX.size()>0 && verticalLineLength >0 && horizontalLineLength >0){
+			int upY=this.rowLineY.get(0);
+			int downY = this.rowLineY.get(rowLineY.size()-1);
+			int leftX = this.columnLineX.get(0);
+			int rightX = this.columnLineX.get(this.columnLineX.size()-1);
+			// calculate Rectangles
+			Rectangle up = new Rectangle(0,0, this.horizontalLineLength, upY);
+			Rectangle down = new Rectangle(0,downY, this.horizontalLineLength,verticalLineLength-downY);
+			Rectangle left = new Rectangle(0,upY, leftX,downY-upY);
+			Rectangle right = new Rectangle(rightX,upY,horizontalLineLength-rightX, downY-upY);
+			//add to list
+			this.outerOfGridRectangleList.add(up);
+			this.outerOfGridRectangleList.add(down);
+			this.outerOfGridRectangleList.add(left);
+			this.outerOfGridRectangleList.add(right);
+	
+		}		
+	}
+
 	/**
 	 * Calculates selected rectangle area relation.
 	 *
@@ -187,9 +225,9 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 	}
 
 	/**
-	 * Returns the column line xs.
+	 * Returns the column line horizontal values.
 	 *
-	 * @return the column line xs
+	 * @return the column line x values
 	 */
 	public ArrayList<Integer> getColumnLineXs() {
 		return columnLineX;
@@ -207,6 +245,7 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 			return 0;
 	}
 
+
 	/**
 	 * Returns the grid row count.
 	 *
@@ -219,7 +258,6 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 			return 0;
 	}
 
-
 	/**
 	 * Returns the horizontal line length.
 	 *
@@ -229,6 +267,15 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 		return horizontalLineLength;
 	}
 
+	/**
+	 * Returns the outer of grid rectangle list.
+	 *
+	 * @return the outer of grid rectangle list
+	 */
+	public ArrayList<Rectangle> getOuterOfGridRectangleList() {
+		return outerOfGridRectangleList;
+	}
+	
 	/**
 	 * Returns the positioned rectangle list.
 	 *
@@ -246,7 +293,7 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 	public Dimension getPresentImageDimension() {
 		return presentImageDimension;
 	}
-	
+
 	/**
 	 * Returns the random procent.
 	 *
@@ -257,14 +304,14 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 	}
 
 	/**
-	 * Returns the row line ys.
+	 * Returns the row line vertical values.
 	 *
-	 * @return the row line ys
+	 * @return the row line y values.
 	 */
 	public ArrayList<Integer> getRowLineYs() {
 		return rowLineY;
 	}
-
+	
 	/**
 	 * Returns the vertical line length.
 	 *
@@ -282,7 +329,7 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 	public boolean isGridON() {
 		return gridON;
 	}
-	
+
 	/**
 	 * Checks if is point inside any rectangle.
 	 *
@@ -315,6 +362,7 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 		return false;
 	}
 
+
 	/**
 	 * Checks if is point inside selected rectangle.
 	 *
@@ -335,7 +383,6 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 		return isPointInsideAnyRectangle(p, false);
 	}
 
-
 	/**
 	 * Checks if is selected grid cell at.
 	 *
@@ -352,6 +399,7 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 		}
 		return false;
 	}
+	
 
 	/**
 	 * Sets the column lines x list.
@@ -371,7 +419,6 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 		this.gridON = gridON;
 	}
 	
-
 	/**
 	 * Sets the horizontal line length.
 	 *
@@ -381,6 +428,15 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 		this.horizontalLineLength = l;
 	}
 
+	/**
+	 * Sets the outer of grid rectangle list.
+	 *
+	 * @param outerOfGridRectangleList the new outer of grid rectangle list
+	 */
+	public void setOuterOfGridRectangleList(ArrayList<Rectangle> outerOfGridRectangleList) {
+		this.outerOfGridRectangleList = outerOfGridRectangleList;
+	}
+	
 	/**
 	 * Sets the positioned rectangle list.
 	 *
@@ -410,7 +466,7 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 	public void setRandomPercent(int randomProcent) {
 		this.randomPercent = randomProcent;
 	}
-	
+
 	/**
 	 * Sets the row lines y list.
 	 *

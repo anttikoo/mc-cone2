@@ -274,6 +274,9 @@ public class LayerVisualManager {
 				gp_converted.setHorizontalLineLength((int)convertImageDistanceToScreenDistance(this.originalImage.getWidth()));
 				gp_converted.setVerticalLineLength((int)convertImageDistanceToScreenDistance(this.originalImage.getHeight()));
 
+				// calculate outer Rectangles
+				gp_converted.calculateOuterRectangles();
+				
 				return gp_converted;
 			}
 			return null;
