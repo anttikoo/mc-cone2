@@ -542,9 +542,11 @@ public class XMLwriteManager {
 				// write Rectangles of GRID
 				for (Iterator<PositionedRectangle> iterator = gridProperty.getPositionedRectangleList().iterator(); iterator.hasNext();) {
 					PositionedRectangle pRectangle = iterator.next();
-					String selection=XMLtags.value_false;
-					if(pRectangle.isSelected())
-						selection=XMLtags.value_true;
+					String selection=XMLtags.unchecked;
+					if(pRectangle.isSelected()==ID.SELECTED)
+						selection=XMLtags.selected;
+					else if(pRectangle.isSelected()==ID.UNSELECTED)
+						selection=XMLtags.unselected;
 					xew.add(xef.createStartElement("", "", XMLtags.rec));
 					att = xef.createAttribute(XMLtags.selected, selection);
 					xew.add(att);

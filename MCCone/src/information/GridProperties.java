@@ -121,9 +121,9 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 				PositionedRectangle pr=rIterator.next();
 				if(pRectangleDimension == null)
 					pRectangleDimension=pr.getSize();
-				if(pr.isSelected())
+				if(pr.isSelected()==ID.SELECTED)
 					count_selected++;
-				else
+				else if(pr.isSelected() == ID.UNSELECTED)
 					count_unselected++;
 			}
 			
@@ -154,13 +154,15 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 			PositionedRectangle rec =recIterator.next();
 			if(rec.contains(imagePoint)){
 				// set rectangle as selected or unselected
-				if(!rec.isSelected() || countSelectedRectangles() > 1)
-				rec.setSelected(!rec.isSelected());
+				if(rec.isSelected()==ID.UNSELECTED && countSelectedRectangles() > 1)
+					rec.setSelected(ID.SELECTED);
+				else if(rec.isSelected()==ID.SELECTED)
+					rec.setSelected(ID.UNSELECTED);
+			//	if(!rec.isSelected() || countSelectedRectangles() > 1)
+			//	rec.setSelected(!rec.isSelected());
 				
 				//update the percentValue to round to the nearest multiple of 5
-				this.randomPercent= (int)((Math.round((((double)countSelectedRectangles())/ ((double)this.positionedRectangleList.size())*100))/5)*5);
-
-				
+				this.randomPercent= (int)((Math.round((((double)countSelectedRectangles())/ ((double)this.positionedRectangleList.size())*100))/5)*5);				
 			}
 		}
 	}
@@ -176,7 +178,7 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 			Iterator<PositionedRectangle> recIterator = positionedRectangleList.iterator();
 			while(recIterator.hasNext()){
 				PositionedRectangle rec =recIterator.next();
-				if(rec.isSelected()){
+				if(rec.isSelected()==ID.SELECTED){
 					counter++;
 
 				}
@@ -297,13 +299,13 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 				PositionedRectangle pr=rIterator.next();
 				if(pr.contains(p)){
 					if(searchSelected){
-						if(pr.isSelected())
+						if(pr.isSelected()==ID.SELECTED)
 							return true;
 						else
 							return false;
 					}
 					else{
-						if(pr.isSelected())
+						if(pr.isSelected()==ID.SELECTED)
 							return false;
 						else
 							return true;
@@ -337,20 +339,20 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 
 
 	/**
-	 * Checks if is selected grid cell at.
+	 * Checks if is selected, unselected or unchecked grid cell at position row, column.
 	 *
 	 * @param r the row
 	 * @param c the column
-	 * @return true, if is selected grid cell at
+	 * @return ID value, if selected, unselected or unchecked grid cell at position row, column.
 	 */
-	public boolean isSelectedGridCellAt(int r, int c){
+	public int isSelectedGridCellAt(int r, int c){
 		Iterator<PositionedRectangle> iIterator =this.positionedRectangleList.iterator();
 		while(iIterator.hasNext()){
 			PositionedRectangle pr= iIterator.next();
 			if(pr.hasPosition(r, c))
 				return pr.isSelected();
 		}
-		return false;
+		return ID.UNSELECTED;
 	}
 
 	/**

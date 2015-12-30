@@ -39,7 +39,9 @@ public class XMLtags {
 	public static final String rec ="rec";
 	public static final String rectangles ="rectangles";
 	public static final String row ="row";
-	public static final String selected ="selected";	
+	public static final String selected ="selected";
+	public static final String unselected ="unselected";
+	public static final String unchecked ="unchecked";
 	public static final String value_false ="false";
 	public static final String value_true ="true";
 	public static final String width ="width";
