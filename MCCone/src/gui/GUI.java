@@ -1846,6 +1846,13 @@ private JButton zoomOutButton;
 				
 				setMenuItemsEnabled(ID.MARKINGLAYERS);
 				
+				// refresh visibility of selected MarkingLayer -> MarkingPanel markings and GRID will be visible
+				MarkingLayer layer= this.taskManager.getSelectedMarkingLayer();
+				if(layer != null && layer.isVisible()){
+					this.setMarkingLayerVisibility(layer.getLayerID(), true);
+										
+				}
+				
 			}
 			dialog=null;
 		} catch (Exception e) {
