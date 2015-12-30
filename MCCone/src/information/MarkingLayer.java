@@ -522,7 +522,7 @@ public boolean isGridON(){
 			gridProperty.setRowLinesYList(gProperties.getRowLineYs());
 			gridProperty.setColumnLinesXList(gProperties.getColumnLineXs());
 			gridProperty.setPositionedRectangleList(gProperties.getPositionedRectangleList());
-			gridProperty.setRandomProcent(gProperties.getRandomProcent());
+			gridProperty.setRandomPercent(gProperties.getRandomProcent());
 	
 			this.gridProperties = gridProperty;
 		}

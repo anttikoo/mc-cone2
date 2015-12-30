@@ -824,7 +824,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			// create gridProperty
 			GridProperties gridProperty=new GridProperties(this.gui.getPresentImageDimension());
 			gridProperty.setGridON(this.gridON);
-			gridProperty.setRandomProcent(this.randomSlider.getValue()); // set random procent value
+			gridProperty.setRandomPercent(this.randomSlider.getValue()); // set random procent value
 			SingleGridSize sgs = this.gridSizes.get(this.gridComboBox.getSelectedIndex());
 			int x=sgs.getWidthAlign();
 			int y=sgs.getHeightAlign();

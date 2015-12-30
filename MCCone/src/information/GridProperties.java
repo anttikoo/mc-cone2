@@ -403,11 +403,11 @@ public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle
 	}
 
 	/**
-	 * Sets the random procent.
+	 * Sets the random percent.
 	 *
-	 * @param randomProcent the new random procent
+	 * @param randomProcent the new random percent
 	 */
-	public void setRandomProcent(int randomProcent) {
+	public void setRandomPercent(int randomProcent) {
 		this.randomPercent = randomProcent;
 	}
 	
