@@ -2,7 +2,6 @@ package gui.panels;
 
 import gui.Color_schema;
 import information.GridProperties;
-import information.ID;
 import information.PositionedRectangle;
 import information.SharedVariables;
 import java.awt.AlphaComposite;
@@ -26,11 +25,8 @@ public class GridPanel extends JPanel {
 	/** The g2d. */
 	private Graphics2D g2d;
 	
-	/** The background color. */
+	/** The back ground color. */
 	private final Color backGroundColor=Color_schema.dark_100;
-	
-	/** The background color rgb 25,25,25 */
-	private final Color backGroundColor25=Color_schema.dark_25;
 	
 	/** The thin line color. */
 	private final Color thinLineColor=Color_schema.white_230;
@@ -147,7 +143,7 @@ public class GridPanel extends JPanel {
 		while(recIterator.hasNext()){
 			
 			PositionedRectangle pr = recIterator.next();
-			if(pr.isSelected()== ID.UNSELECTED || pr.isSelected()== ID.UNCHECKED)
+			if(!pr.isSelected())
 			drawRectangle(pr,g2);
 		}
 	}
@@ -206,8 +202,6 @@ private void drawEdgeLine(int x1, int y1, int x2, int y2, Graphics2D g2){
 		g2.fillRect(small_x, small_y, small_width, small_height);
 		g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,used_transparency_soft));
 		g2.setPaint(backGroundColor);
-		if(rec.isSelected()==ID.UNCHECKED)
-			g2.setPaint(Color.red);
 		g2.fillRect(rec.x, rec.y, rec.width, rec.height);
 
 

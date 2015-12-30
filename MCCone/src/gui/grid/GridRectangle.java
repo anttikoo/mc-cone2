@@ -2,8 +2,6 @@ package gui.grid;
 
 import gui.Color_schema;
 import information.Fonts;
-import information.ID;
-
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
@@ -25,8 +23,8 @@ public class GridRectangle extends JPanel {
  /** The column. */
  private int column;
  
- /** The is selected. ID.SELECTED, ID.UNSELECTED, ID.UNCHECKED*/
- private int isSelected=ID.SELECTED;
+ /** The is selected. */
+ private boolean isSelected=true;
 
 /** The label. */
 private JLabel label;
@@ -38,7 +36,7 @@ private JLabel label;
   * @param c the column position
   * @param selected boolean is grid cell selected
   */
- public GridRectangle(int r, int c, int selected){
+ public GridRectangle(int r, int c, boolean selected){
 	 this.isSelected=selected;
 	 this.setBounds(0,0,100, 100);
 	 this.setRow(r);
@@ -62,7 +60,7 @@ private JLabel label;
   *
   * @return true, if is selected
   */
- public int isSelected() {
+ public boolean isSelected() {
 	return isSelected;
 }
 
@@ -71,14 +69,8 @@ private JLabel label;
  *
  * @param selected boolean is grid cell selected
  */
-public void setSelected(int selected) {
-	if(selected == ID.UNCHECKED)
-		this.isSelected = selected;
-	else{
-		if(this.isSelected != ID.UNCHECKED){
-			this.isSelected = selected;
-		}
-	}
+public void setSelected(boolean selected) {
+	this.isSelected = selected;
 }
 
 
@@ -111,11 +103,10 @@ private void setUpMouseListener(){
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				if(isSelected()==ID.SELECTED)
-					setSelected(ID.UNSELECTED);
+				if(isSelected())
+					setSelected(false);
 				else
-					if(isSelected()==ID.UNSELECTED)
-					setSelected(ID.SELECTED);
+					setSelected(true);
 
 				updatePanel();
 			}
@@ -153,7 +144,7 @@ private void setUpMouseListener(){
  * Updates the color and tooltiptext of JPanel of this grid cell.
  */
 public void updatePanel(){
-	if(isSelected()==ID.SELECTED){
+	if(isSelected){
 		this.setBackground(Color_schema.orange_medium);
 		 label.setForeground(Color_schema.dark_30);
 		 label.setText("+");

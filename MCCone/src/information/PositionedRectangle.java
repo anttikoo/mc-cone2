@@ -13,9 +13,9 @@ public class PositionedRectangle extends Rectangle{
 	/** The column position. */
 	private int column;
 	
-	/** The id is this PositionedRectangle selected, unselected or unchecked. */
-	private int selected;
-	
+	/** The selected. */
+	private boolean selected;
+
 	
 	/**
 	 * Instantiates a new PositionedRectangle.
@@ -29,7 +29,7 @@ public class PositionedRectangle extends Rectangle{
 	 * @param c the column
 	 * @param selected the is GRID selected
 	 */
-	public PositionedRectangle(int x, int y, int width, int height, int r, int c, int selected){
+	public PositionedRectangle(int x, int y, int width, int height, int r, int c, boolean selected){
 		super(x,y,width,height);
 		this.row=r;
 		this.column=c;
@@ -74,12 +74,12 @@ public class PositionedRectangle extends Rectangle{
 
 
 	/**
-	 * Returns is PositionedRectangle selected, unselected, unchecked.
+	 * Checks if is selected.
 	 *
-	 * @return Integer selected, if is selected, unselected, unchecked.
+	 * @return true, if is selected
 	 */
-	public int isSelected() {
-		return this.selected;
+	public boolean isSelected() {
+		return selected;
 	}
 
 
@@ -109,11 +109,8 @@ public class PositionedRectangle extends Rectangle{
 	 *
 	 * @param selected the new selected
 	 */
-	public void setSelected(int selectedNew) {
-		if(this.isSelected() != ID.UNCHECKED)
-		this.selected = selectedNew;
-		else if(selectedNew == ID.UNCHECKED)
-			this.selected=selectedNew;
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 
 }

@@ -443,7 +443,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				if(countSelectedGridRectangle(rows, columns)<partOfCellsCount){
 					GridRectangle gr = getRandomGridRectangle(rows, columns);
 					if(gr != null){
-						gr.setSelected(ID.SELECTED);
+						gr.setSelected(true);
 						gr.updatePanel();
 					}
 				}
@@ -462,7 +462,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		for(int r=1;r<=rowCount;r++){
 			for(int c=1;c<=columnCount;c++){
 				GridRectangle gr= getGridRectangle(r, c);
-				gr.setSelected(ID.UNSELECTED);	
+				gr.setSelected(false);	
 				gr.updatePanel();
 			}		
 		}
@@ -482,7 +482,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			int randomRow = rand.nextInt((rowCount - 1) + 1) + 1;
 			int randomColumn = rand.nextInt((columnCount - 1) + 1) + 1;
 			GridRectangle gr= getGridRectangle(randomRow, randomColumn);
-			if(gr.isSelected() == ID.SELECTED)
+			if(gr.isSelected())
 				return getRandomGridRectangle(rowCount, columnCount);
 			else
 				return gr;
@@ -504,7 +504,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		for(int r=1;r<=rowCount;r++){
 			for(int c=1;c<=columnCount;c++){
 				GridRectangle gr= getGridRectangle(r, c);
-				if(gr.isSelected()== ID.UNSELECTED){
+				if(!gr.isSelected()){
 					count_unselected++;
 				}
 			}		
@@ -526,7 +526,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		for(int r=1;r<=rowCount;r++){
 			for(int c=1;c<=columnCount;c++){
 				GridRectangle gr= getGridRectangle(r, c);
-				if(gr.isSelected()==ID.SELECTED){
+				if(gr.isSelected()){
 					count_selected++;
 				}
 			}		
@@ -771,13 +771,13 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			for(int i=1;i<= r;i++){
 				for(int j=1;j<= c;j++){
 					if(this.templateGP != null && this.templateGP.getGridColumnCount()==c && this.templateGP.getGridRowCount()==r){
-						int showGR=this.templateGP.isSelectedGridCellAt(i, j);
+						boolean showGR=this.templateGP.isSelectedGridCellAt(i, j);
 						gridPanel.add(new GridRectangle(i, j, showGR));
 						
 						usedTemplateGridProperties=true;
 					}
 					else
-						gridPanel.add(new GridRectangle(i, j, ID.UNSELECTED));
+						gridPanel.add(new GridRectangle(i, j, false));
 				}
 			}
 			if(!usedTemplateGridProperties) // no any present properties found -> create random selections
@@ -829,7 +829,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			int x=sgs.getWidthAlign();
 			int y=sgs.getHeightAlign();
 			// add vertical lines and rectangles
-		/*	for(int r=1;r <= sgs.getRows();r++){
+			for(int r=1;r <= sgs.getRows();r++){
 				gridProperty.addRowLineY(y);
 				x=sgs.getWidthAlign(); // start new row at left
 				for(int c=1; c<= sgs.getColumns();c++){
@@ -843,50 +843,8 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				}
 				y+=sgs.getGridCellSize();
 			}
-			*/
-			// add rectangles of rounding the active grid (align spaces)
-			x=0;
-			y=0;
-			for(int r=0;r <= sgs.getRows()+1;r++){
-				if(r>0 && r <=sgs.getRows()+1)
-					gridProperty.addRowLineY(y);
-				x=0; // start new row at left
-				for(int c=0; c<= sgs.getColumns()+1;c++){
-						if(r > 0 && c > 0 && r<=sgs.getRows() && c <= sgs.getColumns()){
-							GridRectangle gr = getGridRectangle(r, c);
-							if(gr != null){							
-								PositionedRectangle pRec = new PositionedRectangle(x, y, sgs.getGridCellSize(), sgs.getGridCellSize(), r,c, gr.isSelected());
-								gridProperty.addSinglePositionedRectangle(pRec);
-							}
-						}
-						else{ // row or column is zero or bigger than amount of rows and columns
-							int x_pos = x;
-							int y_pos = y;
-							int v_align=sgs.getHeightAlign();
-							int h_align=sgs.getWidthAlign();
-							if(r>0 && r <= sgs.getRows()){
-								v_align=sgs.getGridCellSize();
-							}
-							if(c>0 && c<=sgs.getColumns()){
-								h_align=sgs.getGridCellSize();
-							}
-							
-							PositionedRectangle pRec = new PositionedRectangle(x_pos, y_pos, h_align, v_align, r,c, ID.UNCHECKED);
-							gridProperty.addSinglePositionedRectangle(pRec);
-							
-						}
-						if(c==0)
-							x=sgs.getWidthAlign();
-						else
-							x+=sgs.getGridCellSize();
-				}
-				if(r==0)
-					y=sgs.getHeightAlign();
-				else
-					y+=sgs.getGridCellSize();
-			}
-			
-		//	gridProperty.addRowLineY(y); // rightmost line
+
+			gridProperty.addRowLineY(y); // rightmost line
 
 			// add horizontal lines
 			x=sgs.getWidthAlign();

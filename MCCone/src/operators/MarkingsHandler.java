@@ -313,7 +313,7 @@ public class MarkingsHandler extends DefaultHandler {
         			getIntFromString(attributes.getValue(XMLtags.height)),
         			getIntFromString(attributes.getValue(XMLtags.row)),
         			getIntFromString(attributes.getValue(XMLtags.column)),
-        			getIntFromString(attributes.getValue(XMLtags.selected)));
+        			getBooleanFromString(attributes.getValue(XMLtags.selected)));
 	        		this.gridProperty.addSinglePositionedRectangle(posRec);
 	        	}
 	        }
