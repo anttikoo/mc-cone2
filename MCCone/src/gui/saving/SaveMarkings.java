@@ -344,4 +344,11 @@ public class SaveMarkings extends SaverDialog{
 			}
 		}
 	}
+	
+	/**
+	 * Updates saveButton state by calling method for checking is any file path for saving valid. 
+	 */
+	protected void updateSaveButtonState(){
+		setSaveButtonEnabledByFileValidity(ID.UNDEFINED); //
+	}
 }

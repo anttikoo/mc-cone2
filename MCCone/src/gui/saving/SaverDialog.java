@@ -128,6 +128,7 @@ private Component parentComponent=null;
 			initComponents();
 			initKeyListenerToDialog();
 			setImageList();
+			updateSaveButtonState();
 			this.revalidate();
 			this.setVisible(true);
 
@@ -160,6 +161,7 @@ private Component parentComponent=null;
 			initComponents();
 			initKeyListenerToDialog();
 			setImageList();
+			updateSaveButtonState();
 			this.revalidate();
 			this.setVisible(true);
 
@@ -865,6 +867,8 @@ private void initKeyListenerToDialog(){
 					imageScrollPanel.add(createSingleImagePanel(im));
 				}
 			}
+			
+			
 			this.repaint();
 
 		} catch (Exception e) {
@@ -951,6 +955,13 @@ private void initKeyListenerToDialog(){
 	 */
 	protected void startSavingProcess(int savingID, int exportType){
 		// overwrite this method in extended class
+	}
+	
+	/**
+	 * Updates saveButton state. 
+	 */
+	protected void updateSaveButtonState(){
+		// create code in extended class.
 	}
 
 
