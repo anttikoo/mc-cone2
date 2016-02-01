@@ -2001,7 +2001,7 @@ private JButton zoomOutButton;
 					getMarkingPanelByLayerID(this.taskManager.getSelectedMarkingLayer().getLayerID()).setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				break;
 			case ID.CURSOR_HAND:
-				System.out.println("hand show");
+				
 				this.imagePanel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 				if(this.taskManager != null && this.taskManager.getSelectedMarkingLayer() != null && this.taskManager.getSelectedMarkingLayer().getLayerID()>0)
 					getMarkingPanelByLayerID(this.taskManager.getSelectedMarkingLayer().getLayerID()).setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));			
