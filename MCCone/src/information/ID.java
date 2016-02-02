@@ -133,6 +133,10 @@ public class ID {
 	public static final int ALL_ITEMS= 126;
 	public static final int MARKINGLAYERS= 127;
 	public static final int IMAGELAYERS= 128;
+	public static final int GRID_NO_GRID= 129;
+	public static final int GRID_USED= 130;
+	public static final int GRID_SELECTED= 131;
+	
 	
 
 }

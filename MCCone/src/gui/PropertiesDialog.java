@@ -56,6 +56,13 @@ public class PropertiesDialog extends JDialog {
 	protected Rectangle recOfBackpanel;
 
 
+	/** The made_changes. */
+	protected boolean made_changes=false;
+	
+	
+	
+
+
 	/**
 	 * Instantiates a new properties dialog.
 	 *
@@ -70,6 +77,43 @@ public class PropertiesDialog extends JDialog {
 	}
 	
 	
+	/**
+	 * Calculates the location and size values for Dialog window to fit in screen
+	 * @return Rectangle containing appropriate location and size values for the Dialog window.
+	 */
+	protected Rectangle getGoodBoundsForPanel(){
+		try {			
+			// get the Bounds of GUI-object
+			Rectangle guiRectangle=gui.getVisibleWindowBounds();
+					
+			int x = (int)((guiRectangle.width-panelWidth)/2); // set to middle horizontally
+			int y=  (int)((guiRectangle.height-panelHeight)/2); // set to middle vertically
+			return new Rectangle(x,y,panelWidth,panelHeight);
+			
+
+		} catch (Exception e) {
+			LOGGER.severe("Error in counting Bounds for MarkingProperties: " +e.getClass().toString() + " :" +e.getMessage() +"line: " +e.getStackTrace()[2].getLineNumber());
+			return null;
+		}
+	}
+
+	/**
+	 * Hides Dialog window and saves the changes made to MarkingLayer.
+	 * @param saveChanges boolean value should the changes be saved to MarkingLayer
+	 */
+	protected void hideDialog(boolean saveChanges){
+		// implemented in extended class
+	}
+		
+	/**
+	 * Initializes  the center panels.
+	 *
+	 * @return the created JPanel
+	 */
+	protected JPanel initCenterPanels(){
+		return null;
+	}
+
 	/**
 	 *  Setups the components of Dialog window
 	 */
@@ -100,49 +144,6 @@ public class PropertiesDialog extends JDialog {
 			LOGGER.severe("Error in initializing PropertiesDialog: " +e.getClass().toString() + " :" +e.getMessage() +" line: " +e.getStackTrace()[2].getLineNumber());
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Sets the panel position. Calculates a good position for panel by checking bounds of parent frame.
-	 */
-	protected void setPanelPosition(){
-		
-		recOfBackpanel = getGoodBoundsForPanel();
-		if(recOfBackpanel != null){
-			backPanel.setBounds(recOfBackpanel);		
-		}
-		else{
-			recOfBackpanel = new Rectangle((int)(this.topLeftPoint.getX()-(panelWidth)), (int)this.topLeftPoint.getY(),this.panelWidth,this.panelHeight);
-			backPanel.setBounds(recOfBackpanel);
-			
-		}
-		this.setBounds(this.gui.getVisibleWindowBounds());	
-	}
-		
-	/**
-	 * Initializes the layers panel.
-	 */
-	protected void initLayersPanel(){
-		// do nothing here -> done in extended class
-	}
-
-	/**
-	 * Initializes the uppermost panels.
-	 *
-	 * @return the created JPanel
-	 * @throws Exception the exception
-	 */
-	protected JPanel initUPPanels() throws Exception{
-		return null;
-	}
-
-	/**
-	 * Initializes  the center panels.
-	 *
-	 * @return the created JPanel
-	 */
-	protected JPanel initCenterPanels(){
-		return null;
 	}
 
 	/**
@@ -194,6 +195,13 @@ public class PropertiesDialog extends JDialog {
 		buttonPanel.add(Box.createRigidArea(new Dimension(10,0)));
 
 		return buttonPanel;
+	}
+
+	/**
+	 * Initializes the layers panel.
+	 */
+	protected void initLayersPanel(){
+		// do nothing here -> done in extended class
 	}
 
 	/**
@@ -260,31 +268,34 @@ public class PropertiesDialog extends JDialog {
 	}
 	
 	/**
-	 * Calculates the location and size values for Dialog window to fit in screen
-	 * @return Rectangle containing appropriate location and size values for the Dialog window.
+	 * Initializes the uppermost panels.
+	 *
+	 * @return the created JPanel
+	 * @throws Exception the exception
 	 */
-	protected Rectangle getGoodBoundsForPanel(){
-		try {			
-			// get the Bounds of GUI-object
-			Rectangle guiRectangle=gui.getVisibleWindowBounds();
-					
-			int x = (int)((guiRectangle.width-panelWidth)/2); // set to middle horizontally
-			int y=  (int)((guiRectangle.height-panelHeight)/2); // set to middle vertically
-			return new Rectangle(x,y,panelWidth,panelHeight);
-			
-
-		} catch (Exception e) {
-			LOGGER.severe("Error in counting Bounds for MarkingProperties: " +e.getClass().toString() + " :" +e.getMessage() +"line: " +e.getStackTrace()[2].getLineNumber());
-			return null;
-		}
+	protected JPanel initUPPanels() throws Exception{
+		return null;
+	}
+	
+	public boolean isMade_changes() {
+		return made_changes;
 	}
 
 	/**
-	 * Hides Dialog window and saves the changes made to MarkingLayer.
-	 * @param saveChanges boolean value should the changes be saved to MarkingLayer
+	 * Sets the panel position. Calculates a good position for panel by checking bounds of parent frame.
 	 */
-	protected void hideDialog(boolean saveChanges){
-		// implemented in extended class
+	protected void setPanelPosition(){
+		
+		recOfBackpanel = getGoodBoundsForPanel();
+		if(recOfBackpanel != null){
+			backPanel.setBounds(recOfBackpanel);		
+		}
+		else{
+			recOfBackpanel = new Rectangle((int)(this.topLeftPoint.getX()-(panelWidth)), (int)this.topLeftPoint.getY(),this.panelWidth,this.panelHeight);
+			backPanel.setBounds(recOfBackpanel);
+			
+		}
+		this.setBounds(this.gui.getVisibleWindowBounds());	
 	}
 
 	/**

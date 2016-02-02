@@ -820,7 +820,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 */
 	protected void hideDialog(boolean saveChanges){
 		if(saveChanges){
-
+			this.made_changes=true;
 			// create gridProperty
 			GridProperties gridProperty=new GridProperties(this.gui.getPresentImageDimension());
 			gridProperty.setGridON(this.gridON);

@@ -218,7 +218,7 @@ private JButton zoomOutButton;
 	public GUI()
 	{		super("gui");
 			//initialize LOGGING 
-			initLogging(Level.INFO);
+			initLogging(Level.FINE);
 			
 			// initialize fonts
 			Fonts.initFonts();
@@ -2483,6 +2483,16 @@ public void setSelectedMarkingLayer(int mLayerID){
 				this.guiComponentListener.setChildDialog(gridDialog);
 				
 				gridDialog .showDialog();
+				if(gridDialog.isMade_changes()){
+					int mLayerID = mLayerList.get(0).getLayerID();
+					if(mLayerID>0){
+						// set selected
+						this.taskManager.setMarkingLayerSelected(mLayerID);
+						this.taskManager.setMarkingLayerVisibility(mLayerID,true);
+					}
+					
+					
+				}
 				updateGridPanel();						
 				gridDialog =null;
 				guiComponentListener.setChildDialog(null);
@@ -2553,6 +2563,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 		}
 		mlayer=null;
 		mLayerList=null;
+		
 		updateImageLayerInfos();
 		refreshMarkingPanels();
 	}

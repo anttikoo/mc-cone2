@@ -311,15 +311,31 @@ private JPanel addMarkingLayerJPanel;
 									//	LOGGER.fine("pressed visibility button");
 										SingleMarkingPanel sPanel =(SingleMarkingPanel)((JButton)e.getSource()).getParent();
 										boolean isVisible= sPanel.isVisibleLayer();
-
+										int typeOfGrid = ID.GRID_NO_GRID;
 
 										if(isVisible){
 											sPanel.setVisibleLayer(false);
-										((JButton)e.getSource()).setIcon(getImageIcon("/images/eye_closed_small.png"));
-										}else{
+											((JButton)e.getSource()).setIcon(getImageIcon("/images/eye_closed_small.png"));
+											if(sPanel.isGridON){
+												typeOfGrid = ID.GRID_USED;													
+												
+											}
+										}else{ // setting visible
 											sPanel.setVisibleLayer(true);
-											((JButton)e.getSource()).setIcon(getImageIcon("/images/eye_open_small.png"));
+											((JButton)e.getSource()).setIcon(getImageIcon("/images/eye_open_small.png"));											
+											if(sPanel.isGridON){
+												if(sPanel.isMarkingLayerSelected()){
+													typeOfGrid =ID.GRID_SELECTED;
+												}else{
+													typeOfGrid = ID.GRID_USED;													
+												}
+											}	
+																					
 										}
+										
+																
+										sPanel.setGridButton(typeOfGrid);
+										
 										int mLayerID= sPanel.getMarking_layer_id();									
 										gui.setMarkingLayerVisibility(mLayerID, !isVisible);
 
@@ -837,11 +853,13 @@ public String getImageLayerName() {
 	private class SingleMarkingPanel extends JPanel {
 		private int marking_layer_id;
 		private boolean isVisibleLayer = true;
+		private boolean isGridON=false;
 		private String marking_layer_name;
 		private JTextField markingTitleJTextField;
 		private JButton closeJButton;
 		private JLabel countJLabel;
 		private MarkingLayer markingLayer;
+		private JButton gridButton;
 
 		/**
 		 * Instantiates a new single marking panel for info part.
@@ -852,6 +870,7 @@ public String getImageLayerName() {
 			try {
 				this.markingLayer=markingLayer;
 				setVisibleLayer(markingLayer.isVisible());
+				setGridON(markingLayer.isGridON());
 				this.setMarking_layer_name(markingLayer.getLayerName());
 				this.marking_layer_id= markingLayer.getLayerID();
 				this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
@@ -889,8 +908,7 @@ public String getImageLayerName() {
 				addActionsToJButtons(shapeJButton, ID.EDIT_MARKING_PROPERTIES);
 				createMouseListenerToButtons(shapeJButton, ID.SHAPEJBUTTON);
 
-				// add gridIcon for MarkingLayer
-				JButton gridButton=new JButton();
+				gridButton = new JButton();
 				gridButton.setPreferredSize(new Dimension(25,25));
 				gridButton.setBorder(BorderFactory.createLineBorder(Color_schema.dark_70, 1));
 
@@ -900,7 +918,12 @@ public String getImageLayerName() {
 				addActionsToJButtons(gridButton, ID.MARKINGLAYER_SET_GRID);
 				MouseListenerCreator.addMouseListenerToButtonsWithMarkingWith70Border(gridButton);
 				if(this.markingLayer.isGridON()){
-					gridButton.setIcon(getImageIcon("/images/g_selected.png"));
+					if(markingLayer.isSelected() && markingLayer.isVisible()){
+						gridButton.setIcon(getImageIcon("/images/g_selected_red.png"));
+					}
+					else{
+						gridButton.setIcon(getImageIcon("/images/g_selected.png"));					
+					}
 				}
 				else{
 					gridButton.setIcon(getImageIcon("/images/g_unselected_lighter.png"));
@@ -1101,6 +1124,18 @@ public String getImageLayerName() {
 		private int getCountingTextWidth(){
 			return getWidthOfText(this.countJLabel.getFont(), this.countJLabel);
 		}
+		
+		public void setGridButton(int id){
+			if(id == ID.GRID_SELECTED){
+			this.gridButton.setIcon(getImageIcon("/images/g_selected_red.png"));
+			}
+			else if(id == ID.GRID_USED){
+				this.gridButton.setIcon(getImageIcon("/images/g_selected.png"));
+			}else{
+				gridButton.setIcon(getImageIcon("/images/g_unselected_lighter.png"));
+			}
+		
+		}
 
 
 		/**
@@ -1121,7 +1156,14 @@ public String getImageLayerName() {
 			return marking_layer_name;
 		}
 
-		
+		/**
+		 * Checks if is grid on.
+		 *
+		 * @return true, if is grid on
+		 */
+		public boolean isGridON() {
+			return isGridON;
+		}
 
 		/**
 		 * Checks if is marking layer selected.
@@ -1145,7 +1187,15 @@ public String getImageLayerName() {
 			return isVisibleLayer;
 		}
 
-
+		/**
+		 * Sets the grid on.
+		 *
+		 * @param isGridON the new grid on
+		 */
+		public void setGridON(boolean isGridON) {
+			this.isGridON = isGridON;
+		}
+		
 		/**
 		 * sets this Marking Layer name
 		 * @param marking_layer_name name for Marking Layer
