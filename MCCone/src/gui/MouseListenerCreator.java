@@ -51,8 +51,14 @@ public class MouseListenerCreator {
 						SwingUtilities.invokeLater(new Runnable() {
 							
 							@Override
-							public void run() {								
-								button.doClick();						
+							public void run() {	
+								try{
+									button.doClick();
+								}
+								catch(Exception e){
+									e.printStackTrace();
+								}
+								
 							}
 						});
 				}
@@ -77,7 +83,12 @@ public class MouseListenerCreator {
 						
 						@Override
 						public void run() {
-							button.doClick();
+							try{
+								button.doClick();
+							}
+							catch(Exception e){
+								e.printStackTrace();
+							}
 							
 						}
 					});

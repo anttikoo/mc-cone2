@@ -218,7 +218,7 @@ private JButton zoomOutButton;
 	public GUI()
 	{		super("gui");
 			//initialize LOGGING 
-			initLogging(Level.FINE);
+			initLogging(Level.INFO);
 			
 			// initialize fonts
 			Fonts.initFonts();

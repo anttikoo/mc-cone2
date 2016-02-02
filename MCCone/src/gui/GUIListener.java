@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.logging.Logger;
+
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.ActionMap;
@@ -90,7 +92,8 @@ public class GUIListener extends MouseInputAdapter {
 	/** The zoom slider. Source from GUI. */
 	private JSlider zoomSlider;
 
-
+	/** The Constant LOGGER for Logging purposes. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	/**
 	 * A Class constructor. Inits the timers.
@@ -110,54 +113,99 @@ public class GUIListener extends MouseInputAdapter {
 	 * @param componentID the component ID
 	 */
 	public void addKeyInputMap(JComponent component, int componentID){
-		if(componentID == ID.IMAGE_PANEL || componentID== ID.GLASS_PANE){
-			InputMap inputMap= (component).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-			inputMap.put(KeyStroke.getKeyStroke("pressed SPACE"), "space_pressed");
-			inputMap.put(KeyStroke.getKeyStroke("released SPACE"), "space_released");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, KeyEvent.SHIFT_DOWN_MASK), "shift_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT,0,true), "shift_released");
-			ActionMap actionMap = 	(component).getActionMap();
+		try {
+			if(componentID == ID.IMAGE_PANEL || componentID== ID.GLASS_PANE){
+				InputMap inputMap= (component).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+				inputMap.put(KeyStroke.getKeyStroke("pressed SPACE"), "space_pressed");
+				inputMap.put(KeyStroke.getKeyStroke("released SPACE"), "space_released");
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, KeyEvent.SHIFT_DOWN_MASK), "shift_pressed");
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT,0,true), "shift_released");
+				ActionMap actionMap = 	(component).getActionMap();
 
-			actionMap.put("space_pressed", new AbstractAction() {
+				actionMap.put("space_pressed", new AbstractAction() {
 
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					if(!timerSPACEactivate.isRunning()){
-						timerSPACEactivate.start();	
+					@Override
+					public void actionPerformed(ActionEvent e) {
 						
+						if(!timerSPACEactivate.isRunning()){
+							timerSPACEactivate.start();	
+							
+						}
+						if(timerSPACEinactivate.isRunning())
+							timerSPACEinactivate.stop();
+
 					}
-					if(timerSPACEinactivate.isRunning())
-						timerSPACEinactivate.stop();
+				});
 
-				}
-			});
+					actionMap.put("space_released",new AbstractAction() {
 
-				actionMap.put("space_released",new AbstractAction() {
+					/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
 
-				/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					if(timerSPACEactivate.isRunning() && !timerSPACEinactivate.isRunning()){
-						timerSPACEinactivate.start();
+					@Override
+					public void actionPerformed(ActionEvent e) {
 						
+						if(timerSPACEactivate.isRunning() && !timerSPACEinactivate.isRunning()){
+							timerSPACEinactivate.start();
+							
+						}
+
+
 					}
+				});
+
+					actionMap.put("shift_pressed", new AbstractAction() {
+
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							is_SHIFT_pressed=true;
+
+						}
+					});
+
+					actionMap.put("shift_released", new AbstractAction() {
+
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							is_SHIFT_pressed=false;
+
+						}
+					});
+
+			}else if(componentID == ID.RIGHT_PANEL){
+
+				InputMap inputMap= (component).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+				// LEFT
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0,true), "left_pressed");
+				// RIGHT
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0,true), "right_pressed");
+				// UP
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0,true), "up_pressed");
+
+				//DOWN
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0,true), "down_pressed");
+
+				ActionMap actionMap = 	(component).getActionMap();
 
 
-				}
-			});
-
-				actionMap.put("shift_pressed", new AbstractAction() {
+				actionMap.put("left_pressed", new AbstractAction() {
 
 					/**
 					 * 
@@ -166,12 +214,12 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						is_SHIFT_pressed=true;
-
+						// change selected ImageLayer one up
+						gui.changeSelectedImageLayerUpOrDown(ID.MOVE_UP);
 					}
 				});
 
-				actionMap.put("shift_released", new AbstractAction() {
+				actionMap.put("right_pressed", new AbstractAction() {
 
 					/**
 					 * 
@@ -180,150 +228,12 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						is_SHIFT_pressed=false;
-
+						// change selected ImageLayer one down
+						gui.changeSelectedImageLayerUpOrDown(ID.MOVE_DOWN);
 					}
 				});
 
-		}else if(componentID == ID.RIGHT_PANEL){
-
-			InputMap inputMap= (component).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-			// LEFT
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0,true), "left_pressed");
-			// RIGHT
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0,true), "right_pressed");
-			// UP
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0,true), "up_pressed");
-
-			//DOWN
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0,true), "down_pressed");
-
-			ActionMap actionMap = 	(component).getActionMap();
-
-
-			actionMap.put("left_pressed", new AbstractAction() {
-
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// change selected ImageLayer one up
-					gui.changeSelectedImageLayerUpOrDown(ID.MOVE_UP);
-				}
-			});
-
-			actionMap.put("right_pressed", new AbstractAction() {
-
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// change selected ImageLayer one down
-					gui.changeSelectedImageLayerUpOrDown(ID.MOVE_DOWN);
-				}
-			});
-
-			actionMap.put("up_pressed", new AbstractAction() {
-
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// change selected MarkingLayer one up
-					gui.changeSelectedMarkingLayerUpOrDown(ID.MOVE_UP);
-				}
-			});
-
-			actionMap.put("down_pressed", new AbstractAction() {
-
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// change selected MarkingLayer one down
-
-					gui.changeSelectedMarkingLayerUpOrDown(ID.MOVE_DOWN);
-				}
-			});
-
-		} // whole window listening keys
-		else if(componentID == ID.WHOLE_GUI_FRAME){
-
-			InputMap inputMap= (component).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-			// CTRL
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_CONTROL, KeyEvent.CTRL_DOWN_MASK), "ctrl_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_CONTROL,0,true), "ctrl_released");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), "save_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK), "export_images_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_DOWN_MASK), "manage_layers_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK), "add_layers_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK), "export_csv_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, KeyEvent.CTRL_DOWN_MASK), "export_tab_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK), "export_clip_pressed");		
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.SHIFT_DOWN_MASK |KeyEvent.CTRL_DOWN_MASK ), "show_all_markings_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.SHIFT_DOWN_MASK |KeyEvent.CTRL_DOWN_MASK ), "hide_all_markings_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.CTRL_DOWN_MASK), "zoom_out_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.CTRL_DOWN_MASK), "zoom_in_pressed");
-
-
-			ActionMap actionMap = 	(component).getActionMap();
-
-
-			actionMap.put("ctrl_pressed", new AbstractAction() {
-
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					is_CTRL_pressed=true;
-
-				}
-			});
-
-			actionMap.put("ctrl_released", new AbstractAction() {
-
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					is_CTRL_pressed=false;
-
-				}
-			});
-			//Save markings
-			actionMap.put("save_pressed", new AbstractAction() {
-
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					gui.saveMarkings();
-
-				}
-			});
-				// export csv
-				actionMap.put("export_csv_pressed", new AbstractAction() {
+				actionMap.put("up_pressed", new AbstractAction() {
 
 					/**
 					 * 
@@ -332,12 +242,12 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						gui.exportResults(ID.FILE_TYPE_CSV);
-
+						// change selected MarkingLayer one up
+						gui.changeSelectedMarkingLayerUpOrDown(ID.MOVE_UP);
 					}
 				});
-				// export images
-				actionMap.put("export_images_pressed", new AbstractAction() {
+
+				actionMap.put("down_pressed", new AbstractAction() {
 
 					/**
 					 * 
@@ -346,12 +256,36 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						gui.exportImages();
+						// change selected MarkingLayer one down
 
+						gui.changeSelectedMarkingLayerUpOrDown(ID.MOVE_DOWN);
 					}
 				});
-				// managing layers
-				actionMap.put("manage_layers_pressed", new AbstractAction() {
+
+			} // whole window listening keys
+			else if(componentID == ID.WHOLE_GUI_FRAME){
+
+				InputMap inputMap= (component).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+				// CTRL
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_CONTROL, KeyEvent.CTRL_DOWN_MASK), "ctrl_pressed");
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_CONTROL,0,true), "ctrl_released");
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), "save_pressed");
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK), "export_images_pressed");
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_DOWN_MASK), "manage_layers_pressed");
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK), "add_layers_pressed");
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK), "export_csv_pressed");
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, KeyEvent.CTRL_DOWN_MASK), "export_tab_pressed");
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK), "export_clip_pressed");		
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.SHIFT_DOWN_MASK |KeyEvent.CTRL_DOWN_MASK ), "show_all_markings_pressed");
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.SHIFT_DOWN_MASK |KeyEvent.CTRL_DOWN_MASK ), "hide_all_markings_pressed");
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.CTRL_DOWN_MASK), "zoom_out_pressed");
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.CTRL_DOWN_MASK), "zoom_in_pressed");
+
+
+				ActionMap actionMap = 	(component).getActionMap();
+
+
+				actionMap.put("ctrl_pressed", new AbstractAction() {
 
 					/**
 					 * 
@@ -360,12 +294,12 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						gui.manageImageLayersAndMarkings();
+						is_CTRL_pressed=true;
 
 					}
 				});
-				// adding layers
-				actionMap.put("add_layers_pressed", new AbstractAction() {
+
+				actionMap.put("ctrl_released", new AbstractAction() {
 
 					/**
 					 * 
@@ -374,12 +308,12 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						gui.openAddImageLayerDialog(null);
+						is_CTRL_pressed=false;
 
 					}
 				});
-				// exportin tab delimited file
-				actionMap.put("export_tab_pressed", new AbstractAction() {
+				//Save markings
+				actionMap.put("save_pressed", new AbstractAction() {
 
 					/**
 					 * 
@@ -388,80 +322,154 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						gui.exportResults(ID.FILE_TYPE_TEXT_FILE);
+						gui.saveMarkings();
 
 					}
 				});
-				// export results to clipboard
-				actionMap.put("export_clip_pressed", new AbstractAction() {
+					// export csv
+					actionMap.put("export_csv_pressed", new AbstractAction() {
 
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						gui.exportResults(ID.CLIPBOARD);
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							gui.exportResults(ID.FILE_TYPE_CSV);
 
-					}
-				});
-				// hiding all markings
-				actionMap.put("hide_all_markings_pressed", new AbstractAction() {
+						}
+					});
+					// export images
+					actionMap.put("export_images_pressed", new AbstractAction() {
 
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-							gui.setVisibilityOfAllMarkingLayers(false);
-						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							gui.exportImages();
 
-					}
-				});
-				// showin all markings
-				actionMap.put("show_all_markings_pressed", new AbstractAction() {
+						}
+					});
+					// managing layers
+					actionMap.put("manage_layers_pressed", new AbstractAction() {
 
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						gui.setVisibilityOfAllMarkingLayers(true);
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							gui.manageImageLayersAndMarkings();
 
-					}
-				});
-				// zooming out
-				actionMap.put("zoom_out_pressed", new AbstractAction() {
+						}
+					});
+					// adding layers
+					actionMap.put("add_layers_pressed", new AbstractAction() {
 
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						gui.zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 0.8, ID.IMAGE_PROCESSING_BEST_QUALITY);
-					}
-				});
-				// zooming in
-				actionMap.put("zoom_in_pressed", new AbstractAction() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							gui.openAddImageLayerDialog(null);
 
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
+						}
+					});
+					// exportin tab delimited file
+					actionMap.put("export_tab_pressed", new AbstractAction() {
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						gui.zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 1.25, ID.IMAGE_PROCESSING_BEST_QUALITY);
-					}
-				});
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
 
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							gui.exportResults(ID.FILE_TYPE_TEXT_FILE);
+
+						}
+					});
+					// export results to clipboard
+					actionMap.put("export_clip_pressed", new AbstractAction() {
+
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							gui.exportResults(ID.CLIPBOARD);
+
+						}
+					});
+					// hiding all markings
+					actionMap.put("hide_all_markings_pressed", new AbstractAction() {
+
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+								gui.setVisibilityOfAllMarkingLayers(false);
+							
+
+						}
+					});
+					// showin all markings
+					actionMap.put("show_all_markings_pressed", new AbstractAction() {
+
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							gui.setVisibilityOfAllMarkingLayers(true);
+
+						}
+					});
+					// zooming out
+					actionMap.put("zoom_out_pressed", new AbstractAction() {
+
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							gui.zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 0.8, ID.IMAGE_PROCESSING_BEST_QUALITY);
+						}
+					});
+					// zooming in
+					actionMap.put("zoom_in_pressed", new AbstractAction() {
+
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							gui.zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 1.25, ID.IMAGE_PROCESSING_BEST_QUALITY);
+						}
+					});
+
+			}
+		} catch (Exception e) {
+			LOGGER.severe("ERROR in keyboard keys. Keyboard buttons may not work!");
+			e.printStackTrace();
 		}
 
 	}
