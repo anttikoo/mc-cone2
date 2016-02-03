@@ -624,10 +624,12 @@ public class InformationCenter {
 					// check is the selectedMarkingLayer removed and select new one if needed
 					if(this.getSelectedMarkingLayer() == null)
 						setProperSelectedMarkingLayer();
+					
+					updateVisibilityOfImageLayer(imageLayerID);
 
 			}
 			else{
-				LOGGER.warning("Removing ImageLayer which not exist. Bug");
+				LOGGER.warning("Removing ImageLayer which not exist. Bug.");
 			}
 		} catch (Exception e) {
 			LOGGER.severe("Error in removing ImageLayer");
@@ -685,6 +687,9 @@ public class InformationCenter {
 				// in beginning the MarkingLayer is visible -> set to visibleLayerlist
 				addMarkingLayerToVisibleList(ml.getLayerID());
 				setMadeChanges(true); // made changes -> save it
+				
+				// update ImageLayer visibility
+				updateVisibilityOfImageLayer(iLayerID);
 				return ml;
 			}
 			return null;
@@ -1047,6 +1052,24 @@ public class InformationCenter {
 			markingLayer.setVisible(false);
 		}
 
+	}
+	
+	private void updateVisibilityOfImageLayer(int iLayerID){
+		// go through all markingLayers of ImageLayer -> if any visible -> set imageLayer visible
+		ImageLayer il = getImageLayerByID(iLayerID);
+		ArrayList<MarkingLayer> markingLayers=il.getMarkingLayers();
+		Iterator<MarkingLayer> mIterator = markingLayers.iterator();
+		while(mIterator.hasNext()){
+			if(mIterator.next().isVisible()){
+				il.setIsVisibleMarkingLayers(true); // found
+				return;
+			}
+				
+		}
+		//not found any visible MarkigLayers
+		il.setIsVisibleMarkingLayers(false);
+		
+		
 	}
 
 	/**

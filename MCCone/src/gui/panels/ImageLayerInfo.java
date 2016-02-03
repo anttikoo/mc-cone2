@@ -370,7 +370,7 @@ private JPanel addMarkingLayerJPanel;
 									public void actionPerformed(ActionEvent e) {
 											try {
 												int iLayerID = ((ImageLayerInfo)((JPanel)((JButton)e.getSource()).getParent()).getParent()).getImageLayerID();										
-												gui.setSelectedImageLayerAndImage(iLayerID);
+												gui.setSelectedImageLayerAndImage(iLayerID,ID.IMAGELAYER_REFRESH_VISIBILITY);
 
 											} catch (Exception ex) {
 												LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
@@ -512,7 +512,7 @@ private JPanel addMarkingLayerJPanel;
 			public void mousePressed(MouseEvent e) {
 				int iLayerID=((ImageLayerInfo)((JPanel)((JPanel)((JLabel)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID();
 				//LOGGER.fine("Panel: " +((ImageLayerInfo)((JPanel)((JPanel)((JLabel)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID());
-				gui.setSelectedImageLayerAndImage(iLayerID);
+				gui.setSelectedImageLayerAndImage(iLayerID, ID.IMAGELAYER_CHANGE_IMAGELAYER);
 
 			}
 			@Override

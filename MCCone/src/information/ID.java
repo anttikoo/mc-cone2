@@ -136,6 +136,9 @@ public class ID {
 	public static final int GRID_NO_GRID= 129;
 	public static final int GRID_USED= 130;
 	public static final int GRID_SELECTED= 131;
+	public static final int IMAGELAYER_CHANGE_IMAGELAYER=132;
+	public static final int IMAGELAYER_REFRESH_VISIBILITY=133;
+	
 	
 	
 

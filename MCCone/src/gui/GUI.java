@@ -579,7 +579,7 @@ private JButton zoomOutButton;
 	 * @param directionID int ID.MOVE_DOWN or ID.MOVE.UP
 	 */
 	public void changeSelectedImageLayerUpOrDown(int directionID){
-		setSelectedImageLayerAndImage(this.taskManager.getSelectedImageLayerAtUpOrDown(directionID));
+		setSelectedImageLayerAndImage(this.taskManager.getSelectedImageLayerAtUpOrDown(directionID),ID.IMAGELAYER_CHANGE_IMAGELAYER);
 	}
 
 
@@ -2219,22 +2219,25 @@ private void setPropertiesOfMarkingPanel(int mLayerID){
 /**
  * Updates the InformationCenter and LayerVisualManager for which ImageLayer is selected and which BufferedImage object is in LayerVisualManger.
  * Method updates the ImagePanel of GUI. This method is called always when selected (visible) ImageLayer is changed by user.
+ * If ImageLayer is already selected is the visibility of  MarkingLayers changed if this method is called by eye-icon. 
+ *
  * @param iLayerID ID of ImageLayer that will be the selected ImageLayer (-> visible)
+ * @param selectionChangeType the selection change type
  */
-public void setSelectedImageLayerAndImage(int iLayerID){
+public void setSelectedImageLayerAndImage(int iLayerID, int selectionChangeType){
 	 try {
-		 
-		 if(!taskManager.isSelectedImageLayer(iLayerID)){ // already selected -> just hide show MarkingLayers
+		 	boolean visible=true;
+		 	if(!this.taskManager.getImageLayerByID(iLayerID).isSelected()){
 			 this.taskManager.changeSelectedImageLayer(iLayerID);
 		
 			 // scale the image with best quality (in LayerVisualManager) and send it to ImagePanel
 			 this.imagePanel.setImage(this.taskManager.getRefreshedImage());
 
 		 }
-		 else{
+		//	 if(selectionChangeType == ID.IMAGELAYER_REFRESH_VISIBILITY)
+			setVisibilityOfAllMarkingLayersOfSingleImageLayer(visible, iLayerID);
 			 
-			 
-		 }
+		 
 		//update highlight panel
 		this.highlightPanel.setLayer(this.taskManager.getSelectedMarkingLayer());
 		this.highlightPanel.updateHighlightPoint(null);
@@ -2469,19 +2472,21 @@ public void setSelectedMarkingLayer(int mLayerID){
 	 * Sets visibility of all MarkingLayers of single ImageLayer. Not updates GUI. 
 	 * @param visible boolean true/false to set visibility
 	 */
-	public void setVisibilityOfAllMarkingLayersOfSingleImageLayer(boolean visible){
-		ArrayList<MarkingLayer> allMarkingLayers=this.taskManager.getAllMarkingLayers();
-		if(allMarkingLayers != null && allMarkingLayers.size()>0){
-			for (Iterator<MarkingLayer> iterator = allMarkingLayers.iterator(); iterator.hasNext();) {
-				MarkingLayer markingLayer = (MarkingLayer) iterator.next();
-				setMarkingLayerVisibility(markingLayer.getLayerID(), visible);
+	public void setVisibilityOfAllMarkingLayersOfSingleImageLayer(boolean visible, int iLayerID){
+		ImageLayer iLayer = this.taskManager.getImageLayerByID(iLayerID);
+		if(iLayer != null){
+			ArrayList<MarkingLayer> allMarkingLayers=iLayer.getMarkingLayers();
+			if(allMarkingLayers != null && allMarkingLayers.size()>0){
+				for (Iterator<MarkingLayer> iterator = allMarkingLayers.iterator(); iterator.hasNext();) {
+					MarkingLayer markingLayer = (MarkingLayer) iterator.next();
+					setMarkingLayerVisibility(markingLayer.getLayerID(), visible);
+				}
+			//	updateImageLayerInfos();
 			}
-		//	updateImageLayerInfos();
+			else{
+				showMessage("No MarkingLayer!", "No any MarkingLayer found which visibility to change.", ID.OK);
+			}
 		}
-		else{
-			showMessage("No MarkingLayer!", "No any MarkingLayer found which visibility to change.", ID.OK);
-		}
-	
 	}
 	
 	
