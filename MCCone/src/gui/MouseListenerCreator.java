@@ -74,7 +74,7 @@ public class MouseListenerCreator {
 				/**
 				 * 
 				 */
-				private static final long serialVersionUID = 1L;
+				private static final long serialVersionUID = 2L;
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
