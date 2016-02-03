@@ -31,8 +31,7 @@ public class ImageLayer {
 	/** The is selected. */
 	private boolean isSelected=false;
 	
-	/** The is visible MarkingLayers. */
-	private boolean isVisibleMarkingLayers=true;
+
 
 	/**
 	 * Instantiates a new ImageLayer. First ID will be set as -1 and later unique ID is given if ImageLayer is finalized.
@@ -339,7 +338,21 @@ public class ImageLayer {
 	 * @return true, if is visible marking layers
 	 */
 	public boolean isVisibleMarkingLayers() {
-		return isVisibleMarkingLayers;
+		
+		if(this.markingLayerList != null && this.markingLayerList.size()>0){
+			Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
+			while(iIterator.hasNext()){
+				MarkingLayer ml = (MarkingLayer)iIterator.next();
+				if(ml.isVisible()){ // MarkingLayer name
+					return true;
+				}
+			}						
+		}
+		else{
+			return false;
+		}
+		
+		return false;
 	}
 
 	/**
@@ -479,14 +492,7 @@ public class ImageLayer {
 		this.isSelected = isSelected;
 	}
 
-	/**
-	 * Sets is any visible marking layers.
-	 *
-	 * @param boolean isVisibleMarkingLayers
-	 */
-	public void setIsVisibleMarkingLayers(boolean isVisibleMarkingLayers) {
-		this.isVisibleMarkingLayers = isVisibleMarkingLayers;
-	}
+	
 
 
 

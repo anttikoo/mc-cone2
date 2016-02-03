@@ -277,6 +277,7 @@ public class InformationCenter {
 				setProperSelectedImageLayer();
 				setProperSelectedMarkingLayer();
 				updateVisibleMarkingLayerList();
+				
 				setMadeChanges(true);
 
 
@@ -299,9 +300,11 @@ public class InformationCenter {
 					ImageLayer im = (ImageLayer)iterator.next();
 					if(im.getMarkingLayers() == null || im.getMarkingLayers().size()==0){ // if not MarkingLayer found -> add
 						createNewMarkingLayer(im.getLayerID());
+						
 					}
 				}
 				setMadeChanges(true);
+				
 			}
 		} catch (Exception e) {
 			LOGGER.severe("Error in creating MarkingLayers ot ImageLayers: " + " :" +e.getMessage());
@@ -625,7 +628,7 @@ public class InformationCenter {
 					if(this.getSelectedMarkingLayer() == null)
 						setProperSelectedMarkingLayer();
 					
-					updateVisibilityOfImageLayer(imageLayerID);
+				
 
 			}
 			else{
@@ -687,9 +690,7 @@ public class InformationCenter {
 				// in beginning the MarkingLayer is visible -> set to visibleLayerlist
 				addMarkingLayerToVisibleList(ml.getLayerID());
 				setMadeChanges(true); // made changes -> save it
-				
-				// update ImageLayer visibility
-				updateVisibilityOfImageLayer(iLayerID);
+								
 				return ml;
 			}
 			return null;
@@ -1053,7 +1054,7 @@ public class InformationCenter {
 		}
 
 	}
-	
+	/*
 	private void updateVisibilityOfImageLayer(int iLayerID){
 		// go through all markingLayers of ImageLayer -> if any visible -> set imageLayer visible
 		ImageLayer il = getImageLayerByID(iLayerID);
@@ -1071,7 +1072,7 @@ public class InformationCenter {
 		
 		
 	}
-
+*/
 	/**
 	 * Update the list of visible MarkingLayers.
 	 */

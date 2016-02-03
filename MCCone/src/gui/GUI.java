@@ -2226,7 +2226,8 @@ private void setPropertiesOfMarkingPanel(int mLayerID){
  */
 public void setSelectedImageLayerAndImage(int iLayerID, int selectionChangeType){
 	 try {
-		 	boolean visible=true;
+		 ImageLayer iLayer =this.taskManager.getImageLayerByID(iLayerID);
+		 	boolean visible=iLayer.isVisibleMarkingLayers();
 		 	if(!this.taskManager.getImageLayerByID(iLayerID).isSelected()){
 			 this.taskManager.changeSelectedImageLayer(iLayerID);
 		
@@ -2234,8 +2235,9 @@ public void setSelectedImageLayerAndImage(int iLayerID, int selectionChangeType)
 			 this.imagePanel.setImage(this.taskManager.getRefreshedImage());
 
 		 }
-		//	 if(selectionChangeType == ID.IMAGELAYER_REFRESH_VISIBILITY)
-			setVisibilityOfAllMarkingLayersOfSingleImageLayer(visible, iLayerID);
+		 	
+		 if(selectionChangeType == ID.IMAGELAYER_REFRESH_VISIBILITY)
+			setVisibilityOfAllMarkingLayersOfSingleImageLayer(!visible, iLayerID);
 			 
 		 
 		//update highlight panel

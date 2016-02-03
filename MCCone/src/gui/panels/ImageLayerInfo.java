@@ -106,7 +106,7 @@ private JPanel addMarkingLayerJPanel;
 			titleLabelJPanel.setBackground(Color_schema.dark_40);
 
 			JButton selectedImageLayerJButton = new JButton();
-			if(imageLayer.isSelected())
+			if(imageLayer.isVisibleMarkingLayers())
 				selectedImageLayerJButton.setIcon(getImageIcon("/images/eye_open.png"));
 			else
 				selectedImageLayerJButton.setIcon(getImageIcon("/images/eye_closed.png"));
