@@ -2223,13 +2223,18 @@ private void setPropertiesOfMarkingPanel(int mLayerID){
  */
 public void setSelectedImageLayerAndImage(int iLayerID){
 	 try {
-
-		this.taskManager.changeSelectedImageLayer(iLayerID);
+		 
+		 if(!taskManager.isSelectedImageLayer(iLayerID)){ // already selected -> just hide show MarkingLayers
+			 this.taskManager.changeSelectedImageLayer(iLayerID);
 		
-		// scale the image with best quality (in LayerVisualManager) and send it to ImagePanel
-		this.imagePanel.setImage(this.taskManager.getRefreshedImage());
+			 // scale the image with best quality (in LayerVisualManager) and send it to ImagePanel
+			 this.imagePanel.setImage(this.taskManager.getRefreshedImage());
 
-		// update ImageLayerInfo to show selected ImageLayer title in right way
+		 }
+		 else{
+			 
+			 
+		 }
 		//update highlight panel
 		this.highlightPanel.setLayer(this.taskManager.getSelectedMarkingLayer());
 		this.highlightPanel.updateHighlightPoint(null);
@@ -2459,6 +2464,27 @@ public void setSelectedMarkingLayer(int mLayerID){
 		}
 	
 	}
+	
+	/**
+	 * Sets visibility of all MarkingLayers of single ImageLayer. Not updates GUI. 
+	 * @param visible boolean true/false to set visibility
+	 */
+	public void setVisibilityOfAllMarkingLayersOfSingleImageLayer(boolean visible){
+		ArrayList<MarkingLayer> allMarkingLayers=this.taskManager.getAllMarkingLayers();
+		if(allMarkingLayers != null && allMarkingLayers.size()>0){
+			for (Iterator<MarkingLayer> iterator = allMarkingLayers.iterator(); iterator.hasNext();) {
+				MarkingLayer markingLayer = (MarkingLayer) iterator.next();
+				setMarkingLayerVisibility(markingLayer.getLayerID(), visible);
+			}
+		//	updateImageLayerInfos();
+		}
+		else{
+			showMessage("No MarkingLayer!", "No any MarkingLayer found which visibility to change.", ID.OK);
+		}
+	
+	}
+	
+	
 
 
 	/**
