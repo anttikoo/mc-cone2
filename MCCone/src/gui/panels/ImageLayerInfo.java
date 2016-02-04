@@ -1030,6 +1030,9 @@ public String getImageLayerName() {
 							markingTitleJTextField.setFont(Fonts.p17);
 						
 						markingTitleJTextField.setCaretPosition(0);
+						
+						
+						
 					}
 				});
 
@@ -1058,16 +1061,15 @@ public String getImageLayerName() {
 					@Override
 					public void mousePressed(MouseEvent e) {
 						if(!markingTitleJTextField.isEnabled()){
+							
 							gui.setSelectedMarkingLayer(marking_layer_id);
-							//LOGGER.fine("selected MarkingLayer: "+marking_layer_id);
 						}
 
 					}
 
 					@Override
 					public void mouseReleased(MouseEvent e) {
-						// do nothing
-
+					// do nothing
 					}
 				});
 

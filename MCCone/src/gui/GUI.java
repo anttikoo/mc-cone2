@@ -204,9 +204,15 @@ private JMenu menu_edit;
 /** The menu export images. */
 private JMenuItem menu_export_images;
 
+/** The zoom in button. */
 private JButton zoomInButton;
 
+/** The zoom out button. */
 private JButton zoomOutButton;
+
+
+
+
 
 
 
@@ -498,7 +504,7 @@ private JButton zoomOutButton;
 				break;
 		}
 	}
-
+	
 	/**
 	 * Adds imported ImageLayers to InformationCenter. Updates the selected layers and GUI
 	 * @param iLayerList Array of one or more ImageLayers.
@@ -514,54 +520,54 @@ private JButton zoomOutButton;
 		cleanPreCountingIfNecessary();
 	}
 
-	/**
-	 * Adds a MouseListener to given JButton. Listener affects to a graphical view of button.
-	 * @param button JButton where mouse listener is added.
-	 */
-	private void addMouseListenerForJButton(JButton button){
-		
-		button.addMouseListener(new MouseListener() {
+/**
+ * Adds a MouseListener to given JButton. Listener affects to a graphical view of button.
+ * @param button JButton where mouse listener is added.
+ */
+private void addMouseListenerForJButton(JButton button){
 	
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// do nothing
+	button.addMouseListener(new MouseListener() {
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			// do nothing
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+			if(((JButton)arg0.getSource()).isEnabled())
+			((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 2));
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+			if(((JButton)arg0.getSource()).isEnabled())
+			((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
+
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			if(((JButton)arg0.getSource()).isEnabled())
+			((JButton)arg0.getSource()).setForeground(Color_schema.orange_dark);
+
+
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
+			if(((JButton)arg0.getSource()).isEnabled())
+			((JButton)arg0.getSource()).setForeground(Color_schema.button_light_border);
+			if(guiListener.isCellPickingON())
+				((JButton)arg0.getSource()).setForeground(Color_schema.orange_medium);
+
+		}
+	});
 	
-			}
-	
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				if(((JButton)arg0.getSource()).isEnabled())
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 2));
-	
-			}
-	
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				if(((JButton)arg0.getSource()).isEnabled())
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
-	
-			}
-	
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				if(((JButton)arg0.getSource()).isEnabled())
-				((JButton)arg0.getSource()).setForeground(Color_schema.orange_dark);
-	
-	
-			}
-	
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				if(((JButton)arg0.getSource()).isEnabled())
-				((JButton)arg0.getSource()).setForeground(Color_schema.button_light_border);
-				if(guiListener.isCellPickingON())
-					((JButton)arg0.getSource()).setForeground(Color_schema.orange_medium);
-	
-			}
-		});
-		
-	}
-	
+}
+
 	/**
 	 * Adds a single marking to Point p, if no any marking found too close. 
 	 * @param p Point at screen where mouse was pressed
@@ -581,8 +587,7 @@ private JButton zoomOutButton;
 	public void changeSelectedImageLayerUpOrDown(int directionID){
 		setSelectedImageLayerAndImage(this.taskManager.getSelectedImageLayerAtUpOrDown(directionID),ID.IMAGELAYER_CHANGE_IMAGELAYER);
 	}
-
-
+	
 	/**
 	 * Changes the selected MarkingLayer one up or down in MarkingLayerImageLayerlist.
 	 * @param directionID int ID.MOVE_DOWN or ID.MOVE.UP
@@ -590,10 +595,6 @@ private JButton zoomOutButton;
 	public void changeSelectedMarkingLayerUpOrDown(int directionID){
 		setSelectedMarkingLayer(this.taskManager.getSelectedMarkingLayerAtUpOrDown(directionID));
 	}
-
-
-	
-
 
 	/**
 	 *  Refreshes the PrecountingManager Thread to initial state if necessary.
@@ -624,6 +625,7 @@ private JButton zoomOutButton;
 
 	}
 
+
 	/**
 	 *  Removes all markings of all MarkingLayers. Refreshes the MarkingPanels and ImageLayerInfos.
 	 */
@@ -648,6 +650,10 @@ private JButton zoomOutButton;
 			showMessage("No MarkingLayer!", "No any MarkingLayer found which counting to clear.", ID.OK);
 		}
 	}
+
+
+	
+
 
 	/**
 	 *  Removes all markings of selected MarkingLayer. Refreshes the selected MarkingPanel and ImageLayerInfos.
@@ -777,7 +783,7 @@ private JButton zoomOutButton;
 
 
 	}
-	
+
 	/**
 	 *  Opens a dialog to export image(s).
 	 */
@@ -792,8 +798,6 @@ private JButton zoomOutButton;
 
 		}
 	}
-
-
 
 	/**
 	 *  Opens a new dialog for selecting images and organizing images to create set of images.
@@ -811,7 +815,7 @@ private JButton zoomOutButton;
 			
 
 	}
-
+	
 	/**
 	 * Opens a dialog to export results.
 	 * @param id int ID type of saving type (ID.FILE_TYPE_TEXT_FILE, ID.FILE_TYPE_CSV or ID.CLIPBOARD).
@@ -827,7 +831,9 @@ private JButton zoomOutButton;
 
 		}
 	}
-	
+
+
+
 	/**
 	 * Returns all Markinglayers.
 	 * @return ArrayList<MarkingLayer> All MarkingLayers
@@ -854,7 +860,7 @@ private JButton zoomOutButton;
 		return null;
 
 	}
-
+	
 	/**
 	 * Returns the object of main window. Only one GUI object exists.
 	 * @return GUI the main window object.
@@ -871,7 +877,7 @@ private JButton zoomOutButton;
 	public GUIcomponentListener getGuiComponentListener() {
 	return guiComponentListener;
 }
-	
+
 	/**
 	 * Gets the GUIcomponentListener of GUI if found.
 	 *
@@ -904,8 +910,6 @@ private JButton zoomOutButton;
 
 	}
 	
-	
-
 	/**
 	 * Returns ImageLayer by given ID.
 	 *
@@ -925,6 +929,8 @@ private JButton zoomOutButton;
 	public ImageLayer getImageLayerByMarkingLayerID(int markingLayerID){
 		return this.taskManager.getImageLayerByMarkingLayerID(markingLayerID);
 	}
+	
+	
 
 	/**
 	 * Returns the MarkingLayer by given IDs.
@@ -936,6 +942,8 @@ private JButton zoomOutButton;
 	public MarkingLayer getMarkingLayer(int iLayerID, int mLayerID){
 		return this.taskManager.getMarkingLayer(iLayerID, mLayerID);
 	}
+
+
 
 	/**
 	 * Mediates call to TaskManager to update markings of several ImageLayers by giving as parameter a File (.xml) where from the markings are imported.
@@ -979,7 +987,6 @@ private JButton zoomOutButton;
 		return null;
 	}
 
-
 	/**
 	 * Returns the folder name which is previously used.
 	 * @return String folder name which is previously used.
@@ -996,7 +1003,8 @@ private JButton zoomOutButton;
 	public Dimension getPresentImageDimension() {
 		return this.taskManager.getPresentImageDimension();
 	}
-	
+
+
 	/**
 	 * Returns width of rightpanel.
 	 * @return int width of rightpanel
@@ -1068,8 +1076,6 @@ private JButton zoomOutButton;
 
 	}
 	
-	
-	
 	/**
 	 * Returns the size and position of VisualPanel.
 	 * @return Rectangle size of VisualPanel.
@@ -1077,7 +1083,9 @@ private JButton zoomOutButton;
 	public Rectangle getVisualPanelSize(){
 		return this.visualPanel.getBounds();
 	}
-
+	
+	
+	
 	/**
 	 * Checks is given image name already in use.
 	 * @param imageName String imageName, which duplicate using is checked.
@@ -1120,7 +1128,6 @@ private JButton zoomOutButton;
 		
 	}
 
-
 	/**
 	 *  Initializes GlassPane, which is used in precounting cells.
 	 */
@@ -1128,6 +1135,7 @@ private JButton zoomOutButton;
 		glassPane = new PrecountGlassPane(this, this.doublePanel, this.menubar, guiListener);
 		this.setGlassPane(glassPane);
 	}
+
 
 	/**
 	 * Initializes dimension of all panels in main window.
@@ -1616,7 +1624,6 @@ private JButton zoomOutButton;
 		}
 
 	}
-	
 
 	/**
 	 * Checks that given image file dimension is same as the dimension of previously used images. ONLY ONE IMAGE DIMENSION IS ALLOWED.
@@ -1627,6 +1634,7 @@ private JButton zoomOutButton;
 	public boolean isAllowedImageDimension(File file) throws Exception{
 		return this.taskManager.isAllowedImageDimension(file);
 	}
+	
 
 	/** Starts the progress to add ImageLayers or import MarkingLayers to ImageLayers if any ImageLayer present: User gives the image and/or markings from file in new Dialog window.
 	 * ImageLayer(s) are created or updated and when done, GUI layers, ImagePanel and ImageLayerInfo is updated
@@ -1684,8 +1692,6 @@ private JButton zoomOutButton;
 		this.layers.repaint();
 	}
 
-
-
 	/**
 	 *  Checks does selected ImageLayer and visible MarkingLayers exist and after that updates GUI.
 	 */
@@ -1717,6 +1723,8 @@ private JButton zoomOutButton;
 		}
 
 	}
+
+
 
 	/**
 	 * Refresh the all MarkingPanels by first removing all layer and then recreating them again. 
@@ -1762,8 +1770,6 @@ private JButton zoomOutButton;
 
 	}
 
-
-
 	/**
 	 * Hides the highlight of marking.
 	 */
@@ -1771,6 +1777,8 @@ private JButton zoomOutButton;
 		this.highlightPanel.updateHighlightPoint(null);
 
 	}
+
+
 
 	/**
 	 * Removes the ImageLayer from list of ImageLayers at informationCenter. 
@@ -1860,7 +1868,6 @@ private JButton zoomOutButton;
 		}
 	}
 
-
 	/**
 	 * Fetches and removes a MarkingPanel corresponding to given MarkingLayer ID. 
 	 * Removes first all layers and add all but MarkingPanel which corresponds to given MarkingLayer ID.
@@ -1925,6 +1932,7 @@ private JButton zoomOutButton;
 
 	}
 
+
 	/**
 	 * Removes a single marking closest to Point p. If no any marking found close enough, no any removed. 
 	 * @param p Point at screen where right mouse button was pressed
@@ -1969,8 +1977,6 @@ private JButton zoomOutButton;
 		}
 	}
 
-
-
 	/**
 	 *  Opens dialog for selecting which markings to save.
 	 */
@@ -1989,6 +1995,8 @@ private JButton zoomOutButton;
 		}
 
 	}
+
+
 
 	/**
 	 * Sets Cursor type when hovering over ImagePanel.
@@ -2038,7 +2046,6 @@ private JButton zoomOutButton;
 		this.imagePanel.setImage(pi);
 	}
 
-
 	/**
 	 * Replaces the array of ImageLayer s in InformationCenter with new list. After updating the list -> the GUI is updated.
 	 * @param iLayerList Array of ImageLayer s.
@@ -2064,6 +2071,9 @@ private JButton zoomOutButton;
 	public void setMadeChanges(boolean mc){
 		this.taskManager.setMadeChange(); //
 	}
+
+
+
 
 	/**
 	 * Modifies the name of MarkingLayer given by ID.
@@ -2737,6 +2747,17 @@ public void setSelectedMarkingLayer(int mLayerID){
 		}
 		dialog=null;
 	}
+	
+	
+	
+	
+	public void moveSelectedMarkingLayer(int direction){
+		if(this.taskManager.moveSelectedMarkingLayer(direction)){
+			updateImageLayerInfos();
+		}
+		
+	}
+	
 
 	/**
 	 * For testing purposes opens one image at launch-> one ImageLayer and MarkingLayer created.

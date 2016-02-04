@@ -36,6 +36,9 @@ public class MarkingLayer{
 	/** The layer id. */
 	private int layerID;
 	
+	/** The order. */
+	private int order;
+	
 	/** The layer name. */
 	private String layerName;
 	
@@ -81,6 +84,7 @@ public class MarkingLayer{
 		this.size=20;	// initial value -> changed later
 		this.thickness=2; // initial value -> changed later
 		this.opacity=1.0F; // initial value -> changed later
+		
 	}
 
 	/**
@@ -276,6 +280,17 @@ public class MarkingLayer{
 	public float getOpacity() {
 		return opacity;
 	}
+	
+	/**
+	 * Returns the order.
+	 *
+	 * @return the order
+	 */
+	public int getOrder() {
+		return order;
+	}
+
+	
 
 	/**
 	 * Returns the shape id.
@@ -535,6 +550,7 @@ public boolean isGridON(){
 	 */
 	public void setLayerID(int layerID) {
 		this.layerID = layerID;
+		this.order=this.layerID;
 	}
 
 	/**
@@ -553,6 +569,15 @@ public boolean isGridON(){
 	 */
 	public void setOpacity(float opacity) {
 		this.opacity = opacity;
+	}
+	
+	/**
+	 * Sets the order.
+	 *
+	 * @param order the new order
+	 */
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 	/**

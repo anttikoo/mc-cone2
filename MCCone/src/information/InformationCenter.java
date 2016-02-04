@@ -505,6 +505,12 @@ public class InformationCenter {
 			return null;
 		}
 	}
+	
+	
+	
+	
+	
+
 
 	/**
 	 * Returns the MarkingLayer.
@@ -534,6 +540,96 @@ public class InformationCenter {
 			LOGGER.severe("Error in fetching MarkingLayer " +e.getClass().toString() + " :" +e.getMessage());
 			return null;
 		}
+	}
+	
+	/**
+	 * Returns the next marking layer of ImageLayer.
+	 *
+	 * @param mLayerID the MarkingLayer ID
+	 * @return the next marking layer, null if not found
+	 */
+	private MarkingLayer getNextMarkingLayer(int mLayerID){
+		boolean returnNext=false;
+		ImageLayer im= getImageLayerByMarkingLayerID(mLayerID);
+		
+		if(im != null){
+			// go through MarkingLayers
+			Iterator<MarkingLayer> iterator = im.getMarkingLayers().iterator();
+			while (iterator.hasNext()) {
+				MarkingLayer ma = (MarkingLayer) iterator.next();
+				
+				if(returnNext) // previous was the found layer -> return this one
+					return ma;
+				
+				if (ma.getLayerID() == mLayerID) {
+					returnNext=true;
+				}
+
+				
+			}
+		}
+		return null;
+		
+	}
+	
+	/**
+	 * Returns the previous marking layer.
+	 *
+	 * @param mLayerID the MarkingLayer ID
+	 * @return the previous marking layer, null if not found
+	 */
+	private MarkingLayer getPreviousMarkingLayer(int mLayerID){
+		MarkingLayer previousMarkingLayer=null;
+		ImageLayer im= getImageLayerByMarkingLayerID(mLayerID);
+		
+		if(im != null){
+			// go through MarkingLayers
+			Iterator<MarkingLayer> iterator = im.getMarkingLayers().iterator();
+			while (iterator.hasNext()) {
+				MarkingLayer ma = (MarkingLayer) iterator.next();
+			
+				if (ma.getLayerID() == mLayerID) {
+					return previousMarkingLayer;
+				}
+				previousMarkingLayer=ma;
+			}
+		}
+		return null;
+		
+	}
+	
+	/**
+	 * Move selected marking layer.
+	 *
+	 * @param direction the direction
+	 * @return true, if successful
+	 */
+	public boolean moveSelectedMarkingLayer(int direction){
+		
+		MarkingLayer selectedMarkingLayer= getSelectedMarkingLayer();
+		if(selectedMarkingLayer != null){
+			MarkingLayer switchMarkingLayer = getNextMarkingLayer(selectedMarkingLayer.getLayerID());
+			if(direction == ID.MOVE_UP)
+				switchMarkingLayer = getPreviousMarkingLayer(selectedMarkingLayer.getLayerID());
+			
+			if(switchMarkingLayer != null && switchMarkingLayer.getOrder()>0){
+				int tempOrder = selectedMarkingLayer.getOrder();
+				selectedMarkingLayer.setOrder(switchMarkingLayer.getOrder());
+				switchMarkingLayer.setOrder(tempOrder);
+				getImageLayerByMarkingLayerID(selectedMarkingLayer.getLayerID()).sortMarkingLayers();
+				
+				return true;
+					
+			}
+			else{
+				return false;
+			}
+				
+			
+			
+		}
+		return false;
+		
 	}
 
 	/**

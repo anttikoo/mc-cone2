@@ -537,6 +537,17 @@ public class TaskManager {
 			return false;
 		return this.informationCenter.getSelectedMarkingLayer().isVisible();
 	}
+	
+	/**
+	 * Move selected marking layer.
+	 *
+	 * @param direction the direction
+	 * @return true, if successful moving
+	 */
+	public boolean moveSelectedMarkingLayer(int direction){
+		return this.informationCenter.moveSelectedMarkingLayer(direction);
+	
+	}
 
 	/**
 	 * Sets PreCountThreadManager to start precounting process. Needs point and size for getting image of picked cell,

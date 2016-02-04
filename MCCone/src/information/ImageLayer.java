@@ -2,8 +2,12 @@ package information;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.logging.Logger;
+
+import operators.CoordinateComparator;
+import operators.MarkingLayerComparator;
 
 /**
  * The Class ImageLayer. Contains data: unique ID, image paths, MarkingLayers. 
@@ -67,6 +71,7 @@ public class ImageLayer {
 			this.markingLayerList.add(mark);
 			LOGGER.fine("create marking 4 " + ml.getLayerID() + " " + ml.getLayerName() + " size" + this.markingLayerList.size());
 
+			sortMarkingLayers();
 		} catch (Exception e) {
 			LOGGER.severe("Error in adding new MarkingLayer " +e.getClass().toString() + " :" +e.getMessage());
 			e.printStackTrace();
@@ -435,6 +440,7 @@ public class ImageLayer {
 				}
 
 			}
+			sortMarkingLayers();
 		}
 	}
 
@@ -490,6 +496,11 @@ public class ImageLayer {
 	 */
 	public void setSelected(boolean isSelected) {
 		this.isSelected = isSelected;
+	}
+	
+	public void sortMarkingLayers(){
+		if(this.markingLayerList != null && this.markingLayerList.size()>0)
+			Collections.sort(this.markingLayerList, new MarkingLayerComparator());
 	}
 
 	

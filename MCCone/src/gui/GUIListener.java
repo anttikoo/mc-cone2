@@ -206,6 +206,12 @@ public class GUIListener extends MouseInputAdapter {
 
 				//DOWN
 				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0,true), "down_pressed");
+				
+				// PAGE UP
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_UP, 0,true), "page_up_pressed");
+				
+				// PAGE DOWN
+				inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_DOWN, 0,true), "page_down_pressed");
 
 				ActionMap actionMap = 	(component).getActionMap();
 
@@ -215,7 +221,7 @@ public class GUIListener extends MouseInputAdapter {
 					/**
 					 * 
 					 */
-					private static final long serialVersionUID = 1L;
+					private static final long serialVersionUID = 4L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -229,7 +235,7 @@ public class GUIListener extends MouseInputAdapter {
 					/**
 					 * 
 					 */
-					private static final long serialVersionUID = 1L;
+					private static final long serialVersionUID = 5L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -243,7 +249,7 @@ public class GUIListener extends MouseInputAdapter {
 					/**
 					 * 
 					 */
-					private static final long serialVersionUID = 1L;
+					private static final long serialVersionUID = 6L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -257,7 +263,7 @@ public class GUIListener extends MouseInputAdapter {
 					/**
 					 * 
 					 */
-					private static final long serialVersionUID = 1L;
+					private static final long serialVersionUID = 7L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -266,6 +272,38 @@ public class GUIListener extends MouseInputAdapter {
 						gui.changeSelectedMarkingLayerUpOrDown(ID.MOVE_DOWN);
 					}
 				});
+				
+				actionMap.put("page_up_pressed", new AbstractAction() {
+
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 8L;
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// change selected MarkingLayer one up
+
+						gui.moveSelectedMarkingLayer(ID.MOVE_UP);
+					}
+				});
+				
+				actionMap.put("page_down_pressed", new AbstractAction() {
+
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 9L;
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// change selected MarkingLayer one down
+
+						gui.moveSelectedMarkingLayer(ID.MOVE_DOWN);
+					}
+				});
+				
+				
 
 			} // whole window listening keys
 			else if(componentID == ID.WHOLE_GUI_FRAME){

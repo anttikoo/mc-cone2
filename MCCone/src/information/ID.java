@@ -138,6 +138,10 @@ public class ID {
 	public static final int GRID_SELECTED= 131;
 	public static final int IMAGELAYER_CHANGE_IMAGELAYER=132;
 	public static final int IMAGELAYER_REFRESH_VISIBILITY=133;
+	public static final int ML_ORDER_CHANGED_ORDER=134;
+	public static final int ML_ORDER_NOT_CHANGED_ORDER=135;
+	public static final int ML_ORDER_SAME_ID=136;
+	public static final int ML_ORDER_INSERTED_ID=137;
 	
 	
 	
