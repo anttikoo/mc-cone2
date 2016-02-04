@@ -434,6 +434,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 		int cellsCount = rows*columns;
 		double value=((double)this.randomSlider.getValue())/100.0;
 		double selectedCells= Math.ceil(((double)cellsCount)*value); // round selected number to next upper integer value
+		
 		int partOfCellsCount= (int)selectedCells;
 		if(partOfCellsCount==0)
 			partOfCellsCount=1;

@@ -39,7 +39,7 @@ public class MouseListenerCreator {
 		if(typeOfButton== ID.BUTTON_ENTER){
 			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		//	inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0, true), "enter_pressed");
+			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0, false), "enter_pressed");
 			ActionMap actionMap = 	(button).getActionMap();
 			actionMap.put("enter_pressed", new AbstractAction() {
 	
@@ -51,9 +51,9 @@ public class MouseListenerCreator {
 				@Override
 				public void actionPerformed(ActionEvent e) {					
 						try {
-							
-							ButtonRunner br =new ButtonRunner(button);
-							SwingUtilities.invokeLater(br);
+							button.doClick();
+						//	ButtonRunner br =new ButtonRunner(button);
+						//	SwingUtilities.invokeLater(br);
 						} catch (Exception e1) {							
 							e1.printStackTrace();
 							
@@ -64,7 +64,7 @@ public class MouseListenerCreator {
 		}
 		if(typeOfButton== ID.BUTTON_CANCEL){
 			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE,0,true), "cancel_pressed");
+			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE,0,false), "cancel_pressed");
 			ActionMap actionMap = 	(button).getActionMap();
 			actionMap.put("cancel_pressed", new AbstractAction() {
 	
