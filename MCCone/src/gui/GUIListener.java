@@ -100,10 +100,15 @@ public class GUIListener extends MouseInputAdapter {
 	 * @param gui GUI main window which is listened
 	 */
 	public GUIListener(GUI gui){
-		this.gui=gui;
-		initSPACEactions();
-		initHighlightTimer();
-		initZoomTimer();
+		try {
+			this.gui=gui;
+			initSPACEactions();
+			initHighlightTimer();
+			initZoomTimer();
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing Listener for Graphical user interface. Relaunch program.");
+			e.printStackTrace();
+		}
 	}
 
 	/**

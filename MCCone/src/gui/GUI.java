@@ -1980,6 +1980,7 @@ private JButton zoomOutButton;
 
 			@SuppressWarnings("unused")
 			SaveMarkings saveMarkingsDialog=new SaveMarkings(this, this, this.taskManager.getImageLayerList());
+			
 			saveMarkingsDialog=null;
 		}
 		else{
@@ -2007,7 +2008,7 @@ private JButton zoomOutButton;
 					getMarkingPanelByLayerID(this.taskManager.getSelectedMarkingLayer().getLayerID()).setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));			
 				break;
 			case ID.CURSOR_CROSS_HAIR:
-				System.out.println("hand show");				
+								
 				this.imagePanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 				if(this.taskManager != null && this.taskManager.getSelectedMarkingLayer() != null && this.taskManager.getSelectedMarkingLayer().getLayerID()>0)
 				getMarkingPanelByLayerID(this.taskManager.getSelectedMarkingLayer().getLayerID()).setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));			

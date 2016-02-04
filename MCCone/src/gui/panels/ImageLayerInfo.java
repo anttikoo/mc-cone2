@@ -1023,7 +1023,7 @@ public String getImageLayerName() {
 					public void focusLost(FocusEvent e) {
 						markingTitleJTextField.setEnabled(false);
 
-						System.out.println("text par"+((JTextField)e.getSource()).getParent().getClass().toString());
+					//	System.out.println("text par"+((JTextField)e.getSource()).getParent().getClass().toString());
 						if(((SingleMarkingPanel)((JTextField)e.getSource()).getParent()).isMarkingLayerSelected())
 							markingTitleJTextField.setFont(Fonts.b18);
 						else

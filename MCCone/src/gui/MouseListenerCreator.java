@@ -37,7 +37,7 @@ public class MouseListenerCreator {
 		if(typeOfButton== ID.BUTTON_ENTER){
 			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		//	inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0, false), "enter_pressed");
+			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0, true), "enter_pressed");
 			ActionMap actionMap = 	(button).getActionMap();
 			actionMap.put("enter_pressed", new AbstractAction() {
 	
@@ -48,26 +48,31 @@ public class MouseListenerCreator {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {					
-						SwingUtilities.invokeLater(new Runnable() {
-							
-							@Override
-							public void run() {	
-								try{
-									button.doClick();
-								}
-								catch(Exception e){
-									e.printStackTrace();
-								}
+						try {
+							SwingUtilities.invokeLater(new Runnable() {
 								
-							}
-						});
+								@Override
+								public void run() {	
+									try{
+										button.doClick();
+									}
+									catch(Exception e){
+										e.printStackTrace();
+									}
+									
+								}
+							});
+						} catch (Exception e1) {							
+							e1.printStackTrace();
+							
+						}
 				}
 	
 			});
 		}
 		if(typeOfButton== ID.BUTTON_CANCEL){
 			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE,0,false), "cancel_pressed");
+			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE,0,true), "cancel_pressed");
 			ActionMap actionMap = 	(button).getActionMap();
 			actionMap.put("cancel_pressed", new AbstractAction() {
 	
@@ -79,19 +84,24 @@ public class MouseListenerCreator {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
-						SwingUtilities.invokeLater(new Runnable() {
-						
-						@Override
-						public void run() {
-							try{
-								button.doClick();
-							}
-							catch(Exception e){
-								e.printStackTrace();
-							}
+						try {
+							SwingUtilities.invokeLater(new Runnable() {
 							
+							@Override
+							public void run() {
+								try{
+									button.doClick();
+								}
+								catch(Exception e){
+									e.printStackTrace();
+								}
+								
+							}
+});
+						} catch (Exception e1) {
+							
+							e1.printStackTrace();
 						}
-					});
 	
 				}
 	

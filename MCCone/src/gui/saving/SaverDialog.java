@@ -126,7 +126,7 @@ private Component parentComponent=null;
 			this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 			this.gui=gui;
 			initComponents();
-			initKeyListenerToDialog();
+		//	initKeyListenerToDialog(); -> this is done in MouseListenerCreator..
 			setImageList();
 			updateSaveButtonState();
 			this.revalidate();
@@ -159,7 +159,7 @@ private Component parentComponent=null;
 			this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 			this.gui=gui;
 			initComponents();
-			initKeyListenerToDialog();
+		//	initKeyListenerToDialog(); -> this is done in MouseListenerCreator..
 			setImageList();
 			updateSaveButtonState();
 			this.revalidate();
