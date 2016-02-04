@@ -4,6 +4,8 @@ import gui.graphics.BigCloseIcon;
 import gui.graphics.MediumCloseIcon;
 import gui.graphics.SmallCloseIcon;
 import information.ID;
+import operators.ButtonRunner;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -49,19 +51,9 @@ public class MouseListenerCreator {
 				@Override
 				public void actionPerformed(ActionEvent e) {					
 						try {
-							SwingUtilities.invokeLater(new Runnable() {
-								
-								@Override
-								public void run() {	
-									try{
-										button.doClick();
-									}
-									catch(Exception e){
-										e.printStackTrace();
-									}
-									
-								}
-							});
+							
+							ButtonRunner br =new ButtonRunner(button);
+							SwingUtilities.invokeLater(br);
 						} catch (Exception e1) {							
 							e1.printStackTrace();
 							
@@ -85,19 +77,10 @@ public class MouseListenerCreator {
 				public void actionPerformed(ActionEvent e) {
 					
 						try {
-							SwingUtilities.invokeLater(new Runnable() {
 							
-							@Override
-							public void run() {
-								try{
-									button.doClick();
-								}
-								catch(Exception e){
-									e.printStackTrace();
-								}
-								
-							}
-});
+							ButtonRunner br =new ButtonRunner(button);
+							SwingUtilities.invokeLater(br);
+							
 						} catch (Exception e1) {
 							
 							e1.printStackTrace();
