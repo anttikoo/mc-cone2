@@ -2091,6 +2091,10 @@ private JButton zoomOutButton;
 			if(taskManager.getSelectedMarkingLayer().isGridON()){
 				this.gridPanel.setShowGrid(visible);
 			}
+			// if setting visible or unvisible -> set highlight unvisible (no data in highlight)
+				setMarkingsOfHighlightLayer();
+			
+			
 		}
 		this.layers.repaint();
 

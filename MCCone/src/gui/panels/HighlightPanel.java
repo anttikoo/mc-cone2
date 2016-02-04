@@ -37,12 +37,16 @@ public class HighlightPanel extends JPanel{
 	/** The shape drawer. */
 	private ShapeDrawer shapeDrawer=null;
 
+	
+	private boolean isVisible=true;
+	
 	/**
 	 * Instantiates a new highlight panel.
 	 */
 	public HighlightPanel() {
 		this.opacity= 0.7f;
 		this.setOpaque(false);
+		
 	}
 
 	/**
@@ -54,10 +58,12 @@ public class HighlightPanel extends JPanel{
 		if(layer != null){
 			this.shapeDrawer=new ShapeDrawer(layer, layer.getSize()+2, layer.getThickness(),this.opacity, layer.getColor());
 			this.shapeID=layer.getShapeID();
+			this.isVisible=layer.isVisible();
 		}
 		else{
 			this.shapeDrawer=null;
 			this.shapeID=ID.UNDEFINED;
+			this.isVisible=false;
 		}
 	}
 
@@ -66,7 +72,7 @@ public class HighlightPanel extends JPanel{
 	 */
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		if(this.highlightPoint != null && this.shapeDrawer !=null){
+		if(this.highlightPoint != null && this.shapeDrawer !=null && this.isVisible){
 		//	System.out.println("drawing!!!");
 			g2d = (Graphics2D) g.create();
 			g2d.setPaint(Color_schema.orange_medium);
