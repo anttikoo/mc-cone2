@@ -2228,11 +2228,11 @@ public void setSelectedImageLayerAndImage(int iLayerID, int selectionChangeType)
 	 try {
 		 ImageLayer iLayer =this.taskManager.getImageLayerByID(iLayerID);
 		 	boolean visible=iLayer.isVisibleMarkingLayers();
-		 	if(!this.taskManager.getImageLayerByID(iLayerID).isSelected()){
-			 this.taskManager.changeSelectedImageLayer(iLayerID);
+		 	if(!(this.taskManager.getImageLayerByID(iLayerID).isSelected())){
+		 		this.taskManager.changeSelectedImageLayer(iLayerID);
 		
-			 // scale the image with best quality (in LayerVisualManager) and send it to ImagePanel
-			 this.imagePanel.setImage(this.taskManager.getRefreshedImage());
+		 		// scale the image with best quality (in LayerVisualManager) and send it to ImagePanel
+		 		this.imagePanel.setImage(this.taskManager.getRefreshedImage());
 
 		 }
 		 	
@@ -2474,7 +2474,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 	 * Sets visibility of all MarkingLayers of single ImageLayer. Not updates GUI. 
 	 * @param visible boolean true/false to set visibility
 	 */
-	public void setVisibilityOfAllMarkingLayersOfSingleImageLayer(boolean visible, int iLayerID){
+	public void setVisibilityOfAllMarkingLayersOfSingleImageLayer(boolean visible, int iLayerID) throws Exception{
 		ImageLayer iLayer = this.taskManager.getImageLayerByID(iLayerID);
 		if(iLayer != null){
 			ArrayList<MarkingLayer> allMarkingLayers=iLayer.getMarkingLayers();
@@ -2777,9 +2777,9 @@ public void setSelectedMarkingLayer(int mLayerID){
 	public void updateCoordinatesOfSelectedMarkingPanel(){
 		try {
 			MarkingLayer selectedMarkingLayer = taskManager.getSelectedMarkingLayer();
-			if(selectedMarkingLayer != null){
+			if(selectedMarkingLayer != null && selectedMarkingLayer.isVisible()){
 				MarkingPanel selectedMarkingPanel= getMarkingPanelByLayerID(selectedMarkingLayer.getLayerID());
-				if(selectedMarkingPanel != null){
+				if(selectedMarkingPanel != null && selectedMarkingPanel.isVisible()){
 					// get and set the coordinates formatted to screen (coordinates at image -> coordinates at screen)
 					selectedMarkingPanel.setCoordinateList(taskManager.getScreenCoordinatesOfSelectedMarkingLayer());
 

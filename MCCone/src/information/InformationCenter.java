@@ -891,7 +891,7 @@ public class InformationCenter {
 			// check is the selectedMarkingLayer already ok
 			if(this.selectedMarkingLayer != null && selectedIL.hasMarkingLayer(this.selectedMarkingLayer.getLayerID())){
 					// everything is ok -> set visible and then return
-					setMarkingLayerVisibility(this.selectedMarkingLayer.getLayerID(), true);
+			//		setMarkingLayerVisibility(this.selectedMarkingLayer.getLayerID(), true);
 					return;
 				}
 
@@ -906,7 +906,7 @@ public class InformationCenter {
 				this.setSelectedMarkingLayer(firstMLayer);
 				// if firstmLayer is not visible -> set to visible
 				if(!isInVisibleMarkingList(firstMLayer.getLayerID())){
-					setMarkingLayerVisibility(firstMLayer.getLayerID(), true);
+		//			setMarkingLayerVisibility(firstMLayer.getLayerID(), true);
 				//	addMarkingLayerToVisibleList(firstMLayer.getLayerID());
 				//	firstMLayer.setVisible(true);
 					

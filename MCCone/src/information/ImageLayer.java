@@ -337,13 +337,13 @@ public class ImageLayer {
 	 *
 	 * @return true, if is visible marking layers
 	 */
-	public boolean isVisibleMarkingLayers() {
 		
+	public boolean isVisibleMarkingLayers() {
 		if(this.markingLayerList != null && this.markingLayerList.size()>0){
 			Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
 			while(iIterator.hasNext()){
 				MarkingLayer ml = (MarkingLayer)iIterator.next();
-				if(ml.isVisible()){ // MarkingLayer name
+				if(ml.isVisible()){ // MarkingLayer visibility
 					return true;
 				}
 			}						
