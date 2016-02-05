@@ -355,22 +355,28 @@ protected void hideDialog(boolean saveChanges){
  */
 protected JPanel initCenterPanels(){
 
-	// setup combobox and slider panels
-	boxAndSlidersPanel = new JPanel();
-	boxAndSlidersPanel.setLayout(new BoxLayout(boxAndSlidersPanel, BoxLayout.PAGE_AXIS));
-	setUpComboBoXPanel();
-	if(comboBoxPanel != null)
-	boxAndSlidersPanel.add(comboBoxPanel);
+	try {
+		// setup combobox and slider panels
+		boxAndSlidersPanel = new JPanel();
+		boxAndSlidersPanel.setLayout(new BoxLayout(boxAndSlidersPanel, BoxLayout.PAGE_AXIS));
+		setUpComboBoXPanel();
+		if(comboBoxPanel != null)
+		boxAndSlidersPanel.add(comboBoxPanel);
 
-	// Setup sliders for size, opacity, thickness
-	sizeSliderPanel = setUpSLiderPanel(ID.SIZE_SLIDER, "SET SIZE: ", 5, 100, this.getSelectedSize(), 10, 100);
-	thicknessSliderPanel = setUpSLiderPanel(ID.THICKNESS_SLIDER, "SET THICKNESS: ", 1, 20, this.getSelectedThickness(), 1, 5);
-	opacitySliderPanel = setUpSLiderPanel(ID.OPACITY_SLIDER, "SET OPACITY: ", 1, 100, this.getSelectedOpacity(), 10, 100);
-	boxAndSlidersPanel.add(sizeSliderPanel);
-	boxAndSlidersPanel.add(thicknessSliderPanel);
-	boxAndSlidersPanel.add(opacitySliderPanel);
+		// Setup sliders for size, opacity, thickness
+		sizeSliderPanel = setUpSLiderPanel(ID.SIZE_SLIDER, "SET SIZE: ", 5, 100, this.getSelectedSize(), 10, 100);
+		thicknessSliderPanel = setUpSLiderPanel(ID.THICKNESS_SLIDER, "SET THICKNESS: ", 1, 20, this.getSelectedThickness(), 1, 5);
+		opacitySliderPanel = setUpSLiderPanel(ID.OPACITY_SLIDER, "SET OPACITY: ", 1, 100, this.getSelectedOpacity(), 10, 100);
+		boxAndSlidersPanel.add(sizeSliderPanel);
+		boxAndSlidersPanel.add(thicknessSliderPanel);
+		boxAndSlidersPanel.add(opacitySliderPanel);
 
-	return  boxAndSlidersPanel;
+		return  boxAndSlidersPanel;
+	} catch (Exception e) {
+		LOGGER.severe("Error in initialozing Center Panel");
+		e.printStackTrace();
+		return null;
+	}
 }
 
 /**
@@ -709,8 +715,9 @@ private JComboBox<Integer> setUpComboBox(){
 
 /**
  * Setups the combobox JPanel for selecting shape of marking.
+ * @throws Exception 
  */
-protected void setUpComboBoXPanel(){
+protected void setUpComboBoXPanel() throws Exception{
 	// contains JComboBox-component and label
 	comboBoxPanel = new JPanel();
 	comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.X_AXIS));
