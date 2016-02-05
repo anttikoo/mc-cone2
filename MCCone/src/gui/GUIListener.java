@@ -253,8 +253,13 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// change selected MarkingLayer one up
-						gui.changeSelectedMarkingLayerUpOrDown(ID.MOVE_UP);
+						try {
+							// change selected MarkingLayer one up
+							gui.changeSelectedMarkingLayerUpOrDown(ID.MOVE_UP);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in changing MarkingLayer!");
+							e1.printStackTrace();
+						}
 					}
 				});
 
@@ -267,9 +272,14 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// change selected MarkingLayer one down
+						try {
+							// change selected MarkingLayer one down
 
-						gui.changeSelectedMarkingLayerUpOrDown(ID.MOVE_DOWN);
+							gui.changeSelectedMarkingLayerUpOrDown(ID.MOVE_DOWN);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in changing MarkingLayer!");
+							e1.printStackTrace();
+						}
 					}
 				});
 				
@@ -282,9 +292,14 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// change selected MarkingLayer one up
+						try {
+							// change selected MarkingLayer one up
 
-						gui.moveSelectedMarkingLayer(ID.MOVE_UP);
+							gui.moveSelectedMarkingLayer(ID.MOVE_UP);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in changing selected MarkingLayer!");
+							e1.printStackTrace();
+						}
 					}
 				});
 				
@@ -297,9 +312,14 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// change selected MarkingLayer one down
+						try {
+							// change selected MarkingLayer one down
 
-						gui.moveSelectedMarkingLayer(ID.MOVE_DOWN);
+							gui.moveSelectedMarkingLayer(ID.MOVE_DOWN);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in changing MarkingLayer!");
+							e1.printStackTrace();
+						}
 					}
 				});
 				
@@ -333,7 +353,7 @@ public class GUIListener extends MouseInputAdapter {
 					/**
 					 * 
 					 */
-					private static final long serialVersionUID = 1L;
+					private static final long serialVersionUID = 12L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -347,7 +367,7 @@ public class GUIListener extends MouseInputAdapter {
 					/**
 					 * 
 					 */
-					private static final long serialVersionUID = 1L;
+					private static final long serialVersionUID = 13L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -361,7 +381,7 @@ public class GUIListener extends MouseInputAdapter {
 					/**
 					 * 
 					 */
-					private static final long serialVersionUID = 1L;
+					private static final long serialVersionUID = 14L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -375,7 +395,7 @@ public class GUIListener extends MouseInputAdapter {
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 15L;
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -389,7 +409,7 @@ public class GUIListener extends MouseInputAdapter {
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 16L;
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -403,7 +423,7 @@ public class GUIListener extends MouseInputAdapter {
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 17L;
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -417,7 +437,7 @@ public class GUIListener extends MouseInputAdapter {
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 18L;
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -431,7 +451,7 @@ public class GUIListener extends MouseInputAdapter {
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 19L;
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -445,7 +465,7 @@ public class GUIListener extends MouseInputAdapter {
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 20L;
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -459,11 +479,16 @@ public class GUIListener extends MouseInputAdapter {
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 221L;
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-								gui.setVisibilityOfAllMarkingLayers(false);
+								try {
+									gui.setVisibilityOfAllMarkingLayers(false);
+								} catch (Exception e1) {
+									LOGGER.severe("Error in changing MarkingLayer unvisible!");
+									e1.printStackTrace();
+								}
 							
 
 						}
@@ -474,11 +499,16 @@ public class GUIListener extends MouseInputAdapter {
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 222L;
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							gui.setVisibilityOfAllMarkingLayers(true);
+							try {
+								gui.setVisibilityOfAllMarkingLayers(true);
+							} catch (Exception e1) {
+								LOGGER.severe("Error in changing MarkingLayer visible!");
+								e1.printStackTrace();
+							}
 
 						}
 					});
@@ -488,11 +518,17 @@ public class GUIListener extends MouseInputAdapter {
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 223L;
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							gui.zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 0.8, ID.IMAGE_PROCESSING_BEST_QUALITY);
+							try {
+								gui.zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 0.8, ID.IMAGE_PROCESSING_BEST_QUALITY);
+							} catch (Exception e1) {
+								LOGGER.severe("Error in changing MarkingLayer!");
+								e1.printStackTrace();
+							}
+						
 						}
 					});
 					// zooming in
@@ -501,11 +537,17 @@ public class GUIListener extends MouseInputAdapter {
 						/**
 						 * 
 						 */
-						private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 224L;
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							gui.zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 1.25, ID.IMAGE_PROCESSING_BEST_QUALITY);
+							try {
+								gui.zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 1.25, ID.IMAGE_PROCESSING_BEST_QUALITY);
+							} catch (Exception e1) {
+								LOGGER.severe("Error in zooming!");
+								e1.printStackTrace();
+							}
+						
 						}
 					});
 
@@ -623,8 +665,13 @@ public class GUIListener extends MouseInputAdapter {
 			public void actionPerformed(ActionEvent e) {
 				is_SPACE_pressed=true;
 				
-				// set cursor hand cursor - dragging state
-				gui.setCursorOverLeftPanel(ID.CURSOR_HAND);
+				try {
+					// set cursor hand cursor - dragging state
+					gui.setCursorOverLeftPanel(ID.CURSOR_HAND);
+				} catch (Exception e1) {
+					LOGGER.severe("Error in changing cursor!");
+					e1.printStackTrace();
+				}
 				
 
 			}
@@ -634,18 +681,23 @@ public class GUIListener extends MouseInputAdapter {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// stop activate timer
-				timerSPACEactivate.stop();
-				is_SPACE_pressed=false;
-				timerSPACEinactivate.stop();
-				// set cross hair cursor - default state
-				gui.setCursorOverLeftPanel(ID.CURSOR_CROSS_HAIR);
-				previousDraggingPoint=null; // no more dragging -> initialize the previousdragging point
-				// update visible image and markings
-				gui.setImage(taskManager.getRefreshedImage());
-				gui.updateCoordinatesOfVisibleMarkingPanels();
-				
-		        gui.paintLayers();
+				try {
+					// stop activate timer
+					timerSPACEactivate.stop();
+					is_SPACE_pressed=false;
+					timerSPACEinactivate.stop();
+					// set cross hair cursor - default state
+					gui.setCursorOverLeftPanel(ID.CURSOR_CROSS_HAIR);
+					previousDraggingPoint=null; // no more dragging -> initialize the previousdragging point
+					// update visible image and markings
+					gui.setImage(taskManager.getRefreshedImage());
+					gui.updateCoordinatesOfVisibleMarkingPanels();
+					
+					gui.paintLayers();
+				} catch (Exception e1) {
+					LOGGER.severe("Error in space timer!");
+					e1.printStackTrace();
+				}
 
 			}
 		});
@@ -689,17 +741,22 @@ public class GUIListener extends MouseInputAdapter {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getSource() instanceof ImagePanel){
-			if(is_CTRL_pressed){
-				double zoomValue= 0.8;
-				//Button1 -> zoom in
-				if(e.getButton() == MouseEvent.BUTTON1)
-					zoomValue=1.25;
-				gui.zoomAndUpdateImage(e.getPoint(), zoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
+		try {
+			if(e.getSource() instanceof ImagePanel){
+				if(is_CTRL_pressed){
+					double zoomValue= 0.8;
+					//Button1 -> zoom in
+					if(e.getButton() == MouseEvent.BUTTON1)
+						zoomValue=1.25;
+					gui.zoomAndUpdateImage(e.getPoint(), zoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
+				}
 			}
-		}
-		else if(e.getSource() instanceof PrecountGlassPane){
-			forwardGlassPaneEvent(e);
+			else if(e.getSource() instanceof PrecountGlassPane){
+				forwardGlassPaneEvent(e);
+			}
+		} catch (Exception e1) {
+			LOGGER.severe("Error in clicking mouse button!");
+			e1.printStackTrace();
 		}
 
 
@@ -711,16 +768,21 @@ public class GUIListener extends MouseInputAdapter {
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if(e.getSource() instanceof ImagePanel){
-			if(is_SPACE_pressed){
-				gui.dragLayers(e);
-				is_SPACE_pressed=false;
-				if(timerSPACEactivate.isRunning())
-				timerSPACEactivate.start(); // start counting from beginning
-				
+		try {
+			if(e.getSource() instanceof ImagePanel){
+				if(is_SPACE_pressed){
+					gui.dragLayers(e);
+					is_SPACE_pressed=false;
+					if(timerSPACEactivate.isRunning())
+					timerSPACEactivate.start(); // start counting from beginning
+					
+				}
+			}else if(e.getSource() instanceof PrecountGlassPane){
+				forwardGlassPaneEvent(e);
 			}
-		}else if(e.getSource() instanceof PrecountGlassPane){
-			forwardGlassPaneEvent(e);
+		} catch (Exception e1) {
+			LOGGER.severe("Error in dragging mouse!");
+			e1.printStackTrace();
 		}
 
 	}
@@ -741,17 +803,22 @@ public class GUIListener extends MouseInputAdapter {
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if(e.getSource() instanceof PrecountGlassPane){
-			forwardGlassPaneEvent(e);
+		try {
+			if(e.getSource() instanceof PrecountGlassPane){
+				forwardGlassPaneEvent(e);
 
-		}
-		else if(e.getSource() instanceof ImagePanel){
-			if(!hightLightTimer.isRunning()){
-				hightLightTimer.start();
-			//	System.out.println("moving");
-				gui.updateHighlight(e.getPoint());
 			}
+			else if(e.getSource() instanceof ImagePanel){
+				if(!hightLightTimer.isRunning()){
+					hightLightTimer.start();
+				//	System.out.println("moving");
+					gui.updateHighlight(e.getPoint());
+				}
 
+			}
+		} catch (Exception e1) {
+			LOGGER.severe("Error in moving mouse!");
+			e1.printStackTrace();
 		}
 
 
@@ -770,41 +837,46 @@ public class GUIListener extends MouseInputAdapter {
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if(e.getSource() instanceof ImagePanel){
-		if(!is_CTRL_pressed){
-				// started dragging
-			if(previousDraggingPoint==null && timerSPACEactivate.isRunning()){
-				previousDraggingPoint = new Point(e.getPoint().x, e.getPoint().y);
-			}
-			else{
+		try {
+			if(e.getSource() instanceof ImagePanel){
+			if(!is_CTRL_pressed){
+					// started dragging
+				if(previousDraggingPoint==null && timerSPACEactivate.isRunning()){
+					previousDraggingPoint = new Point(e.getPoint().x, e.getPoint().y);
+				}
+				else{
 
-					if(taskManager.isSelectedMarkingLayerVisible()){
+						if(taskManager.isSelectedMarkingLayerVisible()){
 
-						if(is_SHIFT_pressed){
-							// setting selected Grids
-							gui.setGridSelectedRectangle(e.getPoint());
-						}
-						else{
-							// adding or deleting single marking
-							if(e.getButton() == MouseEvent.BUTTON1){ // left button -> add marking
-								if(gui.addSingleMarking(e.getPoint()))
-									gui.updateCoordinatesOfSelectedMarkingPanel();
+							if(is_SHIFT_pressed){
+								// setting selected Grids
+								gui.setGridSelectedRectangle(e.getPoint());
 							}
-							else { // right button -> remove marking
+							else{
+								// adding or deleting single marking
+								if(e.getButton() == MouseEvent.BUTTON1){ // left button -> add marking
+									if(gui.addSingleMarking(e.getPoint()))
+										gui.updateCoordinatesOfSelectedMarkingPanel();
+								}
+								else { // right button -> remove marking
 
-								if(gui.removeSingleMarking(e.getPoint())){
-								gui.removeHighLightPoint();
+									if(gui.removeSingleMarking(e.getPoint())){
+									gui.removeHighLightPoint();
 
-								// update selectedMarkingPanel
-								gui.updateCoordinatesOfSelectedMarkingPanel();
+									// update selectedMarkingPanel
+									gui.updateCoordinatesOfSelectedMarkingPanel();
+									}
 								}
 							}
 						}
-					}
+				}
 			}
-		}
-		}else if(e.getSource() instanceof PrecountGlassPane){
-			forwardGlassPaneEvent(e);
+			}else if(e.getSource() instanceof PrecountGlassPane){
+				forwardGlassPaneEvent(e);
+			}
+		} catch (Exception e1) {
+			LOGGER.severe("Error in pressing mouse!");
+			e1.printStackTrace();
 		}
 	}
 
@@ -815,12 +887,17 @@ public class GUIListener extends MouseInputAdapter {
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if(e.getSource() instanceof ImagePanel){
-			if(timerSPACEactivate.isRunning()){ //is dragging
-				previousDraggingPoint=null; // dragging movement ended -> set starting point as null
+		try {
+			if(e.getSource() instanceof ImagePanel){
+				if(timerSPACEactivate.isRunning()){ //is dragging
+					previousDraggingPoint=null; // dragging movement ended -> set starting point as null
+				}
+			}else if(e.getSource() instanceof PrecountGlassPane){
+				forwardGlassPaneEvent(e);
 			}
-		}else if(e.getSource() instanceof PrecountGlassPane){
-			forwardGlassPaneEvent(e);
+		} catch (Exception e1) {
+			LOGGER.severe("Error in releasing mouse!");
+			e1.printStackTrace();
 		}
 
 	}
@@ -833,19 +910,24 @@ public class GUIListener extends MouseInputAdapter {
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 
-			if(e.getSource() instanceof ImagePanel){
-					// if previous zooming has stopped can start new zooming
-					if(!zoomTimer.isRunning()){
-						zoomTimer.start();									
-							double zoomValue=0.8;
-							if(e.getPreciseWheelRotation() <0){ // e.getWheelRotation works only in linux
-								zoomValue=1.25;
-							}
-							gui.zoomAndUpdateImage(e.getPoint(), zoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
-			
+			try {
+				if(e.getSource() instanceof ImagePanel){
+						// if previous zooming has stopped can start new zooming
+						if(!zoomTimer.isRunning()){
+							zoomTimer.start();									
+								double zoomValue=0.8;
+								if(e.getPreciseWheelRotation() <0){ // e.getWheelRotation works only in linux
+									zoomValue=1.25;
+								}
+								gui.zoomAndUpdateImage(e.getPoint(), zoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
+				
+					}
+				}else if(e.getSource() instanceof PrecountGlassPane){
+					forwardGlassPaneEvent(e);
 				}
-			}else if(e.getSource() instanceof PrecountGlassPane){
-				forwardGlassPaneEvent(e);
+			} catch (Exception e1) {
+				LOGGER.severe("Error in mouse wheel scrolling!");
+				e1.printStackTrace();
 			}
 
 	}

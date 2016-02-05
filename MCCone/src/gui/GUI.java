@@ -222,15 +222,15 @@ private JButton zoomOutButton;
 	 */
 
 	public GUI()
-	{		super("gui");
-			//initialize LOGGING 
-			initLogging(Level.INFO);
-			
-			// initialize fonts
-			Fonts.initFonts();
-			setUpOSsharedVariables();
+{		super("gui");
+		//initialize LOGGING 
+		initLogging(Level.INFO);
+		
+		// initialize fonts
+		Fonts.initFonts();
+		setUpOSsharedVariables();
 
-			try {
+		try {
 			// create a object of TaskManager, which mediates the commands to classes containing the functionality
 			this.taskManager=new TaskManager(this);
 			
@@ -286,13 +286,14 @@ private JButton zoomOutButton;
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						// TODO Auto-generated method stub
+						
 
 						try {
 							openAddImageLayerDialog(null); // open dialog with no given imagefiles
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
+							
 						 LOGGER.severe("Error in setting image: " +e.getMessage());
+						 e.printStackTrace();
 						}
 					}
 				});
@@ -301,7 +302,12 @@ private JButton zoomOutButton;
 				item.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					manageImageLayersAndMarkings();
+					try {
+						manageImageLayersAndMarkings();
+					} catch (Exception e1) {
+						LOGGER.severe("Error in Managing Layers");
+						e1.printStackTrace();
+					}
 					}
 				});
 				break;
@@ -329,7 +335,12 @@ private JButton zoomOutButton;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						setVisibilityOfAllMarkingLayers(false);
+						try {
+							setVisibilityOfAllMarkingLayers(false);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in setting all MarkingLayers unvisible!");
+							e1.printStackTrace();
+						}
 					}
 				});
 				break;
@@ -339,7 +350,12 @@ private JButton zoomOutButton;
 					@Override
 					public void actionPerformed(ActionEvent e) {
 
-						setVisibilityOfAllMarkingLayers(true);
+						try {
+							setVisibilityOfAllMarkingLayers(true);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in setting all MarkingLayers visible!");
+							e1.printStackTrace();
+						}
 
 					}
 				});
@@ -573,7 +589,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * @param p Point at screen where mouse was pressed
 	 * @return boolean true if marking was added; otherwise false
 	 */
-	public boolean addSingleMarking(Point p){
+	public boolean addSingleMarking(Point p) throws Exception{
 		Point panelPoint =getClosestMarkingPointAtScreen(p, SharedVariables.DISTANCE_TO_ADD);
 		if(panelPoint == null)
 			return taskManager.addSingleMarking(p);
@@ -592,7 +608,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * Changes the selected MarkingLayer one up or down in MarkingLayerImageLayerlist.
 	 * @param directionID int ID.MOVE_DOWN or ID.MOVE.UP
 	 */
-	public void changeSelectedMarkingLayerUpOrDown(int directionID){
+	public void changeSelectedMarkingLayerUpOrDown(int directionID) throws Exception{
 		setSelectedMarkingLayer(this.taskManager.getSelectedMarkingLayerAtUpOrDown(directionID));
 	}
 
@@ -758,7 +774,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * Organizes the dragging of image and visible markings at screen.
 	 * @param e MouseEvent which has triggered the dragging.
 	 */
-	public void dragLayers(MouseEvent e){
+	public void dragLayers(MouseEvent e) throws Exception{
 		int x= e.getX();
 		int y= e.getY();
 		// if dragging was started
@@ -849,7 +865,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * @param minDistance int minimum distance between single marking and where mouse was pressed
 	 * @return Point if closed any close enough. Otherwise null;
 	 */
-	private Point getClosestMarkingPointAtScreen(Point p, int minDistance){
+	private Point getClosestMarkingPointAtScreen(Point p, int minDistance) throws Exception{
 		MarkingLayer selectedMarkingLayer= taskManager.getSelectedMarkingLayer();
 		if(selectedMarkingLayer != null){
 			//is any marking coordinates in  selected MarkingPanel 
@@ -972,7 +988,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * @param mLayerID int ID of MarkingLayer, which MarkingPanel is fetched.
 	 * @return MarkingPanel corresponding to given MarkingLayer ID. If not found, null is returned.
 	 */
-	private MarkingPanel getMarkingPanelByLayerID(int mLayerID){
+	private MarkingPanel getMarkingPanelByLayerID(int mLayerID) throws Exception{
 		Component[] mPanels=this.layers.getComponents();
 		if(mPanels != null && mPanels.length>1){ // ImagePanel is the first layer
 			for(int i=0;i<mPanels.length;i++){
@@ -991,7 +1007,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * Returns the folder name which is previously used.
 	 * @return String folder name which is previously used.
 	 */
-	public String getPresentFolder(){
+	public String getPresentFolder() throws Exception{
 		return taskManager.getPresentFolder();
 	}
 
@@ -1009,7 +1025,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * Returns width of rightpanel.
 	 * @return int width of rightpanel
 	 */
-	public int getRightPanelWidth(){
+	public int getRightPanelWidth() throws Exception{
 		return this.rightPanelWidth;
 	}
 	
@@ -1017,7 +1033,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * Returns screen size.
 	 * @return Dimension screen size.
 	 */
-	public Dimension getScreenSize(){
+	public Dimension getScreenSize() throws Exception{
 		// return this.screenSize;
 		return Toolkit.getDefaultToolkit().getScreenSize();
 	}
@@ -1026,7 +1042,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * Returns a relation value between dimension of image and dimension of visible part of image.
 	 * @return double size multiplier which is relation between dimension of image and dimension of visible part of image.
 	 */
-	public double getSizeMultiplier(){
+	public double getSizeMultiplier() throws Exception{
 		return this.taskManager.getShapeSizeMultiplier();
 	}
 	
@@ -1036,42 +1052,34 @@ private void addMouseListenerForJButton(JButton button){
 	 */
 	public Rectangle getVisibleWindowBounds(){
 		
-		if(SharedVariables.operationSystem == ID.OS_LINUX_UNIX){ // in linux may the unity menu bar affect to painting of dimming 
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			Rectangle windowBounds = ge.getMaximumWindowBounds();
-			
-			int windowLeftX = windowBounds.x;	
-			/*	unused
-		   	int windowRightX=windowBounds.x+windowBounds.width;	 
-			int windowUpY=windowBounds.y;
-			int windowDownY=windowBounds.y+windowBounds.height;
-			*/
-			int x=this.getBounds().x;		
-			int y= this.getBounds().y;
-			int width=this.getBounds().width;
-			int height=this.getBounds().height;
-			// GUI over window
+		try {
+			if(SharedVariables.operationSystem == ID.OS_LINUX_UNIX){ // in linux may the unity menu bar affect to painting of dimming 
+				GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+				Rectangle windowBounds = ge.getMaximumWindowBounds();
+				
+				int windowLeftX = windowBounds.x;	
+				int x=this.getBounds().x;		
+				int y= this.getBounds().y;
+				int width=this.getBounds().width;
+				int height=this.getBounds().height;
+				// GUI over window
 
-			
-			int guiX= this.getBounds().x;
-		//	int guiY= this.getBounds().y;
-			int guiWidth= this.getWidth();
-		//	int guiHeight=this.getHeight();
-			
-			if(guiX<windowLeftX){
-				x=windowLeftX;
-				width = guiWidth-(windowLeftX-guiX);
-			}
-			
-			
-			
-			return new Rectangle(x,y,width,height);
-			
-			
+				int guiX= this.getBounds().x;		
+				int guiWidth= this.getWidth();
+				
+				if(guiX<windowLeftX){
+					x=windowLeftX;
+					width = guiWidth-(windowLeftX-guiX);
+				}	
+				return new Rectangle(x,y,width,height);
+			}	
+			// normally 
+			return this.getBounds();
+		} catch (HeadlessException e) {
+			LOGGER.severe("Error in calculting window size and position!");
+			e.printStackTrace();
+			return null;
 		}
-		
-		// normally 
-		return this.getBounds();
 
 
 	}
@@ -1081,7 +1089,13 @@ private void addMouseListenerForJButton(JButton button){
 	 * @return Rectangle size of VisualPanel.
 	 */
 	public Rectangle getVisualPanelSize(){
-		return this.visualPanel.getBounds();
+		try {
+			return this.visualPanel.getBounds();
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting Visual Panel!");
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	
@@ -1653,6 +1667,7 @@ private void addMouseListenerForJButton(JButton button){
 			addImage=null;
 		} catch (Exception e) {
 			LOGGER.severe("Error in adding new ImageLayer:  " +e.getClass().toString() + " :" +e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -1689,7 +1704,12 @@ private void addMouseListenerForJButton(JButton button){
 	 *  Repaints the layers: ImagePanel, MarkingPanels, HightlightPanel, GridPanel, GlassPanel.
 	 */
 	public void paintLayers(){
-		this.layers.repaint();
+		try {
+			this.layers.repaint();
+		} catch (Exception e) {
+			LOGGER.severe("Error in painting Layers of GUI!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -1938,7 +1958,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * @param p Point at screen where right mouse button was pressed
 	 * @return boolean true if marking was removed; otherwise false
 	 */
-	public boolean removeSingleMarking(Point p){
+	public boolean removeSingleMarking(Point p) throws Exception{
 		Point panelPoint =getClosestMarkingPointAtScreen(p, SharedVariables.DISTANCE_TO_REMOVE);
 		if(panelPoint != null)
 			return taskManager.removeSingleMarking(panelPoint);
@@ -2002,7 +2022,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * Sets Cursor type when hovering over ImagePanel.
 	 * @param typeOfCursor int ID of type of Cursor
 	 */
-	public void setCursorOverLeftPanel(int typeOfCursor){
+	public void setCursorOverLeftPanel(int typeOfCursor) throws Exception{
 		switch(typeOfCursor){
 			case ID.CURSOR_DEFAULT:
 				this.imagePanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -2090,7 +2110,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * @param mLayerID int ID of MarkingLayer, which visibility is modified.
 	 * @param visible boolean true if visible and false to invisible.
 	 */
-	public void setMarkingLayerVisibility(int mLayerID, Boolean visible){
+	public void setMarkingLayerVisibility(int mLayerID, Boolean visible) throws Exception{
 		// add or remove MarkingLayer from InformationCenter.visibleMarkingLayers
 		taskManager.setMarkingLayerVisibility(mLayerID, visible);
 
@@ -2225,7 +2245,7 @@ private void setPropertiesOfAllMarkingPanels(){
  *
  * @param mLayerID the ID of MarkingLayer
  */
-private void setPropertiesOfMarkingPanel(int mLayerID){
+private void setPropertiesOfMarkingPanel(int mLayerID) throws Exception{
 	getMarkingPanelByLayerID(mLayerID).setMarkingPanelProperties(taskManager.getMarkingLayer(mLayerID));
 	setMarkingsOfHighlightLayer();
 
@@ -2275,7 +2295,7 @@ public void setSelectedImageLayerAndImage(int iLayerID, int selectionChangeType)
  * Sets the given MarkingLayer to visible. GridPanel and highlightPanel are updated. All layers repainted.
  * @param mLayerID int ID of MarkingLayer, which is been selected.
  */
-public void setSelectedMarkingLayer(int mLayerID){
+public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	// set the MarkingLayer selected in InfromationCenter
 	MarkingLayer selectedMarkingLayer= this.taskManager.setMarkingLayerSelected(mLayerID);
 	if(selectedMarkingLayer != null){ // If markinglayer has found and set selected
@@ -2306,7 +2326,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 	/**
 	 * Moves the MarkingLayer corresponding to selectedMarkingLayer (@see InformationCenter) to front of JLayeredPane.
 	 */
-	private void setSelectedMarkingPanelToFront(){
+	private void setSelectedMarkingPanelToFront() throws Exception{
 
 		MarkingLayer selectedMarkingLayer = this.taskManager.getSelectedMarkingLayer();
 		if(selectedMarkingLayer !=null){
@@ -2372,7 +2392,12 @@ public void setSelectedMarkingLayer(int mLayerID){
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 0.8, ID.IMAGE_PROCESSING_BEST_QUALITY);
+					try {
+						zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 0.8, ID.IMAGE_PROCESSING_BEST_QUALITY);
+					} catch (Exception e1) {
+						LOGGER.severe("Error in zooming out!");
+						e1.printStackTrace();
+					}
 
 					
 				}
@@ -2385,7 +2410,12 @@ public void setSelectedMarkingLayer(int mLayerID){
 			zoomInButton.addActionListener(new ActionListener() {			
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 1.25, ID.IMAGE_PROCESSING_BEST_QUALITY);					
+					try {
+						zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 1.25, ID.IMAGE_PROCESSING_BEST_QUALITY);
+					} catch (Exception e1) {
+						LOGGER.severe("Error in zooming in");
+						e1.printStackTrace();
+					}					
 				}
 			});
 
@@ -2441,7 +2471,12 @@ public void setSelectedMarkingLayer(int mLayerID){
 
 								@Override
 								public void run() {
-									zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), sliderZoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
+									try {
+										zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), sliderZoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
+									} catch (Exception e) {
+										LOGGER.severe("Error in zooming image!");
+										e.printStackTrace();
+									}
 
 
 								}
@@ -2470,7 +2505,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 	 * Sets visibility of all MarkingLayers.
 	 * @param visible boolean true/false to set visibility
 	 */
-	public void setVisibilityOfAllMarkingLayers(boolean visible){
+	public void setVisibilityOfAllMarkingLayers(boolean visible) throws Exception{
 		ArrayList<MarkingLayer> allMarkingLayers=this.taskManager.getAllMarkingLayers();
 		if(allMarkingLayers != null && allMarkingLayers.size()>0){
 			for (Iterator<MarkingLayer> iterator = allMarkingLayers.iterator(); iterator.hasNext();) {
@@ -2826,7 +2861,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 	/**
 	 * Updates the coordinates of markings in MarkingPanels by calculating the points at image to the points at screen.
 	 */
-	public void updateCoordinatesOfVisibleMarkingPanels(){
+	public void updateCoordinatesOfVisibleMarkingPanels() throws Exception{
 		// the size or position of viewed area may have changed -> calculate new positions of visible markings
 		if(layers.getComponentCount()>1){
 			// go through the MarkingPanels of layers
@@ -2860,7 +2895,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 	 * Highlights a single marking if found close the Point p.
 	 * @param p Point where mouse was hovered
 	 */
-	public void updateHighlight(Point p){
+	public void updateHighlight(Point p) throws Exception{
 
 		Point panelPoint =getClosestMarkingPointAtScreen(p, SharedVariables.DISTANCE_TO_REMOVE);
 
@@ -2920,7 +2955,7 @@ public void setSelectedMarkingLayer(int mLayerID){
 	 * Updates properties (color, size thickness, etc.) of MarkingPanel, which id is given.
 	 * @param mLayerID int ID of the MarkingLayer which information is used.
 	 */
-	public void updateMarkingPanelProperties(int mLayerID){		
+	public void updateMarkingPanelProperties(int mLayerID) throws Exception{		
 		// update the properties
 		setPropertiesOfMarkingPanel(mLayerID);
 		updateImageLayerInfos();
@@ -2935,7 +2970,7 @@ public void setSelectedMarkingLayer(int mLayerID){
  * @param zoomValue double multiplier how much is zoomed (1.25 -> 25% zoom)
  * @param processinID int ID quality of Image (ID.IMAGE_PROCESSING_BEST_QUALITY, etc.)
  */
-public void zoomAndUpdateImage(Point midPoint, double zoomValue, int processinID){
+public void zoomAndUpdateImage(Point midPoint, double zoomValue, int processinID) throws Exception{
 	PositionedImage im = taskManager.getZoomedImage(midPoint, zoomValue);
 	if(im != null && im.getImage() != null){
 		this.imagePanel.setImage(im);

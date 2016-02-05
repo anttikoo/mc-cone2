@@ -341,9 +341,16 @@ protected void hideDialog(boolean saveChanges){
 		gui.setMadeChanges(true);
 		} catch (Exception e) {
 			LOGGER.severe("Error in saving marking properties to MarkingLayer " +e.getClass().toString() + " :" +e.getMessage());
+			
 		}
-		// update the GUI ImageLayerInfo JPanel
-		gui.updateMarkingPanelProperties(this.markingLayer.getLayerID());
+		
+		try {
+			// update the GUI ImageLayerInfo JPanel
+			gui.updateMarkingPanelProperties(this.markingLayer.getLayerID());
+		} catch (Exception e) {
+			LOGGER.severe("Error in updating properties of MarkingPanel!");
+			e.printStackTrace();
+		}
 
 	}
 	this.setVisible(false);

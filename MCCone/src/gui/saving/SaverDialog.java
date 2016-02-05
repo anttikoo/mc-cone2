@@ -280,7 +280,7 @@ private Component parentComponent=null;
 	 *
 	 * @return the present folder
 	 */
-	public String getPresentFolder(){
+	public String getPresentFolder() throws Exception{
 		return gui.getPresentFolder();
 	}
 

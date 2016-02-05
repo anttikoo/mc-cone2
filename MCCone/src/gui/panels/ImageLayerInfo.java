@@ -1060,9 +1060,14 @@ public String getImageLayerName() {
 
 					@Override
 					public void mousePressed(MouseEvent e) {
-						if(!markingTitleJTextField.isEnabled()){
-							
-							gui.setSelectedMarkingLayer(marking_layer_id);
+						try {
+							if(!markingTitleJTextField.isEnabled()){
+								
+								gui.setSelectedMarkingLayer(marking_layer_id);
+							}
+						} catch (Exception e1) {
+							LOGGER.severe("Error in pressing title of MarkingLayer!");
+							e1.printStackTrace();
 						}
 
 					}

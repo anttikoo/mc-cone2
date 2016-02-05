@@ -113,7 +113,12 @@ public class AddImageLayerDialog extends JDialog{
 
 					@Override
 					public void run() {
-						selectAndAddImages();
+						try {
+							selectAndAddImages();
+						} catch (Exception e) {
+							LOGGER.severe("Error in selecting images!");
+							e.printStackTrace();
+						}
 					}
 				});
 
@@ -680,7 +685,7 @@ private ImageLayer getImageLayer(String path){
  * Returns  path of previously used folder.
  * @return String path of previously used folder
  */
-public String getPresentFolder(){
+public String getPresentFolder()throws Exception{
 	return gui.getPresentFolder();
 }
 
@@ -988,7 +993,12 @@ private JPanel initImageViewPanel(){
 		addImageJButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				selectAndAddImages();
+				try {
+					selectAndAddImages();
+				} catch (Exception e1) {
+					LOGGER.severe("Error in selecting Images!");
+					e1.printStackTrace();
+				}
 			}
 		});
 		addImageJButton.setFocusable(false);
@@ -1139,7 +1149,7 @@ private JPanel initImageViewPanel(){
 	/**
 	 * Opens a file dialog, which type depends on which file type will be opened.
 	 */
-	private void selectAndAddImages(){
+	private void selectAndAddImages() throws Exception{
 		
 	//	OpenImageFilesDialog 
 		visibleDialog=new OpenImageFilesDialog(this, this.getBounds(), this.backPanel.getBounds(), gui.getPresentFolder());
