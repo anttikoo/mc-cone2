@@ -32,9 +32,14 @@ public class ContentPane extends JPanel{
 	 * Class constructor.s
 	 */
 	public ContentPane(GridBagLayout layout) {
-		this.setLayout(layout);
-	    setOpaque(false);
-	    this.setBackground(Color_schema.dark_30);
+		try {
+			this.setLayout(layout);
+			setOpaque(false);
+			this.setBackground(Color_schema.dark_30);
+		} catch (Exception e) {
+			LOGGER.severe("ERROR in initializing ContentPane");
+			e.printStackTrace();
+		}
 	}
 	
 
