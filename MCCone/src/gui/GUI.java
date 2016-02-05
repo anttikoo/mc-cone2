@@ -316,7 +316,12 @@ private JButton zoomOutButton;
 				item.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					saveMarkings();
+					try {
+						saveMarkings();
+					} catch (Exception e1) {
+						LOGGER.severe("Error in saving markings!");
+						e1.printStackTrace();
+					}
 					}
 				});
 				break;
@@ -325,7 +330,12 @@ private JButton zoomOutButton;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						closeProgram();
+						try {
+							closeProgram();
+						} catch (Exception e1) {
+							LOGGER.severe("Error in closing program!");
+							e1.printStackTrace();
+						}
 
 					}
 				});
@@ -365,7 +375,12 @@ private JButton zoomOutButton;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						exportResults(ID.FILE_TYPE_CSV);
+						try {
+							exportResults(ID.FILE_TYPE_CSV);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in exporting results to CSV file!");
+							e1.printStackTrace();
+						}
 
 					}
 				});
@@ -376,7 +391,12 @@ private JButton zoomOutButton;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						exportResults(ID.FILE_TYPE_TEXT_FILE);
+						try {
+							exportResults(ID.FILE_TYPE_TEXT_FILE);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in exporting results to text file!");
+							e1.printStackTrace();
+						}
 
 					}
 				});
@@ -388,7 +408,12 @@ private JButton zoomOutButton;
 					@Override
 					public void actionPerformed(ActionEvent e) {
 
-						exportResults(ID.CLIPBOARD);
+						try {
+							exportResults(ID.CLIPBOARD);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in exporting results to clipboard!");
+							e1.printStackTrace();
+						}
 					}
 				});
 				break;
@@ -399,7 +424,12 @@ private JButton zoomOutButton;
 					@Override
 					public void actionPerformed(ActionEvent e) {
 
-						exportImages();
+						try {
+							exportImages();
+						} catch (Exception e1) {
+							LOGGER.severe("Error in exporting images!");
+							e1.printStackTrace();
+						}
 					}
 				});
 				break;
@@ -410,7 +440,12 @@ private JButton zoomOutButton;
 					@Override
 					public void actionPerformed(ActionEvent e) {
 
-						exportImageSet();
+						try {
+							exportImageSet();
+						} catch (Exception e1) {
+							LOGGER.severe("Error in exporting image Set!");
+							e1.printStackTrace();
+						}
 					}
 				});
 				break;
@@ -422,8 +457,13 @@ private JButton zoomOutButton;
 					@Override
 					public void actionPerformed(ActionEvent e) {
 
-						Point guiPoint = new Point((int)getGUI().getBounds().getX()+50, (int)getGUI().getBounds().getY()+50);
-						setPropertiesOfAllMarkinglayers(guiPoint);
+						try {
+							Point guiPoint = new Point((int)getGUI().getBounds().getX()+50, (int)getGUI().getBounds().getY()+50);
+							setPropertiesOfAllMarkinglayers(guiPoint);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in setting marking properties!");
+							e1.printStackTrace();
+						}
 					
 
 					}
@@ -435,7 +475,12 @@ private JButton zoomOutButton;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						clearMarkingsOfSelectedMarkingLayer();
+						try {
+							clearMarkingsOfSelectedMarkingLayer();
+						} catch (Exception e1) {
+							LOGGER.severe("Error in clearing single counting!");
+							e1.printStackTrace();
+						}
 					}
 				});
 				break;
@@ -446,7 +491,12 @@ private JButton zoomOutButton;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						clearMarkingsOfAllMarkingLayers();
+						try {
+							clearMarkingsOfAllMarkingLayers();
+						} catch (Exception e1) {
+							LOGGER.severe("Error in clearing all countings!");
+							e1.printStackTrace();
+						}
 					}
 				});
 				break;
@@ -456,8 +506,13 @@ private JButton zoomOutButton;
 					@Override
 					public void actionPerformed(ActionEvent e) {
 
-						Point guiPoint = new Point((int)getGUI().getBounds().getX()+50, (int)getGUI().getBounds().getY()+50);
-						showGridPropertiesPanelForAllMarkingLayers(guiPoint, taskManager.getAllMarkingLayers());
+						try {
+							Point guiPoint = new Point((int)getGUI().getBounds().getX()+50, (int)getGUI().getBounds().getY()+50);
+							showGridPropertiesPanelForAllMarkingLayers(guiPoint, taskManager.getAllMarkingLayers());
+						} catch (Exception e1) {
+							LOGGER.severe("Error in setting grid properties to all MarkingLayers!");
+							e1.printStackTrace();
+						}
 					}
 				});
 				break;
@@ -467,7 +522,12 @@ private JButton zoomOutButton;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						diminishGrid();
+						try {
+							diminishGrid();
+						} catch (Exception e1) {
+							LOGGER.severe("Error in fading grid!");
+							e1.printStackTrace();
+						}
 
 					}
 				});
@@ -479,7 +539,12 @@ private JButton zoomOutButton;
 					@Override
 					public void actionPerformed(ActionEvent e) {
 
-						showGrid();
+						try {
+							showGrid();
+						} catch (Exception e1) {
+							LOGGER.severe("Error in setting grid opaque!");
+							e1.printStackTrace();
+						}
 					}
 				});
 				break;
@@ -489,8 +554,13 @@ private JButton zoomOutButton;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						Point guiPoint = new Point((int)getGUI().getBounds().getX()+50, (int)getGUI().getBounds().getY()+50);
-						showInfo(guiPoint);
+						try {
+							Point guiPoint = new Point((int)getGUI().getBounds().getX()+50, (int)getGUI().getBounds().getY()+50);
+							showInfo(guiPoint);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in showing info!");
+							e1.printStackTrace();
+						}
 
 					}
 				});
@@ -501,7 +571,12 @@ private JButton zoomOutButton;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						showWebInstructions();
+						try {
+							showWebInstructions();
+						} catch (Exception e1) {
+							LOGGER.severe("Error in showing help!");
+							e1.printStackTrace();
+						}
 
 					}
 				});
@@ -512,8 +587,13 @@ private JButton zoomOutButton;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						logFrame.setBounds(((JMenuItem)e.getSource()).getX(), ((JMenuItem)e.getSource()).getY(), 400, 500);
-						logFrame.setVisible(true);
+						try {
+							logFrame.setBounds(((JMenuItem)e.getSource()).getX(), ((JMenuItem)e.getSource()).getY(), 400, 500);
+							logFrame.setVisible(true);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in showing log!");
+							e1.printStackTrace();
+						}
 
 					}
 				});
@@ -525,7 +605,7 @@ private JButton zoomOutButton;
 	 * Adds imported ImageLayers to InformationCenter. Updates the selected layers and GUI
 	 * @param iLayerList Array of one or more ImageLayers.
 	 */
-	public void addImageLayerList(ArrayList<ImageLayer> iLayerList){
+	public void addImageLayerList(ArrayList<ImageLayer> iLayerList) throws Exception{
 		// set the ImageLayers through TaskManager -> InformationCenter.imageLayerList	(finalizes the layers -> gives ids)
 		this.taskManager.addImageLayers(iLayerList);
 
@@ -540,6 +620,7 @@ private JButton zoomOutButton;
  * Adds a MouseListener to given JButton. Listener affects to a graphical view of button.
  * @param button JButton where mouse listener is added.
  */
+	/*
 private void addMouseListenerForJButton(JButton button){
 	
 	button.addMouseListener(new MouseListener() {
@@ -552,8 +633,13 @@ private void addMouseListenerForJButton(JButton button){
 
 		@Override
 		public void mouseEntered(MouseEvent arg0) {
-			if(((JButton)arg0.getSource()).isEnabled())
-			((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 2));
+			try {
+				if(((JButton)arg0.getSource()).isEnabled())
+				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 2));
+			} catch (Exception e) {
+				LOGGER.severe("Error in mouse entering!");
+				e.printStackTrace();
+			}
 
 		}
 
@@ -583,7 +669,7 @@ private void addMouseListenerForJButton(JButton button){
 	});
 	
 }
-
+*/
 	/**
 	 * Adds a single marking to Point p, if no any marking found too close. 
 	 * @param p Point at screen where mouse was pressed
@@ -1127,7 +1213,8 @@ private void addMouseListenerForJButton(JButton button){
 		addImageLayerJButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		addImageLayerJButton.setToolTipText("Create new Image Layer" );
 		addImageLayerJButton.setFocusable(false);
-		addMouseListenerForJButton(addImageLayerJButton);
+	//	addMouseListenerForJButton(addImageLayerJButton);
+		MouseListenerCreator.addMouseListenerToNormalButtons(addImageLayerJButton);
 		addImageLayerJButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -1438,7 +1525,9 @@ private void addMouseListenerForJButton(JButton button){
 
 				}
 			});
-			addMouseListenerForJButton(preCountButton);
+		//	addMouseListenerForJButton(preCountButton);
+			MouseListenerCreator.addMouseListenerToNormalButtons(preCountButton);
+			
 
 			downBarPanel.add(preCountButton);
 			downBarPanel.add(Box.createRigidArea(new Dimension(20,0)));
@@ -2799,18 +2888,23 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	 */
 	@SuppressWarnings("unused")
 	private void testing(){
-		String path="/home/antti/4kuvaa/eka.jpg";
-		if(SharedVariables.operationSystem== ID.OS_LINUX_UNIX)
-			path="/home/antti/4kuvaa/eka.jpg";
-		if(SharedVariables.operationSystem== ID.OS_MAC)
-			path="/Users/Antti/Documents/kuva.jpeg";
-		if(SharedVariables.operationSystem== ID.OS_WINDOWS)
-			return;
-		
-			ImageLayer l = new ImageLayer(path);
-			ArrayList<ImageLayer> list = new ArrayList<ImageLayer>();
-			list.add(l);
-			addImageLayerList(list);
+		try {
+			String path="/home/antti/4kuvaa/eka.jpg";
+			if(SharedVariables.operationSystem== ID.OS_LINUX_UNIX)
+				path="/home/antti/4kuvaa/eka.jpg";
+			if(SharedVariables.operationSystem== ID.OS_MAC)
+				path="/Users/Antti/Documents/kuva.jpeg";
+			if(SharedVariables.operationSystem== ID.OS_WINDOWS)
+				return;
+			
+				ImageLayer l = new ImageLayer(path);
+				ArrayList<ImageLayer> list = new ArrayList<ImageLayer>();
+				list.add(l);
+				addImageLayerList(list);
+		} catch (Exception e1) {
+			LOGGER.severe("Error in testing!");
+			e1.printStackTrace();
+		}
 	
 			try {
 				createNewMarkingLayer(taskManager.getSelectedImageLayer().getLayerID());
