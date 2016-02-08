@@ -38,19 +38,20 @@ public class MouseListenerCreator {
 
 		if(typeOfButton== ID.BUTTON_ENTER){
 			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		//	inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
-			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0, false), "enter_pressed");
+			inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
+		//	inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0, false), "enter_pressed");
 			ActionMap actionMap = 	(button).getActionMap();
 			actionMap.put("enter_pressed", new AbstractAction() {
 	
 				/**
 				 * 
 				 */
-				private static final long serialVersionUID = 1L;
+				private static final long serialVersionUID = 21L;
 
 				@Override
 				public void actionPerformed(ActionEvent e) {					
 						try {
+							System.out.println("pressing ENTER");
 							button.doClick();
 						//	ButtonRunner br =new ButtonRunner(button);
 						//	SwingUtilities.invokeLater(br);

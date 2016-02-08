@@ -361,7 +361,7 @@ private Component parentComponent=null;
 				}
 
 
-					ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "Invalid file", ""+type, ID.OK, this);
+					ShadyMessageDialog dialog = new ShadyMessageDialog(this, "Invalid file", ""+type, ID.OK, this);
 					dialog.showDialog();
 					dialog=null;
 				}

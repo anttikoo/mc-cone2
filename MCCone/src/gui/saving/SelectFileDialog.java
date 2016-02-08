@@ -790,7 +790,7 @@ private void initFileDialog() throws Exception{
  	 */
  	private int showAppendOverwriteMessage(){
 		// confirm overwrite
-		ShadyMessageDialog dialog = new ShadyMessageDialog(new JFrame(), "File exists", "Append or Overwrite?", ID.APPEND_OVERWRITE_CANCEL, this);
+		ShadyMessageDialog dialog = new ShadyMessageDialog(this, "File exists", "Append or Overwrite?", ID.APPEND_OVERWRITE_CANCEL, this);
 		return dialog.showDialog();
 
 
