@@ -3,6 +3,7 @@ package gui.grid;
 import gui.Color_schema;
 import gui.ContentPane;
 import information.Fonts;
+import information.SharedVariables;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -33,6 +34,8 @@ public class GridRectangle extends JPanel {
 /** The label. */
 private JLabel label;
 
+private GridPropertiesPanel gridPropertiesPanel;
+
  /**
   * Instantiates a new grid rectangle.
   *
@@ -40,8 +43,9 @@ private JLabel label;
   * @param c the column position
   * @param selected boolean is grid cell selected
   */
- public GridRectangle(int r, int c, boolean selected){
+ public GridRectangle(int r, int c, boolean selected, GridPropertiesPanel gpp){
 	 this.isSelected=selected;
+	 this.gridPropertiesPanel=gpp;
 	 this.setBounds(0,0,100, 100);
 	 this.setRow(r);
 	 this.setColumn(c);
@@ -107,38 +111,41 @@ private void setUpMouseListener(){
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				if(isSelected()){
-					int counter=0;
-					// check that at least one selected cell will be remain				
-					JPanel p = ((JPanel)((GridRectangle)e.getSource()).getParent()); // get owner of GridRectangles
-					if(p != null){
-						Component[] c=p.getComponents();
-						if(c != null && c.length>0){
-							System.out.println(c.length);
-							
-							for (int i = 0; i < c.length; i++) { // go through GridRectangles
-								Component sc = c[i];
-								if(sc != null){
-									if(sc instanceof GridRectangle){
-									GridRectangle gr = (GridRectangle)sc;
-									if (gr != null){
-										if(gr.isSelected)
-											counter++;
-									}
-									
+				if(SharedVariables.canUserSelectGridRectangles){
+					if(isSelected() ){
+						int counter=0;
+						// check that at least one selected cell will be remain				
+						JPanel p = ((JPanel)((GridRectangle)e.getSource()).getParent()); // get owner of GridRectangles
+						if(p != null){
+							Component[] c=p.getComponents();
+							if(c != null && c.length>0){
+								System.out.println(c.length);
+								
+								for (int i = 0; i < c.length; i++) { // go through GridRectangles
+									Component sc = c[i];
+									if(sc != null){
+										if(sc instanceof GridRectangle){
+										GridRectangle gr = (GridRectangle)sc;
+										if (gr != null){
+											if(gr.isSelected)
+												counter++;
+										}
+										
+										}
 									}
 								}
-							}
-							
-						}	
+								
+							}	
+						}
+						if(counter>1) // still remains other selected cells
+							setSelected(false);
 					}
-					if(counter>1) // still remains other selected cells
-						setSelected(false);
+					else
+						setSelected(true);
+	
+					updatePanel();
+					gridPropertiesPanel.countRandomProsentBySelectedGridRectangles();
 				}
-				else
-					setSelected(true);
-
-				updatePanel();
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {

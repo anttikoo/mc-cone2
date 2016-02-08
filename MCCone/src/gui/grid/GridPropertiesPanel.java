@@ -776,12 +776,12 @@ public class GridPropertiesPanel extends PropertiesDialog {
 				for(int j=1;j<= c;j++){
 					if(this.templateGP != null && this.templateGP.getGridColumnCount()==c && this.templateGP.getGridRowCount()==r){
 						boolean showGR=this.templateGP.isSelectedGridCellAt(i, j);
-						gridPanel.add(new GridRectangle(i, j, showGR));
+						gridPanel.add(new GridRectangle(i, j, showGR, this));
 						
 						usedTemplateGridProperties=true;
 					}
 					else
-						gridPanel.add(new GridRectangle(i, j, false));
+						gridPanel.add(new GridRectangle(i, j, false, this));
 				}
 			}
 			if(!usedTemplateGridProperties) // no any present properties found -> create random selections
@@ -815,6 +815,27 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			LOGGER.severe("Error in Buttons of GridProperties -view");
 			e.printStackTrace();
 		}
+	}
+	
+	public void countRandomProsentBySelectedGridRectangles(){
+		SingleGridSize sgs = this.gridSizes.get(this.gridComboBox.getSelectedIndex());
+		if(sgs != null){
+			int r = sgs.getRows();
+			int c = sgs.getColumns();
+			
+			double selected = (double)countSelectedGridRectangle(r, c);
+			double unselected = (double)countUnselectedGridRectangle(r, c);
+			
+			//int randomPer = (int)( Math.ceil(selected/(selected+unselected)));
+			int randomPer= (int)((Math.round((((double)selected)/ ((double)(selected+unselected))*100))/5)*5);
+
+			if(randomPer >0 && randomPer <=100){
+				this.randomSlider.setValue(randomPer);
+				this.randomSlider.repaint();
+			}
+			
+		}
+		
 	}
 
 	

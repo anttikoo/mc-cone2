@@ -24,6 +24,8 @@ public class SharedVariables {
 	public static final String heighthUp = "HEIGHT_UP";
 	public static final String heightDown = "HEIGHT_DOWN";
 	public static boolean useStrickSearch=false;
+	public static boolean canUserSelectGridRectangles=false;
+	
 
 	
 	/**
