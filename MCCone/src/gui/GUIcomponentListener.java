@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.logging.Logger;
 
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
@@ -32,6 +33,9 @@ private Timer waitPaintingTimer;
 
 /** The child dialog. */
 private JDialog childDialog=null;
+
+/** The Constant LOGGER for Logging purposes. */
+private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
 	/**
 	 * Instantiates a new GU icomponent listener.
@@ -39,8 +43,13 @@ private JDialog childDialog=null;
 	 * @param gui the GUI object
 	 */
 	public GUIcomponentListener(GUI gui){
-		this.gui=gui;
-		initTimer();
+		try {
+			this.gui=gui;
+			initTimer();
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing GuiListener!");
+			e.printStackTrace();
+		}
 			
 	}
 	
@@ -83,12 +92,17 @@ private JDialog childDialog=null;
 	 */
 	@Override
 	public void componentResized(ComponentEvent e) {
-		// resize the lower panel
-		gui.visualPanel.setBounds(0,0,(int)(gui.leftPanel.getBounds().getWidth()),(int)(gui.leftPanel.getBounds().getHeight()-gui.downBarPanel.getBounds().getHeight()));
-		gui.visualPanel.revalidate();
-	
-		//	updateImagePanelSize();
-		gui.resizeLayerComponents();
+		try {
+			// resize the lower panel
+			gui.visualPanel.setBounds(0,0,(int)(gui.leftPanel.getBounds().getWidth()),(int)(gui.leftPanel.getBounds().getHeight()-gui.downBarPanel.getBounds().getHeight()));
+			gui.visualPanel.revalidate();
+
+			//	updateImagePanelSize();
+			gui.resizeLayerComponents();
+		} catch (Exception e1) {
+			LOGGER.severe("Error in resizing window components!");
+			e1.printStackTrace();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -104,7 +118,7 @@ private JDialog childDialog=null;
 	 *
 	 * @return the child dialog
 	 */
-	public JDialog getChildDialog() {
+	public JDialog getChildDialog() throws Exception{
 		return childDialog;
 	}
 	
@@ -112,30 +126,35 @@ private JDialog childDialog=null;
 	 * Inits the timer for different parent objects. Starts setting the panel bounds of parent object.
 	 */
 	private void  initTimer(){
-		this.waitPaintingTimer = new Timer(100, new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(childDialog != null){
-				childDialog.setBounds(gui.getVisibleWindowBounds());
+		try {
+			this.waitPaintingTimer = new Timer(100, new ActionListener() {
 				
-				if(childDialog instanceof PropertiesDialog)
-				((PropertiesDialog)childDialog).setPanelPosition();
-				
-				if(childDialog instanceof AddImageLayerDialog)
-					((AddImageLayerDialog)childDialog).setPanelPosition();
-				
-				if(childDialog instanceof ImageSetCreator)
-					((ImageSetCreator)childDialog).setPanelPosition();
-				
-		//		if(childDialog instanceof ShadyMessageDialog)
-		//			((ShadyMessageDialog)childDialog).setPanelPosition(gui.getVisibleWindowBounds());
-				
-				childDialog.repaint();
-				waitPaintingTimer.stop();
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(childDialog != null){
+					childDialog.setBounds(gui.getVisibleWindowBounds());
+					
+					if(childDialog instanceof PropertiesDialog)
+					((PropertiesDialog)childDialog).setPanelPosition();
+					
+					if(childDialog instanceof AddImageLayerDialog)
+						((AddImageLayerDialog)childDialog).setPanelPosition();
+					
+					if(childDialog instanceof ImageSetCreator)
+						((ImageSetCreator)childDialog).setPanelPosition();
+					
+			//		if(childDialog instanceof ShadyMessageDialog)
+			//			((ShadyMessageDialog)childDialog).setPanelPosition(gui.getVisibleWindowBounds());
+					
+					childDialog.repaint();
+					waitPaintingTimer.stop();
+					}
 				}
-			}
-		});
+			});
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing painting timer!");
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -143,7 +162,7 @@ private JDialog childDialog=null;
 	 *
 	 * @param childDialog the new child dialog
 	 */
-	public void setChildDialog(JDialog childDialog) {
+	public void setChildDialog(JDialog childDialog) throws Exception {
 		this.childDialog = childDialog;
 	}
 
