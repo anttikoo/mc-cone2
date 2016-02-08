@@ -137,12 +137,17 @@ public class GUIListener extends MouseInputAdapter {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						
-						if(!timerSPACEactivate.isRunning()){
-							timerSPACEactivate.start();	
-							
+						try {
+							if(!timerSPACEactivate.isRunning()){
+								timerSPACEactivate.start();	
+								
+							}
+							if(timerSPACEinactivate.isRunning())
+								timerSPACEinactivate.stop();
+						} catch (Exception e1) {
+							LOGGER.severe("Error in actions by pressed space key!");
+							e1.printStackTrace();
 						}
-						if(timerSPACEinactivate.isRunning())
-							timerSPACEinactivate.stop();
 
 					}
 				});
@@ -157,9 +162,14 @@ public class GUIListener extends MouseInputAdapter {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						
-						if(timerSPACEactivate.isRunning() && !timerSPACEinactivate.isRunning()){
-							timerSPACEinactivate.start();
-							
+						try {
+							if(timerSPACEactivate.isRunning() && !timerSPACEinactivate.isRunning()){
+								timerSPACEinactivate.start();
+								
+							}
+						} catch (Exception e1) {
+							LOGGER.severe("Error in actions by released space key!");
+							e1.printStackTrace();
 						}
 
 
@@ -175,7 +185,12 @@ public class GUIListener extends MouseInputAdapter {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							is_SHIFT_pressed=true;
+							try {
+								is_SHIFT_pressed=true;
+							} catch (Exception e1) {
+								LOGGER.severe("Error in action by pressed shift key!");
+								e1.printStackTrace();
+							}
 
 						}
 					});
@@ -189,7 +204,12 @@ public class GUIListener extends MouseInputAdapter {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							is_SHIFT_pressed=false;
+							try {
+								is_SHIFT_pressed=false;
+							} catch (Exception e1) {
+								LOGGER.severe("Error in action by released shift key!");
+								e1.printStackTrace();
+							}
 
 						}
 					});
@@ -367,7 +387,12 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						is_CTRL_pressed=true;
+						try {
+							is_CTRL_pressed=true;
+						} catch (Exception e1) {
+							LOGGER.severe("Error in action by pressed control key!");
+							e1.printStackTrace();
+						}
 
 					}
 				});
@@ -381,7 +406,12 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						is_CTRL_pressed=false;
+						try {
+							is_CTRL_pressed=false;
+						} catch (Exception e1) {
+							LOGGER.severe("Error in action by released control key!");
+							e1.printStackTrace();
+						}
 
 					}
 				});
@@ -453,7 +483,12 @@ public class GUIListener extends MouseInputAdapter {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							
-								gui.manageImageLayersAndMarkings();
+								try {
+									gui.manageImageLayersAndMarkings();
+								} catch (Exception e1) {
+									LOGGER.severe("Error in action by pressed keys for managing Layers!");
+									e1.printStackTrace();
+								}
 							
 
 						}
@@ -468,7 +503,12 @@ public class GUIListener extends MouseInputAdapter {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							gui.openAddImageLayerDialog(null);
+							try {
+								gui.openAddImageLayerDialog(null);
+							} catch (Exception e1) {
+								LOGGER.severe("Error in action by pressed key for adding layers!");
+								e1.printStackTrace();
+							}
 
 						}
 					});
@@ -630,24 +670,44 @@ public class GUIListener extends MouseInputAdapter {
 							}
 						}
 						else{
-							// zooming is redirected to components under glasspane
-							redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
+							try {
+								// zooming is redirected to components under glasspane
+								redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
+							} catch (Exception e1) {
+								LOGGER.severe("Error in redirecting zoomin under glasspane!");
+								e1.printStackTrace();
+							}
 						}
 						break;
 
 					case MouseEvent.MOUSE_MOVED:
-						paintCircle(imagePanelPoint, glassPanePoint);
+						try {
+							paintCircle(imagePanelPoint, glassPanePoint);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in painting precountin picking circle when mouse moved!");
+							e1.printStackTrace();
+						}
 						break;
 
 					case MouseEvent.MOUSE_DRAGGED:
-						paintCircle(imagePanelPoint, glassPanePoint);
-						//redirect to components under glasspane
-						redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
+						try {
+							paintCircle(imagePanelPoint, glassPanePoint);
+							//redirect to components under glasspane
+							redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in painting precountin picking circle when mouse dragged!");
+							e1.printStackTrace();
+						}
 						break;
 
 					default:
-						//redirect to components under glasspane
-						redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
+						try {
+							//redirect to components under glasspane
+							redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in redirecting default actions under glasspane!");
+							e1.printStackTrace();
+						}
 						break;
 
 				}
@@ -655,18 +715,23 @@ public class GUIListener extends MouseInputAdapter {
 			}
 				// check does downbarPanel containg the point were mouse was pressed
 				else if(downBarPanel.contains(downBarPoint)){
-					if(precountButton.contains(preCountButtonPoint)){
-						guiComponent=precountButton;
-						if(e.getID() == MouseEvent.MOUSE_RELEASED){			
-							// redirect for button					
-							gui.startStopCellPicking();
+					try {
+						if(precountButton.contains(preCountButtonPoint)){
+							guiComponent=precountButton;
+							if(e.getID() == MouseEvent.MOUSE_RELEASED){			
+								// redirect for button					
+								gui.startStopCellPicking();
+							}
 						}
-					}
-					else { // third option is zoomSlider
-						guiComponent=zoomSlider;
+						else { // third option is zoomSlider
+							guiComponent=zoomSlider;
 
-						// redirect for slider
-						redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
+							// redirect for slider
+							redirectEventToGUIComponents(e, glassPanePoint, guiComponent);
+						}
+					} catch (Exception e1) {
+						LOGGER.severe("Error in checking does downbar panel containg the point where mouse was pressed!");
+						e1.printStackTrace();
 					}
 				}
 		}
@@ -685,7 +750,7 @@ public class GUIListener extends MouseInputAdapter {
 	/**
 	 * Inits the highlight timer.
 	 */
-	private void initHighlightTimer(){
+	private void initHighlightTimer() throws Exception{
 		this.hightLightTimer=new Timer(100, new ActionListener() {
 
 			@Override
@@ -700,7 +765,7 @@ public class GUIListener extends MouseInputAdapter {
 	/**
 	 * Initializes the space action timers for activating and inactivating dragging.
 	 */
-	private void initSPACEactions(){
+	private void initSPACEactions() throws Exception{
 		timerSPACEactivate=new Timer(50,new ActionListener() {
 
 			@Override
@@ -748,7 +813,7 @@ public class GUIListener extends MouseInputAdapter {
 	/**
 	 * Initializes the timer for zooming.
 	 */
-	private void initZoomTimer(){
+	private void initZoomTimer() throws Exception{
 		this.zoomTimer=new Timer(100, new ActionListener() {
 
 			@Override
@@ -979,7 +1044,7 @@ public class GUIListener extends MouseInputAdapter {
 	 * @param imagePanelPoint Point at imagePanel where mouse focused
 	 * @param glassPanePoint Point at glassPane where mouse focused
 	 */
-	private void paintCircle(Point imagePanelPoint, Point glassPanePoint){
+	private void paintCircle(Point imagePanelPoint, Point glassPanePoint) throws Exception{
 		Point up = new Point(imagePanelPoint.x, imagePanelPoint.y -glassPane.getRectangleSize()/2);
 		Point right = new Point(imagePanelPoint.x+glassPane.getRectangleSize()/2, imagePanelPoint.y);
 		Point down = new Point(imagePanelPoint.x, imagePanelPoint.y +glassPane.getRectangleSize()/2);
@@ -1005,7 +1070,7 @@ public class GUIListener extends MouseInputAdapter {
 	 * @param glassPanePoint Point the point where mouse triggered event.
 	 * @param guiComponent Component the component of GUI where event is wanted to work.
 	 */
-	private void redirectEventToGUIComponents(MouseEvent e, Point glassPanePoint, Component guiComponent){
+	private void redirectEventToGUIComponents(MouseEvent e, Point glassPanePoint, Component guiComponent) throws Exception{
 	
 		Point componentPoint = SwingUtilities.convertPoint(glassPane, glassPanePoint, guiComponent);
 		if(e.getID()== MouseEvent.MOUSE_WHEEL){
@@ -1053,7 +1118,7 @@ public class GUIListener extends MouseInputAdapter {
 	 * @param sliderPanel the slider panel at gui
 	 */
 	public void setComponents(GUI gui, TaskManager tm, Container contentPane, PrecountGlassPane glassPane, ImagePanel imagePanel,
-			AbstractButton precountButton, JLayeredPane layers, JPanel downBarPanel, JSlider zoomSlider, JPanel sliderPanel){
+			AbstractButton precountButton, JLayeredPane layers, JPanel downBarPanel, JSlider zoomSlider, JPanel sliderPanel) throws Exception{
 		this.gui=gui;
 		this.taskManager=tm;
 		this.contentPane=contentPane;
@@ -1072,7 +1137,12 @@ public class GUIListener extends MouseInputAdapter {
 	 * @param previousDraggingPoint the new previous dragging point
 	 */
 	public void setPreviousDraggingPoint(Point previousDraggingPoint) {
-		this.previousDraggingPoint = previousDraggingPoint;
+		try {
+			this.previousDraggingPoint = previousDraggingPoint;
+		} catch (Exception e) {
+			LOGGER.severe("Error in setting previous dragging point!");
+			e.printStackTrace();
+		}
 	}
 
 
