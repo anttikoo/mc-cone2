@@ -56,10 +56,9 @@ public class MouseListenerCreator {
 				@Override
 				public void actionPerformed(ActionEvent e) {					
 						try {
-						//	System.out.println("pressing ENTER");
+						
 							button.doClick();
-						//	ButtonRunner br =new ButtonRunner(button);
-						//	SwingUtilities.invokeLater(br);
+					
 
 						} catch (Exception e1) {
 							LOGGER.severe("ERROR when pressed ENTER key!");
