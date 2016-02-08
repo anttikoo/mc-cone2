@@ -601,7 +601,8 @@ public class GridPropertiesPanel extends PropertiesDialog {
 							// c and r is zero when initializing panel. And they are something else, when user selects row and column in combobox.
 							if(gpSingle != null && gpSingle .isGridON() && ( (c==0 && r==0) || (gpSingle.getGridColumnCount() == c && gpSingle.getGridRowCount() == r) ) )
 								if(!checkProcent || checkProcent && gpSingle.getRandomProcent()== this.randomSlider.getValue()) // check that percentSlider value is same
-								return gpSingle; // found Gridproperties that is visible (ON) and under same ImageLayer
+									if(gpSingle.checkRandomPercentBySelectedRectangles()) // check that random prosent is ok.
+										return gpSingle; // found Gridproperties that is visible (ON) and under same ImageLayer
 						}
 						// try to find unvisible Gridproperties here, because not found any visible ones.
 						Iterator<MarkingLayer> mSingleILiteratorUnvisible=mLayerList.iterator();
@@ -610,7 +611,8 @@ public class GridPropertiesPanel extends PropertiesDialog {
 							// c and r is zero when initializing panel. And they are something else, when user selects row and column in combobox.
 							if(gpSingle != null && ( (c==0 && r==0) || (gpSingle.getGridColumnCount() == c && gpSingle.getGridRowCount() == r) ))
 								if(!checkProcent || checkProcent && gpSingle.getRandomProcent()== this.randomSlider.getValue()) // check that percentSlider value is same								
-								return gpSingle; // found Gridproperties that is under same ImageLayer
+									if(gpSingle.checkRandomPercentBySelectedRectangles()) // check that random prosent is ok.
+										return gpSingle; // found Gridproperties that is under same ImageLayer
 						}					
 					}
 				}	
@@ -644,7 +646,8 @@ public class GridPropertiesPanel extends PropertiesDialog {
 						if(gp != null && ((c==0 && r==0) || (gp.getGridColumnCount()==c && gp.getGridRowCount()==r) ) ){
 							if( (findON && gp.isGridON() ) || !findON) // if searching GRID which is ON (visible) then check that it is ON.
 								if(!checkProcent || checkProcent && gp.getRandomProcent()== this.randomSlider.getValue()) // check that percentSlider value is same
-									return gp;
+									if(gp.checkRandomPercentBySelectedRectangles()) // check that random procent is ok.
+										return gp;
 						}
 				}						
 			}

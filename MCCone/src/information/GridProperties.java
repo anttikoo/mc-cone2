@@ -202,6 +202,22 @@ public void addSingleOuterOfGridRectangle(Rectangle rec){
 			}
 		}
 	}
+	
+	public boolean checkRandomPercentBySelectedRectangles(){
+		int selectedRectangles = countSelectedRectangles();
+		
+		if(selectedRectangles >0){
+			if((int)(Math.ceil((((double)this.randomPercent)/100)*(double)getGridColumnCount()*(double)getGridRowCount())) == selectedRectangles){
+				return true;
+			}
+			
+			
+		}
+		return false;
+			
+		
+		
+	}
 
 	/**
 	 * Counts amount of selected rectangles.
