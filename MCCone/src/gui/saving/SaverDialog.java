@@ -383,7 +383,21 @@ private Component parentComponent=null;
 							button.addActionListener(new ActionListener() {
 								@Override
 								public void actionPerformed(ActionEvent arg0) {
-									startSavingProcess(savingType, fileWritingType);
+									SwingUtilities.invokeLater(new Runnable() {
+										
+										@Override
+										public void run() {
+											
+											try {
+												startSavingProcess(savingType, fileWritingType);
+											} catch (Exception e) {
+												LOGGER.severe("ERROR in starting saving process!");
+												e.printStackTrace();
+											}
+											
+										}
+									});
+									
 								}
 							});
 						}
@@ -393,7 +407,20 @@ private Component parentComponent=null;
 								button.addActionListener(new ActionListener() {
 									@Override
 									public void actionPerformed(ActionEvent arg0) {
-										cancelSelected();
+										try {
+											SwingUtilities.invokeLater(new Runnable() {
+												
+												@Override
+												public void run() {
+													cancelSelected();
+													
+												}
+											});
+										} catch (Exception e) {
+											LOGGER.severe("ERROR in cancelling saving process!");
+											e.printStackTrace();
+										}
+										
 									}
 								});
 							}
@@ -616,10 +643,10 @@ protected JPanel initImageViewPanelWithTitle(){
 	return initImageViewPanel("Title");
 }
 
-/**
+/*
  * Initializes the key listener to dialog.
  */
-private void initKeyListenerToDialog(){
+/*private void initKeyListenerToDialog(){
 
 	InputMap inputMap= (this.backPanel).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 	inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
@@ -632,7 +659,7 @@ private void initKeyListenerToDialog(){
 		}
 	});
 }
-
+*/
 
 
 	/**

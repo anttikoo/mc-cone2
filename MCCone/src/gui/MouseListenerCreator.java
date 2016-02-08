@@ -7,10 +7,12 @@ import gui.graphics.SmallCloseIcon;
 import information.ID;
 import operators.ButtonRunner;
 
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -27,7 +29,8 @@ import javax.swing.SwingUtilities;
  */
 public class MouseListenerCreator {
 
-	
+	/** The Constant LOGGER for Logging purposes. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	/**
 	 * Adds the key listener to JButton. For accepting buttons (OK, SELECT etc.) the ENTER key is set to fire the button and for canceling buttons backspace fires the button.
 	 *
@@ -38,6 +41,7 @@ public class MouseListenerCreator {
 	public static void addKeyListenerToButton(final JButton button, int typeOfButton) throws Exception{
 
 		if(typeOfButton== ID.BUTTON_ENTER){
+			
 			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 			inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
 		//	inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0, false), "enter_pressed");
@@ -52,11 +56,13 @@ public class MouseListenerCreator {
 				@Override
 				public void actionPerformed(ActionEvent e) {					
 						try {
-							System.out.println("pressing ENTER");
+						//	System.out.println("pressing ENTER");
 							button.doClick();
 						//	ButtonRunner br =new ButtonRunner(button);
 						//	SwingUtilities.invokeLater(br);
-						} catch (Exception e1) {							
+
+						} catch (Exception e1) {
+							LOGGER.severe("ERROR when pressed ENTER key!");
 							e1.printStackTrace();
 							
 						}
@@ -84,7 +90,7 @@ public class MouseListenerCreator {
 							SwingUtilities.invokeLater(br);
 							
 						} catch (Exception e1) {
-							
+							LOGGER.severe("ERROR when pressed backspace key!");
 							e1.printStackTrace();
 						}
 	
