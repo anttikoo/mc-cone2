@@ -284,7 +284,7 @@ public class PropertiesDialog extends JDialog {
 	/**
 	 * Sets the panel position. Calculates a good position for panel by checking bounds of parent frame.
 	 */
-	protected void setPanelPosition(){
+	protected void setPanelPosition() throws Exception{
 		
 		recOfBackpanel = getGoodBoundsForPanel();
 		if(recOfBackpanel != null){
@@ -301,7 +301,7 @@ public class PropertiesDialog extends JDialog {
 	/**
 	 * Sets the Dialog visible.
 	 */
-	public void showDialog(){
+	public void showDialog() throws Exception{
 		setVisible(true);	
 	}
 }

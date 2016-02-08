@@ -141,11 +141,16 @@ public class MarkingProperties extends PropertiesDialog {
 	 */
 	public MarkingProperties(JFrame frame, GUI gui, Point point, ArrayList<MarkingLayer> mLayerList){
 		super(frame, gui,point);
-		this.gui = gui;	
-		this.markingLayerList=mLayerList;
-		super.panelWidth=700;
-		super.rightPanelWidth=400;
-		initMarkingPropertiesPanel();
+		try {
+			this.gui = gui;	
+			this.markingLayerList=mLayerList;
+			super.panelWidth=700;
+			super.rightPanelWidth=400;
+			initMarkingPropertiesPanel();
+		} catch (Exception e) {
+			LOGGER.severe("Error constructing MarkingProperties dialog!");
+			e.printStackTrace();
+		}
 		
 
 	}
@@ -160,17 +165,22 @@ public class MarkingProperties extends PropertiesDialog {
 	 */
 	public MarkingProperties(JFrame frame, GUI gui, Point point, MarkingLayer mLayer){
 		super(frame, gui,point);
-		this.gui = gui;
-		
-		if(mLayer != null){
-			this.markingLayer=mLayer;
-			this.setSelectedColor(this.markingLayer.getColor());
-			this.setSelectedSize(this.markingLayer.getSize());
-			this.setSelectedThickness(this.markingLayer.getThickness());
-			this.setSelectedOpacity(changeUnderZeroFloatToInt(this.markingLayer.getOpacity()));
-			this.setSelectedShapeID(this.markingLayer.getShapeID());
+		try {
+			this.gui = gui;
+			
+			if(mLayer != null){
+				this.markingLayer=mLayer;
+				this.setSelectedColor(this.markingLayer.getColor());
+				this.setSelectedSize(this.markingLayer.getSize());
+				this.setSelectedThickness(this.markingLayer.getThickness());
+				this.setSelectedOpacity(changeUnderZeroFloatToInt(this.markingLayer.getOpacity()));
+				this.setSelectedShapeID(this.markingLayer.getShapeID());
+			}
+			initMarkingPropertiesPanel();
+		} catch (Exception e) {
+			LOGGER.severe("Error constructing MarkingProperties dialog!");
+			e.printStackTrace();
 		}
-		initMarkingPropertiesPanel();
 
 	}
 
@@ -211,7 +221,7 @@ public class MarkingProperties extends PropertiesDialog {
 	 * @param id shape ID. @see information.ID
 	 * @return Custom Icon with painted shape
 	 */
-	private ShapeIcon createShapeIcon(int id){
+	private ShapeIcon createShapeIcon(int id) throws Exception{
 			return new ShapeIcon(id, 32,32,getSelectedColor(), Color_schema.dark_40);
 	}
 
@@ -231,7 +241,7 @@ public class MarkingProperties extends PropertiesDialog {
 	}
 	
 	
-	protected void setPanelPosition(){
+	protected void setPanelPosition() throws Exception{
 		recOfBackpanel = getGoodBoundsForPanel();
 		if(recOfBackpanel != null){
 			backPanel.setBounds(recOfBackpanel);
@@ -254,7 +264,7 @@ public class MarkingProperties extends PropertiesDialog {
 	 *
 	 * @return the selected color for marking
 	 */
-	private Color getSelectedColor(){
+	private Color getSelectedColor() throws Exception{
 		return this.selectedColor;
 	}
 
@@ -465,7 +475,7 @@ protected void initMarkingPropertiesPanel(){
 /** 
  * Initializes the uppermost JPanel showing a color chooser. Color chooser is modified from default color chooser by removing swatch, rgb and hsb views.
  */
-protected JPanel initUPPanels(){
+protected JPanel initUPPanels() throws Exception{
 	// contains title and colorchooser panels
 				JPanel upperBackPanel= new JPanel();
 				upperBackPanel.setLayout(new BoxLayout(upperBackPanel, BoxLayout.PAGE_AXIS));
@@ -566,7 +576,7 @@ protected JPanel initUPPanels(){
  *
  * @param mLayer the MarkingLayer
  */
-protected void saveChanges(MarkingLayer mLayer){
+protected void saveChanges(MarkingLayer mLayer) throws Exception{
 	// save changes to markinglayer
 	// set color from colorchooser
 	mLayer.setColor(this.getSelectedColor());
@@ -593,7 +603,7 @@ protected void saveChanges(MarkingLayer mLayer){
  *  This method is called when the value of sizeSlider is changed.
  *  -> Changes the maximum and present value of thicknessSlider, because small shape shouldn't be very thick.
  */
-private void setMaximumThickness(){
+private void setMaximumThickness() throws Exception{
 	  try {
 		int size = this.getSelectedSize();
 		  if(size >0){
@@ -804,23 +814,28 @@ protected void setUpComboBoXPanel() throws Exception{
 				@Override
 				public void stateChanged(ChangeEvent e) {
 	
-				if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){
-					setSelectedSize(sizeSlider.getValue());
-					setMaximumThickness();
-					sizeJLabel.setText(""+sizeSlider.getValue());
-					
-				}
-				else
-					if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.THICKNESS_SLIDER){
-	
-						setSelectedThickness(thicknessSlider.getValue());
-						thicknessJLabel.setText(""+thicknessSlider.getValue());			
+				try {
+					if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){
+						setSelectedSize(sizeSlider.getValue());
+						setMaximumThickness();
+						sizeJLabel.setText(""+sizeSlider.getValue());
+						
 					}
 					else
-						if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.OPACITY_SLIDER){
-							setSelectedOpacity(opacitySlider.getValue()); // in slider int values 1-100 -> 0.01F-1.0F
-							opacityJLabel.setText(""+opacitySlider.getValue());						
-						}			
+						if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.THICKNESS_SLIDER){
+
+							setSelectedThickness(thicknessSlider.getValue());
+							thicknessJLabel.setText(""+thicknessSlider.getValue());			
+						}
+						else
+							if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.OPACITY_SLIDER){
+								setSelectedOpacity(opacitySlider.getValue()); // in slider int values 1-100 -> 0.01F-1.0F
+								opacityJLabel.setText(""+opacitySlider.getValue());						
+							}
+				} catch (Exception e1) {
+					LOGGER.severe("Error in changing slider value!");
+					e1.printStackTrace();
+				}			
 				}
 				
 			});
@@ -853,26 +868,31 @@ protected void setUpComboBoXPanel() throws Exception{
 				
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){		
-						if(previewShapePanel != null)
-							previewShapePanel.setShapeSize(sizeSlider.getValue());
-						if( previewShapePanel != null && thicknessSlider !=null && thicknessSlider.getValue() >0)
-							previewShapePanel.setShapeThickness(thicknessSlider.getValue());
-						
-					}
-					else
-						if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.THICKNESS_SLIDER){
+					try {
+						if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.SIZE_SLIDER){		
 							if(previewShapePanel != null)
+								previewShapePanel.setShapeSize(sizeSlider.getValue());
+							if( previewShapePanel != null && thicknessSlider !=null && thicknessSlider.getValue() >0)
 								previewShapePanel.setShapeThickness(thicknessSlider.getValue());
+							
 						}
 						else
-							if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.OPACITY_SLIDER){
+							if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.THICKNESS_SLIDER){
 								if(previewShapePanel != null)
-									previewShapePanel.setShapeOpacity(changeIntToFloat(opacitySlider.getValue()));
-							
+									previewShapePanel.setShapeThickness(thicknessSlider.getValue());
 							}
-					if(previewShapePanel != null)
-						previewShapePanel.repaint();
+							else
+								if((int)((JSlider)e.getSource()).getClientProperty("type") == ID.OPACITY_SLIDER){
+									if(previewShapePanel != null)
+										previewShapePanel.setShapeOpacity(changeIntToFloat(opacitySlider.getValue()));
+								
+								}
+						if(previewShapePanel != null)
+							previewShapePanel.repaint();
+					} catch (Exception e1) {
+						LOGGER.severe("Error in releasing mouse on slider!");
+						e1.printStackTrace();
+					}
 					
 				}
 			});
@@ -921,24 +941,30 @@ protected void setUpComboBoXPanel() throws Exception{
 	* to display the text and image.
 	*/
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		//Get the selected index. (The index param isn't
-		//always valid, so just use the value.)
-		int selectedIndex = ((Integer)value).intValue();
+		try {
+			//Get the selected index. (The index param isn't
+			//always valid, so just use the value.)
+			int selectedIndex = ((Integer)value).intValue();
 
-		if (isSelected) {
-			setBackground(list.getBackground());
-			setForeground(list.getSelectionForeground());
-			setBorder(BorderFactory.createLineBorder(Color_schema.orange_bright, 1));
-		} else {
-			setBackground(list.getBackground());
-			setForeground(list.getForeground());
-			setBorder(BorderFactory.createEmptyBorder());
+			if (isSelected) {
+				setBackground(list.getBackground());
+				setForeground(list.getSelectionForeground());
+				setBorder(BorderFactory.createLineBorder(Color_schema.orange_bright, 1));
+			} else {
+				setBackground(list.getBackground());
+				setForeground(list.getForeground());
+				setBorder(BorderFactory.createEmptyBorder());
+			}
+
+			//Set the icon
+			ShapeIcon icon = shapeIcons[selectedIndex];
+			setIcon(icon);
+			return this;
+		} catch (Exception e) {
+			LOGGER.severe("Error in changing and getting icon renderer!");
+			e.printStackTrace();
+			return null;
 		}
-
-		//Set the icon
-		ShapeIcon icon = shapeIcons[selectedIndex];
-		setIcon(icon);
-		return this;
 	}
 
 

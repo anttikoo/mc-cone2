@@ -131,23 +131,28 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if(childDialog != null){
-					childDialog.setBounds(gui.getVisibleWindowBounds());
-					
-					if(childDialog instanceof PropertiesDialog)
-					((PropertiesDialog)childDialog).setPanelPosition();
-					
-					if(childDialog instanceof AddImageLayerDialog)
-						((AddImageLayerDialog)childDialog).setPanelPosition();
-					
-					if(childDialog instanceof ImageSetCreator)
-						((ImageSetCreator)childDialog).setPanelPosition();
-					
-			//		if(childDialog instanceof ShadyMessageDialog)
-			//			((ShadyMessageDialog)childDialog).setPanelPosition(gui.getVisibleWindowBounds());
-					
-					childDialog.repaint();
-					waitPaintingTimer.stop();
+					try {
+						if(childDialog != null){
+							childDialog.setBounds(gui.getVisibleWindowBounds());
+							
+							if(childDialog instanceof PropertiesDialog)
+							((PropertiesDialog)childDialog).setPanelPosition();
+							
+							if(childDialog instanceof AddImageLayerDialog)
+								((AddImageLayerDialog)childDialog).setPanelPosition();
+							
+							if(childDialog instanceof ImageSetCreator)
+								((ImageSetCreator)childDialog).setPanelPosition();
+							
+//		if(childDialog instanceof ShadyMessageDialog)
+//			((ShadyMessageDialog)childDialog).setPanelPosition(gui.getVisibleWindowBounds());
+							
+							childDialog.repaint();
+							waitPaintingTimer.stop();
+						}
+					} catch (Exception e1) {
+						LOGGER.severe("Error in setting bounds of child dialogs!");
+						e1.printStackTrace();
 					}
 				}
 			});
