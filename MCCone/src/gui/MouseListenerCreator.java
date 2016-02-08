@@ -1,6 +1,7 @@
 package gui;
 
 import gui.graphics.BigCloseIcon;
+import gui.graphics.BigMarkingIcon;
 import gui.graphics.MediumCloseIcon;
 import gui.graphics.SmallCloseIcon;
 import information.ID;
@@ -345,6 +346,33 @@ public class MouseListenerCreator {
 	
 			}
 		});
+	}
+	
+	
+	public static void addMouseListenerToImportMarkingsButton(JButton button) throws Exception{
+		
+		button.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 1));
+			}
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_40, 1));
+			}
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setIcon(new BigMarkingIcon(true));
+			}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				((JButton)arg0.getSource()).setIcon(new BigMarkingIcon(false));
+			}
+		});
+		
 	}
 	
 	/**

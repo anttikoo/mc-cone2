@@ -326,13 +326,13 @@ public class AddImageLayerDialog extends JDialog{
 		}
 	}
 
-	/**
+	/*
 	 * Adds MouseListener to given JButton.
 	 * @param button JButton where to add MouseListener
 	 * @param id int type of button
 	 * @throws Exception
 	 */
-	private void addMouseListenerToButtons(JButton button, int id) throws Exception{
+/*	private void addMouseListenerToButtons(JButton button, int id) throws Exception{
 		if(id == ID.BUTTON_CLOSE_SMALL){
 		button.addMouseListener(new MouseListener() {
 			@Override
@@ -473,7 +473,7 @@ public class AddImageLayerDialog extends JDialog{
 			});
 		}
 	}
-
+*/
 	/**
 	 * Hides window.
 	 */
@@ -1002,7 +1002,8 @@ private JPanel initImageViewPanel(){
 			}
 		});
 		addImageJButton.setFocusable(false);
-		addMouseListenerToButtons(addImageJButton, ID.BUTTON_NORMAL);
+	//	addMouseListenerToButtons(addImageJButton, ID.BUTTON_NORMAL);
+		MouseListenerCreator.addMouseListenerToNormalButtons(addImageJButton);
 		imageButtonJPanel.add(addImageJButton);
 
 
@@ -1026,7 +1027,8 @@ private JPanel initImageViewPanel(){
 			}
 		});
 		addMarkingsForAll.setFocusable(false);
-		addMouseListenerToButtons(addMarkingsForAll, ID.BUTTON_NORMAL);
+	//	addMouseListenerToButtons(addMarkingsForAll, ID.BUTTON_NORMAL);
+		MouseListenerCreator.addMouseListenerToNormalButtons(addMarkingsForAll);
 		imageButtonJPanel.add(addMarkingsForAll);
 
 
@@ -1395,7 +1397,8 @@ private JPanel initImageViewPanel(){
 				closeJButton.setToolTipText("Remove image: " +imageLayer.getImageFileName());
 
 				// set up listener for closeButton
-				addMouseListenerToButtons(closeJButton, ID.BUTTON_CLOSE_25);
+			//	addMouseListenerToButtons(closeJButton, ID.BUTTON_CLOSE_25);
+				MouseListenerCreator.addMouseListenerToBigCloseButtons(closeJButton);
 				initActionsToButtons(closeJButton, ID.DELETE_IMAGELAYER);
 
 				browseJButton = new JButton(new BigMarkingIcon(false));
@@ -1408,7 +1411,8 @@ private JPanel initImageViewPanel(){
 				browseJButton.setContentAreaFilled(false);
 				browseJButton.setFocusable(false);
 				browseJButton.setToolTipText("Import Markings for image "+imageLayer.getImageFileName());
-				addMouseListenerToButtons(browseJButton, ID.BUTTON_IMPORT_MARKINGS);
+			//	addMouseListenerToButtons(browseJButton, ID.BUTTON_IMPORT_MARKINGS);
+				MouseListenerCreator.addMouseListenerToImportMarkingsButton(browseJButton);
 				initActionsToButtons(browseJButton, ID.OPEN_MARKING_FILE);
 
 
