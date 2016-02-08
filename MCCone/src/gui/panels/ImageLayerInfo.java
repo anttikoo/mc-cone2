@@ -510,9 +510,14 @@ private JPanel addMarkingLayerJPanel;
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				int iLayerID=((ImageLayerInfo)((JPanel)((JPanel)((JLabel)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID();
-				//LOGGER.fine("Panel: " +((ImageLayerInfo)((JPanel)((JPanel)((JLabel)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID());
-				gui.setSelectedImageLayerAndImage(iLayerID, ID.IMAGELAYER_CHANGE_IMAGELAYER);
+				try {
+					int iLayerID=((ImageLayerInfo)((JPanel)((JPanel)((JLabel)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID();
+					//LOGGER.fine("Panel: " +((ImageLayerInfo)((JPanel)((JPanel)((JLabel)e.getSource()).getParent()).getParent()).getParent()).getImageLayerID());
+					gui.setSelectedImageLayerAndImage(iLayerID, ID.IMAGELAYER_CHANGE_IMAGELAYER);
+				} catch (Exception e1) {
+					LOGGER.severe("Error in changing selected ImageLayer!");
+					e1.printStackTrace();
+				}
 
 			}
 			@Override
@@ -989,16 +994,21 @@ public String getImageLayerName() {
 
 					@Override
 					public void keyReleased(KeyEvent arg0) {
-						int imageID = ((ImageLayerInfo)((JPanel)((JPanel)((JTextField)arg0.getSource())
-								.getParent()).getParent()).getParent()).getImageLayerID();
+						try {
+							int imageID = ((ImageLayerInfo)((JPanel)((JPanel)((JTextField)arg0.getSource())
+									.getParent()).getParent()).getParent()).getImageLayerID();
 
-						int markingID = ((SingleMarkingPanel)((JTextField)arg0.getSource()).getParent()).getMarking_layer_id();
-						String markingName = ((JTextField)arg0.getSource()).getText();
-						gui.setMarkingLayerName(imageID, markingID, markingName);
-						if(arg0.getKeyCode()== KeyEvent.VK_ENTER){
-							title.requestFocus();
+							int markingID = ((SingleMarkingPanel)((JTextField)arg0.getSource()).getParent()).getMarking_layer_id();
+							String markingName = ((JTextField)arg0.getSource()).getText();
+							gui.setMarkingLayerName(imageID, markingID, markingName);
+							if(arg0.getKeyCode()== KeyEvent.VK_ENTER){
+								title.requestFocus();
 
 
+							}
+						} catch (Exception e) {
+							LOGGER.severe("Error in changing name of MarkingLayer!");
+							e.printStackTrace();
 						}
 
 

@@ -916,7 +916,7 @@ private void initKeyListenerToDialog(){
 	 *
 	 * @param folder the new present folder
 	 */
-	public void setPresentFolder(String folder){
+	public void setPresentFolder(String folder) throws Exception{
 		gui.setPresentFolder(folder);
 	}
 

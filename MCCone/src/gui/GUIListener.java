@@ -225,8 +225,13 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// change selected ImageLayer one up
-						gui.changeSelectedImageLayerUpOrDown(ID.MOVE_UP);
+						try {
+							// change selected ImageLayer one up
+							gui.changeSelectedImageLayerUpOrDown(ID.MOVE_UP);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in moving selected ImageLayer");
+							e1.printStackTrace();
+						}
 					}
 				});
 
@@ -239,8 +244,13 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// change selected ImageLayer one down
-						gui.changeSelectedImageLayerUpOrDown(ID.MOVE_DOWN);
+						try {
+							// change selected ImageLayer one down
+							gui.changeSelectedImageLayerUpOrDown(ID.MOVE_DOWN);
+						} catch (Exception e1) {
+							LOGGER.severe("Error in moving selected ImageLayer");
+							e1.printStackTrace();
+						}
 					}
 				});
 
@@ -385,7 +395,12 @@ public class GUIListener extends MouseInputAdapter {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						gui.saveMarkings();
+						try {
+							gui.saveMarkings();
+						} catch (Exception e1) {
+							LOGGER.severe("Error in saving markings!");
+							e1.printStackTrace();
+						}
 
 					}
 				});
@@ -399,7 +414,12 @@ public class GUIListener extends MouseInputAdapter {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							gui.exportResults(ID.FILE_TYPE_CSV);
+							try {
+								gui.exportResults(ID.FILE_TYPE_CSV);
+							} catch (Exception e1) {
+								LOGGER.severe("Error in erporting results to CSV file");
+								e1.printStackTrace();
+							}
 
 						}
 					});
@@ -413,7 +433,12 @@ public class GUIListener extends MouseInputAdapter {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							gui.exportImages();
+							try {
+								gui.exportImages();
+							} catch (Exception e1) {
+								LOGGER.severe("Error in exporting images!");
+								e1.printStackTrace();
+							}
 
 						}
 					});
@@ -427,7 +452,9 @@ public class GUIListener extends MouseInputAdapter {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							gui.manageImageLayersAndMarkings();
+							
+								gui.manageImageLayersAndMarkings();
+							
 
 						}
 					});
@@ -455,7 +482,12 @@ public class GUIListener extends MouseInputAdapter {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							gui.exportResults(ID.FILE_TYPE_TEXT_FILE);
+							try {
+								gui.exportResults(ID.FILE_TYPE_TEXT_FILE);
+							} catch (Exception e1) {
+								LOGGER.severe("Error in exporting result to text file");
+								e1.printStackTrace();
+							}
 
 						}
 					});
@@ -469,7 +501,12 @@ public class GUIListener extends MouseInputAdapter {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							gui.exportResults(ID.CLIPBOARD);
+							try {
+								gui.exportResults(ID.CLIPBOARD);
+							} catch (Exception e1) {
+								LOGGER.severe("Error in exporting results to clipboard!");
+								e1.printStackTrace();
+							}
 
 						}
 					});
@@ -583,8 +620,13 @@ public class GUIListener extends MouseInputAdapter {
 						if(!is_CTRL_pressed && !is_SPACE_pressed){
 
 							if(e.getButton()== MouseEvent.BUTTON1){
-								// left mouse pressed -> start counting
-								gui.startCellCounting(imagePanelPoint, this.glassPane.getRectangleSize());
+								try {
+									// left mouse pressed -> start counting
+									gui.startCellCounting(imagePanelPoint, this.glassPane.getRectangleSize());
+								} catch (Exception e1) {
+									LOGGER.severe("Error in starting precounting!");
+									e1.printStackTrace();
+								}
 							}
 						}
 						else{

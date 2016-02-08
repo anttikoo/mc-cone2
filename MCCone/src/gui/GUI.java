@@ -34,7 +34,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -63,7 +62,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.iharder.dnd.FileDrop;
 import operators.CheckBoxIcon;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -686,7 +684,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * Changes the selected ImageLayer one up or down in ImageLayerlist.
 	 * @param directionID int ID.MOVE_DOWN or ID.MOVE.UP
 	 */
-	public void changeSelectedImageLayerUpOrDown(int directionID){
+	public void changeSelectedImageLayerUpOrDown(int directionID) throws Exception{
 		setSelectedImageLayerAndImage(this.taskManager.getSelectedImageLayerAtUpOrDown(directionID),ID.IMAGELAYER_CHANGE_IMAGELAYER);
 	}
 	
@@ -702,28 +700,29 @@ private void addMouseListenerForJButton(JButton button){
 	 *  Refreshes the PrecountingManager Thread to initial state if necessary.
 	 */
 	private void cleanPreCountingIfNecessary(){
-		// clean precoutingManager
-		if(this.taskManager.getImageLayerList() == null || this.taskManager.getImageLayerList().size()==0 ||
-				this.taskManager.getAllMarkingLayers()== null || this.taskManager.getAllMarkingLayers().size() == 0){
-			this.taskManager.cleanPrecountingManager();
-			this.preCountButton.setEnabled(false);
-		}
-		else{
-			// at least one ImageLayer and MarkingLayer
-			if(this.taskManager.getSelectedImageLayer() != null && this.taskManager.getSelectedMarkingLayer() != null)
-				this.preCountButton.setEnabled(true);
-			if(this.taskManager.getPrecountThreadManager() != null){
-				if(this.taskManager.getPrecountThreadManager().getiLayerID() != this.taskManager.getSelectedImageLayer().getLayerID() ||
-						this.taskManager.getPrecountThreadManager().getmLayerID() != this.taskManager.getSelectedMarkingLayer().getLayerID()){
-					this.taskManager.cleanPrecountingManager();
-				}
-
+		try {
+			// clean precoutingManager
+			if(this.taskManager.getImageLayerList() == null || this.taskManager.getImageLayerList().size()==0 ||
+					this.taskManager.getAllMarkingLayers()== null || this.taskManager.getAllMarkingLayers().size() == 0){
+				this.taskManager.cleanPrecountingManager();
+				this.preCountButton.setEnabled(false);
 			}
+			else{
+				// at least one ImageLayer and MarkingLayer
+				if(this.taskManager.getSelectedImageLayer() != null && this.taskManager.getSelectedMarkingLayer() != null)
+					this.preCountButton.setEnabled(true);
+				if(this.taskManager.getPrecountThreadManager() != null){
+					if(this.taskManager.getPrecountThreadManager().getiLayerID() != this.taskManager.getSelectedImageLayer().getLayerID() ||
+							this.taskManager.getPrecountThreadManager().getmLayerID() != this.taskManager.getSelectedMarkingLayer().getLayerID()){
+						this.taskManager.cleanPrecountingManager();
+					}
+
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.severe("Error in cleaning precounting data!");
+			e.printStackTrace();
 		}
-
-
-
-
 
 	}
 
@@ -731,7 +730,7 @@ private void addMouseListenerForJButton(JButton button){
 	/**
 	 *  Removes all markings of all MarkingLayers. Refreshes the MarkingPanels and ImageLayerInfos.
 	 */
-	private void clearMarkingsOfAllMarkingLayers(){
+	private void clearMarkingsOfAllMarkingLayers() throws Exception{
 		ArrayList<MarkingLayer> allMarkingLayers=this.taskManager.getAllMarkingLayers();
 		if(allMarkingLayers != null && allMarkingLayers.size()>0){
 			shadyMessageDialog =new ShadyMessageDialog(this,"Clear Countings?", "Clear countings of all MarkingLayers?", ID.YES_NO, this);
@@ -760,7 +759,7 @@ private void addMouseListenerForJButton(JButton button){
 	/**
 	 *  Removes all markings of selected MarkingLayer. Refreshes the selected MarkingPanel and ImageLayerInfos.
 	 */
-	private void clearMarkingsOfSelectedMarkingLayer(){
+	private void clearMarkingsOfSelectedMarkingLayer() throws Exception{
 		MarkingLayer sMlayer=this.taskManager.getSelectedMarkingLayer();
 		if(sMlayer != null){
 			ShadyMessageDialog dialog=new ShadyMessageDialog(this,"Clear Countings?", "Clear countings of MarkingLayer: "+sMlayer.getLayerName()+ "?", ID.YES_NO, this);
@@ -806,8 +805,9 @@ private void addMouseListenerForJButton(JButton button){
 			// close program
 			System.exit(0);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			LOGGER.severe("Error in saving process before closing program. "+ e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -851,7 +851,7 @@ private void addMouseListenerForJButton(JButton button){
 	/**
 	 * Sets Grid to transparent.
 	 */
-	private void diminishGrid(){
+	private void diminishGrid() throws Exception{
 		this.gridPanel.setExtraDimTransparency();
 		this.gridPanel.repaint();
 	}
@@ -889,7 +889,7 @@ private void addMouseListenerForJButton(JButton button){
 	/**
 	 *  Opens a dialog to export image(s).
 	 */
-	public void exportImages(){
+	public void exportImages() throws Exception{
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
 
 			@SuppressWarnings("unused")
@@ -904,7 +904,7 @@ private void addMouseListenerForJButton(JButton button){
 	/**
 	 *  Opens a new dialog for selecting images and organizing images to create set of images.
 	 */
-	private void exportImageSet(){
+	private void exportImageSet() throws Exception{
 
 			
 			
@@ -922,7 +922,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * Opens a dialog to export results.
 	 * @param id int ID type of saving type (ID.FILE_TYPE_TEXT_FILE, ID.FILE_TYPE_CSV or ID.CLIPBOARD).
 	 */
-	public void exportResults(int id){
+	public void exportResults(int id) throws Exception{
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
 
 			
@@ -1232,7 +1232,7 @@ private void addMouseListenerForJButton(JButton button){
 	/**
 	 *  Initializes GlassPane, which is used in precounting cells.
 	 */
-	private void initGlassPane(){
+	private void initGlassPane() throws Exception{
 		glassPane = new PrecountGlassPane(this, this.doublePanel, this.menubar, guiListener);
 		this.setGlassPane(glassPane);
 	}
@@ -1882,7 +1882,7 @@ private void addMouseListenerForJButton(JButton button){
 	/**
 	 * Hides the highlight of marking.
 	 */
-	public void removeHighLightPoint(){
+	public void removeHighLightPoint() throws Exception{
 		this.highlightPanel.updateHighlightPoint(null);
 
 	}
@@ -2089,7 +2089,7 @@ private void addMouseListenerForJButton(JButton button){
 	/**
 	 *  Opens dialog for selecting which markings to save.
 	 */
-	public void saveMarkings(){
+	public void saveMarkings() throws Exception{
 
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
 
@@ -2139,7 +2139,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * When user presses mouse on a Grid cell (SHIFT key pressed down at same time) this method sets the Grid cell as selected or unselected.
 	 * @param p Point where mouse was pressed 
 	 */
-	public void setGridSelectedRectangle(Point p){
+	public void setGridSelectedRectangle(Point p) throws Exception{
 		this.taskManager.changeGridCellSelection(p);
 		updateGridPanel();
 
@@ -2151,7 +2151,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * Sets the PositionedImage to ImagePanel, which is painted.
 	 * @param pi @see PositionedImage the image to set to ImagePanel.
 	 */
-	public void setImage(PositionedImage pi){
+	public void setImage(PositionedImage pi) throws Exception{
 		this.imagePanel.setImage(pi);
 	}
 
@@ -2159,7 +2159,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * Replaces the array of ImageLayer s in InformationCenter with new list. After updating the list -> the GUI is updated.
 	 * @param iLayerList Array of ImageLayer s.
 	 */
-	public void setImageLayerList(ArrayList<ImageLayer> iLayerList){
+	public void setImageLayerList(ArrayList<ImageLayer> iLayerList) throws Exception{
 		this.taskManager.setImageLayerList(iLayerList); // replaces the existing ImageLayerList with new one finally in InformationCenter
 
 		//updates the selected Layers and Refreshes GUI components and image
@@ -2177,7 +2177,7 @@ private void addMouseListenerForJButton(JButton button){
 	 *
 	 * @param mc boolean has made changes
 	 */
-	public void setMadeChanges(boolean mc){
+	public void setMadeChanges(boolean mc) throws Exception{
 		this.taskManager.setMadeChange(); //
 	}
 
@@ -2190,7 +2190,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * @param mLayerID int ID of MarkingLayer, which name is modified.
 	 * @param markingName String the new name.
 	 */
-	public void setMarkingLayerName(int iLayerID, int mLayerID, String markingName){
+	public void setMarkingLayerName(int iLayerID, int mLayerID, String markingName) throws Exception{
 		taskManager.setMarkingLayerName(iLayerID, mLayerID, markingName);
 	}
 
@@ -2223,7 +2223,7 @@ private void addMouseListenerForJButton(JButton button){
 	/**
 	* Sets the selected MarkingLayer to highlightPanel -> HighlightPanel uses information of that MarkingLayer for highlighting. 
 	*/
-	private void setMarkingsOfHighlightLayer(){
+	private void setMarkingsOfHighlightLayer() throws Exception {
 		MarkingLayer selectedMarkingLayer= taskManager.getSelectedMarkingLayer();
 		this.highlightPanel.setLayer(selectedMarkingLayer);
 	}
@@ -2233,7 +2233,7 @@ private void addMouseListenerForJButton(JButton button){
 	 *
 	 * @param itemType the new menu items enabled
 	 */
-	public void setMenuItemsEnabled(int itemType){
+	public void setMenuItemsEnabled(int itemType) throws Exception{
 		
 		// both imageLayers and MarkingLayers
 		if(itemType==ID.MARKINGLAYERS || itemType==ID.IMAGELAYERS ){
@@ -2287,7 +2287,7 @@ private void addMouseListenerForJButton(JButton button){
  * Sets the folder name which is previously used.
  * @param folder String folder name which is previously used.
  */
-public void setPresentFolder(String folder){
+public void setPresentFolder(String folder) throws Exception{
 	this.taskManager.setPresentFolder(folder);
 }
 
@@ -2295,7 +2295,7 @@ public void setPresentFolder(String folder){
  * Opens a dialog to set size, thickness and transparency of all MarkingLayers if any MarkingLayers found. 
  * @param guiPoint Point where mouse was pressed to menuitem.
  */
-private void setPropertiesOfAllMarkinglayers(Point guiPoint){
+private void setPropertiesOfAllMarkinglayers(Point guiPoint) throws Exception{
 	ArrayList<MarkingLayer> mLayerList=taskManager.getAllMarkingLayers();
 	if(mLayerList != null && mLayerList.size()>0){
 		GlobalMarkingProperties dialog = new GlobalMarkingProperties(this, getGUI(), guiPoint, mLayerList);
@@ -2311,7 +2311,7 @@ private void setPropertiesOfAllMarkinglayers(Point guiPoint){
  * Updates properties (size, color, thickness ...) of all MarkingPanels by fetching updated properties from ImageLayer at InformationCenter.
  */
 
-private void setPropertiesOfAllMarkingPanels(){
+private void setPropertiesOfAllMarkingPanels() throws Exception{
 	// gothrough all markingPanels
 	Component[] panelList=this.layers.getComponents();
 
@@ -2348,7 +2348,7 @@ private void setPropertiesOfMarkingPanel(int mLayerID) throws Exception{
  * @param iLayerID ID of ImageLayer that will be the selected ImageLayer (-> visible)
  * @param selectionChangeType the selection change type
  */
-public void setSelectedImageLayerAndImage(int iLayerID, int selectionChangeType){
+public void setSelectedImageLayerAndImage(int iLayerID, int selectionChangeType) {
 	 try {
 		 ImageLayer iLayer =this.taskManager.getImageLayerByID(iLayerID);
 		 	boolean visible=iLayer.isVisibleMarkingLayers();
@@ -2358,7 +2358,7 @@ public void setSelectedImageLayerAndImage(int iLayerID, int selectionChangeType)
 		 		// scale the image with best quality (in LayerVisualManager) and send it to ImagePanel
 		 		this.imagePanel.setImage(this.taskManager.getRefreshedImage());
 
-		 }
+		 	}
 		 	
 		 if(selectionChangeType == ID.IMAGELAYER_REFRESH_VISIBILITY)
 			setVisibilityOfAllMarkingLayersOfSingleImageLayer(!visible, iLayerID);
@@ -2435,21 +2435,26 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	 */
 	private void setUpOSsharedVariables(){
 
-		String osString=System.getProperty("os.name").toLowerCase();
-		LOGGER.fine("OS:"+osString);
-		if(osString.contains("win")){
-			SharedVariables.setUsedDimmingModeToSrcOver();
-			SharedVariables.setOS(ID.OS_WINDOWS);
-		}
-		else{
-			if(osString.contains("mac")){
-				SharedVariables.setUsedDimmingModeToSrcOut();
-				SharedVariables.setOS(ID.OS_MAC);
+		try {
+			String osString=System.getProperty("os.name").toLowerCase();
+			LOGGER.fine("OS:"+osString);
+			if(osString.contains("win")){
+				SharedVariables.setUsedDimmingModeToSrcOver();
+				SharedVariables.setOS(ID.OS_WINDOWS);
 			}
-			else{ // unix or linux
-				SharedVariables.setUsedDimmingModeToSrcIn();
-				SharedVariables.setOS(ID.OS_LINUX_UNIX);
+			else{
+				if(osString.contains("mac")){
+					SharedVariables.setUsedDimmingModeToSrcOut();
+					SharedVariables.setOS(ID.OS_MAC);
+				}
+				else{ // unix or linux
+					SharedVariables.setUsedDimmingModeToSrcIn();
+					SharedVariables.setOS(ID.OS_LINUX_UNIX);
+				}
 			}
+		} catch (Exception e) {
+			LOGGER.severe("Error in setting OS specific settings!");
+			e.printStackTrace();
 		}
 	}
 
@@ -2479,8 +2484,8 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 			zoomOutButton.setFocusable(false);
 			zoomOutButton.addActionListener(new ActionListener() {
 				
-				@Override
-				public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 					try {
 						zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), 0.8, ID.IMAGE_PROCESSING_BEST_QUALITY);
 					} catch (Exception e1) {
@@ -2536,43 +2541,48 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 
 			zoomSlider.addChangeListener(new ChangeListener() {
 
-				private double sliderZoomValue;
+			private double sliderZoomValue;
 
-				@Override
-				public void stateChanged(ChangeEvent e) {
+			@Override
+			public void stateChanged(ChangeEvent e) {
 
-				// zooming
-					if(!guiListener.isIs_SPACE_pressed() && sliderListener.isSlidingON() && !sliderListener.isSliderTimerRunning()){
-						sliderListener.startSliderTimer();
-						LOGGER.fine("slider moved+ "+((JSlider)e.getSource()).getValue());
-						int valueNow=((JSlider)e.getSource()).getValue();
-					//	if(valueNow % 25 == 0 ){
-						int previousValue=sliderListener.getStartValue();
-						int difference=previousValue-valueNow;
-						sliderZoomValue = 0;
-						if(difference != 0){
-							sliderZoomValue=1.25;
-							if(difference > 0)
-								sliderZoomValue= 0.8;
-							zoomValueLabel.setText(""+zoomSlider.getValue());
-								sliderListener.setStartValue(valueNow);
-							SwingUtilities.invokeLater(new Runnable() {
+				try {
+						// zooming
+						if(!guiListener.isIs_SPACE_pressed() && sliderListener.isSlidingON() && !sliderListener.isSliderTimerRunning()){
+							sliderListener.startSliderTimer();
+							LOGGER.fine("slider moved+ "+((JSlider)e.getSource()).getValue());
+							int valueNow=((JSlider)e.getSource()).getValue();
+						//	if(valueNow % 25 == 0 ){
+							int previousValue=sliderListener.getStartValue();
+							int difference=previousValue-valueNow;
+							sliderZoomValue = 0;
+							if(difference != 0){
+								sliderZoomValue=1.25;
+								if(difference > 0)
+									sliderZoomValue= 0.8;
+								zoomValueLabel.setText(""+zoomSlider.getValue());
+									sliderListener.setStartValue(valueNow);
+								SwingUtilities.invokeLater(new Runnable() {
 
-								@Override
-								public void run() {
-									try {
-										zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), sliderZoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
-									} catch (Exception e) {
-										LOGGER.severe("Error in zooming image!");
-										e.printStackTrace();
+									@Override
+									public void run() {
+										try {
+											zoomAndUpdateImage(new Point((int)(imagePanel.getWidth()/2), (int)(imagePanel.getHeight()/2)), sliderZoomValue, ID.IMAGE_PROCESSING_BEST_QUALITY);
+										} catch (Exception e) {
+											LOGGER.severe("Error in zooming image!");
+											e.printStackTrace();
+										}
+
+
 									}
-
+								});
 
 								}
-							});
-
 							}
-						}
+					} catch (Exception e1) {
+						LOGGER.severe("Error in Zoom Slider");
+						e1.printStackTrace();
+					}
 				
 				}
 			});
@@ -2636,7 +2646,7 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	/**
 	 * Sets Grid visible if the Grid is selected as ON.
 	 */
-	private void showGrid(){
+	private void showGrid() throws Exception{
 
 		this.gridPanel.setBasicTransparency();
 		this.gridPanel.repaint();
@@ -2685,7 +2695,7 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	 * @param point Point where mouse was pressed the JButton to call this method.
 	 * @param mLayerList ArrayList<MarkingLayer> of all MarkingLayers.
 	 */
-	public void showGridPropertiesPanelForAllMarkingLayers(Point point, ArrayList<MarkingLayer> mLayerList){
+	public void showGridPropertiesPanelForAllMarkingLayers(Point point, ArrayList<MarkingLayer> mLayerList) throws Exception{
 		showGridPropertiesPanel(point, mLayerList);
 		updateImageLayerInfos();
 		refreshMarkingPanels();
@@ -2697,7 +2707,7 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	 * @param point Point where mouse was pressed the JButton to call this method.
 	 * @param iLayerID int ID of ImageLayer which MarkingLayers (GridProperties) are modified.
 	 */
-	public void showGridPropertiesPanelForMarkingLayersOfImageLayer(Point point, int iLayerID){
+	public void showGridPropertiesPanelForMarkingLayersOfImageLayer(Point point, int iLayerID) throws Exception{
 		ImageLayer iLayer= this.taskManager.getImageLayerByID(iLayerID);
 		if(iLayer!= null){
 			ArrayList<MarkingLayer> mLayerList=iLayer.getMarkingLayers();
@@ -2720,7 +2730,7 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	 * @param point Point where mouse was pressed the JButton to call this method.
 	 * @param mLayerID int ID of MarkingLayer which GridProperty is modified. 
 	 */
-	public void showGridPropertiesPanelForSingleMarkingLayer(Point point, int mLayerID){
+	public void showGridPropertiesPanelForSingleMarkingLayer(Point point, int mLayerID) throws Exception{
 		ArrayList<MarkingLayer> mLayerList = new ArrayList<MarkingLayer>();
 		MarkingLayer mlayer=taskManager.getMarkingLayer(mLayerID);
 
@@ -2744,7 +2754,7 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	 * Opens info dialog showing information of MC-Cone.
 	 * @param p Point where menu item was pressed.
 	 */
-	private void showInfo(Point p){
+	private void showInfo(Point p) throws Exception{
 		InfoDialog iDialog = new InfoDialog(this, this,p);
 		this.guiComponentListener.setChildDialog(iDialog);
 		iDialog.showDialog();
@@ -2760,16 +2770,21 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	 * @param id int ID of type of buttons in message dialog.
 	 */
 	public void showMessage(String title, String message, int id){
-		ShadyMessageDialog dialog = new ShadyMessageDialog(this, title, message, id, this);
-		dialog.showDialog();
-		dialog=null;
+		try {
+			ShadyMessageDialog dialog = new ShadyMessageDialog(this, title, message, id, this);
+			dialog.showDialog();
+			dialog=null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in showing message!");
+			e.printStackTrace();
+		}
 
 	}
 
 	/**
 	 *  Opens web browser and web site http://www.mc-cone.com/web_tutorial.html. If Operation system doesn't allow opening web browere
 	 */
-	private void showWebInstructions(){
+	private void showWebInstructions() throws Exception{
 		String url ="http://mc-cone.com/instructions/";
 		 if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
 	            Desktop desktop = Desktop.getDesktop();
@@ -2799,7 +2814,7 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	 * @param imagePanelPoint Middle Point of cell that user has picked
 	 * @param size Size of picked cell
 	 */
-	public void startCellCounting(Point imagePanelPoint, int size){
+	public void startCellCounting(Point imagePanelPoint, int size) throws Exception{
 
 		// stop the picking and hides glasspane
 		startStopCellPicking();
@@ -2821,61 +2836,66 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	 *  
 	 */
 	public void startStopCellPicking(){
-		ShadyMessageDialog dialog;
-		// check is the cell picking running already
-		if(!this.guiListener.isCellPickingON()){
-			if(this.taskManager.getSelectedImageLayer() != null){
-				if(this.taskManager.getSelectedMarkingLayer() != null ){
-					if(this.taskManager.getSelectedImageLayer().hasMarkingLayer(this.taskManager.getSelectedMarkingLayer().getLayerID())){
-						if(this.taskManager.getSelectedMarkingLayer().getCounts()>0){
-							// show confirm dialog if selected MarkingLayer contains markings.
-							dialog = new ShadyMessageDialog(this, "Selected MarkingLayer contains markings", " Overwrite with precountings?", ID.YES_NO, this);
-							if(dialog.showDialog() == ID.NO){
-								dialog=null;
-								return;
+		try {
+			ShadyMessageDialog dialog;
+			// check is the cell picking running already
+			if(!this.guiListener.isCellPickingON()){
+				if(this.taskManager.getSelectedImageLayer() != null){
+					if(this.taskManager.getSelectedMarkingLayer() != null ){
+						if(this.taskManager.getSelectedImageLayer().hasMarkingLayer(this.taskManager.getSelectedMarkingLayer().getLayerID())){
+							if(this.taskManager.getSelectedMarkingLayer().getCounts()>0){
+								// show confirm dialog if selected MarkingLayer contains markings.
+								dialog = new ShadyMessageDialog(this, "Selected MarkingLayer contains markings", " Overwrite with precountings?", ID.YES_NO, this);
+								if(dialog.showDialog() == ID.NO){
+									dialog=null;
+									return;
+								}
 							}
+
+							// start picking the cell
+							glassPane.setVisible(true);
+							this.guiListener.setCellPickingON(true);
+							glassPane.setRectangleSize(this.imagePanel.getWidth()/4);
+							this.preCountButton.setText("Cancel Picking");
+						//	this.stopPreCountButton.setEnabled(false);
+							// Set cursor to circle
+						//	setCircleCursorToPanels();
+							this.preCountButton.setForeground(Color_schema.orange_dark);
+
 						}
-
-						// start picking the cell
-						glassPane.setVisible(true);
-						this.guiListener.setCellPickingON(true);
-						glassPane.setRectangleSize(this.imagePanel.getWidth()/4);
-						this.preCountButton.setText("Cancel Picking");
-					//	this.stopPreCountButton.setEnabled(false);
-						// Set cursor to circle
-					//	setCircleCursorToPanels();
-						this.preCountButton.setForeground(Color_schema.orange_dark);
-
+						else{
+							dialog = new ShadyMessageDialog(this, "Selected ImageLayer has no selected MarkingLayer", "Select MarkingLayer under Selected ImageLayer.", ID.OK, this);
+							dialog.showDialog();
+						}
 					}
 					else{
-						dialog = new ShadyMessageDialog(this, "Selected ImageLayer has no selected MarkingLayer", "Select MarkingLayer under Selected ImageLayer.", ID.OK, this);
+						dialog = new ShadyMessageDialog(this, "No markinglayer", "Not found selected MarkingLayer where add precountings", ID.OK, this);
 						dialog.showDialog();
 					}
-				}
-				else{
-					dialog = new ShadyMessageDialog(this, "No markinglayer", "Not found selected MarkingLayer where add precountings", ID.OK, this);
+				}else{
+					dialog = new ShadyMessageDialog(this, "No ImageLayer", "Not found ImageLayer for precounting", ID.OK, this);
 					dialog.showDialog();
-				}
-			}else{
-				dialog = new ShadyMessageDialog(this, "No ImageLayer", "Not found ImageLayer for precounting", ID.OK, this);
-				dialog.showDialog();
 
+				}
 			}
+			else{
+				// stop cell picking
+				glassPane.setVisible(false);
+				this.guiListener.setCellPickingON(false);
+				this.preCountButton.setText("Pick A New Cell");
+				this.preCountButton.setForeground(Color_schema.white_230);
+			}
+			dialog=null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in starting or stopping picking cells!");
+			e.printStackTrace();
 		}
-		else{
-			// stop cell picking
-			glassPane.setVisible(false);
-			this.guiListener.setCellPickingON(false);
-			this.preCountButton.setText("Pick A New Cell");
-			this.preCountButton.setForeground(Color_schema.white_230);
-		}
-		dialog=null;
 	}
 	
 	
 	
 	
-	public void moveSelectedMarkingLayer(int direction){
+	public void moveSelectedMarkingLayer(int direction) throws Exception{
 		if(this.taskManager.moveSelectedMarkingLayer(direction)){
 			updateImageLayerInfos();
 		}
@@ -2918,7 +2938,7 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	/**
 	 * Updates properties (color, size thickness, etc.) of all MarkingPanels.
 	 */
-	public void updateAllMarkingPanelProperties(){
+	public void updateAllMarkingPanelProperties() throws Exception{
 
 		setPropertiesOfAllMarkingPanels();
 		layers.repaint();
@@ -2976,7 +2996,7 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	/**
 	 *  Refreshes GridPanel if selected MarkingLayer has Grid set as visible
 	 */
-	public void updateGridPanel(){
+	public void updateGridPanel() throws Exception{
 		this.gridPanel.setGridProperties(taskManager.getConvertedGridProperties());
 		if(this.taskManager.getSelectedMarkingLayer() != null &&
 				this.taskManager.getSelectedMarkingLayer().isVisible()
@@ -3040,7 +3060,7 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	 * The dimension is needed in transformation of image to fit in ImagePanel.
 	 * This method is called always when ImagePanel size is changed (Splitpane size changed or GUI window size changed)
 	 */
-	private void updateImagePanelSize(){
+	private void updateImagePanelSize() throws Exception{
 		this.taskManager.setImagePanelDimension(new Dimension((int)this.imagePanel.getBounds().getWidth(), (int)this.imagePanel.getBounds().getHeight()));
 
 	}
@@ -3058,25 +3078,25 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	}
 
 
-/**
- * Organizes the zooming of image in or out to given point and given zoom multiplier. Determines and refreshes also the markings, grid and highlight.
- * @param midPoint Point where zooming will focus
- * @param zoomValue double multiplier how much is zoomed (1.25 -> 25% zoom)
- * @param processinID int ID quality of Image (ID.IMAGE_PROCESSING_BEST_QUALITY, etc.)
- */
-public void zoomAndUpdateImage(Point midPoint, double zoomValue, int processinID) throws Exception{
-	PositionedImage im = taskManager.getZoomedImage(midPoint, zoomValue);
-	if(im != null && im.getImage() != null){
-		this.imagePanel.setImage(im);
-
-		updateCoordinatesOfVisibleMarkingPanels();
-		updateGridPanel();
-		removeHighLightPoint();
-		this.layers.repaint();
+	/**
+	 * Organizes the zooming of image in or out to given point and given zoom multiplier. Determines and refreshes also the markings, grid and highlight.
+	 * @param midPoint Point where zooming will focus
+	 * @param zoomValue double multiplier how much is zoomed (1.25 -> 25% zoom)
+	 * @param processinID int ID quality of Image (ID.IMAGE_PROCESSING_BEST_QUALITY, etc.)
+	 */
+	public void zoomAndUpdateImage(Point midPoint, double zoomValue, int processinID) throws Exception{
+		PositionedImage im = taskManager.getZoomedImage(midPoint, zoomValue);
+		if(im != null && im.getImage() != null){
+			this.imagePanel.setImage(im);
+	
+			updateCoordinatesOfVisibleMarkingPanels();
+			updateGridPanel();
+			removeHighLightPoint();
+			this.layers.repaint();
+		}
+	
+	
 	}
-
-
-}
 
 
 }
