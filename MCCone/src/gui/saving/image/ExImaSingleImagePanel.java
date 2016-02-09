@@ -13,6 +13,9 @@ import information.MarkingLayer;
  */
 public class ExImaSingleImagePanel extends SingleImagePanel{
 
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -2085833168256742639L;
+
 	/**
 	 * Instantiates a new Panel.
 	 *
