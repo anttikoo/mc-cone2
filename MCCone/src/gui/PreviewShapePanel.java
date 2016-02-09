@@ -9,6 +9,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.util.logging.Logger;
+
 import javax.swing.JPanel;
 import operators.ShapeDrawer;
 
@@ -17,12 +19,18 @@ import operators.ShapeDrawer;
  */
 public class PreviewShapePanel extends JPanel{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 7121873037752670757L;
+
 	/** The shape drawer. Draws the shape of marking*/
 	private ShapeDrawer shapeDrawer;
 	
 	/** The Rectangle of the visible panel. */
 	private Rectangle recOfBackPanel;
 	
+	
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
 	/**
 	 * Instantiates a new preview shape panel. Height will be taken from given Rectangle recOfBackPanel.
@@ -36,12 +44,17 @@ public class PreviewShapePanel extends JPanel{
 	 * @param recOfVisibleWindow the Rectangle of the whole visible window
 	 */
 	public PreviewShapePanel(float thickness, float opacity, int shapeID, int shapeSize, Color color, Rectangle recOfBackPanel, Rectangle recOfVisibleWindow){		
-		this.setOpaque(false); // layer has to be transparent
-		this.setBackground(new Color(0,0,0,0));
-		
-		this.recOfBackPanel=recOfBackPanel;
-		//setPanelBounds(this.recOfBackPanel);	
-		shapeDrawer=new ShapeDrawer(shapeID, shapeSize, thickness, opacity, color);
+		try {
+			this.setOpaque(false); // layer has to be transparent
+			this.setBackground(new Color(0,0,0,0));
+			
+			this.recOfBackPanel=recOfBackPanel;
+			//setPanelBounds(this.recOfBackPanel);	
+			shapeDrawer=new ShapeDrawer(shapeID, shapeSize, thickness, opacity, color);
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing Preview panel to marking!");
+			e.printStackTrace();
+		}
 	
 		
 	}
@@ -51,7 +64,7 @@ public class PreviewShapePanel extends JPanel{
 	 *
 	 * @param backPanelRectangle the new Bounds of panel
 	 */
-	public void setPanelBounds(Rectangle backPanelRectangle){
+	public void setPanelBounds(Rectangle backPanelRectangle) throws Exception{
 		this.setBounds(new Rectangle((int)backPanelRectangle.getX()-300, (int)backPanelRectangle.getY(), 300,(int)this.recOfBackPanel.getHeight()));		
 	}
 	
@@ -62,16 +75,23 @@ public class PreviewShapePanel extends JPanel{
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		
-		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER, 1.0F));			// THIS WORKING IN LINUX	
-		g2d.setPaint(Color_schema.dark_30);
-		g2d.setStroke(new BasicStroke(shapeDrawer.getThickness())); // set thickness
-		RenderingHints rh= new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHints(rh);
-		this.shapeDrawer.drawShape(g2d,this.shapeDrawer.getShapeSize()+50, this.shapeDrawer.getShapeSize()+50);
-		
-		g2d.dispose();
+		Graphics2D g2d = null;
+		try {
+			g2d = (Graphics2D) g.create();
+			g2d.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER, 1.0F));			// THIS WORKING IN LINUX	
+			g2d.setPaint(Color_schema.dark_30);
+			g2d.setStroke(new BasicStroke(shapeDrawer.getThickness())); // set thickness
+			RenderingHints rh= new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d.setRenderingHints(rh);
+			this.shapeDrawer.drawShape(g2d,this.shapeDrawer.getShapeSize()+50, this.shapeDrawer.getShapeSize()+50);
+			
+			g2d.dispose();
+		} catch (Exception e) {
+			LOGGER.severe("Error in painting Preview panel!");
+			e.printStackTrace();
+			if(g2d != null)
+				g2d.dispose();
+		}
 		
 	}
 	
@@ -80,7 +100,7 @@ public class PreviewShapePanel extends JPanel{
 	 *
 	 * @param thickness Float the new shape thickness
 	 */
-	public void setShapeThickness(float thickness){
+	public void setShapeThickness(float thickness) throws Exception{
 		this.shapeDrawer.setThickness(thickness);
 	}
 	
@@ -98,7 +118,7 @@ public class PreviewShapePanel extends JPanel{
 	 *
 	 * @param opacity the new shape opacity
 	 */
-	public void setShapeOpacity(float opacity){
+	public void setShapeOpacity(float opacity) throws Exception{
 		this.shapeDrawer.setOpacity(opacity);
 	}
 	
@@ -107,7 +127,7 @@ public class PreviewShapePanel extends JPanel{
 	 *
 	 * @param shapeID the new shape id
 	 */
-	public void setShapeID(int shapeID){
+	public void setShapeID(int shapeID) throws Exception{
 		this.shapeDrawer.setShapeID(shapeID);
 	}
 	
@@ -116,7 +136,7 @@ public class PreviewShapePanel extends JPanel{
 	 *
 	 * @param c the new shape color
 	 */
-	public void setShapeColor(Color c){
+	public void setShapeColor(Color c) throws Exception{
 		this.shapeDrawer.setShapeColor(c);
 	}
 }

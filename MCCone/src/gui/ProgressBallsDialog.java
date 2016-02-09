@@ -136,7 +136,7 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 			super.revalidate();
 			this.revalidate();
 		} catch (Exception e) {
-			
+			LOGGER.severe("ERROR in initializing components of progress window!");
 			e.printStackTrace();
 		}
 
@@ -263,6 +263,7 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 		}
 		catch (Exception e) {
 			LOGGER.severe("Error in painting progress dialog balls");
+			e.printStackTrace();
 		}
 
 	}
@@ -294,15 +295,15 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 	public void run() {
 		try {
 
-		// starts painting the balls
-		while(showON){
-			showNextBall();
-			painterThread.sleep(100);	
-
-		}
-		
-		LOGGER.fine("ProgressBall Thread ended");
-		painterThread.interrupt();
+			// starts painting the balls
+			while(showON){
+				showNextBall();
+				painterThread.sleep(100);	
+	
+			}
+			
+			LOGGER.fine("ProgressBall Thread ended");
+			painterThread.interrupt();
 		
 		} catch (InterruptedException e) {		
 			e.printStackTrace();
@@ -339,7 +340,7 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 		 *
 		 * @param newARGB the new argb
 		 */
-		private void paintWithOpacity(int newARGB){
+		private void paintWithOpacity(int newARGB) throws Exception{
 
 			this.aRGBopacity=newARGB;
 			this.repaint();
@@ -350,7 +351,7 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 		 *
 		 * @return the a rgb opacity
 		 */
-		public int getaRGBopacity() {
+		public int getaRGBopacity() throws Exception{
 			return aRGBopacity;
 		}
 
@@ -358,10 +359,15 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 		@Override
 		public void paintComponent(Graphics g) {		
 			super.paintComponents(g);
-			g2d = (Graphics2D) g.create();
-			g2d.setPaint(new Color(aRGBopacity,aRGBopacity,aRGBopacity));
-			g2d.fillOval(2, 2, 16, 16);
-			g2d.dispose();
+			try {
+				g2d = (Graphics2D) g.create();
+				g2d.setPaint(new Color(aRGBopacity,aRGBopacity,aRGBopacity));
+				g2d.fillOval(2, 2, 16, 16);
+				g2d.dispose();
+			} catch (Exception e) {
+				LOGGER.severe("Error in painting progress balls!");
+				e.printStackTrace();
+			}
 		}
 	}
 

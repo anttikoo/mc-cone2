@@ -546,22 +546,25 @@ protected JPanel initUPPanels() throws Exception{
 
 					@Override
 					public void stateChanged(ChangeEvent arg0) {
-						if(colorChooser.getColor() != null){
-							setSelectedColor(colorChooser.getColor());
-						}
-						// update shapeBox's shape color
-						if(shapeBox != null){
-							shapeBox=setUpComboBox();
-							comboBoxPanel.repaint();
-						}
-						
-						if(previewShapePanel != null){
-							previewShapePanel.setShapeColor(selectedColor);
-							previewShapePanel.repaint();
+						try {
+							if(colorChooser.getColor() != null){
+								setSelectedColor(colorChooser.getColor());
+							}
+							// update shapeBox's shape color
+							if(shapeBox != null){
+								shapeBox=setUpComboBox();
+								comboBoxPanel.repaint();
+							}
 							
+							if(previewShapePanel != null){
+								previewShapePanel.setShapeColor(selectedColor);
+								previewShapePanel.repaint();
+								
+							}
+						} catch (Exception e) {
+							LOGGER.severe("Error in choosing color!");
+							e.printStackTrace();
 						}
-
-
 
 					}
 				});
@@ -714,11 +717,16 @@ private JComboBox<Integer> setUpComboBox(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int index= ((JComboBox<Integer>)e.getSource()).getSelectedIndex();
-				setSelectedShapeID(getShapeIDfromComboBoxIndex(index));
-				previewShapePanel.setShapeID(getShapeIDfromComboBoxIndex(index));
-				previewShapePanel.repaint();
-				previewShapePanel.transferFocus();
+				try {
+					int index= ((JComboBox<Integer>)e.getSource()).getSelectedIndex();
+					setSelectedShapeID(getShapeIDfromComboBoxIndex(index));
+					previewShapePanel.setShapeID(getShapeIDfromComboBoxIndex(index));
+					previewShapePanel.repaint();
+					previewShapePanel.transferFocus();
+				} catch (Exception e1) {
+					LOGGER.severe("Error in selecting shape!");
+					e1.printStackTrace();
+				}
 			}
 		});
 
