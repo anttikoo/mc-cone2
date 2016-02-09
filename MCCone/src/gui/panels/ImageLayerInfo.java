@@ -50,6 +50,9 @@ import javax.swing.event.CaretListener;
 public class ImageLayerInfo extends JPanel{
 	
 
+/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -4726272780653526727L;
+
 private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 /** The ID of ImageLayer. */
@@ -202,6 +205,7 @@ private JPanel addMarkingLayerJPanel;
 
 		} catch (Exception e) {
 			LOGGER.severe("Error in " +e.getClass().toString() + " :" +e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -341,6 +345,7 @@ private JPanel addMarkingLayerJPanel;
 
 									} catch (Exception ex) {
 										LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
+										ex.printStackTrace();
 									}
 							}
 						});
@@ -359,6 +364,7 @@ private JPanel addMarkingLayerJPanel;
 										((SingleMarkingPanel)((JButton)e.getSource()).getParent()).markingTitleJTextField.setFont(new Font(fontUsed.getName(),Font.ITALIC,fontUsed.getSize()));
 									} catch (Exception ex) {
 										LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
+										ex.printStackTrace();
 									}
 								}
 							});
@@ -374,6 +380,7 @@ private JPanel addMarkingLayerJPanel;
 
 											} catch (Exception ex) {
 												LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
+												ex.printStackTrace();
 											}
 									}
 								});
@@ -389,6 +396,7 @@ private JPanel addMarkingLayerJPanel;
 
 											} catch (Exception ex) {
 												LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
+												ex.printStackTrace();
 											}
 										}
 									});
@@ -409,6 +417,7 @@ private JPanel addMarkingLayerJPanel;
 
 												} catch (Exception ex) {
 													LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
+													ex.printStackTrace();
 												}
 											}
 										});
@@ -418,7 +427,7 @@ private JPanel addMarkingLayerJPanel;
 	/** Adds MarkingLayers to markingArea JPanel
 	 * @param markingLayerList
 	 */
-	private void addMarkingLayers(ArrayList<MarkingLayer> markingLayerList){
+	private void addMarkingLayers(ArrayList<MarkingLayer> markingLayerList) throws Exception{
 
 		if(markingLayerList != null && markingLayerList.size()>0){
 
@@ -681,6 +690,7 @@ private JPanel addMarkingLayerJPanel;
 				return img;
 			} catch (Exception e) {
 				LOGGER.severe("Error in adding SingleMarkingPanel " +e.getClass().toString() + " :" +e.getMessage());
+				e.printStackTrace();
 				return null;
 			}
 	}
@@ -793,7 +803,7 @@ public String getImageLayerName() {
 	 * @param text string which length affects to font size
 	 * @return font which size has been set
 	 */
-	private Font setRightTitleFont(String text, Font font, boolean bold){
+	private Font setRightTitleFont(String text, Font font, boolean bold) throws Exception{
 
 
 			if(text != null && text.length()>20){
@@ -830,7 +840,7 @@ public String getImageLayerName() {
 	 * @param text the text
 	 * @return the string
 	 */
-	private String splitTextIfTooLong(String text){
+	private String splitTextIfTooLong(String text) throws Exception{
 		try {
 			if(text != null){
 				if(text.length()>50){
@@ -856,14 +866,35 @@ public String getImageLayerName() {
 	 *
 	 */
 	private class SingleMarkingPanel extends JPanel {
+		
+		/** The Constant serialVersionUID. */
+		private static final long serialVersionUID = -3674159779176115654L;
+		
+		/** The marking_layer_id. */
 		private int marking_layer_id;
+		
+		/** The is visible layer. */
 		private boolean isVisibleLayer = true;
+		
+		/** The is grid on. */
 		private boolean isGridON=false;
+		
+		/** The marking_layer_name. */
 		private String marking_layer_name;
+		
+		/** The marking title j text field. */
 		private JTextField markingTitleJTextField;
+		
+		/** The close j button. */
 		private JButton closeJButton;
+		
+		/** The count j label. */
 		private JLabel countJLabel;
+		
+		/** The marking layer. */
 		private MarkingLayer markingLayer;
+		
+		/** The grid button. */
 		private JButton gridButton;
 
 		/**
@@ -1129,6 +1160,7 @@ public String getImageLayerName() {
 			} catch (Exception e) {
 				// do nothing
 				LOGGER.severe("Error in adding SingleMarkingPanel " +e.getClass().toString() + " :" +e.getMessage());
+				e.printStackTrace();
 			}
 		}
 
@@ -1137,12 +1169,19 @@ public String getImageLayerName() {
 		 * Returns the counting text width.
 		 *
 		 * @return the counting text width
+		 * @throws Exception the exception
 		 */
-		private int getCountingTextWidth(){
+		private int getCountingTextWidth() throws Exception{
 			return getWidthOfText(this.countJLabel.getFont(), this.countJLabel);
 		}
 		
-		public void setGridButton(int id){
+		/**
+		 * Sets the grid button.
+		 *
+		 * @param id the new grid button
+		 * @throws Exception the exception
+		 */
+		public void setGridButton(int id) throws Exception{
 			if(id == ID.GRID_SELECTED){
 			this.gridButton.setIcon(getImageIcon("/images/g_selected_red.png"));
 			}
@@ -1188,10 +1227,16 @@ public String getImageLayerName() {
 		 * @return true, if is marking layer selected
 		 */
 		public boolean isMarkingLayerSelected(){
-			if(this.markingLayer!= null){
-				return this.markingLayer.isSelected();
+			try {
+				if(this.markingLayer!= null){
+					return this.markingLayer.isSelected();
+				}
+				return false;
+			} catch (Exception e) {
+				LOGGER.severe("Error in checking is MarkingLayer selected !");
+				e.printStackTrace();
+				return false;
 			}
-			return false;
 		}
 
 

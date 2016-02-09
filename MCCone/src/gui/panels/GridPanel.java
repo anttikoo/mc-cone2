@@ -13,6 +13,8 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Logger;
+
 import javax.swing.JPanel;
 
 /**
@@ -21,6 +23,12 @@ import javax.swing.JPanel;
  */
 public class GridPanel extends JPanel {
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 3212138619144272967L;
+	
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+
 	/** The grid property. */
 	private GridProperties gridProperty;
 	
@@ -103,19 +111,29 @@ public class GridPanel extends JPanel {
 	 */
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		if(this.gridProperty != null && this.gridProperty.isGridON() && isShowGrid()){
-		g2d = (Graphics2D) g.create();
-			drawGrid(g2d);
+		
+		try {
+			if(this.gridProperty != null && this.gridProperty.isGridON() && isShowGrid()){
+			g2d = (Graphics2D) g.create();
+				drawGrid(g2d);
 
-			g2d.dispose();
+				g2d.dispose();
+			}
+		} catch (Exception e) {
+			LOGGER.severe("Error in painting Grid on image!");
+			e.printStackTrace();
+			if(g2d != null)
+				g2d.dispose();
 		}
 	}
 
 	/**
 	 * Draws a Grid lines and rectangles to Graphics2D object and return it.
+	 *
 	 * @param g2 Graphics2D object
+	 * @throws Exception the exception
 	 */
-	public void drawGrid(Graphics2D g2){
+	public void drawGrid(Graphics2D g2) throws Exception{
 
 		g2.setPaint(thinLineColor);
 		g2.setStroke(thinStroke); // set thickness
@@ -164,13 +182,15 @@ public class GridPanel extends JPanel {
 
 	/**
 	 *  Draws a line.
+	 *
 	 * @param x1 int start point vertical position
 	 * @param y1 int start point horizontal position
 	 * @param x2 int end point vertical position
 	 * @param y2 int end point horizontal position
 	 * @param g2 Graphics2D object
+	 * @throws Exception the exception
 	 */
-	private void drawLine(int x1, int y1, int x2, int y2, Graphics2D g2){
+	private void drawLine(int x1, int y1, int x2, int y2, Graphics2D g2) throws Exception{
 
 		g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,used_transparency_soft));
 		g2.setStroke(boldStroke);
@@ -184,13 +204,15 @@ public class GridPanel extends JPanel {
 
 	/**
 	 *  Draws a edge line, which is closest to image edge.
+	 *
 	 * @param x1 int start point vertical position
 	 * @param y1 int start point horizontal position
 	 * @param x2 int end point vertical position
 	 * @param y2 int end point horizontal position
 	 * @param g2 Graphics2D object
+	 * @throws Exception the exception
 	 */
-private void drawEdgeLine(int x1, int y1, int x2, int y2, Graphics2D g2){
+private void drawEdgeLine(int x1, int y1, int x2, int y2, Graphics2D g2) throws Exception{
 
 		g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,used_transparency_hard));
 		g2.setStroke(boldStroke);
@@ -202,10 +224,12 @@ private void drawEdgeLine(int x1, int y1, int x2, int y2, Graphics2D g2){
 
 	/**
 	 * Draws Rectangle to GridPanel. Shows the grid rectangle, that is not selected.
+	 *
 	 * @param rec PositionedRectangle object
 	 * @param g2 Graphics2D object
+	 * @throws Exception the exception
 	 */
-	private void drawRectangle(Rectangle rec, Graphics2D g2){
+	private void drawRectangle(Rectangle rec, Graphics2D g2) throws Exception{
 
 		g2.setComposite(AlphaComposite.getInstance(SharedVariables.transparencyModeOVER,used_transparency_hard));
 

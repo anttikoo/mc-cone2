@@ -5,6 +5,8 @@ import information.PositionedImage;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.logging.Logger;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
@@ -14,6 +16,12 @@ import javax.swing.JPanel;
  *
  */
 public class ImagePanel extends JPanel {
+	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -8441712306543933488L;
+
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
 	/** The image to be shown. */
 	private BufferedImage image_to_shown;
@@ -29,11 +37,16 @@ public class ImagePanel extends JPanel {
 	 * @param id the id
 	 */
 	public ImagePanel(BufferedImage im, int id){
-		this.image_to_shown = im;
-		this.setBackground(Color_schema.dark_40);
-		this.setBorder(BorderFactory.createEmptyBorder());
-		this.setLayout(null);
-		this.location=new Point(0,0);
+		try {
+			this.image_to_shown = im;
+			this.setBackground(Color_schema.dark_40);
+			this.setBorder(BorderFactory.createEmptyBorder());
+			this.setLayout(null);
+			this.location=new Point(0,0);
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing ImagePanel!");
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -41,11 +54,16 @@ public class ImagePanel extends JPanel {
 	 *  Class constructor.
 	 */
 	public ImagePanel(){
-		this.image_to_shown=null;
-		this.setBackground(Color_schema.dark_40);
-		this.setBorder(BorderFactory.createEmptyBorder());
-		this.setLayout(null);
-		this.location=new Point(0,0);
+		try {
+			this.image_to_shown=null;
+			this.setBackground(Color_schema.dark_40);
+			this.setBorder(BorderFactory.createEmptyBorder());
+			this.setLayout(null);
+			this.location=new Point(0,0);
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing ImagePanel!");
+			e.printStackTrace();
+		}
 
 	}
 
@@ -65,7 +83,7 @@ public class ImagePanel extends JPanel {
 	 *
 	 * @param p the new image location
 	 */
-	public void setImageLocation(Point p){
+	public void setImageLocation(Point p) throws Exception{
 		this.location=p;
 	}
 	
@@ -74,18 +92,25 @@ public class ImagePanel extends JPanel {
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		if(this.image_to_shown != null)
-			//g.drawImage(this.image_to_shown,0,0,this.getWidth(),this.getHeight(),null);
-		g.drawImage(this.image_to_shown, (int)this.location.getX(), (int)this.location.getY(), Color_schema.dark_40, null);
-		g.dispose();
+		try {
+			if(this.image_to_shown != null)
+				//g.drawImage(this.image_to_shown,0,0,this.getWidth(),this.getHeight(),null);
+			g.drawImage(this.image_to_shown, (int)this.location.getX(), (int)this.location.getY(), Color_schema.dark_40, null);
+			g.dispose();
+		} catch (Exception e) {
+			LOGGER.severe("Error in painting ImagePanel!");
+			e.printStackTrace();
+			g.dispose();
+		}
 	}
 
 	/**
 	 * Sets the image and position.
 	 *
 	 * @param pi the new image and position
+	 * @throws Exception the exception
 	 */
-	public void setImageAndPosition(PositionedImage pi){
+	public void setImageAndPosition(PositionedImage pi) throws Exception{
 		if(pi != null){
 			this.setImageLocation(pi.getPosition());
 			this.setBufferedImage(pi.getImage());
@@ -97,8 +122,9 @@ public class ImagePanel extends JPanel {
 	 * Sets the image.
 	 *
 	 * @param pi the new PositionedImage
+	 * @throws Exception the exception
 	 */
-	public void setImage(PositionedImage pi){
+	public void setImage(PositionedImage pi) throws Exception{
 		if(pi != null){
 			this.setBufferedImage(pi.getImage());
 			pi=null;
