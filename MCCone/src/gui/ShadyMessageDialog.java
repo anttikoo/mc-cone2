@@ -37,6 +37,11 @@ import javax.swing.KeyStroke;
  */
 public class ShadyMessageDialog extends JDialog{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3759564265081943415L;
+
 	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
@@ -80,12 +85,17 @@ public class ShadyMessageDialog extends JDialog{
 	public ShadyMessageDialog(JFrame frame, String title, String message, int typeOfButtons, Component comp){
 		super(frame,true);
 		super.setLocationRelativeTo(comp);
-		this.setLocationRelativeTo(comp);
-		this.parentComponent = comp;
-		this.title=title;
-		this.message=message;
-		this.typeOfButtons=typeOfButtons;	
-		initDialog();
+		try {
+			this.setLocationRelativeTo(comp);
+			this.parentComponent = comp;
+			this.title=title;
+			this.message=message;
+			this.typeOfButtons=typeOfButtons;	
+			initDialog();
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing message dialog!");
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -100,14 +110,19 @@ public class ShadyMessageDialog extends JDialog{
 	 */
 	public ShadyMessageDialog(JDialog dialog, String title, String message, int typeOfButtons, Component comp){
 		super(dialog,true);
-	
 		super.setLocationRelativeTo(comp);
-		this.setLocationRelativeTo(comp);
-		this.parentComponent = comp;
-		this.title=title;
-		this.message=message;
-		this.typeOfButtons=typeOfButtons;	
-		initDialog();
+		
+		try {
+			this.setLocationRelativeTo(comp);
+			this.parentComponent = comp;
+			this.title=title;
+			this.message=message;
+			this.typeOfButtons=typeOfButtons;	
+			initDialog();
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing message dialog!");
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -168,37 +183,53 @@ public class ShadyMessageDialog extends JDialog{
 			buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
 			buttonPanel.setBackground(Color_schema.dark_30);
 			buttonPanel.add(Box.createHorizontalGlue());
-
+			JButton yesButton =null;
+			JButton okButton =null;
+			JButton cancelButton = null;
+			
 			// add buttons by the type of message box
 			switch (typeOfButtons) {
 				case ID.OK:
-					buttonPanel.add(addKeyListenerToButton(createButton(ID.OK)));
+					okButton = createButton(ID.OK);
+					MouseListenerCreator.addKeyListenerToButton(okButton, ID.BUTTON_ENTER);
+					buttonPanel.add(okButton);
 					buttonPanel.add(Box.createRigidArea(new Dimension(20,0)));
 					break;
 				case ID.YES_NO:
-					buttonPanel.add(addKeyListenerToButton(createButton(ID.YES)));
+					yesButton = createButton(ID.YES);
+					MouseListenerCreator.addKeyListenerToButton(yesButton, ID.BUTTON_ENTER);
+					
+					buttonPanel.add(yesButton);
 					buttonPanel.add(Box.createRigidArea(new Dimension(20,0)));
 					buttonPanel.add(createButton(ID.NO));
 					buttonPanel.add(Box.createRigidArea(new Dimension(20,0)));
 					break;					
 				case ID.YES_NO_CANCEL:
-					buttonPanel.add(addKeyListenerToButton(createButton(ID.YES)));
+					yesButton = createButton(ID.YES);
+					MouseListenerCreator.addKeyListenerToButton(yesButton, ID.BUTTON_ENTER);
+					cancelButton = createButton(ID.CANCEL);
+					MouseListenerCreator.addKeyListenerToButton(cancelButton, ID.BUTTON_CANCEL);
+					buttonPanel.add(yesButton);
 					buttonPanel.add(Box.createRigidArea(new Dimension(20,0)));
 					buttonPanel.add(createButton(ID.NO));
 					buttonPanel.add(Box.createRigidArea(new Dimension(20,0)));
-					buttonPanel.add(createButton(ID.CANCEL));
+					buttonPanel.add(cancelButton);
 					buttonPanel.add(Box.createRigidArea(new Dimension(20,0)));
 					break;
 				case ID.APPEND_OVERWRITE_CANCEL:
+					cancelButton = createButton(ID.CANCEL);
+					MouseListenerCreator.addKeyListenerToButton(cancelButton, ID.BUTTON_CANCEL);
 					buttonPanel.add(createButton(ID.APPEND));
 					buttonPanel.add(Box.createRigidArea(new Dimension(20,0)));
 					buttonPanel.add(createButton(ID.OVERWRITE));
 					buttonPanel.add(Box.createRigidArea(new Dimension(20,0)));
-					buttonPanel.add(createButton(ID.CANCEL));
+					buttonPanel.add(cancelButton);
 					buttonPanel.add(Box.createRigidArea(new Dimension(20,0)));
 					break;
 				case ID.CANCEL:
-					buttonPanel.add(createButton(ID.CANCEL));
+					cancelButton = createButton(ID.CANCEL);
+					MouseListenerCreator.addKeyListenerToButton(cancelButton, ID.BUTTON_CANCEL);
+					buttonPanel.add(cancelButton);
 					buttonPanel.add(Box.createRigidArea(new Dimension(20,0)));
 					break;
 
@@ -227,6 +258,7 @@ public class ShadyMessageDialog extends JDialog{
 
 		} catch (Exception e) {
 			LOGGER.severe("Error in initializing Dialog: " +e.getClass().toString() + " :" +e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -235,7 +267,7 @@ public class ShadyMessageDialog extends JDialog{
 	 *
 	 * @return the down button panel width
 	 */
-	private int getDownButtonPanelWidth(){
+	private int getDownButtonPanelWidth() throws Exception{
 		int width=0;
 		Component[] bComp=this.buttonPanel.getComponents();
 		for (int i = 0; i < bComp.length; i++) {
@@ -282,8 +314,13 @@ public class ShadyMessageDialog extends JDialog{
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				returnValue=buttonID;
-				hideDialog();
+				try {
+					returnValue=buttonID;
+					hideDialog();
+				} catch (Exception e1) {
+					LOGGER.severe("Error in closing message dialog!");
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -296,7 +333,7 @@ public class ShadyMessageDialog extends JDialog{
 	 *
 	 * @param bounds the new panel position
 	 */
-	public void setPanelPosition(Rectangle bounds){
+	public void setPanelPosition(Rectangle bounds) throws Exception{
 		if(bounds != null)
 			this.setBounds(bounds);
 	
@@ -308,7 +345,7 @@ public class ShadyMessageDialog extends JDialog{
 	 * @param id the ID
 	 * @return the button text
 	 */
-	protected String getButtonText(int id){
+	protected String getButtonText(int id) throws Exception{
 		switch (id) {
 
 		case ID.CANCEL:
@@ -332,29 +369,6 @@ public class ShadyMessageDialog extends JDialog{
 	}
 
 
-	/**
-	 * Adds the key listener to a JButton.
-	 *
-	 * @param button the button
-	 * @return the j button
-	 */
-	private JButton addKeyListenerToButton(final JButton button){
-
-		InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
-		ActionMap actionMap = 	(button).getActionMap();
-		actionMap.put("enter_pressed", new AbstractAction() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				button.doClick();
-
-			}
-
-		});
-
-		return button;
-	}
 
 	/**
 	 * Shows dialog.
@@ -362,14 +376,20 @@ public class ShadyMessageDialog extends JDialog{
 	 * @return the int
 	 */
 	public int showDialog(){
-		setVisible(true);
-		return returnValue;
+		try {
+			setVisible(true);
+			return returnValue;
+		} catch (Exception e) {
+			LOGGER.severe("Error in showing message dialog!");
+			e.printStackTrace();
+			return -1;
+		}
 	}
 
 	/**
 	 * Hides dialog.
 	 */
-	private void hideDialog(){
+	private void hideDialog() throws Exception{
 		
 		this.setVisible(false);
 		this.dispose();
@@ -380,7 +400,7 @@ public class ShadyMessageDialog extends JDialog{
 	 *
 	 * @return the dialog back panel
 	 */
-	public JPanel getDialogBackPanel(){
+	public JPanel getDialogBackPanel() throws Exception{
 		return this.dialogBackPanel;
 	}
 	
@@ -388,10 +408,11 @@ public class ShadyMessageDialog extends JDialog{
 	 * Gets the first button.
 	 *
 	 * @return the first button
+	 * @throws Exception the exception
 	 */
 	
-	
-	public JButton getFirstButton(){
+
+	public JButton getFirstButton() throws Exception{
 		Component[] buttons=this.buttonPanel.getComponents();
 		if(buttons.length>0 && buttons[0] instanceof JButton)
 			return (JButton)buttons[0];
@@ -403,8 +424,9 @@ public class ShadyMessageDialog extends JDialog{
 	 * Gets the JPanel messagePanel.
 	 *
 	 * @return JPanel MessagePanel
+	 * @throws Exception the exception
 	 */
-	public JPanel getMessagePanel(){
+	public JPanel getMessagePanel() throws Exception{
 		return this.messagePanel;
 	}
 	
