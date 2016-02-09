@@ -31,6 +31,11 @@ import javax.swing.JPanel;
  */
 public class PropertiesDialog extends JDialog {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6775428395671317852L;
+
 	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
@@ -72,8 +77,13 @@ public class PropertiesDialog extends JDialog {
 	 */
 	public PropertiesDialog(JFrame frame, GUI gui, Point point){
 		super(frame,true);
-		this.gui = gui;
-		this.topLeftPoint=point;
+		try {
+			this.gui = gui;
+			this.topLeftPoint=point;
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing Properties Dialog!");
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -169,7 +179,12 @@ public class PropertiesDialog extends JDialog {
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				hideDialog(true); // close dialog and save changes
+				try {
+					hideDialog(true); // close dialog and save changes
+				} catch (Exception e1) {
+					LOGGER.severe("Error in closing Properties Dialog !");
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -184,7 +199,12 @@ public class PropertiesDialog extends JDialog {
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			hideDialog(false);	// close dialog without saving
+				try {
+					hideDialog(false);	// close dialog without saving
+				} catch (Exception e1) {
+					LOGGER.severe("Error in closing Properties dialog!");
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -277,7 +297,7 @@ public class PropertiesDialog extends JDialog {
 		return null;
 	}
 	
-	public boolean isMade_changes() {
+	public boolean isMade_changes() throws Exception{
 		return made_changes;
 	}
 
