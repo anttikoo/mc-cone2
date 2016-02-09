@@ -45,6 +45,9 @@ import gui.PropertiesDialog;
  */
 public class GridPropertiesPanel extends PropertiesDialog {
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 4886201841981432510L;
+
 	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
@@ -101,11 +104,16 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	public GridPropertiesPanel(JFrame frame, GUI gui, Point point, ArrayList<MarkingLayer> markingLayerList, ArrayList<SingleGridSize> gridSizeList) {
 		super(frame, gui, point);
 	
-		this.markingLayerList=markingLayerList;
-		this.gridON= isAnyGridON();
-		this.gridSizes=gridSizeList;
-		this.templateGP= getFirstGridPropertiesFromAllMarkingLayers(0, 0);
-		initDialog();
+		try {
+			this.markingLayerList=markingLayerList;
+			this.gridON= isAnyGridON();
+			this.gridSizes=gridSizeList;
+			this.templateGP= getFirstGridPropertiesFromAllMarkingLayers(0, 0);
+			initDialog();
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing Window for Grid Properties!");
+			e.printStackTrace();
+		}
 	
 	}
 
@@ -146,9 +154,14 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gridON=true;
-				updateOnOffButtonIcons();
-				enableComponents();
+				try {
+					gridON=true;
+					updateOnOffButtonIcons();
+					enableComponents();
+				} catch (Exception e1) {
+					LOGGER.severe("Error in putting grid ON!");
+					e1.printStackTrace();
+				}
 
 			}
 		});
@@ -165,9 +178,14 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gridON=false;
-				updateOnOffButtonIcons();
-				enableComponents();
+				try {
+					gridON=false;
+					updateOnOffButtonIcons();
+					enableComponents();
+				} catch (Exception e1) {
+					LOGGER.severe("Error in putting grid OFF!");
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -188,7 +206,7 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	/* (non-Javadoc)
 	 * @see gui.PropertiesDialog#initCenterPanels()
 	 */
-	protected JPanel initCenterPanels(){
+	protected JPanel initCenterPanels() throws Exception{
 		JPanel centerBackPanel = new JPanel();
 		centerBackPanel.setLayout(new BoxLayout(centerBackPanel, BoxLayout.PAGE_AXIS));
 		centerBackPanel.setMaximumSize(new Dimension(panelWidth,300));
@@ -208,69 +226,69 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 */
 	private JPanel setUpComboBoxPanel(){
 		try{
-		JPanel comboBoxPanel=new JPanel();
-		comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.LINE_AXIS));
-		comboBoxPanel.setMaximumSize(new Dimension(panelWidth,36));
-		comboBoxPanel.setMinimumSize(new Dimension(panelWidth,36));
-		comboBoxPanel.setPreferredSize(new Dimension(panelWidth,36));
-		JPanel comboLabelPanel=new JPanel();
-		comboLabelPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
-		comboLabel = new JLabel("SELECT GRID DIMENSION:");
-		comboLabel.setFont(Fonts.b14);
-		comboLabelPanel.add(comboLabel);
-		comboBoxPanel.add(Box.createRigidArea(new Dimension(20,0)));
-		comboBoxPanel.add(comboLabel);
-		comboBoxPanel.add(Box.createRigidArea(new Dimension(20,0)));
-		comboBoxPanel.add(Box.createRigidArea(new Dimension(0,5)));
-		
-		gridComboBox = new JComboBox<String>();
-		gridComboBox.setMaximumSize(new Dimension(80,25));
-		gridComboBox.setPreferredSize(new Dimension(80,25));
-		gridComboBox.setMinimumSize(new Dimension(80,25));
-		gridComboBox.setMaximumRowCount(20);
-		gridComboBox.setBackground(Color_schema.dark_20);
-		gridComboBox.setForeground(Color_schema.white_230);
-		gridComboBox.setFont(Fonts.b14);
-
-		//go trough all gridsizes and add to Combobox
-		Iterator<SingleGridSize> sgIterator = this.gridSizes.iterator();
-		while(sgIterator.hasNext()){
-			SingleGridSize sgs= sgIterator.next();
-			String size= ""+sgs.getRows() + " x "+sgs.getColumns();
-			gridComboBox.addItem(size);
-
-		}
-		if(gridComboBox.getItemCount() >0){
-					
-			if(this.templateGP != null){
-
-				int index= getIndexOfGridSizeList(this.templateGP.getGridRowCount(), this.templateGP.getGridColumnCount());
-				if(index >0)
-					gridComboBox.setSelectedIndex(index);
-				else
+			JPanel comboBoxPanel=new JPanel();
+			comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.LINE_AXIS));
+			comboBoxPanel.setMaximumSize(new Dimension(panelWidth,36));
+			comboBoxPanel.setMinimumSize(new Dimension(panelWidth,36));
+			comboBoxPanel.setPreferredSize(new Dimension(panelWidth,36));
+			JPanel comboLabelPanel=new JPanel();
+			comboLabelPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
+			comboLabel = new JLabel("SELECT GRID DIMENSION:");
+			comboLabel.setFont(Fonts.b14);
+			comboLabelPanel.add(comboLabel);
+			comboBoxPanel.add(Box.createRigidArea(new Dimension(20,0)));
+			comboBoxPanel.add(comboLabel);
+			comboBoxPanel.add(Box.createRigidArea(new Dimension(20,0)));
+			comboBoxPanel.add(Box.createRigidArea(new Dimension(0,5)));
+			
+			gridComboBox = new JComboBox<String>();
+			gridComboBox.setMaximumSize(new Dimension(80,25));
+			gridComboBox.setPreferredSize(new Dimension(80,25));
+			gridComboBox.setMinimumSize(new Dimension(80,25));
+			gridComboBox.setMaximumRowCount(20);
+			gridComboBox.setBackground(Color_schema.dark_20);
+			gridComboBox.setForeground(Color_schema.white_230);
+			gridComboBox.setFont(Fonts.b14);
+	
+			//go trough all gridsizes and add to Combobox
+			Iterator<SingleGridSize> sgIterator = this.gridSizes.iterator();
+			while(sgIterator.hasNext()){
+				SingleGridSize sgs= sgIterator.next();
+				String size= ""+sgs.getRows() + " x "+sgs.getColumns();
+				gridComboBox.addItem(size);
+	
+			}
+			if(gridComboBox.getItemCount() >0){
+						
+				if(this.templateGP != null){
+	
+					int index= getIndexOfGridSizeList(this.templateGP.getGridRowCount(), this.templateGP.getGridColumnCount());
+					if(index >0)
+						gridComboBox.setSelectedIndex(index);
+					else
+						gridComboBox.setSelectedIndex(0);
+				}
+				else{
 					gridComboBox.setSelectedIndex(0);
+				}
 			}
-			else{
-				gridComboBox.setSelectedIndex(0);
-			}
-		}
-
-		gridComboBox.addItemListener(new ItemListener() {
-
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-
-					@Override
-					public void run() {
-						updateGridDimensionFromComboBox(ID.GPANEL_GRID_SIZE_CHANGED);
-					}
-				});
-			}
-		});
-		
-		comboBoxPanel.add(gridComboBox);
-		return comboBoxPanel;
+	
+			gridComboBox.addItemListener(new ItemListener() {
+	
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					SwingUtilities.invokeLater(new Runnable() {
+	
+						@Override
+						public void run() {
+							updateGridDimensionFromComboBox(ID.GPANEL_GRID_SIZE_CHANGED);
+						}
+					});
+				}
+			});
+			
+			comboBoxPanel.add(gridComboBox);
+			return comboBoxPanel;
 		
 		}catch(Exception e){
 			LOGGER.severe("unable to create combobox for grid sizes "+e.getMessage());
@@ -282,9 +300,11 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	
 	/**
 	 * Creates JPanel, where is JSlider for selecting for percent value of selected cells in grid.
+	 *
 	 * @return JPanel containing JSlider for percent value of selected cells in grid
+	 * @throws Exception the exception
 	 */
-	private JPanel setupSliderPanel(){
+	private JPanel setupSliderPanel() throws Exception{
 		
 		JPanel percentSliderPanel=new JPanel();
 		percentSliderPanel.setLayout(new BoxLayout(percentSliderPanel, BoxLayout.LINE_AXIS));
@@ -351,9 +371,10 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 	/**
 	 *  Setups the Preview Grid at startup: visible or invisible.
-	 *  
+	 *
+	 * @throws Exception the exception
 	 */
-	private void enableComponents(){
+	private void enableComponents() throws Exception{
 
 			this.gridComboBox.setEnabled(gridON);
 			if(gridON){
@@ -386,9 +407,11 @@ public class GridPropertiesPanel extends PropertiesDialog {
 
 	/**
 	 * Set ups the Grid example JPanel.
+	 *
 	 * @return JPanel the Grid example panel.
+	 * @throws Exception the exception
 	 */
-	private JPanel setUpGridExamplePanel(){
+	private JPanel setUpGridExamplePanel() throws Exception{
 		backGridExamplePanel = new JPanel();
 		backGridExamplePanel.setLayout(new BoxLayout(backGridExamplePanel, BoxLayout.PAGE_AXIS));
 		backGridExamplePanel.setMaximumSize(new Dimension(panelWidth,320));
@@ -423,10 +446,12 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	
 	/**
 	 * Selects randomly which grid cells are selected.
+	 *
 	 * @param r int rows of grid
 	 * @param c int columns of grid
+	 * @throws Exception the exception
 	 */
-	private void setRandomGridShown(int r, int c){
+	private void setRandomGridShown(int r, int c) throws Exception{
 		int rows = r;
 		int columns = c;
 		
@@ -458,8 +483,9 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 *
 	 * @param rowCount amount of rows.
 	 * @param columnCount amount of columns
+	 * @throws Exception the exception
 	 */
-	private void unselectAllCells(int rowCount,int columnCount){
+	private void unselectAllCells(int rowCount,int columnCount) throws Exception{
 		for(int r=1;r<=rowCount;r++){
 			for(int c=1;c<=columnCount;c++){
 				GridRectangle gr= getGridRectangle(r, c);
@@ -477,18 +503,24 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * @return the random grid rectangle
 	 */
 	private GridRectangle getRandomGridRectangle(int rowCount, int columnCount){
-		if(countUnselectedGridRectangle(rowCount, columnCount)>0){
-		
-			Random rand = new Random();
-			int randomRow = rand.nextInt((rowCount - 1) + 1) + 1;
-			int randomColumn = rand.nextInt((columnCount - 1) + 1) + 1;
-			GridRectangle gr= getGridRectangle(randomRow, randomColumn);
-			if(gr.isSelected())
-				return getRandomGridRectangle(rowCount, columnCount);
-			else
-				return gr;
+		try {
+			if(countUnselectedGridRectangle(rowCount, columnCount)>0){
+			
+				Random rand = new Random();
+				int randomRow = rand.nextInt((rowCount - 1) + 1) + 1;
+				int randomColumn = rand.nextInt((columnCount - 1) + 1) + 1;
+				GridRectangle gr= getGridRectangle(randomRow, randomColumn);
+				if(gr.isSelected())
+					return getRandomGridRectangle(rowCount, columnCount);
+				else
+					return gr;
+			}
+			return null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting random gridrectangle!");
+			e.printStackTrace();
+			return null;
 		}
-		return null;
 			
 	}
 	
@@ -498,8 +530,9 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * @param rowCount the row count
 	 * @param columnCount the column count
 	 * @return the int
+	 * @throws Exception the exception
 	 */
-	private int countUnselectedGridRectangle(int rowCount, int columnCount){
+	private int countUnselectedGridRectangle(int rowCount, int columnCount) throws Exception{
 		int count_unselected=0;
 		
 		for(int r=1;r<=rowCount;r++){
@@ -520,8 +553,9 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * @param rowCount the row count
 	 * @param columnCount the column count
 	 * @return the int
+	 * @throws Exception the exception
 	 */
-	private int countSelectedGridRectangle(int rowCount, int columnCount){
+	private int countSelectedGridRectangle(int rowCount, int columnCount) throws Exception{
 		int count_selected=0;
 		
 		for(int r=1;r<=rowCount;r++){
@@ -552,26 +586,32 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * @see GridProperties
 	 */
 	private GridProperties getFirstGridPropertiesFromAllMarkingLayers(int r, int c){
-		boolean checkRandomProcent=false;
-		if(r>0 && c>0)
-			checkRandomProcent=true;
-		
-		GridProperties returnGP=null;
-		
-			returnGP= getFirstGridProperties(r,c, true, checkRandomProcent); // Just visible GridProperties from Markinglayers that are modified at the same time. 
+		try {
+			boolean checkRandomProcent=false;
+			if(r>0 && c>0)
+				checkRandomProcent=true;
 			
-			if(returnGP == null)
-				returnGP = getFirstGridProperties(r,c, false, checkRandomProcent); // Unvisible GridProperties from Markinglayers that are modified at the same time. 
-			if(returnGP == null){
-				// Get GridProperties from markingLayers that are under same ImageLayer (not needed to be modified)
-				// preferable visible, but returns also unvisible GridProperties
-				returnGP= getGPFromMarkingLayerList(this.markingLayerList, r, c, checkRandomProcent); 
+			GridProperties returnGP=null;
+			
+				returnGP= getFirstGridProperties(r,c, true, checkRandomProcent); // Just visible GridProperties from Markinglayers that are modified at the same time. 
+				
+				if(returnGP == null)
+					returnGP = getFirstGridProperties(r,c, false, checkRandomProcent); // Unvisible GridProperties from Markinglayers that are modified at the same time. 
 				if(returnGP == null){
-					returnGP= getGPFromMarkingLayerList(this.gui.getAllMarkingLayers(), r,c,checkRandomProcent); 
-					
-				}		
-			}	
-		return returnGP;
+					// Get GridProperties from markingLayers that are under same ImageLayer (not needed to be modified)
+					// preferable visible, but returns also unvisible GridProperties
+					returnGP= getGPFromMarkingLayerList(this.markingLayerList, r, c, checkRandomProcent); 
+					if(returnGP == null){
+						returnGP= getGPFromMarkingLayerList(this.gui.getAllMarkingLayers(), r,c,checkRandomProcent); 
+						
+					}		
+				}	
+			return returnGP;
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting first grid properties from all MarkingLayers!");
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	/**
@@ -635,24 +675,30 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * @return GridProperties
 	 */
 	private GridProperties getFirstGridProperties(int r, int c, boolean findON, boolean checkProcent){
-		if(this.markingLayerList != null && this.markingLayerList.size()>0){
-			Iterator<MarkingLayer> miterator=this.markingLayerList.iterator();
-			while(miterator.hasNext()){
-				MarkingLayer layer= miterator.next();
-				if(layer.getGridProperties() != null)
-				{	
-						GridProperties gp=layer.getGridProperties();
-						//if r and c >0 has gp include same values of columns and rows.
-						if(gp != null && ((c==0 && r==0) || (gp.getGridColumnCount()==c && gp.getGridRowCount()==r) ) ){
-							if( (findON && gp.isGridON() ) || !findON) // if searching GRID which is ON (visible) then check that it is ON.
-								if(!checkProcent || checkProcent && gp.getRandomProcent()== this.randomSlider.getValue()) // check that percentSlider value is same
-									if(gp.checkRandomPercentBySelectedRectangles()) // check that random procent is ok.
-										return gp;
-						}
-				}						
+		try {
+			if(this.markingLayerList != null && this.markingLayerList.size()>0){
+				Iterator<MarkingLayer> miterator=this.markingLayerList.iterator();
+				while(miterator.hasNext()){
+					MarkingLayer layer= miterator.next();
+					if(layer.getGridProperties() != null)
+					{	
+							GridProperties gp=layer.getGridProperties();
+							//if r and c >0 has gp include same values of columns and rows.
+							if(gp != null && ((c==0 && r==0) || (gp.getGridColumnCount()==c && gp.getGridRowCount()==r) ) ){
+								if( (findON && gp.isGridON() ) || !findON) // if searching GRID which is ON (visible) then check that it is ON.
+									if(!checkProcent || checkProcent && gp.getRandomProcent()== this.randomSlider.getValue()) // check that percentSlider value is same
+										if(gp.checkRandomPercentBySelectedRectangles()) // check that random procent is ok.
+											return gp;
+							}
+					}						
+				}
 			}
+			return null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting firs grid property from MarkingLayers!");
+			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 
@@ -663,36 +709,54 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * @return the first MarkingLayer with grid on
 	 */
 	private MarkingLayer getFirstMarkingLayerWithGridON(){
-		if(this.markingLayerList != null && this.markingLayerList.size()>0){
-		Iterator<MarkingLayer> miterator=this.markingLayerList.iterator();
-		while(miterator.hasNext()){
-			MarkingLayer layer= miterator.next();
-			if(layer.getGridProperties() != null && layer.getGridProperties().isGridON())
-				return layer;
+		try {
+			if(this.markingLayerList != null && this.markingLayerList.size()>0){
+			Iterator<MarkingLayer> miterator=this.markingLayerList.iterator();
+			while(miterator.hasNext()){
+				MarkingLayer layer= miterator.next();
+				if(layer.getGridProperties() != null && layer.getGridProperties().isGridON())
+					return layer;
+			}
+			}
+			return null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting first MarkingLayer which Grid is ON!");
+			e.printStackTrace();
+			return null;
 		}
-		}
-		return null;
 	}
 
 
 	private boolean isAnyGridON(){
-		if(getFirstMarkingLayerWithGridON() != null){
-			return true;
+		try {
+			if(getFirstMarkingLayerWithGridON() != null){
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			LOGGER.severe("Error in checking is any grid on!");
+			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
 	private int getIndexOfGridSizeList(int row, int column){
-		if(this.gridSizes != null && gridSizes.size()>0){
-			for(int i=0; i<this.gridSizes.size();i++){
+		try {
+			if(this.gridSizes != null && gridSizes.size()>0){
+				for(int i=0; i<this.gridSizes.size();i++){
 
-				SingleGridSize sgs = this.gridSizes.get(i);
-				if(sgs.getRows() == row && sgs.getColumns() == column){
-					return i;
+					SingleGridSize sgs = this.gridSizes.get(i);
+					if(sgs.getRows() == row && sgs.getColumns() == column){
+						return i;
+					}
 				}
 			}
+			return -1;
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting index of spesific grid size!");
+			e.printStackTrace();
+			return -1;
 		}
-		return -1;
 	}
 	
 	
@@ -703,49 +767,54 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * @param updateType the update type
 	 */
 	private void updateGridDimensionFromComboBox(int updateType){
-		int index=0;
-		SingleGridSize sgs=null;
-		switch(updateType){
-		// at startup of this GridPropertiesPanel
-			case ID.GPANEL_STARTUP:
-				if(this.templateGP != null)
-					index = getIndexOfGridSizeList(this.templateGP.getGridRowCount(), this.templateGP.getGridColumnCount());
-				break;
-				 // user pressed new index of combobox
-			case ID.GPANEL_GRID_SIZE_CHANGED:
+		try {
+			int index=0;
+			SingleGridSize sgs=null;
+			switch(updateType){
+			// at startup of this GridPropertiesPanel
+				case ID.GPANEL_STARTUP:
+					if(this.templateGP != null)
+						index = getIndexOfGridSizeList(this.templateGP.getGridRowCount(), this.templateGP.getGridColumnCount());
+					break;
+					 // user pressed new index of combobox
+				case ID.GPANEL_GRID_SIZE_CHANGED:
+					
+					index = this.gridComboBox.getSelectedIndex();
+					// get new template GP, because the column and row are changed
+					if(this.gridSizes != null && this.gridSizes.size()>index){
+						sgs= this.gridSizes.get(index);
+						if(sgs != null){
+							this.templateGP = getFirstGridPropertiesFromAllMarkingLayers(sgs.getRows(), sgs.getColumns());
+						}
+					}
+					break;
+					//random slider moved
+				case ID.GPANEL_RANDOM_PROCENT_CHANGED:
+					index = this.gridComboBox.getSelectedIndex();
+					if(this.gridSizes != null && this.gridSizes.size()>index){
+						sgs= this.gridSizes.get(index);
+						if(sgs != null){
+							this.templateGP = getFirstGridPropertiesFromAllMarkingLayers(sgs.getRows(), sgs.getColumns());
+						}
+					}
+					break;
 				
-				index = this.gridComboBox.getSelectedIndex();
-				// get new template GP, because the column and row are changed
-				if(this.gridSizes != null && this.gridSizes.size()>index){
-					sgs= this.gridSizes.get(index);
-					if(sgs != null){
-						this.templateGP = getFirstGridPropertiesFromAllMarkingLayers(sgs.getRows(), sgs.getColumns());
-					}
-				}
-				break;
-				//random slider moved
-			case ID.GPANEL_RANDOM_PROCENT_CHANGED:
-				index = this.gridComboBox.getSelectedIndex();
-				if(this.gridSizes != null && this.gridSizes.size()>index){
-					sgs= this.gridSizes.get(index);
-					if(sgs != null){
-						this.templateGP = getFirstGridPropertiesFromAllMarkingLayers(sgs.getRows(), sgs.getColumns());
-					}
-				}
-				break;
 			
-		
-		}
-		// if gridSizes has values -> update Grid
-		if(this.gridSizes != null && this.gridSizes.size()>index){
-			if(sgs==null)
-				sgs= this.gridSizes.get(index);
-			if(sgs != null){				
-			//	if(((GridLayout)this.gridPanel.getLayout()).getRows() != sgs.getRows() || ((GridLayout)this.gridPanel.getLayout()).getColumns() != sgs.getColumns() ||this.gridPanel.getComponentCount() ==0){					
-					updateGridSize(sgs.getRows(), sgs.getColumns());
-			//	}
+			}
+			// if gridSizes has values -> update Grid
+			if(this.gridSizes != null && this.gridSizes.size()>index){
+				if(sgs==null)
+					sgs= this.gridSizes.get(index);
+				if(sgs != null){				
+				//	if(((GridLayout)this.gridPanel.getLayout()).getRows() != sgs.getRows() || ((GridLayout)this.gridPanel.getLayout()).getColumns() != sgs.getColumns() ||this.gridPanel.getComponentCount() ==0){					
+						updateGridSize(sgs.getRows(), sgs.getColumns());
+				//	}
 
-			}		
+				}		
+			}
+		} catch (Exception e) {
+			LOGGER.severe("Error in updating grid dimension and rectangles!");
+			e.printStackTrace();
 		}	
 	}
 	
@@ -755,8 +824,9 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 *
 	 * @param r the amount of rows
 	 * @param c the amount of columns
+	 * @throws Exception the exception
 	 */
-	private void updateGridSize(int r, int c){
+	private void updateGridSize(int r, int c) throws Exception{
 		this.gridPanel.removeAll();
 		this.gridPanel.revalidate();
 		boolean usedTemplateGridProperties = false;
@@ -810,30 +880,38 @@ public class GridPropertiesPanel extends PropertiesDialog {
 			on_button.repaint();
 			off_button.repaint();
 
-		//	LOGGER.fine("grid on: "+gridON);
+		
 		} catch (Exception e) {
 			LOGGER.severe("Error in Buttons of GridProperties -view");
 			e.printStackTrace();
 		}
 	}
 	
-	public void countRandomProsentBySelectedGridRectangles(){
-		SingleGridSize sgs = this.gridSizes.get(this.gridComboBox.getSelectedIndex());
-		if(sgs != null){
-			int r = sgs.getRows();
-			int c = sgs.getColumns();
-			
-			double selected = (double)countSelectedGridRectangle(r, c);
-			double unselected = (double)countUnselectedGridRectangle(r, c);
-			
-			//int randomPer = (int)( Math.ceil(selected/(selected+unselected)));
-			int randomPer= (int)((Math.round((((double)selected)/ ((double)(selected+unselected))*100))/5)*5);
+	/**
+	 * Count random percent by selected grid rectangles.
+	 */
+	public void countRandomPercentBySelectedGridRectangles(){
+		try {
+			SingleGridSize sgs = this.gridSizes.get(this.gridComboBox.getSelectedIndex());
+			if(sgs != null){
+				int r = sgs.getRows();
+				int c = sgs.getColumns();
+				
+				double selected = (double)countSelectedGridRectangle(r, c);
+				double unselected = (double)countUnselectedGridRectangle(r, c);
+				
+				//int randomPer = (int)( Math.ceil(selected/(selected+unselected)));
+				int randomPer= (int)((Math.round((((double)selected)/ ((double)(selected+unselected))*100))/5)*5);
 
-			if(randomPer >0 && randomPer <=100){
-				this.randomSlider.setValue(randomPer);
-				this.randomSlider.repaint();
+				if(randomPer >0 && randomPer <=100){
+					this.randomSlider.setValue(randomPer);
+					this.randomSlider.repaint();
+				}
+				
 			}
-			
+		} catch (Exception e) {
+			LOGGER.severe("Error in counting random percent by selected grid rectangles!");
+			e.printStackTrace();
 		}
 		
 	}
@@ -844,55 +922,62 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * @param saveChanges boolean will changes be saved.
 	 */
 	protected void hideDialog(boolean saveChanges){
-		if(saveChanges){
-			this.made_changes=true;
-			// create gridProperty
-			GridProperties gridProperty=new GridProperties(this.gui.getPresentImageDimension());
-			gridProperty.setGridON(this.gridON);
-			gridProperty.setRandomPercent(this.randomSlider.getValue()); // set random procent value
-			SingleGridSize sgs = this.gridSizes.get(this.gridComboBox.getSelectedIndex());
-			int x=sgs.getWidthAlign();
-			int y=sgs.getHeightAlign();
-			// add vertical lines and rectangles
-			for(int r=1;r <= sgs.getRows();r++){
-				gridProperty.addRowLineY(y);
-				x=sgs.getWidthAlign(); // start new row at left
+		try {
+			if(saveChanges){
+				this.made_changes=true;
+				// create gridProperty
+				GridProperties gridProperty=new GridProperties(this.gui.getPresentImageDimension());
+				gridProperty.setGridON(this.gridON);
+				gridProperty.setRandomPercent(this.randomSlider.getValue()); // set random procent value
+				SingleGridSize sgs = this.gridSizes.get(this.gridComboBox.getSelectedIndex());
+				int x=sgs.getWidthAlign();
+				int y=sgs.getHeightAlign();
+				// add vertical lines and rectangles
+				for(int r=1;r <= sgs.getRows();r++){
+					gridProperty.addRowLineY(y);
+					x=sgs.getWidthAlign(); // start new row at left
+					for(int c=1; c<= sgs.getColumns();c++){
+							GridRectangle gr = getGridRectangle(r, c);
+							if(gr != null){							
+								PositionedRectangle pRec = new PositionedRectangle(x, y, sgs.getGridCellSize(), sgs.getGridCellSize(), r,c, gr.isSelected());
+								gridProperty.addSinglePositionedRectangle(pRec);
+							}
+					//	}
+						x+=sgs.getGridCellSize();
+					}
+					y+=sgs.getGridCellSize();
+				}
+
+				gridProperty.addRowLineY(y); // rightmost line
+
+				// add horizontal lines
+				x=sgs.getWidthAlign();
 				for(int c=1; c<= sgs.getColumns();c++){
-						GridRectangle gr = getGridRectangle(r, c);
-						if(gr != null){							
-							PositionedRectangle pRec = new PositionedRectangle(x, y, sgs.getGridCellSize(), sgs.getGridCellSize(), r,c, gr.isSelected());
-							gridProperty.addSinglePositionedRectangle(pRec);
-						}
-				//	}
+					gridProperty.addColumnLineX(x);
 					x+=sgs.getGridCellSize();
 				}
-				y+=sgs.getGridCellSize();
+				gridProperty.addColumnLineX(x); // lowest line
+				
+
+
+				
+
+				// save the selected gridproperties to markinglayers
+				Iterator<MarkingLayer> mIterator = this.markingLayerList.iterator();
+				while(mIterator.hasNext()){
+					MarkingLayer mlayer= mIterator.next();
+					mlayer.setGridProperties(gridProperty);
+				}
+
 			}
-
-			gridProperty.addRowLineY(y); // rightmost line
-
-			// add horizontal lines
-			x=sgs.getWidthAlign();
-			for(int c=1; c<= sgs.getColumns();c++){
-				gridProperty.addColumnLineX(x);
-				x+=sgs.getGridCellSize();
-			}
-			gridProperty.addColumnLineX(x); // lowest line
-			
-	
-	
-			
-
-			// save the selected gridproperties to markinglayers
-			Iterator<MarkingLayer> mIterator = this.markingLayerList.iterator();
-			while(mIterator.hasNext()){
-				MarkingLayer mlayer= mIterator.next();
-				mlayer.setGridProperties(gridProperty);
-			}
-
+			this.setVisible(false);
+			this.dispose();
+		} catch (Exception e) {
+			LOGGER.severe("Error in closing window of Grid Properties!");
+			e.printStackTrace();
+			this.setVisible(false);
+			this.dispose();
 		}
-		this.setVisible(false);
-		dispose();
 	}
 
 	/**
@@ -901,8 +986,9 @@ public class GridPropertiesPanel extends PropertiesDialog {
 	 * @param r the row
 	 * @param c the column
 	 * @return the grid rectangle
+	 * @throws Exception the exception
 	 */
-	private GridRectangle getGridRectangle(int r, int c){
+	private GridRectangle getGridRectangle(int r, int c) throws Exception{
 		if(this.gridPanel != null && this.gridPanel.getComponentCount()>0){
 
 			Component[] grs= gridPanel.getComponents();

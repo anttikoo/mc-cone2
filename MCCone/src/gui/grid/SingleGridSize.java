@@ -1,9 +1,14 @@
 package gui.grid;
 
+import java.util.logging.Logger;
+
 /**
  * The Class SingleGridSize. Contains data for Grid sizes and amount of rows and columns in grid.
  */
 public class SingleGridSize {
+	
+/** The Constant LOGGER. */
+private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
 /** The grid cell size. */
 private int gridCellSize; // size in pixels in preview panel of GridPropertiesPanel
@@ -30,11 +35,16 @@ private int columns;
  * @param c the columns
  */
 public SingleGridSize(int size, int hAlign, int wAlign, int r, int c){
-	this.setGridCellSize(size);
-	this.setHeightAlign(hAlign);
-	this.setWidthAlign(wAlign);
-	this.setRows(r);
-	this.setColumns(c);
+	try {
+		this.setGridCellSize(size);
+		this.setHeightAlign(hAlign);
+		this.setWidthAlign(wAlign);
+		this.setRows(r);
+		this.setColumns(c);
+	} catch (Exception e) {
+		LOGGER.severe("Error in initializing single Grid Size!");
+		e.printStackTrace();
+	}
 }
 
 /**

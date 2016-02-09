@@ -119,8 +119,9 @@ public class PropertiesDialog extends JDialog {
 	 * Initializes  the center panels.
 	 *
 	 * @return the created JPanel
+	 * @throws Exception the exception
 	 */
-	protected JPanel initCenterPanels(){
+	protected JPanel initCenterPanels() throws Exception{
 		return null;
 	}
 

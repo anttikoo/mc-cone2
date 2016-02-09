@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.logging.Logger;
+
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -18,6 +20,9 @@ import javax.swing.JPanel;
  * The Class GridRectangle. Contains data of single Grid cell: position and is selected.
  */
 public class GridRectangle extends JPanel {
+	
+/** The Constant LOGGER. */
+private final static Logger LOGGER = Logger.getLogger("MCCLogger");
  
  /** The grid row and column number. */
  private Dimension grid_row_column;
@@ -44,22 +49,27 @@ private GridPropertiesPanel gridPropertiesPanel;
   * @param selected boolean is grid cell selected
   */
  public GridRectangle(int r, int c, boolean selected, GridPropertiesPanel gpp){
-	 this.isSelected=selected;
-	 this.gridPropertiesPanel=gpp;
-	 this.setBounds(0,0,100, 100);
-	 this.setRow(r);
-	 this.setColumn(c);
-	 this.setBackground(Color_schema.orange_medium);
-	 this.setLayout(new GridBagLayout());
+	 try {
+		this.isSelected=selected;
+		 this.gridPropertiesPanel=gpp;
+		 this.setBounds(0,0,100, 100);
+		 this.setRow(r);
+		 this.setColumn(c);
+		 this.setBackground(Color_schema.orange_medium);
+		 this.setLayout(new GridBagLayout());
 
-	 label = new JLabel("+");
-	 label.setFont(Fonts.b14);
-	 label.setForeground(Color_schema.dark_30);
-	 this.add(label);
-	 this.setToolTipText("This grid cell is used.");
+		 label = new JLabel("+");
+		 label.setFont(Fonts.b14);
+		 label.setForeground(Color_schema.dark_30);
+		 this.add(label);
+		 this.setToolTipText("This grid cell is used.");
 
-	 setUpMouseListener();
-	 updatePanel();
+		 setUpMouseListener();
+		 updatePanel();
+	} catch (Exception e) {
+		LOGGER.severe("Error in initializing GridRectangle!");
+		e.printStackTrace();
+	}
  }
 
 
@@ -111,40 +121,45 @@ private void setUpMouseListener(){
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				if(SharedVariables.canUserSelectGridRectangles){
-					if(isSelected() ){
-						int counter=0;
-						// check that at least one selected cell will be remain				
-						JPanel p = ((JPanel)((GridRectangle)e.getSource()).getParent()); // get owner of GridRectangles
-						if(p != null){
-							Component[] c=p.getComponents();
-							if(c != null && c.length>0){
-								System.out.println(c.length);
-								
-								for (int i = 0; i < c.length; i++) { // go through GridRectangles
-									Component sc = c[i];
-									if(sc != null){
-										if(sc instanceof GridRectangle){
-										GridRectangle gr = (GridRectangle)sc;
-										if (gr != null){
-											if(gr.isSelected)
-												counter++;
-										}
-										
+				try {
+					if(SharedVariables.canUserSelectGridRectangles){
+						if(isSelected() ){
+							int counter=0;
+							// check that at least one selected cell will be remain				
+							JPanel p = ((JPanel)((GridRectangle)e.getSource()).getParent()); // get owner of GridRectangles
+							if(p != null){
+								Component[] c=p.getComponents();
+								if(c != null && c.length>0){
+									System.out.println(c.length);
+									
+									for (int i = 0; i < c.length; i++) { // go through GridRectangles
+										Component sc = c[i];
+										if(sc != null){
+											if(sc instanceof GridRectangle){
+											GridRectangle gr = (GridRectangle)sc;
+											if (gr != null){
+												if(gr.isSelected)
+													counter++;
+											}
+											
+											}
 										}
 									}
-								}
-								
-							}	
+									
+								}	
+							}
+							if(counter>1) // still remains other selected cells
+								setSelected(false);
 						}
-						if(counter>1) // still remains other selected cells
-							setSelected(false);
+						else
+							setSelected(true);
+
+						updatePanel();
+						gridPropertiesPanel.countRandomPercentBySelectedGridRectangles();
 					}
-					else
-						setSelected(true);
-	
-					updatePanel();
-					gridPropertiesPanel.countRandomProsentBySelectedGridRectangles();
+				} catch (Exception e1) {
+					LOGGER.severe("Error in releasing mouse on Grid Rectangle!");
+					e1.printStackTrace();
 				}
 			}
 			@Override
@@ -179,8 +194,10 @@ private void setUpMouseListener(){
 
 /**
  * Updates the color and tooltiptext of JPanel of this grid cell.
+ *
+ * @throws Exception the exception
  */
-public void updatePanel(){
+public void updatePanel() throws Exception{
 	if(isSelected){
 		this.setBackground(Color_schema.orange_medium);
 		 label.setForeground(Color_schema.dark_30);
