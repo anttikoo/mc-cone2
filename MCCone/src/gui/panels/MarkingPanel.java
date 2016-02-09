@@ -20,6 +20,9 @@ import operators.ShapeDrawer;
  */
 public class MarkingPanel extends JPanel {
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 6331797710957894440L;
+
 	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
@@ -54,17 +57,22 @@ public class MarkingPanel extends JPanel {
 	 * @param mLayer the MarkingLayer
 	 */
 	public MarkingPanel(MarkingLayer mLayer){
-		this.setOpaque(false); // layer has to be transparent
-		this.id=mLayer.getLayerID();
-		this.paintColor=mLayer.getColor();
-		this.thickness=mLayer.getThickness();
-		mLayer.getOpacity();
-		this.shapeID= mLayer.getShapeID();
-		mLayer.getSize();
-		setCoordinateList(new ArrayList<Point>());
-		// set cursor to hair cursor
-		this.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-		this.shapeDrawer=new ShapeDrawer(mLayer, mLayer.getSize(), mLayer.getThickness(), mLayer.getOpacity(), mLayer.getColor());
+		try {
+			this.setOpaque(false); // layer has to be transparent
+			this.id=mLayer.getLayerID();
+			this.paintColor=mLayer.getColor();
+			this.thickness=mLayer.getThickness();
+			mLayer.getOpacity();
+			this.shapeID= mLayer.getShapeID();
+			mLayer.getSize();
+			setCoordinateList(new ArrayList<Point>());
+			// set cursor to hair cursor
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+			this.shapeDrawer=new ShapeDrawer(mLayer, mLayer.getSize(), mLayer.getThickness(), mLayer.getOpacity(), mLayer.getColor());
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing MarkingPanel "+mLayer.getLayerName()+"!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -136,64 +144,71 @@ public class MarkingPanel extends JPanel {
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 
-		if(isVisible){
-			g2d = (Graphics2D) g.create();
-			g2d.setPaint(this.paintColor);
-			g2d.setStroke(new BasicStroke(this.thickness)); // set thickness
-			RenderingHints rh= new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2d.setRenderingHints(rh);
-			Iterator<Point> coordinateIterator =this.coordinateList.iterator();
+		try {
+			if(isVisible){
+				g2d = (Graphics2D) g.create();
+				g2d.setPaint(this.paintColor);
+				g2d.setStroke(new BasicStroke(this.thickness)); // set thickness
+				RenderingHints rh= new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2d.setRenderingHints(rh);
+				Iterator<Point> coordinateIterator =this.coordinateList.iterator();
 
-				 switch(this.shapeID)
-		         {
-		             case ID.SHAPE_OVAL:
-			     		while(coordinateIterator.hasNext()){
-			     			Point c = coordinateIterator.next();
-			     			this.shapeDrawer.drawOval(g2d,c.x, c.y);
-			     		}
-		                break;
-		             case ID.SHAPE_DIAMOND:
-			     		while(coordinateIterator.hasNext()){
-			     			Point c = coordinateIterator.next();
-			     			this.shapeDrawer.drawDiamond(g2d,c.x, c.y);
-			     		}
-		                 break;
-		             case ID.SHAPE_PLUS:
-			     		while(coordinateIterator.hasNext()){
-			     			Point c = coordinateIterator.next();
-			     			this.shapeDrawer.drawPlus(g2d,c.x, c.y);
-			     		}
-		                 break;
-		             case ID.SHAPE_CROSS:
-			     		while(coordinateIterator.hasNext()){
-			     			Point c = coordinateIterator.next();
-			     			this.shapeDrawer.drawCross(g2d,c.x, c.y);
-			     		}
-		                 break;
-		             case ID.SHAPE_SQUARE:
-			     		while(coordinateIterator.hasNext()){
-			     			Point c = coordinateIterator.next();
-			     			this.shapeDrawer.drawSquare(g2d,c.x, c.y);
-			     		}
-		                break;
+					 switch(this.shapeID)
+			         {
+			             case ID.SHAPE_OVAL:
+				     		while(coordinateIterator.hasNext()){
+				     			Point c = coordinateIterator.next();
+				     			this.shapeDrawer.drawOval(g2d,c.x, c.y);
+				     		}
+			                break;
+			             case ID.SHAPE_DIAMOND:
+				     		while(coordinateIterator.hasNext()){
+				     			Point c = coordinateIterator.next();
+				     			this.shapeDrawer.drawDiamond(g2d,c.x, c.y);
+				     		}
+			                 break;
+			             case ID.SHAPE_PLUS:
+				     		while(coordinateIterator.hasNext()){
+				     			Point c = coordinateIterator.next();
+				     			this.shapeDrawer.drawPlus(g2d,c.x, c.y);
+				     		}
+			                 break;
+			             case ID.SHAPE_CROSS:
+				     		while(coordinateIterator.hasNext()){
+				     			Point c = coordinateIterator.next();
+				     			this.shapeDrawer.drawCross(g2d,c.x, c.y);
+				     		}
+			                 break;
+			             case ID.SHAPE_SQUARE:
+				     		while(coordinateIterator.hasNext()){
+				     			Point c = coordinateIterator.next();
+				     			this.shapeDrawer.drawSquare(g2d,c.x, c.y);
+				     		}
+			                break;
 
-		             case ID.SHAPE_TRIANGLE:
-				     	while(coordinateIterator.hasNext()){
-				     		Point c = coordinateIterator.next();
-				     		this.shapeDrawer.drawTriangle(g2d,c.x, c.y);
-				     	}
-				     	break;
-		             default : // circle
+			             case ID.SHAPE_TRIANGLE:
+					     	while(coordinateIterator.hasNext()){
+					     		Point c = coordinateIterator.next();
+					     		this.shapeDrawer.drawTriangle(g2d,c.x, c.y);
+					     	}
+					     	break;
+			             default : // circle
 
-			     		while(coordinateIterator.hasNext()){
-			     			Point c = coordinateIterator.next();
-			     			this.shapeDrawer.drawCircle(g2d,c.x, c.y);
-			     		}
-		             	break;
-		         }
-			}
+				     		while(coordinateIterator.hasNext()){
+				     			Point c = coordinateIterator.next();
+				     			this.shapeDrawer.drawCircle(g2d,c.x, c.y);
+				     		}
+			             	break;
+			         }
+				}
 
-			g2d.dispose();
+				g2d.dispose();
+		} catch (Exception e) {
+			LOGGER.severe("Error in painting MarkingPanel!");
+			e.printStackTrace();
+			if(g2d != null)
+				g2d.dispose();
+		}
 
 }
 
@@ -202,8 +217,9 @@ public class MarkingPanel extends JPanel {
 	 * Sets the coordinate list.
 	 *
 	 * @param coordinateList the new coordinate list
+	 * @throws Exception the exception
 	 */
-	public void setCoordinateList(ArrayList<Point> coordinateList) {
+	public void setCoordinateList(ArrayList<Point> coordinateList) throws Exception {
 		this.coordinateList = coordinateList;
 	}
 
@@ -211,8 +227,9 @@ public class MarkingPanel extends JPanel {
 	 * Sets the marking panel properties.
 	 *
 	 * @param mLayer the new marking panel properties
+	 * @throws Exception the exception
 	 */
-	public void setMarkingPanelProperties(MarkingLayer mLayer){	
+	public void setMarkingPanelProperties(MarkingLayer mLayer) throws Exception{	
 		this.paintColor=mLayer.getColor();
 		this.thickness=mLayer.getThickness();
 		mLayer.getOpacity();
@@ -226,14 +243,14 @@ public class MarkingPanel extends JPanel {
 	 *
 	 * @param cursor the new new cursor
 	 */
-	public void setNewCursor(Cursor cursor){
+	public void setNewCursor(Cursor cursor) throws Exception{
 		this.setCursor(cursor);
 	}
 
 	/* (non-Javadoc)
 	 * @see javax.swing.JComponent#setVisible(boolean)
 	 */
-	public void setVisible(boolean isVisible) {
+	public void setVisible(boolean isVisible){
 		this.isVisible = isVisible;
 	}
 }
