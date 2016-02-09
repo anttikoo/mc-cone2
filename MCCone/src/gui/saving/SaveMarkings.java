@@ -26,6 +26,9 @@ import operators.XMLwriteManager;
  */
 public class SaveMarkings extends SaverDialog{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -1239754004585220377L;
+
 	/** The xml writing manager. */
 	private XMLwriteManager xmlWriteManager;
 	
@@ -74,8 +77,9 @@ public class SaveMarkings extends SaverDialog{
 	 *
 	 * @param id the id of ImageLayer.
 	 * @return the ArrayList containing single name of selected ImageLayer.
+	 * @throws Exception the exception
 	 */
-	private ArrayList<String> collectSingleSelectedImageLayerName(int id){
+	private ArrayList<String> collectSingleSelectedImageLayerName(int id) throws Exception{
 		ArrayList<String> list=new ArrayList<String>();
 		Component[] imPanelList= imageScrollPanel.getComponents();
 
@@ -92,7 +96,7 @@ public class SaveMarkings extends SaverDialog{
 	/* (non-Javadoc)
 	 * @see gui.saving.SaverDialog#createSingleImagePanel(information.ImageLayer)
 	 */
-	protected SingleImagePanel createSingleImagePanel(ImageLayer layer){
+	protected SingleImagePanel createSingleImagePanel(ImageLayer layer) throws Exception{
 		return new SMSingleImagePanel(layer, this);
 	}
 
@@ -103,7 +107,7 @@ public class SaveMarkings extends SaverDialog{
 	 * @param fileName the path of the file.
 	 * @return true, if successful
 	 */
-	public boolean hasImageLayersFound(String fileName){
+	public boolean hasImageLayersFound(String fileName) throws Exception{
 		XMLreadManager readManager=new XMLreadManager();
 	//	return XMLreadManager.foundImageLayer(file, imageLayersNamesForFileSelection);
 		return readManager.foundImageLayer(fileName, imageLayersNamesForFileSelection);
@@ -120,7 +124,7 @@ public class SaveMarkings extends SaverDialog{
 	/* (non-Javadoc)
 	 * @see gui.saving.SaverDialog#initImageViewPanelWithTitle()
 	 */
-	public JPanel initImageViewPanelWithTitle(){
+	public JPanel initImageViewPanelWithTitle() throws Exception{
 		return initImageViewPanel("Save Markings");
 	}
 
@@ -192,7 +196,7 @@ public class SaveMarkings extends SaverDialog{
 	/* (non-Javadoc)
 	 * @see gui.saving.SaverDialog#setSaveButtonEnabledByFileValidity(int)
 	 */
-	protected void setSaveButtonEnabledByFileValidity(int vID){ // vID is not used
+	protected void setSaveButtonEnabledByFileValidity(int vID) throws Exception{ // vID is not used
 		// go through all SingleImagePanels and if any has fileValidity ok -> enable saveButton
 		Component[] imPanelList= imageScrollPanel.getComponents();
 
@@ -346,9 +350,11 @@ public class SaveMarkings extends SaverDialog{
 	}
 	
 	/**
-	 * Updates saveButton state by calling method for checking is any file path for saving valid. 
+	 * Updates saveButton state by calling method for checking is any file path for saving valid.
+	 *
+	 * @throws Exception the exception
 	 */
-	protected void updateSaveButtonState(){
+	protected void updateSaveButtonState() throws Exception{
 		setSaveButtonEnabledByFileValidity(ID.UNDEFINED); //
 	}
 }

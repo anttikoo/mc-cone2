@@ -1,5 +1,6 @@
 package gui.saving;
 
+
 import javax.swing.JPanel;
 
 import information.ImageLayer;
@@ -8,6 +9,10 @@ import information.ImageLayer;
  * The Class ExSingleImagePanel. Export Single Image Panel.
  */
 public class ExSingleImagePanel extends SingleImagePanel{
+	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 219163881842016069L;
+
 
 	/**
 	 * Instantiates a new ExSingleImagePanel.
@@ -30,7 +35,7 @@ public class ExSingleImagePanel extends SingleImagePanel{
 	/* (non-Javadoc)
 	 * @see gui.saving.SingleImagePanel#setProperFileForMarkings(java.lang.String, boolean, int)
 	 */
-	public void setProperFileForMarkings(String properFileForMarkings, boolean showMessage, int fileValidityID) {
+	public void setProperFileForMarkings(String properFileForMarkings, boolean showMessage, int fileValidityID) throws Exception{
 		// do nothing
 	}
 

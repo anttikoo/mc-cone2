@@ -20,6 +20,9 @@ import operators.ImageCreator;
  */
 public class ExportImage extends SaverDialog{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 6547300499249743511L;
+	
 	/** The Constant LOGGER. */
 	final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
@@ -38,10 +41,12 @@ public class ExportImage extends SaverDialog{
 
 	
 	
-	/* Checks the validity of file and has same file selected to another ImageLayer.
+	
+	
+	/* (non-Javadoc)
 	 * @see gui.saving.SaverDialog#checkFileValidity(java.io.File)
 	 */
-	protected int checkFileValidity(File file){
+	protected int checkFileValidity(File file) throws Exception{
 		int validity = super.checkFileValidity(file);
 		
 		if(isFilePathFound(file.getAbsolutePath())){
@@ -53,7 +58,7 @@ public class ExportImage extends SaverDialog{
 	/* (non-Javadoc)
 	 * @see gui.saving.SaverDialog#createSingleImagePanel(information.ImageLayer)
 	 */
-	protected SingleImagePanel createSingleImagePanel(ImageLayer layer){
+	protected SingleImagePanel createSingleImagePanel(ImageLayer layer) throws Exception{
 		return new ExImaSingleImagePanel(layer,this);
 	}
 
@@ -74,7 +79,7 @@ public class ExportImage extends SaverDialog{
 	/* (non-Javadoc)
 	 * @see gui.saving.SaverDialog#initImageViewPanelWithTitle()
 	 */
-	protected JPanel initImageViewPanelWithTitle(){
+	protected JPanel initImageViewPanelWithTitle() throws Exception{
 		return initImageViewPanel("Export Image With Markings");
 	}
 	

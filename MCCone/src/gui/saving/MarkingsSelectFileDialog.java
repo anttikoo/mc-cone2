@@ -10,6 +10,9 @@ import operators.XMLreadManager;
  */
 public class MarkingsSelectFileDialog extends SelectFileDialog {
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -1477952851342793486L;
+	
 	/** The names of ImageLayers for xml search. */
 	private ArrayList<String> imageLayerNamesForXMLSearch;
 
@@ -30,7 +33,7 @@ public class MarkingsSelectFileDialog extends SelectFileDialog {
 	/* (non-Javadoc)
 	 * @see gui.saving.SelectFileDialog#hasImageLayersFound(java.lang.String)
 	 */
-	protected boolean hasImageLayersFound(String fileName){
+	protected boolean hasImageLayersFound(String fileName) throws Exception{
 		XMLreadManager readManager=new XMLreadManager();
 		return readManager.foundImageLayer(fileName, imageLayerNamesForXMLSearch);
 	}
@@ -38,7 +41,7 @@ public class MarkingsSelectFileDialog extends SelectFileDialog {
 	/* (non-Javadoc)
 	 * @see gui.saving.SelectFileDialog#setImageLayerNamesForXMLSearch(java.util.ArrayList)
 	 */
-	public void setImageLayerNamesForXMLSearch(ArrayList<String> list){
+	public void setImageLayerNamesForXMLSearch(ArrayList<String> list) throws Exception{
 		this.imageLayerNamesForXMLSearch=list;
 	}
 

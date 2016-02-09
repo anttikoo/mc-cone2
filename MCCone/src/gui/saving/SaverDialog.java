@@ -49,6 +49,9 @@ import javax.swing.SwingUtilities;
 public class SaverDialog extends JDialog{
 
 
+/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -8428423977175251157L;
+
 final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 /** The GUI. */
@@ -194,7 +197,7 @@ private Component parentComponent=null;
 	 * @param file the file
 	 * @return the int
 	 */
-	protected int checkFileValidity(File file){
+	protected int checkFileValidity(File file) throws Exception{
 		return FileManager.checkFile(file, SelectFileDialog.createFileFilterList(this.savingType), this.savingType==ID.SAVE_MARKINGS);
 	}
 
@@ -203,8 +206,9 @@ private Component parentComponent=null;
 	 *
 	 * @param layer the ImageLayer
 	 * @return the singleImagePanel
+	 * @throws Exception the exception
 	 */
-	protected SingleImagePanel createSingleImagePanel(ImageLayer layer){
+	protected SingleImagePanel createSingleImagePanel(ImageLayer layer) throws Exception{
 		return null;//new SingleImagePanel(layer,this);
 	}
 
@@ -213,8 +217,9 @@ private Component parentComponent=null;
 	 * If not found any, is "user.home" used.
 	 *
 	 * @return the first proper path of single image panels
+	 * @throws Exception the exception
 	 */
-	protected String getfirstProperPathOfSingleImagePanels(){
+	protected String getfirstProperPathOfSingleImagePanels() throws Exception{
 		//go through all panels and set path
 		Component[] imPanelList= imageScrollPanel.getComponents();
 
@@ -318,7 +323,7 @@ private Component parentComponent=null;
 	 * @param pathLabel the file saving path label
 	 * @param showMessage the message shown to user
 	 */
-	public void informUserFromFileValidity(int fileValidity, JLabel pathLabel, boolean showMessage){
+	public void informUserFromFileValidity(int fileValidity, JLabel pathLabel, boolean showMessage) throws Exception{
 		setSaveButtonEnabledByFileValidity(fileValidity);
 		if(fileValidity == ID.FILE_OK || fileValidity == ID.FILE_NEW_FILE ){ // can update file or it is new file
 			pathLabel.setForeground(Color_schema.white_230);
@@ -638,8 +643,9 @@ public JPanel initImageViewPanel(String title){
  * Initializes the ImageViewPanel with given title.
  *
  * @return the JPanel
+ * @throws Exception the exception
  */
-protected JPanel initImageViewPanelWithTitle(){
+protected JPanel initImageViewPanelWithTitle() throws Exception{
 	return initImageViewPanel("Title");
 }
 
@@ -720,7 +726,16 @@ protected JPanel initImageViewPanelWithTitle(){
 	public boolean isBrowsePanelShown(){
 		return true;
 	}
-											public boolean isFilePathFound(String filePath){
+											
+	
+	/**
+	 * Checks if is file path found.
+	 *
+	 * @param filePath the file path
+	 * @return true, if is file path found
+	 * @throws Exception the exception
+	 */
+	public boolean isFilePathFound(String filePath) throws Exception{
 		Component[] imPanelList= imageScrollPanel.getComponents();
 		
 		if(imPanelList != null && imPanelList.length>0 && filePath != null && filePath.length()>0){
@@ -740,8 +755,9 @@ protected JPanel initImageViewPanelWithTitle(){
 	 * Checks if is filePathPanel shown.
 	 *
 	 * @return true, if is file path panel shown
+	 * @throws Exception the exception
 	 */
-	protected boolean isFilePathPanelShown(){
+	protected boolean isFilePathPanelShown() throws Exception{
 		return true;
 	}
 
@@ -769,8 +785,10 @@ protected JPanel initImageViewPanelWithTitle(){
 	
 	/**
 	 * Sets the all background colors of all SingleMarkingPanels to default.
+	 *
+	 * @throws Exception the exception
 	 */
-	protected void setAllMarkingLayerBackgroundsToDefault(){
+	protected void setAllMarkingLayerBackgroundsToDefault() throws Exception{
 		//go through all panels and set path
 		Component[] imPanelList= imageScrollPanel.getComponents();
 		if(imPanelList != null && imPanelList.length>0){
@@ -789,8 +807,9 @@ protected JPanel initImageViewPanelWithTitle(){
 	 *
 	 * @param path the path
 	 * @param panelID the panel id
+	 * @throws Exception the exception
 	 */
-	protected void setFilePathForSingleImagePanel(String path, int panelID){
+	protected void setFilePathForSingleImagePanel(String path, int panelID) throws Exception{
 
 		int fileValidity = checkFileValidity(new File(path));
 
@@ -814,8 +833,9 @@ protected JPanel initImageViewPanelWithTitle(){
 	 * Sets the same file path for all SingleImagePanels.
 	 *
 	 * @param path the new file paths for all
+	 * @throws Exception the exception
 	 */
-	protected void setFilePathsForAll(String path){
+	protected void setFilePathsForAll(String path) throws Exception{
 		//go through all panels and set path
 		int fileValidity = checkFileValidity(new File(path));
 		Component[] imPanelList= imageScrollPanel.getComponents();
@@ -836,8 +856,9 @@ protected JPanel initImageViewPanelWithTitle(){
 	 * Sets the ID of file writing type. 
 	 *
 	 * @param t the ID for new file writing type
+	 * @throws Exception the exception
 	 */
-	protected void setFileWritingType(int t){
+	protected void setFileWritingType(int t) throws Exception{
 		this.fileWritingType=t;
 	}
 
@@ -900,7 +921,7 @@ protected JPanel initImageViewPanelWithTitle(){
 
 		} catch (Exception e) {
 			LOGGER.severe("Error in updating IMAGE LIST " +e.getClass().toString() + " :" +e.getMessage());
-
+			e.printStackTrace();
 		}
 	}
 
@@ -908,8 +929,9 @@ protected JPanel initImageViewPanelWithTitle(){
 	 * Sets the background colors to default for SingleMarkingPanels of given ImageLayer (ID given).
 	 *
 	 * @param iLayerID the new marking layer backgrounds to default
+	 * @throws Exception the exception
 	 */
-	protected void setMarkingLayerBackgroundsToDefault(int iLayerID){
+	protected void setMarkingLayerBackgroundsToDefault(int iLayerID) throws Exception{
 		//go through all panels and set path
 		Component[] imPanelList= imageScrollPanel.getComponents();
 		if(imPanelList != null && imPanelList.length>0){
@@ -927,8 +949,10 @@ protected JPanel initImageViewPanelWithTitle(){
 
 	/**
 	 * Sets the panel height.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void setPanelHeights(){
+	private void setPanelHeights() throws Exception{
 		oneImageTitleHeight=45;
 		oneMarkingHeight=40;
 		if(isFilePathPanelShown())
@@ -942,6 +966,7 @@ protected JPanel initImageViewPanelWithTitle(){
 	 * Sets the present folder.
 	 *
 	 * @param folder the new present folder
+	 * @throws Exception the exception
 	 */
 	public void setPresentFolder(String folder) throws Exception{
 		gui.setPresentFolder(folder);
@@ -951,8 +976,9 @@ protected JPanel initImageViewPanelWithTitle(){
 	 * Sets the save button enabled by file validity.
 	 *
 	 * @param validityID the new save button enabled by file validity
+	 * @throws Exception the exception
 	 */
-	protected void setSaveButtonEnabledByFileValidity(int validityID){
+	protected void setSaveButtonEnabledByFileValidity(int validityID) throws Exception{
 		// implement in extended class
 	}
 
@@ -961,8 +987,9 @@ protected JPanel initImageViewPanelWithTitle(){
 	 * Sets the successfully saving backgrounds of SingleMarkingPanels.
 	 *
 	 * @param successfullySavedMarkingPanelIDs the new succesfull saving backgrounds
+	 * @throws Exception the exception
 	 */
-	public void setSuccesfullSavingBackgrounds(ArrayList<Integer> successfullySavedMarkingPanelIDs){
+	public void setSuccesfullSavingBackgrounds(ArrayList<Integer> successfullySavedMarkingPanelIDs) throws Exception{
 		//go through all panels and set path
 		Component[] imPanelList= imageScrollPanel.getComponents();
 		if(imPanelList != null && imPanelList.length>0 && successfullySavedMarkingPanelIDs != null && successfullySavedMarkingPanelIDs.size()>0){
@@ -976,18 +1003,22 @@ protected JPanel initImageViewPanelWithTitle(){
 	}
 
 	/**
+	 * Start saving process.
 	 *
 	 * @param savingID ID of type of saving (ID.SAVE_MARKINGS, ID.EXPORT_IMAGE...)
 	 * @param exportType the id of export type  (ID.FILE_NEW_FILE, ID.OVERWRITE, ID.APPEND)
+	 * @throws Exception the exception
 	 */
-	protected void startSavingProcess(int savingID, int exportType){
+	protected void startSavingProcess(int savingID, int exportType) throws Exception{
 		// overwrite this method in extended class
 	}
 	
 	/**
-	 * Updates saveButton state. 
+	 * Updates saveButton state.
+	 *
+	 * @throws Exception the exception
 	 */
-	protected void updateSaveButtonState(){
+	protected void updateSaveButtonState() throws Exception{
 		// create code in extended class.
 	}
 

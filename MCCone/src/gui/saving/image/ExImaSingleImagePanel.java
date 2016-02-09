@@ -34,7 +34,7 @@ public class ExImaSingleImagePanel extends SingleImagePanel{
 	/* (non-Javadoc)
 	 * @see gui.saving.SingleImagePanel#getAllSelectedMarkingLayerIDs()
 	 */
-	public ArrayList<Integer> getAllSelectedMarkingLayerIDs(){
+	public ArrayList<Integer> getAllSelectedMarkingLayerIDs() throws Exception{
 		ArrayList<Integer> selectedMarkingLayerIDs=new ArrayList<Integer>();
 		Component[] sMarkingList= markingTableJPanel.getComponents();
 		if(sMarkingList != null && sMarkingList.length>0){
@@ -51,7 +51,7 @@ public class ExImaSingleImagePanel extends SingleImagePanel{
 	/* (non-Javadoc)
 	 * @see gui.saving.SingleImagePanel#getAllSelectedMarkingLayers()
 	 */
-	public ArrayList<MarkingLayer> getAllSelectedMarkingLayers(){
+	public ArrayList<MarkingLayer> getAllSelectedMarkingLayers() throws Exception{
 		ArrayList<MarkingLayer> selectedMarkingLayers=new ArrayList<MarkingLayer>();
 		Component[] sMarkingList= markingTableJPanel.getComponents();
 		if(sMarkingList != null && sMarkingList.length>0){
@@ -85,8 +85,10 @@ public class ExImaSingleImagePanel extends SingleImagePanel{
 	
 	/**
 	 * Updates MarkingLayer grid drawing property to true if user has selected the Grid to be drawn on export image.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void updateGridDrawing(){
+	public void updateGridDrawing() throws Exception{
 
 		Component[] sMarkingList= markingTableJPanel.getComponents();
 		if(sMarkingList != null && sMarkingList.length>0){

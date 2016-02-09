@@ -33,6 +33,9 @@ import operators.CheckBoxIcon;
  */
 public class SingleImagePanel extends JPanel{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -1880336481160684640L;
+
 	/** The Constant LOGGER. */
 	final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
@@ -100,8 +103,10 @@ public class SingleImagePanel extends JPanel{
 	
 	/**
 	 * Check file validity.
+	 *
+	 * @throws Exception the exception
 	 */
-	protected void checkFileValidity(){
+	protected void checkFileValidity() throws Exception{
 		fileValidity =  saverDialog.checkFileValidity(new File(this.properFilePath));
 		
 		// check is file already selected to other 
@@ -121,9 +126,10 @@ public class SingleImagePanel extends JPanel{
 	/**
 	 * Returns the all IDs of selected MarkingLayers.
 	 *
-	 * @return the all IDs of selected MarkingLayers. 
+	 * @return the all IDs of selected MarkingLayers.
+	 * @throws Exception the exception
 	 */
-	public ArrayList<Integer> getAllSelectedMarkingLayerIDs(){
+	public ArrayList<Integer> getAllSelectedMarkingLayerIDs() throws Exception{
 		ArrayList<Integer> selectedMarkingLayerIDs=new ArrayList<Integer>();
 		Component[] sMarkingList= markingTableJPanel.getComponents();
 		if(sMarkingList != null && sMarkingList.length>0){
@@ -141,8 +147,9 @@ public class SingleImagePanel extends JPanel{
 	 * Returns the all selected MarkingLayers.
 	 *
 	 * @return the all selected MarkingLayers.
+	 * @throws Exception the exception
 	 */
-	public ArrayList<MarkingLayer> getAllSelectedMarkingLayers(){
+	public ArrayList<MarkingLayer> getAllSelectedMarkingLayers() throws Exception{
 		ArrayList<MarkingLayer> selectedMarkingLayers=new ArrayList<MarkingLayer>();
 		Component[] sMarkingList= markingTableJPanel.getComponents();
 		if(sMarkingList != null && sMarkingList.length>0){
@@ -221,8 +228,9 @@ public class SingleImagePanel extends JPanel{
 	 * Checks for selected marking layer.
 	 *
 	 * @return true, if at least one MarkingLayer is selected.
+	 * @throws Exception the exception
 	 */
-	public boolean hasSelectedMarkingLayer(){
+	public boolean hasSelectedMarkingLayer() throws Exception{
 		if(getAllSelectedMarkingLayers() != null && getAllSelectedMarkingLayers().size()>0)
 			return true;
 		return false;
@@ -234,7 +242,12 @@ public class SingleImagePanel extends JPanel{
 	 * @param showMessage the show message
 	 */
 	private void informFileValidity(boolean showMessage){
-		this.saverDialog.informUserFromFileValidity(this.fileValidity, this.filePathLabelValue, showMessage);
+		try {
+			this.saverDialog.informUserFromFileValidity(this.fileValidity, this.filePathLabelValue, showMessage);
+		} catch (Exception e) {
+			LOGGER.severe("Error in informing file validity!");
+			e.printStackTrace();
+		}
 	}
 
 	
@@ -409,8 +422,9 @@ public class SingleImagePanel extends JPanel{
 	 *
 	 * @param iLayer the i layer
 	 * @return the string
+	 * @throws Exception the exception
 	 */
-	protected String initProperFilePathForSaving(ImageLayer iLayer){
+	protected String initProperFilePathForSaving(ImageLayer iLayer) throws Exception{
 		if(iLayer != null){
 			if(iLayer.getMarkingsFilePath() != null && iLayer.getMarkingsFilePath().length()>0)
 					return iLayer.getMarkingsFilePath(); // give the markingsFile which has been used to import markings
@@ -427,8 +441,9 @@ public class SingleImagePanel extends JPanel{
 	 * Checks if is selected.
 	 *
 	 * @return true, if is selected
+	 * @throws Exception the exception
 	 */
-	public boolean isSelected(){
+	public boolean isSelected() throws Exception{
 		return this.saveImageCheckBox.isSelected();
 	}
 
@@ -436,8 +451,9 @@ public class SingleImagePanel extends JPanel{
 	 * Sets the all marking layer selections.
 	 *
 	 * @param selected the new all marking layer selections
+	 * @throws Exception the exception
 	 */
-	public void setAllMarkingLayerSelections(boolean selected){
+	public void setAllMarkingLayerSelections(boolean selected) throws Exception{
 		Component[] ssMarkingList= markingTableJPanel.getComponents();
 		if(ssMarkingList != null && ssMarkingList.length>0){
 			for(int i=0;i<ssMarkingList.length;i++){
@@ -449,8 +465,10 @@ public class SingleImagePanel extends JPanel{
 
 	/**
 	 * Sets the background colors of all SingleMarkingPanels to default.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void setAllSingleMarkingPanelBGstoDefault(){
+	public void setAllSingleMarkingPanelBGstoDefault() throws Exception{
 		Component[] ssMarkingList= markingTableJPanel.getComponents();
 		if(ssMarkingList != null && ssMarkingList.length>0){
 			for(int i=0;i<ssMarkingList.length;i++){
@@ -465,7 +483,7 @@ public class SingleImagePanel extends JPanel{
 	 *
 	 * @param enable the new buttons enabled
 	 */
-	public void setButtonsEnabled(boolean enable){
+	public void setButtonsEnabled(boolean enable) throws Exception{
 		saveSingleJButton.setEnabled(enable);
 		browseJButton.setEnabled(enable);
 	}
@@ -488,7 +506,12 @@ public class SingleImagePanel extends JPanel{
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				
-				setAllMarkingLayerSelections(((JCheckBox)e.getSource()).isSelected());
+				try {
+					setAllMarkingLayerSelections(((JCheckBox)e.getSource()).isSelected());
+				} catch (Exception e1) {
+					LOGGER.severe("Error in checking checkbox!");
+					e1.printStackTrace();
+				}
 				
 			}
 		});
@@ -512,8 +535,9 @@ public class SingleImagePanel extends JPanel{
 	 * @param properFile the proper file
 	 * @param showMessage the show message
 	 * @param fileValidityID the file validity id
+	 * @throws Exception the exception
 	 */
-	public void setProperFileForMarkings(String properFile, boolean showMessage, int fileValidityID) {	
+	public void setProperFileForMarkings(String properFile, boolean showMessage, int fileValidityID) throws Exception {	
 		this.properFilePath = properFile;
 		this.filePathLabelValue.setText(this.properFilePath);
 		this.fileValidity=fileValidityID;
@@ -533,8 +557,9 @@ public class SingleImagePanel extends JPanel{
 	 * Sets the CheckBox to selected.
 	 *
 	 * @param selected the new selected
+	 * @throws Exception the exception
 	 */
-	public void setSelected(boolean selected){
+	public void setSelected(boolean selected) throws Exception{
 		this.saveImageCheckBox.setSelected(selected);
 		this.repaint();
 	}
@@ -543,8 +568,9 @@ public class SingleImagePanel extends JPanel{
 	 * Sets the checkbox selections of all marking layers.
 	 *
 	 * @param state the new selection of all marking layers
+	 * @throws Exception the exception
 	 */
-	public void setSelectionOfAllMarkingLayers(boolean state){
+	public void setSelectionOfAllMarkingLayers(boolean state) throws Exception{
 		
 		Component[] sMarkingList= markingTableJPanel.getComponents();
 		if(sMarkingList != null && sMarkingList.length>0){
@@ -560,8 +586,9 @@ public class SingleImagePanel extends JPanel{
 	 * Sets the background color of singleMarkingPanel to default.
 	 *
 	 * @param mLayerID the new single marking panel b gsto default
+	 * @throws Exception the exception
 	 */
-	public void setSingleMarkingPanelBGstoDefault(int mLayerID){
+	public void setSingleMarkingPanelBGstoDefault(int mLayerID) throws Exception{
 		Component[] ssMarkingList= markingTableJPanel.getComponents();
 		if(ssMarkingList != null && ssMarkingList.length>0){
 			for(int i=0;i<ssMarkingList.length;i++){
@@ -578,8 +605,9 @@ public class SingleImagePanel extends JPanel{
 	 * Sets the background color of successfully saved SingleMarkingPanels.
 	 *
 	 * @param successfullySavedList the List of IDs of SingleMarkingPanels
+	 * @throws Exception the exception
 	 */
-	public void setSuccessfullSavingColor(ArrayList<Integer> successfullySavedList){
+	public void setSuccessfullSavingColor(ArrayList<Integer> successfullySavedList) throws Exception{
 
 		Component[] ssMarkingList= markingTableJPanel.getComponents();
 		if(ssMarkingList != null && ssMarkingList.length>0){

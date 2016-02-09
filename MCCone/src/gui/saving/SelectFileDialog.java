@@ -50,6 +50,9 @@ import javax.swing.filechooser.FileFilter;
  */
 public class SelectFileDialog extends JDialog{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 2455724957529557314L;
+
 	/** The Constant LOGGER. */
 	final static Logger LOGGER = Logger.getLogger("MCCLogger");	
 	
@@ -99,7 +102,6 @@ public class SelectFileDialog extends JDialog{
 		super(frame, true);
 		try {
 			this.ownerFrame=frame;
-		//	this.saverDialog=saverDialog;
 			this.backPanelComponent=backPanel;
 			this.fileType=fileType;
 			this.properSavingFileOrFolderPath= path;
@@ -115,25 +117,32 @@ public class SelectFileDialog extends JDialog{
 
 	/**
 	 * Adds the action listener to JFilehooser.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void addActionListenerToFileChooser(){
+	private void addActionListenerToFileChooser() throws Exception{
 		ActionListener actionListener =new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fChooser=(JFileChooser)e.getSource();
-				String commandString = e.getActionCommand();
-				if(commandString.equals(JFileChooser.APPROVE_SELECTION)){
-					if(fChooser.getSelectedFile().isDirectory()){
+				try {
+					JFileChooser fChooser=(JFileChooser)e.getSource();
+					String commandString = e.getActionCommand();
+					if(commandString.equals(JFileChooser.APPROVE_SELECTION)){
+						if(fChooser.getSelectedFile().isDirectory()){
 
+						}
+						else{
+							fileSelected();
+						}
 					}
 					else{
-						fileSelected();
+						
+						
 					}
-				}
-				else{
-					
-					
+				} catch (Exception e1) {
+					LOGGER.severe("Error in choosing file!");
+					e1.printStackTrace();
 				}
 
 			}
@@ -154,15 +163,22 @@ public class SelectFileDialog extends JDialog{
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				fileSelected();
+				try {
+					fileSelected();
+				} catch (Exception e1) {
+					LOGGER.severe("Error in selecting file!");
+					e1.printStackTrace();
+				}
 			}
 		});
 	}
 
 	/**
 	 * Adds the file filters to JFilechooser.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void addFileFilters(){
+	private void addFileFilters() throws Exception{
 		//boolean hasSetFileFilter=false;
 		for (Iterator<FileFilter> iterator = fileFilters.iterator(); iterator.hasNext();) {
 			FileFilter filter = (FileFilter) iterator.next();
@@ -179,34 +195,40 @@ public class SelectFileDialog extends JDialog{
 	 * text: csv, txt
 	 * images: gif, jpg, png, tiff
 	 *
-	 * @param id the id
-	 * @return the array list
+	 * @param id the id of file type
+	 * @return the array list of file filters
 	 */
 	public static ArrayList<FileFilter> createFileFilterList(int id){
-		ArrayList<FileFilter> filterList=new ArrayList<FileFilter>();
-		switch (id) {
-		case ID.SAVE_MARKINGS:
-			filterList.add(new XMLfilter());
-			break;
-		case ID.FILE_TYPE_CSV:
-			filterList.add(new CSVfilter());	
-			break;
-		case ID.FILE_TYPE_TEXT_FILE:
-			filterList.add(new TXTfilter());
-			break;
-		case ID.EXPORT_IMAGE:
-			filterList.add(new GIFfilter());
-			filterList.add(new JPGfilter());
-			filterList.add(new PNGfilter());
-			filterList.add(new TIFFfilter());
-		
-			break;
+		try {
+			ArrayList<FileFilter> filterList=new ArrayList<FileFilter>();
+			switch (id) {
+			case ID.SAVE_MARKINGS:
+				filterList.add(new XMLfilter());
+				break;
+			case ID.FILE_TYPE_CSV:
+				filterList.add(new CSVfilter());	
+				break;
+			case ID.FILE_TYPE_TEXT_FILE:
+				filterList.add(new TXTfilter());
+				break;
+			case ID.EXPORT_IMAGE:
+				filterList.add(new GIFfilter());
+				filterList.add(new JPGfilter());
+				filterList.add(new PNGfilter());
+				filterList.add(new TIFFfilter());
+			
+				break;
 
-		default:
-			break;
+			default:
+				break;
+			}
+
+			return filterList;
+		} catch (Exception e) {
+			LOGGER.severe("Error in creating file filter list!");
+			e.printStackTrace();
+			return null;
 		}
-
-		return filterList;
 	}
 	
 	/**
@@ -325,19 +347,25 @@ public class SelectFileDialog extends JDialog{
 	 * @return the Component JTextField if found, otherwise null;
 	 */
 	private Component findJTextField(Component comp) {
-	    if (comp instanceof JTextField) return comp;
-	    if (comp instanceof Container) {
-	        Component[] components = ((Container)comp).getComponents();
-	        for(int i = 0; i < components.length; i++) {
-	            Component child = findJTextField(components[i]);
-	            if (child != null){ 
-	            	System.out.println(child.getClass().toString());
-	            	return findJTextField(child);           	
-	            }
-	        }
-	    }
-	    
-	    return null;
+	    try {
+			if (comp instanceof JTextField) return comp;
+			if (comp instanceof Container) {
+			    Component[] components = ((Container)comp).getComponents();
+			    for(int i = 0; i < components.length; i++) {
+			        Component child = findJTextField(components[i]);
+			        if (child != null){ 
+			        	System.out.println(child.getClass().toString());
+			        	return findJTextField(child);           	
+			        }
+			    }
+			}
+			
+			return null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in finding Text field!");
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 
@@ -347,8 +375,9 @@ public class SelectFileDialog extends JDialog{
 	 *
 	 * @param chooser the JFileChooser
 	 * @return the string of text of JTextField
+	 * @throws Exception the exception
 	 */
-	private String findTextOfJTextFieldFromFileChooser(JFileChooser chooser){
+	private String findTextOfJTextFieldFromFileChooser(JFileChooser chooser) throws Exception{
 		
 		// go through all children components
 		for(int i = 0; i < ((JFileChooser)chooser).getComponentCount(); i++) {
@@ -367,7 +396,14 @@ public class SelectFileDialog extends JDialog{
 		
 	}
 	
-private void setTextOfJTextFieldFromFileChooser(JFileChooser chooser, String text){
+/**
+ * Sets the text of j text field from file chooser.
+ *
+ * @param chooser the FileChooser
+ * @param text the text
+ * @throws Exception the exception
+ */
+private void setTextOfJTextFieldFromFileChooser(JFileChooser chooser, String text) throws Exception{
 		
 		// go through all children components
 		for(int i = 0; i < ((JFileChooser)chooser).getComponentCount(); i++) {
@@ -388,8 +424,9 @@ private void setTextOfJTextFieldFromFileChooser(JFileChooser chooser, String tex
 	 *
 	 * @param fileName the file name
 	 * @return the string file name without extension
+	 * @throws Exception the exception
 	 */
-	private String fixFileName(String fileName){
+	private String fixFileName(String fileName) throws Exception{
 		
 		if(fileName != null && fileName.length()>1 && fileName.contains(".")){
 			int index=fileName.lastIndexOf(".");
@@ -403,8 +440,9 @@ private void setTextOfJTextFieldFromFileChooser(JFileChooser chooser, String tex
 	 * Returns the file filters.
 	 *
 	 * @return the file filters
+	 * @throws Exception the exception
 	 */
-	public ArrayList<FileFilter> getFileFilters(){
+	public ArrayList<FileFilter> getFileFilters() throws Exception{
 		return this.fileFilters;
 	}
 
@@ -412,8 +450,9 @@ private void setTextOfJTextFieldFromFileChooser(JFileChooser chooser, String tex
 	 * Returns the file writing type. Overwrite, append...
 	 *
 	 * @return the file writing type
+	 * @throws Exception the exception
 	 */
-	public int getFileWritingType(){
+	public int getFileWritingType() throws Exception{
 		return this.fileWritingType;
 	}
 
@@ -422,8 +461,9 @@ private void setTextOfJTextFieldFromFileChooser(JFileChooser chooser, String tex
 	 *
 	 * @param filePath the file path
 	 * @return the folder of given file
+	 * @throws Exception the exception
 	 */
-	private File getFolder(String filePath){
+	private File getFolder(String filePath) throws Exception{
 		try {
 			File f = new File(filePath);
 			if (f.exists()) {
@@ -480,11 +520,12 @@ private void setTextOfJTextFieldFromFileChooser(JFileChooser chooser, String tex
 	}
 */
 	/**
-	 * Returns the selected file path.
-	 *
-	 * @return the selected file path
-	 */
-	public String getSelectedFilePath() {
+ * Returns the selected file path.
+ *
+ * @return the selected file path
+ * @throws Exception the exception
+ */
+	public String getSelectedFilePath() throws Exception {
 		return this.selectedFilePath;
 	}
 
@@ -495,7 +536,7 @@ private void setTextOfJTextFieldFromFileChooser(JFileChooser chooser, String tex
  * @param fileName the file name
  * @return true, if successful
  */
-protected boolean hasImageLayersFound(String fileName){
+protected boolean hasImageLayersFound(String fileName) throws Exception{
 		return true; // implemented in extended class
 	}
 
@@ -625,6 +666,7 @@ private JPanel initFileChooserPanel() throws Exception{
 		return fBackPanel;
 	} catch (Exception e) {
 		LOGGER.severe("Error in creating openfiledialog:  " +e.getClass().toString() + " :" +e.getMessage() + " line: " +e.getStackTrace()[2].getLineNumber());
+		e.printStackTrace();
 		return null;
 	}
 }
@@ -666,21 +708,30 @@ private void initFileDialog() throws Exception{
 
 	/**
 	 * Initializes the file filters.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void initFileFilters(){
+	private void initFileFilters() throws Exception{
 		this.fileFilters=createFileFilterList(this.fileType);
 
 	}
 
 	/**
 	 * Initializes the key listener for file selection. When ENTER pressed -> the files will be selected.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void initKeyListenerFileselection(){
+	private void initKeyListenerFileselection() throws Exception{
 
 		InputMap inputMap= (this.selectFileDialogBackPanel).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
 		ActionMap actionMap = 	(this.selectFileDialogBackPanel).getActionMap();
 		actionMap.put("enter_pressed", new AbstractAction() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 6212251846590558328L;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -695,34 +746,41 @@ private void initFileDialog() throws Exception{
 	 * Sets the current file or folder.
 	 */
 	public void setCurrentFileOrFolder(){
-		if(this.properSavingFileOrFolderPath != null && this.properSavingFileOrFolderPath.length()>0){
-			File f=new File(this.properSavingFileOrFolderPath);
-			if(f.isDirectory())
-			fileChooser.setCurrentDirectory(f);
-			else{
-				if(f.isFile() && f.exists() && fileChooser.accept(f)){
-
-						fileChooser.setSelectedFile(f);
-						showSelectedFileAtTextField();
-				}
+		try {
+			if(this.properSavingFileOrFolderPath != null && this.properSavingFileOrFolderPath.length()>0){
+				File f=new File(this.properSavingFileOrFolderPath);
+				if(f.isDirectory())
+				fileChooser.setCurrentDirectory(f);
 				else{
-					f=f.getParentFile();
-					if(f.exists()){
-						fileChooser.setCurrentDirectory(f);
+					if(f.isFile() && f.exists() && fileChooser.accept(f)){
+
+							fileChooser.setSelectedFile(f);
+							showSelectedFileAtTextField();
 					}
 					else{
-						File folder=new File(System.getProperty("user.home"));
-						if(folder.exists())
-						fileChooser.setCurrentDirectory(folder);
+						f=f.getParentFile();
+						if(f.exists()){
+							fileChooser.setCurrentDirectory(f);
+						}
+						else{
+							File folder=new File(System.getProperty("user.home"));
+							if(folder.exists())
+							fileChooser.setCurrentDirectory(folder);
+						}
 					}
 				}
-			}
 
-		}
-		else{
-			File folder=new File(System.getProperty("user.home"));
-			if(folder.exists())
-			fileChooser.setCurrentDirectory(folder);
+			}
+			else{
+				File folder=new File(System.getProperty("user.home"));
+				if(folder.exists())
+				fileChooser.setCurrentDirectory(folder);
+			}
+		} catch (Exception e) {
+			LOGGER.severe("Error in setting current folder!");
+			e.printStackTrace();
+			if(fileChooser != null)
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		}
 	}
 
@@ -730,17 +788,24 @@ private void initFileDialog() throws Exception{
 	 * Sets the file writing type. ID.FILE_OVERWRITE, ID.FILE_APPEND...
 	 *
 	 * @param id the new ID for file writing type
+	 * @throws Exception the exception
 	 */
 	private void setFileWritingType(int id){
-		this.fileWritingType=id;
+		try {
+			this.fileWritingType=id;
+		} catch (Exception e) {
+			LOGGER.severe("Error in setting type of file writing!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
-	 * Sets the image layer names searching 
+	 * Sets the image layer names searching .
 	 *
 	 * @param list the new image layer names used in xml search.
+	 * @throws Exception the exception
 	 */
-	public void setImageLayerNamesForXMLSearch(ArrayList<String> list){
+	public void setImageLayerNamesForXMLSearch(ArrayList<String> list) throws Exception{
 			// implement the code in extended class
 		}
 
@@ -748,8 +813,9 @@ private void initFileDialog() throws Exception{
 	 * Sets the proper file path for saving.
 	 *
 	 * @param path the new proper file path for saving
+	 * @throws Exception the exception
 	 */
-	public void setProperFilePathForSaving(String path){
+	public void setProperFilePathForSaving(String path) throws Exception{
 		this.properSavingFileOrFolderPath=path;
 		setCurrentFileOrFolder();
 	}
@@ -758,8 +824,9 @@ private void initFileDialog() throws Exception{
  	 * Sets the proper folder path for saving.
  	 *
  	 * @param path the new proper folder path for saving
+ 	 * @throws Exception the exception
  	 */
- 	public void setProperFolderPathForSaving(String path){	
+ 	public void setProperFolderPathForSaving(String path) throws Exception {	
 		try {
 			
 			if(path != null && path.length()>0){
@@ -777,9 +844,15 @@ private void initFileDialog() throws Exception{
  	 * Sets the selected file path.
  	 *
  	 * @param path the new selected file path
+ 	 * @throws Exception the exception
  	 */
- 	private void setSelectedFilePath(String path){
-		this.selectedFilePath=path;
+ 	private void setSelectedFilePath(String path) {
+		try {
+			this.selectedFilePath=path;
+		} catch (Exception e) {
+			LOGGER.severe("Error in setting selected file path!");
+			e.printStackTrace();
+		}
 	}
 
  	
@@ -787,8 +860,9 @@ private void initFileDialog() throws Exception{
  	 * Shows append/overwrite message.
  	 *
  	 * @return the int
+ 	 * @throws Exception the exception
  	 */
- 	private int showAppendOverwriteMessage(){
+ 	private int showAppendOverwriteMessage() throws Exception{
 		// confirm overwrite
 		ShadyMessageDialog dialog = new ShadyMessageDialog(this, "File exists", "Append or Overwrite?", ID.APPEND_OVERWRITE_CANCEL, this);
 		return dialog.showDialog();
@@ -810,11 +884,21 @@ private void initFileDialog() throws Exception{
 	 *
 	 * @param title the title
 	 * @param message the message
+	 * @throws Exception the exception
 	 */
-	private void showFileMessage(String title, String message){
-		ShadyMessageDialog dialog = new ShadyMessageDialog(this, title, message, ID.OK, this);
-		dialog.showDialog();
-		dialog=null;
+	private void showFileMessage(String title, String message) {
+		ShadyMessageDialog dialog = null;
+		
+		try {
+			dialog = new ShadyMessageDialog(this, title, message, ID.OK, this);
+			dialog.showDialog();
+			dialog=null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in showing message of saving file!");
+			e.printStackTrace();
+			if(dialog != null)
+				dialog=null;
+		}
 	}
 
 
@@ -828,19 +912,28 @@ private void initFileDialog() throws Exception{
 	 */
 	private boolean showOverwriteMessage(String title, String text){
 		// confirm overwrite
-		ShadyMessageDialog dialog = new ShadyMessageDialog(this, title, text, ID.YES_NO, this);
-		if(dialog.showDialog() == ID.YES){
+		ShadyMessageDialog dialog = null;
+		try {
+			dialog = new ShadyMessageDialog(this, title, text, ID.YES_NO, this);
+			if(dialog.showDialog() == ID.YES){
+				dialog=null;
+				return true;
+			}
 			dialog=null;
-			return true;
+			return false;
+		} catch (Exception e) {
+			LOGGER.severe("Error in showing overwrite message!");
+			e.printStackTrace();
+			return false;
 		}
-		dialog=null;
-		return false;
 	}
 
 	/**
 	 * Show selected file at text field.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void showSelectedFileAtTextField(){
+	private void showSelectedFileAtTextField() throws Exception{
 		if(fileChooser.getSelectedFile() != null && fileChooser.getSelectedFile().isFile() && fileChooser.getSelectedFile().getName().length()>0){
 		//	((JTextField)((Container)((Container)fileChooser.getComponent(3)).getComponent(0)).getComponent(1)).setText(fileChooser.getSelectedFile().getName());
 			setTextOfJTextFieldFromFileChooser(this.fileChooser, fileChooser.getSelectedFile().getName());

@@ -25,6 +25,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.logging.Logger;
+
 import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -40,6 +42,12 @@ import javax.swing.JPanel;
  */
 public class ExportResults extends SaverDialog{ 
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 2357110452039051014L;
+	
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+
 	/** The byte stream for to export. */
 	private ByteArrayOutputStream byteStream;
 	
@@ -92,7 +100,7 @@ public class ExportResults extends SaverDialog{
 	/* (non-Javadoc)
 	 * @see gui.saving.SaverDialog#createSingleImagePanel(information.ImageLayer)
 	 */
-	protected SingleImagePanel createSingleImagePanel(ImageLayer layer){
+	protected SingleImagePanel createSingleImagePanel(ImageLayer layer) throws Exception{
 		return new ExSingleImagePanel(layer,this);
 	}
 
@@ -101,8 +109,9 @@ public class ExportResults extends SaverDialog{
 	 *
 	 * @param iLayer the ImageLayer
 	 * @return the proper file path String for saving
+	 * @throws Exception the exception
 	 */
-	protected String getProperFilePathForSaving(ImageLayer iLayer){
+	protected String getProperFilePathForSaving(ImageLayer iLayer) throws Exception{
 		if(iLayer != null){
 			if(iLayer.getMarkingsFilePath() != null && iLayer.getMarkingsFilePath().length()>0)
 					return iLayer.getMarkingsFilePath(); // give the markingsFile which has been used to import markings
@@ -122,8 +131,9 @@ public class ExportResults extends SaverDialog{
 	 *
 	 * @param buttonGroup the button group
 	 * @return the selected button text
+	 * @throws Exception the exception
 	 */
-	public String getSelectedButtonText(ButtonGroup buttonGroup) {
+	public String getSelectedButtonText(ButtonGroup buttonGroup) throws Exception {
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
 
@@ -144,8 +154,9 @@ public class ExportResults extends SaverDialog{
 		 *
 		 * @param id the id
 		 * @return the title string
+		 * @throws Exception the exception
 		 */
-		private String getTitleString(int id){
+		private String getTitleString(int id) throws Exception{
 			if (id== ID.FILE_TYPE_TEXT_FILE)
 				return "EXPORT RESULTS TO TAB-DELIMITED TEXT FILE";
 			else if (id== ID.FILE_TYPE_CSV)
@@ -165,8 +176,9 @@ public class ExportResults extends SaverDialog{
 		 *
 		 * @param startIndex the start index
 		 * @return true, if successful
+		 * @throws Exception the exception
 		 */
-		private boolean hasSelectedMarkinglayersInBelowImageLayers(int startIndex){
+		private boolean hasSelectedMarkinglayersInBelowImageLayers(int startIndex) throws Exception{
 			Component[] imPanelList= imageScrollPanel.getComponents();
 			for (int i = startIndex; i < imPanelList.length; i++) {
 				SingleImagePanel imp= (SingleImagePanel)imPanelList[i];
@@ -247,7 +259,7 @@ public class ExportResults extends SaverDialog{
 	/* (non-Javadoc)
 	 * @see gui.saving.SaverDialog#initImageViewPanelWithTitle()
 	 */
-	protected JPanel initImageViewPanelWithTitle(){
+	protected JPanel initImageViewPanelWithTitle() throws Exception{
 		return initImageViewPanel(getTitleString(this.savingType));
 	}
 
@@ -300,8 +312,9 @@ public class ExportResults extends SaverDialog{
 	 * Checks and sets the exporting path.
 	 *
 	 * @param ePath the new exporting path
+	 * @throws Exception the exception
 	 */
-	protected void setExportingPath(String ePath) {
+	protected void setExportingPath(String ePath) throws Exception {
 		int fileValidity = checkFileValidity(new File(ePath));
 
 		informUserFromFileValidity(fileValidity, savingPathJLabel, true);
@@ -311,7 +324,7 @@ public class ExportResults extends SaverDialog{
 	/* (non-Javadoc)
 	 * @see gui.saving.SaverDialog#setSaveButtonEnabledByFileValidity(int)
 	 */
-	protected void setSaveButtonEnabledByFileValidity(int fileValidity){
+	protected void setSaveButtonEnabledByFileValidity(int fileValidity) throws Exception{
 		// check
 		if(fileValidity == ID.FILE_OK || fileValidity == ID.FILE_NEW_FILE)
 			this.saveJButton.setEnabled(true);
@@ -412,6 +425,7 @@ public class ExportResults extends SaverDialog{
 
 			} catch (Exception e) {
 				LOGGER.severe("Error in Exporting results: "+ e.getMessage());
+				e.printStackTrace();
 			}
 	}
 

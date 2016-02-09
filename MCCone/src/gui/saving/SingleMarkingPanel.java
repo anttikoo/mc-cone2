@@ -6,6 +6,8 @@ import information.Fonts;
 import information.MarkingLayer;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.logging.Logger;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -21,6 +23,12 @@ import operators.CheckBoxIcon;
  */
 public class SingleMarkingPanel extends JPanel{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 4238874393288341772L;
+	
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+
 	/** The save check box. */
 	private JCheckBox saveCheckBox;
 	
@@ -93,26 +101,29 @@ public class SingleMarkingPanel extends JPanel{
 	 * Returns the MarkingLayer.
 	 *
 	 * @return the marking layer
+	 * @throws Exception the exception
 	 */
-	public MarkingLayer getMarkingLayer() {
+	public MarkingLayer getMarkingLayer() throws Exception {
 		return mLayer;
 	}
 
 	/**
-	 * Returns the ID of MarkingLayer
+	 * Returns the ID of MarkingLayer.
 	 *
 	 * @return the marking layer id
+	 * @throws Exception the exception
 	 */
-	public int getMarkingLayerID(){
+	public int getMarkingLayerID() throws Exception{
 		return this.mLayer.getLayerID();
 	}
 
 	/**
-	 * Returns the name of MarkingLayer
+	 * Returns the name of MarkingLayer.
 	 *
 	 * @return the marking name
+	 * @throws Exception the exception
 	 */
-	public String getMarkingName() {
+	public String getMarkingName() throws Exception {
 		return this.mLayer.getLayerName();
 	}
 	
@@ -120,8 +131,9 @@ public class SingleMarkingPanel extends JPanel{
 	 * Initializes the JPanel for Grid CheckBox.
 	 *
 	 * @return the JPanel
+	 * @throws Exception the exception
 	 */
-	protected JPanel initDrawGridCheckBoxPanel(){
+	protected JPanel initDrawGridCheckBoxPanel() throws Exception{
 		return null;
 	}
 
@@ -129,8 +141,9 @@ public class SingleMarkingPanel extends JPanel{
 	 * Checks if is CheckBox selected.
 	 *
 	 * @return true, if is selected
+	 * @throws Exception the exception
 	 */
-	public boolean isSelected(){
+	public boolean isSelected() throws Exception{
 		return this.saveCheckBox.isSelected();
 	}
 
@@ -140,8 +153,9 @@ public class SingleMarkingPanel extends JPanel{
 	 * Sets the background color for showing successfull saving (dark green).
 	 *
 	 * @param savedSuccessfully the new background color by successfull saving
+	 * @throws Exception the exception
 	 */
-	public void setBGColorBySuccessfullSaving(boolean savedSuccessfully){
+	public void setBGColorBySuccessfullSaving(boolean savedSuccessfully) throws Exception{
 		if(savedSuccessfully){
 			this.setBackground(Color_schema.darkest_green);
 			this.saveCheckBox.setBackground(Color_schema.darkest_green);
@@ -155,11 +169,12 @@ public class SingleMarkingPanel extends JPanel{
 	}
 
 	/**
-	 * Sets the CheckBox enable state (enabled / unenabled)
+	 * Sets the CheckBox enable state (enabled / unenabled).
 	 *
 	 * @param state the new CheckBox state
+	 * @throws Exception the exception
 	 */
-	public void setCheckBoxEnableState(boolean state){			
+	public void setCheckBoxEnableState(boolean state) throws Exception{			
 		this.saveCheckBox.setEnabled(state);
 		this.repaint();
 	}
@@ -170,8 +185,9 @@ public class SingleMarkingPanel extends JPanel{
 	 * Sets the CheckBox selected.
 	 *
 	 * @param selected the new selected
+	 * @throws Exception the exception
 	 */
-	public void setSelected(boolean selected){
+	public void setSelected(boolean selected) throws Exception{
 		this.saveCheckBox.setSelected(selected);
 		this.repaint();
 	}
