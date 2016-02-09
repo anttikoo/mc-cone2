@@ -85,7 +85,7 @@ public class PrecountGlassPane extends JComponent{
 	 *
 	 * @return the center point
 	 */
-	public Point getCenterPoint() {
+	public Point getCenterPoint() throws Exception{
 		return centerPoint;
 	}
 
@@ -95,7 +95,7 @@ public class PrecountGlassPane extends JComponent{
 	 *
 	 * @return the rectangle size
 	 */
-	public int getRectangleSize() {
+	public int getRectangleSize() throws Exception{
 		return rectangleSize;
 	}
 
