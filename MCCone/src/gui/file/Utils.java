@@ -4,6 +4,7 @@ package gui.file;
 
 
 import java.io.File;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
@@ -11,6 +12,9 @@ import javax.swing.ImageIcon;
  * The Class Utils. Contains some variables of file extensions and methdods to manage them.
  */
 public class Utils {
+	
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
     
     /** The Constant for file extension jpeg. */
     public final static String jpeg = "jpeg";
@@ -49,8 +53,14 @@ public class Utils {
     
     public static String getExtension(File f) {
 
-        String s = f.getName();
-        return getExtension(s);
+        try {
+			String s = f.getName();
+			return getExtension(s);
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting file extension !");
+			e.printStackTrace();
+			return null;
+		}
     }
 
     /**
@@ -58,15 +68,18 @@ public class Utils {
      *
      * @param s the s
      * @return the extension
+     * @throws Exception the exception
      */
-    public static String getExtension(String s){
-    	String ext = null;
-    	int i = s.lastIndexOf('.');
+    public static String getExtension(String s) throws Exception{
+    	
+			String ext = null;
+			int i = s.lastIndexOf('.');
 
-        if (i > 0 &&  i < s.length() - 1) {
-            ext = s.substring(i+1).toLowerCase();
-        }
-        return ext;
+			if (i > 0 &&  i < s.length() - 1) {
+			    ext = s.substring(i+1).toLowerCase();
+			}
+			return ext;
+		
     }
 
     /**
@@ -76,12 +89,18 @@ public class Utils {
      * @return the image icon
      */
     protected static ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = Utils.class.getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
-        }
+        try {
+			java.net.URL imgURL = Utils.class.getResource(path);
+			if (imgURL != null) {
+			    return new ImageIcon(imgURL);
+			} else {
+			    System.err.println("Couldn't find file: " + path);
+			    return null;
+			}
+		} catch (Exception e) {
+			LOGGER.severe("Error in creating icon from given file path!");
+			e.printStackTrace();
+			return null;
+		}
     }
 }

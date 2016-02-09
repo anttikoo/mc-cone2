@@ -16,6 +16,7 @@ public class WindowLocator {
 	 *
 	 * @param comp the comp
 	 * @return Rectangle the visible window bounds
+	 * @throws Exception the exception
 	 */
 	public static Rectangle getVisibleWindowBounds(Component comp) throws Exception{
 		
