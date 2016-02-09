@@ -12,6 +12,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.util.logging.Logger;
+
 import javax.swing.Icon;
 
 /**
@@ -45,6 +47,9 @@ public class ShapeIcon implements Icon {
     
     /** The background color. */
     private Color backgroundColor;
+    
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	/**
 	 * Instantiates a new shape icon.
@@ -67,14 +72,19 @@ public class ShapeIcon implements Icon {
 	 */
 	public ShapeIcon(int type, int width, int height, Color color, Color bg){
 		super();
-		this.setShapeType(type);
-		this.setWidth(width);
-		this.setHeight(height);
-		this.setColor(color);
-		this.opacity= 1.0f; // by now the opacity parts can't be painted right
-		strokeBig = new BasicStroke(3.0f);
-	    strokeThin= new BasicStroke(1.0f);
-	    this.backgroundColor=bg;
+		try {
+			this.setShapeType(type);
+			this.setWidth(width);
+			this.setHeight(height);
+			this.setColor(color);
+			this.opacity= 1.0f; // by now the opacity parts can't be painted right
+			strokeBig = new BasicStroke(3.0f);
+			strokeThin= new BasicStroke(1.0f);
+			this.backgroundColor=bg;
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing shape icon!");
+			e.printStackTrace();
+		}
 
 
 	}
@@ -85,54 +95,64 @@ public class ShapeIcon implements Icon {
 	 */
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
-		Graphics2D g2d = (Graphics2D) g.create();
-		rule_alpha=AlphaComposite.SRC_OVER;
-		int rule_back = AlphaComposite.SRC;
+		Graphics2D g2d = null;
 		
-		// set thickness
-		g2d.setStroke(strokeThin); 
+		try {
+			g2d = (Graphics2D) g.create();
+			
+			rule_alpha=AlphaComposite.SRC_OVER;
+			int rule_back = AlphaComposite.SRC;
+			
+			// set thickness
+			g2d.setStroke(strokeThin); 
 
-        x = 3; // set margin
-        y = 3;
-        int shapeWidth=getIconWidth()-6;
-        int shapeHeight = getIconHeight()-6;
+			x = 3; // set margin
+			y = 3;
+			int shapeWidth=getIconWidth()-6;
+			int shapeHeight = getIconHeight()-6;
 
-        g2d.setPaint(this.backgroundColor);
-        g2d.setComposite(AlphaComposite.getInstance(rule_back, this.opacity));
-        g2d.fillRect(0,0 , getIconWidth(), getIconHeight());
-        g2d.setPaint(this.getColor()); // set color
+			g2d.setPaint(this.backgroundColor);
+			g2d.setComposite(AlphaComposite.getInstance(rule_back, this.opacity));
+			g2d.fillRect(0,0 , getIconWidth(), getIconHeight());
+			g2d.setPaint(this.getColor()); // set color
 
-        switch(this.shapeType)
-        {
-            case ID.SHAPE_OVAL:
-                drawOval(x, y, shapeWidth, shapeHeight, g2d);
-               break;
-            case ID.SHAPE_DIAMOND:
-                //s = new Ellipse2D.Double(x, y, shapeWidth, shapeHeight);
-            	drawDiamond(x, y, shapeWidth, shapeHeight, g2d);
-                break;
-            case ID.SHAPE_PLUS:
-                drawPlus(x, y, shapeWidth, shapeHeight, g2d);
-                break;
-            case ID.SHAPE_CROSS:
-                drawCross(x, y, shapeWidth, shapeHeight, g2d);
-                break;
-            case ID.SHAPE_SQUARE:
-            	//  s = new Rectangle2D.Double(x, y, shapeWidth, shapeHeight);
-            	drawSquare(x, y, shapeWidth, shapeHeight, g2d);
-               break;
-            case ID.SHAPE_TRIANGLE:
-            	//  s = new Rectangle2D.Double(x, y, shapeWidth, shapeHeight);
-            	drawTriangle(x, y, shapeWidth, shapeHeight, g2d);
-               break;
+			switch(this.shapeType)
+			{
+			    case ID.SHAPE_OVAL:
+			        drawOval(x, y, shapeWidth, shapeHeight, g2d);
+			       break;
+			    case ID.SHAPE_DIAMOND:
+			        //s = new Ellipse2D.Double(x, y, shapeWidth, shapeHeight);
+			    	drawDiamond(x, y, shapeWidth, shapeHeight, g2d);
+			        break;
+			    case ID.SHAPE_PLUS:
+			        drawPlus(x, y, shapeWidth, shapeHeight, g2d);
+			        break;
+			    case ID.SHAPE_CROSS:
+			        drawCross(x, y, shapeWidth, shapeHeight, g2d);
+			        break;
+			    case ID.SHAPE_SQUARE:
+			    	//  s = new Rectangle2D.Double(x, y, shapeWidth, shapeHeight);
+			    	drawSquare(x, y, shapeWidth, shapeHeight, g2d);
+			       break;
+			    case ID.SHAPE_TRIANGLE:
+			    	//  s = new Rectangle2D.Double(x, y, shapeWidth, shapeHeight);
+			    	drawTriangle(x, y, shapeWidth, shapeHeight, g2d);
+			       break;
 
-            default : // circle
-               // s = new Ellipse2D.Double(x, y, shapeWidth, shapeHeight);
-            	drawCircle(x, y, shapeWidth, shapeHeight, g2d);
-            	break;
-        }
-	
-        g2d.dispose();
+			    default : // circle
+			       // s = new Ellipse2D.Double(x, y, shapeWidth, shapeHeight);
+			    	drawCircle(x, y, shapeWidth, shapeHeight, g2d);
+			    	break;
+			}
+
+			g2d.dispose();
+		} catch (Exception e) {
+			LOGGER.severe("Error in !");
+			e.printStackTrace();
+			if(g2d != null)
+				g2d.dispose();
+		}
 	}
 
 	
@@ -144,8 +164,9 @@ public class ShapeIcon implements Icon {
 	 * @param shapeWidth the shape width
 	 * @param shapeHeight the shape height
 	 * @param g2d the g2d
+	 * @throws Exception the exception
 	 */
-	private void drawDiamond(int x, int y, int shapeWidth, int shapeHeight ,Graphics2D g2d){
+	private void drawDiamond(int x, int y, int shapeWidth, int shapeHeight ,Graphics2D g2d) throws Exception{
 		Point up = new Point((int)shapeWidth/2+x,y);
 		Point right = new Point(shapeWidth+x,(int)shapeHeight/2+y);
 		Point down = new Point((int)shapeWidth/2+x, shapeHeight+y);
@@ -177,8 +198,9 @@ public class ShapeIcon implements Icon {
 	 * @param shapeWidth the shape width
 	 * @param shapeHeight the shape height
 	 * @param g2d the g2d
+	 * @throws Exception the exception
 	 */
-	private void drawPlus(int x, int y, int shapeWidth, int shapeHeight ,Graphics2D g2d){
+	private void drawPlus(int x, int y, int shapeWidth, int shapeHeight ,Graphics2D g2d) throws Exception{
 		Point up = new Point((int)shapeWidth/2+x,y);
 		Point right = new Point(shapeWidth+x,(int)shapeHeight/2+y);
 		Point down = new Point((int)shapeWidth/2+x, shapeHeight+y);
@@ -204,8 +226,9 @@ public class ShapeIcon implements Icon {
 	 * @param shapeWidth the shape width
 	 * @param shapeHeight the shape height
 	 * @param g2d the g2d
+	 * @throws Exception the exception
 	 */
-	private void drawCross(int x, int y, int shapeWidth, int shapeHeight ,Graphics2D g2d){
+	private void drawCross(int x, int y, int shapeWidth, int shapeHeight ,Graphics2D g2d) throws Exception{
 		Point upleft = new Point(x,y);
 		Point upright = new Point(shapeWidth+x,y);
 		Point downleft = new Point(x, shapeHeight+y);
@@ -229,8 +252,9 @@ public class ShapeIcon implements Icon {
 	 * @param shapeWidth the shape width
 	 * @param shapeHeight the shape height
 	 * @param g2d the g2d
+	 * @throws Exception the exception
 	 */
-	private void drawOval(int x, int y, int shapeWidth, int shapeHeight ,Graphics2D g2d){
+	private void drawOval(int x, int y, int shapeWidth, int shapeHeight ,Graphics2D g2d) throws Exception{
 
 		g2d.draw(new Ellipse2D.Double(x, y+shapeHeight*0.2, shapeWidth, shapeHeight*0.6));
 	    g2d.setStroke(strokeBig); // set thickness bigger
@@ -247,8 +271,9 @@ public class ShapeIcon implements Icon {
 	 * @param shapeWidth the shape width
 	 * @param shapeHeight the shape height
 	 * @param g2d the g2d
+	 * @throws Exception the exception
 	 */
-	private void drawSquare(int x, int y, int shapeWidth, int shapeHeight ,Graphics2D g2d){
+	private void drawSquare(int x, int y, int shapeWidth, int shapeHeight ,Graphics2D g2d) throws Exception{
 
 		// draw thin rectangle
         g2d.draw(new Rectangle2D.Double(x, y, shapeWidth, shapeHeight));
@@ -266,8 +291,9 @@ public class ShapeIcon implements Icon {
 	 * @param shapeWidth the shape width
 	 * @param shapeHeight the shape height
 	 * @param g2d the g2d
+	 * @throws Exception the exception
 	 */
-	private void drawCircle(int x, int y, int shapeWidth, int shapeHeight ,Graphics2D g2d){
+	private void drawCircle(int x, int y, int shapeWidth, int shapeHeight ,Graphics2D g2d) throws Exception{
 
 
 		// draw transparent thick circle
@@ -319,7 +345,9 @@ public class ShapeIcon implements Icon {
 
 	@Override
 	public int getIconWidth() {
-		return this.width;
+		
+			return this.width;
+		
 	}
 
 	@Override
