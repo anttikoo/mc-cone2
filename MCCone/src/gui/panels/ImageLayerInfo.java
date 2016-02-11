@@ -53,6 +53,7 @@ public class ImageLayerInfo extends JPanel{
 /** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -4726272780653526727L;
 
+/** The Constant LOGGER. */
 private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 /** The ID of ImageLayer. */
