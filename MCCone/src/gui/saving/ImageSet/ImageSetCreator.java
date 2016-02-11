@@ -80,6 +80,10 @@ import managers.TaskManager;
 public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -1530346459913984034L;
+
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
 	/** The task manager. */
@@ -228,7 +232,12 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						closeWindow();
+						try {
+							closeWindow();
+						} catch (Exception e) {
+							LOGGER.severe("Error in closing window of Image Set Creator!");
+							e.printStackTrace();
+						}
 					}
 				});
 				break;
@@ -247,6 +256,9 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 							LOGGER.info("Interrupted importing files in ImageSetCreator "+e.getMessage());
 							e.printStackTrace();
 							
+						} catch(Exception ex){
+							LOGGER.info("Error importing files in ImageSetCreator "+ex.getMessage());
+							ex.printStackTrace();
 						}
 			
 
@@ -261,8 +273,13 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						createImagesFromPresentImageLayers();
-						setImagesToGrid();
+						try {
+							createImagesFromPresentImageLayers();
+							setImagesToGrid();
+						} catch (Exception e) {
+							LOGGER.severe("Error in creating images from ImageLayers!");
+							e.printStackTrace();
+						}
 					}
 				});
 				break;
@@ -272,7 +289,12 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-						exportImageSet();
+						try {
+							exportImageSet();
+						} catch (Exception e) {
+							LOGGER.severe("Error in Exporting ImageSet!");
+							e.printStackTrace();
+						}
 					}
 				});
 
@@ -286,7 +308,7 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	 * Calculates how much window has space for ImagePanels. 
 	 * @return Dimension overall space left for ImagePanels.
 	 */
-	private Dimension calculateDrawPanelDimension(){
+	private Dimension calculateDrawPanelDimension() throws Exception{
 
 		int width=(int)((this.backPanel.getWidth()-this.gap*(this.presentColumnNumber+1))/this.presentColumnNumber);
 		int height=(int)((this.backPanel.getHeight()-this.gap*(this.presentRowNumber+1)-this.menuBar.getHeight()-this.browsingBackPanel.getHeight())/this.presentRowNumber);
@@ -299,7 +321,7 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	 * @param itemNumber int number of overall items
 	 * @return int[] new row and column number (may be same as given value if there are enough cells for imagePanels)
 	 */
-	private int[] calculateEnoughGridPoints(int[] rowColumn, int itemNumber){
+	private int[] calculateEnoughGridPoints(int[] rowColumn, int itemNumber) throws Exception{
 
 		if(rowColumn[0]*rowColumn[1]< itemNumber){
 			if(rowColumn[0]>=rowColumn[1]){
@@ -315,7 +337,7 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	/**
 	 * Opens Confirm dialog to close ImageSet window.
 	 */
-	private void closeWindow(){
+	private void closeWindow() throws Exception{
 		ShadyMessageDialog dialog = new ShadyMessageDialog(this, "Closing image set creator window", "Really want to close ImageSet window?", ID.YES_NO, this);
 		if(dialog.showDialog() == ID.YES){
 			this.setVisible(false);
@@ -418,8 +440,10 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	/**
 	 * Opens dialog window, where user can select ImageLayers and MarkingLayers to be shown in imageSet.
 	 * Creates SingleDrawImagePanels from selected images
+	 *
+	 * @throws Exception the exception
 	 */
-	private void createImagesFromPresentImageLayers(){
+	private void createImagesFromPresentImageLayers() throws Exception{
 		visibleDialog = new SelectAndCreateImageFiles(this, this.gui, taskManager.getImageLayerList(), ID.EXPORT_PREVIEW_IMAGES);
 		
 		// create SingleDrawImagePanels of all images
@@ -441,20 +465,32 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Starts a Thread for exporting ImageSet if images found.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void exportImageSet(){
+	private void exportImageSet() throws Exception{
 		if(drawImagePanels != null && drawImagePanels.size()>0){
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					initThreads();
-					progressBallsDialog.showDialog();
+					try {
+						initThreads();
+						progressBallsDialog.showDialog();
+					} catch (Exception e) {
+						LOGGER.severe("Error in initialisng progress thread !");
+						e.printStackTrace();
+					}
 				}
 			});
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					createImageThread.start();
+					try {
+						createImageThread.start();
+					} catch (Exception e) {
+						LOGGER.severe("Error in starting thread for creating images!");
+						e.printStackTrace();
+					}
 				}
 			});
 
@@ -473,7 +509,7 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	 * Searches first SingleDrawImagePanel which is not positioned yet.
 	 * @return SingleDrawImagePanel which is not positioned yet.
 	 */
-	private SingleDrawImagePanel getFirstUnPositionedSDP(){
+	private SingleDrawImagePanel getFirstUnPositionedSDP() throws Exception{
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
 			SingleDrawImagePanel sdp=(SingleDrawImagePanel)sdpIterator.next();
@@ -485,10 +521,12 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Returns a String folder path of the given file .
+	 *
 	 * @param file File which folder is viewed
-	 * @return String folder path of the given file 
+	 * @return String folder path of the given file
+	 * @throws Exception the exception
 	 */
-	private String getFolder(File file){
+	private String getFolder(File file) throws Exception{
 		if(file.isDirectory()){
 			return file.getAbsolutePath();
 		}
@@ -500,10 +538,12 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Determines which grid cell (row,column) is in point where mouse was pressed.
+	 *
 	 * @param p @see Point position in grid (x,y)
-	 * @return int[] the cell position in grid (row,column) 
+	 * @return int[] the cell position in grid (row,column)
+	 * @throws Exception the exception
 	 */
-	private int[] getGridPositionAtLocation(Point p){
+	private int[] getGridPositionAtLocation(Point p) throws Exception{
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
 			SingleDrawImagePanel sdp =sdpIterator.next();
@@ -517,10 +557,12 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Returns a maximum height row at grid.
+	 *
 	 * @param r int row number which maximum panel height is looking for. The r < 1 means searching max panel height of all panels.
 	 * @return int maximum height of row.
+	 * @throws Exception the exception
 	 */
-	private int getMaximumPanelHeightAtRow(int r){
+	private int getMaximumPanelHeightAtRow(int r) throws Exception{
 		int maxHeight=0;
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
@@ -547,7 +589,7 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	 * @param c int column index
 	 * @return int maximum column width
 	 */
-	private int getMaximumPanelWidthAtColumn(int c){
+	private int getMaximumPanelWidthAtColumn(int c) throws Exception{
 		int maxWidth=0;
 		// go through all SingleDrawImagePanels
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
@@ -573,7 +615,7 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	 * @return int maximum height of Title panel.
 	 */
 
-	private int getMaximumTitlePanelHeightByFontSize(){
+	private int getMaximumTitlePanelHeightByFontSize() throws Exception{
 		int maxHeight=0;
 		// go through all SingleDrawImagePanels
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
@@ -645,20 +687,29 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	 * @return SingleDrawImagePanel at position r,c. If not found, null returned.
 	 */
 	private SingleDrawImagePanel getSDPatPosition(int r, int c){
-		// go through all SingleDrawImagePanels
-		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
-		while(sdpIterator.hasNext()){
-			SingleDrawImagePanel sdp=(SingleDrawImagePanel)sdpIterator.next();
-			if(sdp.getGridPosition() != null && sdp.getGridPosition()[0] == r && sdp.getGridPosition()[1] == c)
-				return sdp;
+		try {
+			// go through all SingleDrawImagePanels
+			Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
+			while(sdpIterator.hasNext()){
+				SingleDrawImagePanel sdp=(SingleDrawImagePanel)sdpIterator.next();
+				if(sdp.getGridPosition() != null && sdp.getGridPosition()[0] == r && sdp.getGridPosition()[1] == c)
+					return sdp;
+			}
+			return null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting SingleDrawImagePanel at position row, column !");
+			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	/**
+	 * Returns the selected font.
+	 *
 	 * @return Font the selected font
+	 * @throws Exception the exception
 	 */
-	private Font getSelectedFont(){
+	private Font getSelectedFont() throws Exception{
 		String fontName = fontsBox.getSelectedItem().toString();
 		int fSize=(int)fontSizeBox.getSelectedItem();
 		return  new Font(fontName, Font.PLAIN, fSize);
@@ -704,7 +755,9 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Initializes the Browsing Panel at below of window.
+	 *
 	 * @return JPanel BrowsingPanel
+	 * @throws Exception the exception
 	 */
 	public JPanel initBrowsingPanel() throws Exception{
 		
@@ -861,6 +914,8 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Initializes JPanels and other graphical components of this ImageSetCreator-object.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void initComponents() throws Exception{	
 			this.setBounds(WindowLocator.getVisibleWindowBounds(this.parentComponent));
@@ -974,7 +1029,12 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					closeWindow();
+					try {
+						closeWindow();
+					} catch (Exception e1) {
+						LOGGER.severe("Error in closing window or ImageSetCreator !");
+						e1.printStackTrace();
+					}
 
 				}
 			});
@@ -1010,8 +1070,10 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Refreshes Threads for saving ImageSet and showing progress.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void initThreads(){
+	private void initThreads() throws Exception{
 		this.progressBallsDialog.refreshDialog();
 		this.createImageThread=new Thread(this, "CreateImage_"+threadNumber++);
 	}
@@ -1049,16 +1111,21 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	@Override
 	public void mousePressed(MouseEvent e) {
 
-			//get point where pressed
-			Point startPoint = e.getLocationOnScreen();
-			//get position at grid -> row, column
-			int[] gridPoint=getGridPositionAtLocation(startPoint);
-			if(gridPoint != null){
-				this.movingPosition=gridPoint;
-				this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			try {
+				//get point where pressed
+				Point startPoint = e.getLocationOnScreen();
+				//get position at grid -> row, column
+				int[] gridPoint=getGridPositionAtLocation(startPoint);
+				if(gridPoint != null){
+					this.movingPosition=gridPoint;
+					this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				}
+					else
+						this.movingPosition=null;
+			} catch (Exception e1) {
+				LOGGER.severe("Error when pressed mouse on ImageSetCreator!");
+				e1.printStackTrace();
 			}
-				else
-					this.movingPosition=null;
 	}
 
 	/* (non-Javadoc)
@@ -1067,28 +1134,35 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	@Override
 	public void mouseReleased(MouseEvent e) {
 
-			Point endPoint = e.getLocationOnScreen();
-			//get position at grid -> row, column
-			int[] gridPoint=getGridPositionAtLocation(endPoint);
-			if(gridPoint != null && this.movingPosition != null){
-			
-				swithcSingleDrawPanels(gridPoint);
-			}
-			else{
-				if(gridPoint == null && this.movingPosition != null) {
-					// remove the panel
-					removePanel();
+			try {
+				Point endPoint = e.getLocationOnScreen();
+				//get position at grid -> row, column
+				int[] gridPoint=getGridPositionAtLocation(endPoint);
+				if(gridPoint != null && this.movingPosition != null){
+				
+					swithcSingleDrawPanels(gridPoint);
 				}
+				else{
+					if(gridPoint == null && this.movingPosition != null) {
+						// remove the panel
+						removePanel();
+					}
+				}
+					this.movingPosition=null;
+					this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			} catch (Exception e1) {
+				LOGGER.severe("Error when released mouse on ImageSetCreator!");
+				e1.printStackTrace();
 			}
-				this.movingPosition=null;
-				this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
 
 	/**
 	 * Adds ImagePanels to grid cells. This happens when all ImagePanels are same size and no need to scale cell sizes.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void onlyAddPanelsToGrid(){
+	private void onlyAddPanelsToGrid() throws Exception{
 		this.gridPanel.removeAll();
 		this.gridPanel.revalidate();
 		// sort SingleDrawImagePanels in list with GridComparator -> by rows and then by columns
@@ -1107,16 +1181,23 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Open images at startup.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void openImagesAtStrartup(){
+	private void openImagesAtStrartup() throws Exception{
 		//open the window to select images from layers
 				if(this.taskManager != null && this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size()>0){
 					
 					SwingUtilities.invokeLater(new Runnable() {					
 						@Override
 						public void run() {
-							createImagesFromPresentImageLayers();
-							setImagesToGrid();				
+							try {
+								createImagesFromPresentImageLayers();
+								setImagesToGrid();
+							} catch (Exception e) {
+								LOGGER.severe("Error in creating images of present ImageLayers!");
+								e.printStackTrace();
+							}				
 						}
 					});			
 				}
@@ -1171,7 +1252,7 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	/**
 	 * Removes all SingleDrawImagePanels that has no image.
 	 */
-	private void removeEmptyPanels(){
+	private void removeEmptyPanels() throws Exception{
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
 			if(sdpIterator.next().getImage() == null){
@@ -1187,7 +1268,7 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	 *  Removes SingleDrawImagePanel from panel list. This happens when user drags the panel outside of grid. 
 	 *  Starting point position of dragging shows which panel is removed.
 	 */
-	private void removePanel(){
+	private void removePanel() throws Exception{
 			int selection=ID.UNDEFINED;
 			Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 			while(sdpIterator.hasNext()){
@@ -1214,16 +1295,19 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 		try {
 				createImage();
 		} catch (InterruptedException e) {
+			LOGGER.severe("Error in creating image!");
 			e.printStackTrace();
 		}
 
 	}
+	
 	/**
 	 * Opens ImagefileDialog and sets selected image files to grid.
-	 * 
-	 * @throws InterruptedException
+	 *
+	 * @throws InterruptedException the interrupted exception
+	 * @throws Exception the exception
 	 */
-	private void selectAndGetImagesFromFiles() throws InterruptedException{
+	private void selectAndGetImagesFromFiles() throws InterruptedException, Exception{
 
 		visibleDialog=new OpenImageFilesDialog(this, this.getBounds(), this.backPanel.getBounds(), this.presentFolder);
 		visibleDialog.setVisible(true);
@@ -1266,8 +1350,10 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Sets GridPositions of all DrawImagePanel to null.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void setGridPositionsToNull(){
+	private void setGridPositionsToNull() throws Exception{
 		Iterator<SingleDrawImagePanel> sdpIterator=this.drawImagePanels.iterator();
 		while(sdpIterator.hasNext()){
 			SingleDrawImagePanel sdp =sdpIterator.next();
@@ -1279,8 +1365,10 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Refreshes the ImagePanels shown in Grid.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void setImagesToGrid(){
+	public void setImagesToGrid() throws Exception{
 		try {
 			if(drawImagePanels != null && drawImagePanels.size()>0){
 
@@ -1353,7 +1441,7 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	 * Sets variable of position where ImagePanel is moved to other grid position.
 	 * @param movingPosition int[] Position in grid wherefrom panel is moved.
 	 */
-	public void setMovingPosition(int[] movingPosition) {
+	public void setMovingPosition(int[] movingPosition) throws Exception{
 		this.movingPosition = movingPosition;
 		//System.out.println("setmoving: "+this.movingPosition[0] + " " +this.movingPosition[1]);
 	}
@@ -1361,7 +1449,7 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	/**
 	 * Sets the panel position of this dialog and its child components.
 	 */
-	public void setPanelPosition(){
+	public void setPanelPosition() throws Exception{
 		this.setBounds(this.gui.getVisibleWindowBounds());
 		if(this.visibleDialog != null){
 			this.visibleDialog.setBounds(this.getBounds());
@@ -1370,9 +1458,11 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 *  Initializes the JCombobox showning available fonts for imageNames.
+	 *
+	 * @throws Exception the exception
 	 */
 	@SuppressWarnings("unchecked")
-	private void  setUpFontBox(){
+	private void  setUpFontBox() throws Exception{
 
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         String[] fontFamilyNames = ge.getAvailableFontFamilyNames();
@@ -1383,10 +1473,15 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if (drawImagePanels != null && drawImagePanels.size()>0  && e.getStateChange() == ItemEvent.SELECTED) {
-                    updatePanelFonts();
-                    refreshGridPanelSizes();
-                }
+                try {
+					if (drawImagePanels != null && drawImagePanels.size()>0  && e.getStateChange() == ItemEvent.SELECTED) {
+					    updatePanelFonts();
+					    refreshGridPanelSizes();
+					}
+				} catch (Exception e1) {
+					LOGGER.severe("Error in when updating imagetitles when fonts changed!");
+					e1.printStackTrace();
+				}
             }
         });
         fontsBox.setSelectedItem(0);
@@ -1398,8 +1493,10 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Initializes the JCombobox showning available font sizes for imageNames.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void setUpFontSizeBox(){
+	private void setUpFontSizeBox() throws Exception{
 
 		Integer[] iArray=new Integer[35];
 		int counter=0;
@@ -1424,12 +1521,17 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (drawImagePanels != null && drawImagePanels.size()>0  && e.getStateChange() == ItemEvent.SELECTED) {
-				//	int selectedFontSize= (int)fontSizeBox.getSelectedItem();
+				try {
+					if (drawImagePanels != null && drawImagePanels.size()>0  && e.getStateChange() == ItemEvent.SELECTED) {
+					//	int selectedFontSize= (int)fontSizeBox.getSelectedItem();
 
-                    updatePanelFonts();
-                   refreshGridPanelSizes();
-                }
+					    updatePanelFonts();
+					   refreshGridPanelSizes();
+					}
+				} catch (Exception e1) {
+					LOGGER.severe("Error in updating images when font size changed !");
+					e1.printStackTrace();
+				}
 
 			}
 		});
@@ -1437,8 +1539,10 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Initializes JComboboxes, showing the grid dimension: how many vertically and horizontally.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void setUpRowAndColumnBoxes(){
+	private void setUpRowAndColumnBoxes() throws Exception{
 		
 		Integer[] iArray=new Integer[10];
 		for (int i = 1; i <= 10; i++) {
@@ -1452,14 +1556,19 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (drawImagePanels != null && drawImagePanels.size()>0 && e.getStateChange() == ItemEvent.SELECTED) {
+				try {
+					if (drawImagePanels != null && drawImagePanels.size()>0 && e.getStateChange() == ItemEvent.SELECTED) {
 
-					if(presentRowNumber != (int)rowBox.getSelectedItem()){
-						presentRowNumber=(int)rowBox.getSelectedItem();
-						// update grid
-						setImagesToGrid();
+						if(presentRowNumber != (int)rowBox.getSelectedItem()){
+							presentRowNumber=(int)rowBox.getSelectedItem();
+							// update grid
+							setImagesToGrid();
+						}
 					}
-                }
+				} catch (Exception e1) {
+					LOGGER.severe("Error in updating images after changing row amount !");
+					e1.printStackTrace();
+				}
 
 			}
 		});
@@ -1471,13 +1580,18 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (drawImagePanels != null && drawImagePanels.size()>0  && e.getStateChange() == ItemEvent.SELECTED) {
-					if(presentColumnNumber != (int)columnBox.getSelectedItem()){
-					presentColumnNumber= (int)columnBox.getSelectedItem();
-					// update grid
-					setImagesToGrid();
+				try {
+					if (drawImagePanels != null && drawImagePanels.size()>0  && e.getStateChange() == ItemEvent.SELECTED) {
+						if(presentColumnNumber != (int)columnBox.getSelectedItem()){
+						presentColumnNumber= (int)columnBox.getSelectedItem();
+						// update grid
+						setImagesToGrid();
+						}
 					}
-                }
+				} catch (Exception e1) {
+					LOGGER.severe("Error in updating images after changing column amount!");
+					e1.printStackTrace();
+				}
 
 			}
 		});
@@ -1493,9 +1607,11 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Changes positions in GRID of two @see SingleDrawImagePanel-objects.
+	 *
 	 * @param second int[] position of @see SingleDrawImagePanel-object that is moved.
+	 * @throws Exception the exception
 	 */
-	public void swithcSingleDrawPanels(int[] second){
+	public void swithcSingleDrawPanels(int[] second) throws Exception{
 		SingleDrawImagePanel firstPanel= getSDPatPosition(this.movingPosition[0],this.movingPosition[1]);
 		SingleDrawImagePanel secondPanel = getSDPatPosition(second[0], second[1]);
 		if(firstPanel != null && secondPanel != null){
@@ -1516,8 +1632,10 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Refreshes selected index of comboboxes showing column and row values.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void updateGridComboBoxItems(){
+	private void updateGridComboBoxItems() throws Exception{
 		this.rowBox.setSelectedItem(this.presentRowNumber);
 
 		this.columnBox.setSelectedItem(this.presentColumnNumber);
@@ -1525,8 +1643,10 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 *  Updates the grid dimension by given row and column number. Updates also the default export size dimension shown at downbar.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void updateGridSize(){
+	private void updateGridSize() throws Exception{
 		int maxWidth =0 , maxHeigth = 0;
 		//get maximum width from panels
 		for (int i = 1; i <= presentRowNumber; i++) {
@@ -1560,7 +1680,7 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	/**
 	 * Sets selected font to all SingleDrawImagePanel.
 	 */
-	private void updatePanelFonts(){
+	private void updatePanelFonts() throws Exception{
 		//get selected font and font size
 		String fontName = fontsBox.getSelectedItem().toString();
 		int fSize=(int)fontSizeBox.getSelectedItem();
@@ -1597,14 +1717,20 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 		@Override
 	    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 	        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-	        if (list.getModel().getSize() > 0) {
-	            manItemInCombo();
-	        }
-	    //    final JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, row, isSelected, cellHasFocus);
-	        final Object fntObj = value;
-	        final String fontFamilyName = (String) fntObj;
-	        setFont(new Font(fontFamilyName, Font.PLAIN, 16));
-	        return this;
+	        try {
+				if (list.getModel().getSize() > 0) {
+				    manItemInCombo();
+				}
+   //    final JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, row, isSelected, cellHasFocus);
+				final Object fntObj = value;
+				final String fontFamilyName = (String) fntObj;
+				setFont(new Font(fontFamilyName, Font.PLAIN, 16));
+				return this;
+			} catch (Exception e) {
+				LOGGER.severe("Error in  getting cell renderer for combobox!");
+				e.printStackTrace();
+				return null;
+			}
 	    }
 
 	    /**
@@ -1612,18 +1738,23 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	     */
 	    @SuppressWarnings({ "rawtypes", "unchecked" })
 		private void manItemInCombo() {
-	        if (comboBox.getItemCount() > 0) {
-	            final Object comp = comboBox.getUI().getAccessibleChild(comboBox, 0);
-	            if ((comp instanceof JPopupMenu)) {
-	                final JList list = new JList(comboBox.getModel());
-	                final JPopupMenu popup = (JPopupMenu) comp;
-	                final JScrollPane scrollPane = (JScrollPane) popup.getComponent(0);
-	                final JViewport viewport = scrollPane.getViewport();
-	             //   final Rectangle rect = popup.getVisibleRect();
-	                final Point pt = viewport.getViewPosition();
-	                row = list.locationToIndex(pt);
-	            }
-	        }
+	        try {
+				if (comboBox.getItemCount() > 0) {
+				    final Object comp = comboBox.getUI().getAccessibleChild(comboBox, 0);
+				    if ((comp instanceof JPopupMenu)) {
+				        final JList list = new JList(comboBox.getModel());
+				        final JPopupMenu popup = (JPopupMenu) comp;
+				        final JScrollPane scrollPane = (JScrollPane) popup.getComponent(0);
+				        final JViewport viewport = scrollPane.getViewport();
+				     //   final Rectangle rect = popup.getVisibleRect();
+				        final Point pt = viewport.getViewPosition();
+				        row = list.locationToIndex(pt);
+				    }
+				}
+			} catch (Exception e) {
+				LOGGER.severe("Error in  getting selected row for combobox!");
+				e.printStackTrace();
+			}
 	    }
 	}
 }

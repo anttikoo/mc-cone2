@@ -73,9 +73,14 @@ public class ArrowMouseListener implements MouseListener {
 	 * @param hf TextField of height for exported image
 	 */
 	public ArrowMouseListener(JTextField wf, JTextField hf){
-		this.widthField=wf;
-		this.heightField=hf;
-		initPressingTimers();
+		try {
+			this.widthField=wf;
+			this.heightField=hf;
+			initPressingTimers();
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing ArrowMouseListener!");
+			e.printStackTrace();
+		}
 
 	}
 
@@ -86,29 +91,49 @@ public class ArrowMouseListener implements MouseListener {
 		this.pressingWidthUPTimer=new Timer(50, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(!changingValuesON)
-				updateField(valueChange, widthField, heightField, false);
+				try {
+					if(!changingValuesON)
+					updateField(valueChange, widthField, heightField, false);
+				} catch (Exception e1) {
+					LOGGER.severe("Error in increasing image width !");
+					e1.printStackTrace();
+				}
 			}
 		});
 		this.pressingWidthDownTimer=new Timer(50, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(!changingValuesON)
-				updateField(-valueChange, widthField, heightField, false);
+				try {
+					if(!changingValuesON)
+					updateField(-valueChange, widthField, heightField, false);
+				} catch (Exception e1) {
+					LOGGER.severe("Error in decreasing image width !");
+					e1.printStackTrace();
+				}
 			}
 		});
 		this.pressingHeightUPTimer=new Timer(50, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(!changingValuesON)
-				updateField(valueChange, heightField, widthField, true);
+				try {
+					if(!changingValuesON)
+					updateField(valueChange, heightField, widthField, true);
+				} catch (Exception e1) {
+					LOGGER.severe("Error in increasing image height !");
+					e1.printStackTrace();
+				}
 			}
 		});
 		this.pressingHeightDownTimer=new Timer(50, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(!changingValuesON)
-				updateField(-valueChange, heightField, widthField, true);
+				try {
+					if(!changingValuesON)
+					updateField(-valueChange, heightField, widthField, true);
+				} catch (Exception e1) {
+					LOGGER.severe("Error in decreasing image height !");
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -116,8 +141,13 @@ public class ArrowMouseListener implements MouseListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(valueChange<maxValueChange)
-					valueChange++;
+				try {
+					if(valueChange<maxValueChange)
+						valueChange++;
+				} catch (Exception e1) {
+					LOGGER.severe("Error in changing multiplier when changing image resolution!");
+					e1.printStackTrace();
+				}
 
 			}
 		});
@@ -130,22 +160,27 @@ public class ArrowMouseListener implements MouseListener {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		stopTimers();
-		if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.widthUp)){
-			if(!changingValuesON)
-			updateField(1, this.widthField, this.heightField, false);
-		}
-		else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.widthDown)){
-			if(!changingValuesON)
-			updateField(-1, this.widthField, this.heightField, false);
-		}
-		else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.heighthUp)){
-			if(!changingValuesON)
-			updateField(1, heightField, widthField, true);
-		}
-		else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.heightDown)){
-			if(!changingValuesON)
-			updateField(-1, heightField, widthField, true);
+		try {
+			stopTimers();
+			if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.widthUp)){
+				if(!changingValuesON)
+				updateField(1, this.widthField, this.heightField, false);
+			}
+			else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.widthDown)){
+				if(!changingValuesON)
+				updateField(-1, this.widthField, this.heightField, false);
+			}
+			else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.heighthUp)){
+				if(!changingValuesON)
+				updateField(1, heightField, widthField, true);
+			}
+			else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.heightDown)){
+				if(!changingValuesON)
+				updateField(-1, heightField, widthField, true);
+			}
+		} catch (Exception e1) {
+			LOGGER.severe("Error when cliced arrows for changing image resolution!");
+			e1.printStackTrace();
 		}
 
 	}
@@ -171,24 +206,29 @@ public class ArrowMouseListener implements MouseListener {
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if(!this.multiplierTimer.isRunning())
-			this.multiplierTimer.start();
+		try {
+			if(!this.multiplierTimer.isRunning())
+				this.multiplierTimer.start();
 
-		if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.widthUp)){
-			if(!this.pressingWidthUPTimer.isRunning())
-				this.pressingWidthUPTimer.start();
-		}
-		else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.widthDown)){
-			if(!this.pressingWidthDownTimer.isRunning())
-				this.pressingWidthDownTimer.start();
-		}
-		else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.heighthUp)){
-			if(!this.pressingHeightUPTimer.isRunning())
-				this.pressingHeightUPTimer.start();
-		}
-		else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.heightDown)){
-			if(!this.pressingHeightDownTimer.isRunning())
-				this.pressingHeightDownTimer.start();
+			if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.widthUp)){
+				if(!this.pressingWidthUPTimer.isRunning())
+					this.pressingWidthUPTimer.start();
+			}
+			else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.widthDown)){
+				if(!this.pressingWidthDownTimer.isRunning())
+					this.pressingWidthDownTimer.start();
+			}
+			else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.heighthUp)){
+				if(!this.pressingHeightUPTimer.isRunning())
+					this.pressingHeightUPTimer.start();
+			}
+			else if(((JButton)e.getSource()).getActionCommand().equals(SharedVariables.heightDown)){
+				if(!this.pressingHeightDownTimer.isRunning())
+					this.pressingHeightDownTimer.start();
+			}
+		} catch (Exception e1) {
+			LOGGER.severe("Error when pressed mouse for changing image resolution!");
+			e1.printStackTrace();
 		}
 
 
@@ -198,8 +238,13 @@ public class ArrowMouseListener implements MouseListener {
 	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		stopTimers();
+	public void mouseReleased(MouseEvent e)  {
+		try {
+			stopTimers();
+		} catch (Exception e1) {
+			LOGGER.severe("Error in  stopping timers of image resolution changers!");
+			e1.printStackTrace();
+		}
 
 	}
 
@@ -207,8 +252,9 @@ public class ArrowMouseListener implements MouseListener {
 	 * Sets the scaling factor used for calculating width from image height and height from image width.
 	 *
 	 * @param factor the new scaling factor
+	 * @throws Exception the exception
 	 */
-	public void setScalingFactor(double factor){
+	public void setScalingFactor(double factor) throws Exception{
 		ArrowMouseListener.scalingFactor=factor;
 	}
 
@@ -216,23 +262,28 @@ public class ArrowMouseListener implements MouseListener {
 	 * Stops the timers.
 	 */
 	private void stopTimers(){
-		if(this.multiplierTimer.isRunning()){
-			this.multiplierTimer.stop();
-			this.valueChange=0;
+		try {
+			if(this.multiplierTimer.isRunning()){
+				this.multiplierTimer.stop();
+				this.valueChange=0;
+			}
+
+
+			if(this.pressingWidthUPTimer.isRunning())
+				this.pressingWidthUPTimer.stop();
+
+			if(this.pressingWidthDownTimer.isRunning())
+				this.pressingWidthDownTimer.stop();
+
+			if(this.pressingHeightUPTimer.isRunning())
+				this.pressingHeightUPTimer.stop();
+
+			if(this.pressingHeightDownTimer.isRunning())
+				this.pressingHeightDownTimer.stop();
+		} catch (Exception e) {
+			LOGGER.severe("Error in stopping timers of image resolution changing arrows!");
+			e.printStackTrace();
 		}
-
-
-		if(this.pressingWidthUPTimer.isRunning())
-			this.pressingWidthUPTimer.stop();
-
-		if(this.pressingWidthDownTimer.isRunning())
-			this.pressingWidthDownTimer.stop();
-
-		if(this.pressingHeightUPTimer.isRunning())
-			this.pressingHeightUPTimer.stop();
-
-		if(this.pressingHeightDownTimer.isRunning())
-			this.pressingHeightDownTimer.stop();
 	}
 	
 	
@@ -244,8 +295,9 @@ public class ArrowMouseListener implements MouseListener {
 	 * @param field_changed the field_changed
 	 * @param field_calculated the field_calculated
 	 * @param divide boolean true if count value of another textfield by diving otherwise false for multiplying
+	 * @throws Exception the exception
 	 */
-	private void updateField(int resolutionchange, JTextField field_changed, JTextField field_calculated, boolean divide){
+	private void updateField(int resolutionchange, JTextField field_changed, JTextField field_calculated, boolean divide) throws Exception{
 		changingValuesON=true;
 		DocumentFilter filter1 =((PlainDocument)field_changed.getDocument()).getDocumentFilter();
 		DocumentFilter filter2 =((PlainDocument)field_calculated.getDocument()).getDocumentFilter();
@@ -346,7 +398,7 @@ public class ArrowMouseListener implements MouseListener {
 	/**
 	 * Updates JTextFields of width and height.
 	 */
-	public void updateResolutions(){
+	public void updateResolutions() throws Exception{
 		updateField(0,this.widthField, this.heightField, false);
 	}
 
