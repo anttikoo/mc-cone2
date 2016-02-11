@@ -1,5 +1,7 @@
 package gui.saving.ImageSet;
 
+import java.util.logging.Logger;
+
 import gui.ProgressBallsDialog;
 
 /**
@@ -16,6 +18,9 @@ private Thread progressThread;
 /** The cancelled. Shows is importing of image canceled. */
 private boolean cancelled=false;
 
+/** The Constant LOGGER. */
+private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+
 
 	/**
 	 * Instantiates a new ImageImportCancelerThread.
@@ -24,8 +29,13 @@ private boolean cancelled=false;
 	 * @param pbd the pbd
 	 */
 	public ImageImportCancelerThread(ImageSetCreator isc, ProgressBallsDialog pbd){
-	this.progressBalls= pbd;
-	this.progressThread=new Thread(this, "cancelling");
+	try {
+		this.progressBalls= pbd;
+		this.progressThread=new Thread(this, "cancelling");
+	} catch (Exception e) {
+		LOGGER.severe("Error in initializing ImageImportCancelerThread!");
+		e.printStackTrace();
+	}
 	}
 	
 	
@@ -43,16 +53,21 @@ private boolean cancelled=false;
 	 */
 	@Override
 	public void run() {
-		this.setCancelled(false);
-		while(progressBalls.isShowON()){
-			try {
-				this.progressThread.sleep(500);
-			} catch (InterruptedException e) {			
-				e.printStackTrace();
+		try {
+			this.setCancelled(false);
+			while(progressBalls.isShowON()){
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {			
+					e.printStackTrace();
+				}
 			}
-		}
 
-		setCancelled(true);
+			setCancelled(true);
+		} catch (Exception e) {
+			LOGGER.severe("Error in start running image import canceller thread!");
+			e.printStackTrace();
+		}
 
 	}
 	
@@ -60,15 +75,18 @@ private boolean cancelled=false;
 	 * Sets the Thread cancelled.
 	 *
 	 * @param cancelled the new cancelled
+	 * @throws Exception the exception
 	 */
-	public void setCancelled(boolean cancelled) {
+	public void setCancelled(boolean cancelled) throws Exception{
 		this.cancelled = cancelled;
 	}
 
 	/**
 	 * Sets Thread running.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void startWaiting(){
+	public void startWaiting() throws Exception{
 		this.progressThread.start();
 	}
 }
