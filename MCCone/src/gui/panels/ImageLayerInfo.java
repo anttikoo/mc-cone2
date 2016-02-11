@@ -76,6 +76,9 @@ private JPanel markingArea;
 /** The JPanel for Button for adding new MarkingLayer. */
 private JPanel addMarkingLayerJPanel;
 
+/** The selected ImageLayer JButton. */
+private JButton selectedImageLayerJButton;
+
 	/**
 	 * Class constructor
 	 * @param imageLayer the ImageLayer which information will be shown
@@ -108,12 +111,9 @@ private JPanel addMarkingLayerJPanel;
 			titleLabelJPanel.setPreferredSize(new Dimension(gui.getRightPanelWidth()-120,40));
 			titleLabelJPanel.setBackground(Color_schema.dark_40);
 
-			JButton selectedImageLayerJButton = new JButton();
-			if(imageLayer.isVisibleMarkingLayers())
-				selectedImageLayerJButton.setIcon(getImageIcon("/images/eye_open.png"));
-			else
-				selectedImageLayerJButton.setIcon(getImageIcon("/images/eye_closed.png"));
-
+			selectedImageLayerJButton = new JButton();
+			setEyeIcon();
+	
 			selectedImageLayerJButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 			selectedImageLayerJButton.setPreferredSize(new Dimension(40,35));
 			selectedImageLayerJButton.setMaximumSize(new Dimension(40,35));
@@ -336,12 +336,15 @@ private JPanel addMarkingLayerJPanel;
 											}	
 																					
 										}
-										
-																
+																										
 										sPanel.setGridButton(typeOfGrid);
 										
+										// set MarkingLayer visibilibity
 										int mLayerID= sPanel.getMarking_layer_id();									
 										gui.setMarkingLayerVisibility(mLayerID, !isVisible);
+										
+										// set ImageLayer icon 
+										((ImageLayerInfo)((JPanel)((SingleMarkingPanel)((JButton)e.getSource()).getParent()).getParent()).getParent()).setEyeIcon();
 
 									} catch (Exception ex) {
 										LOGGER.severe("Error in editing marking properties" +e.getClass().toString() + " : " +ex.getMessage());
@@ -779,6 +782,24 @@ public String getImageLayerName() {
 		addMarkingLayerJPanel.add(Box.createRigidArea(new Dimension(0,2)));
 
 		this.add(addMarkingLayerJPanel,BorderLayout.PAGE_END);
+	}
+	
+
+	
+	/**
+	 * Sets the eye icon for ImageLayerInfo -> ImageLayer title part.
+	 *
+	 * @throws Exception the exception
+	 */
+	private void setEyeIcon() throws Exception{
+		ImageLayer iLayer = gui.getImageLayerByID(this.imageLayerID);
+		if(iLayer != null)
+			if(iLayer.isVisibleMarkingLayers())
+				selectedImageLayerJButton.setIcon(getImageIcon("/images/eye_open.png"));
+			else
+				selectedImageLayerJButton.setIcon(getImageIcon("/images/eye_closed.png"));
+
+
 	}
 
 	/**

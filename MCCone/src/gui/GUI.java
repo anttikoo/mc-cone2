@@ -2351,7 +2351,8 @@ private void setPropertiesOfMarkingPanel(int mLayerID) throws Exception{
 public void setSelectedImageLayerAndImage(int iLayerID, int selectionChangeType) {
 	 try {
 		 ImageLayer iLayer =this.taskManager.getImageLayerByID(iLayerID);
-		 	boolean visible=iLayer.isVisibleMarkingLayers();
+		 	boolean visible=iLayer.isVisibleMarkingLayers(); // has ImageLayer any visible MarkingLayers
+		 if(selectionChangeType != ID.IMAGELAYER_REFRESH_VISIBILITY){	
 		 	if(!(this.taskManager.getImageLayerByID(iLayerID).isSelected())){
 		 		this.taskManager.changeSelectedImageLayer(iLayerID);
 		
@@ -2360,7 +2361,7 @@ public void setSelectedImageLayerAndImage(int iLayerID, int selectionChangeType)
 
 		 	}
 		 	
-		 if(selectionChangeType == ID.IMAGELAYER_REFRESH_VISIBILITY)
+		 }else
 			setVisibilityOfAllMarkingLayersOfSingleImageLayer(!visible, iLayerID);
 			 
 		 

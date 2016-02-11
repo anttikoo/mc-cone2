@@ -117,7 +117,7 @@ public class SaveMarkings extends SaverDialog{
 	 * @see gui.saving.SaverDialog#initBrowsingPanelWithLabel()
 	 */
 	protected JPanel initBrowsingPanelWithLabel() throws Exception{
-		return initBrowsingPanel(this.savingType, "Browse file for for all");
+		return initBrowsingPanel(this.savingType, "Browse file for all");
 	}
 
 
