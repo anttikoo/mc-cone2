@@ -103,7 +103,7 @@ public class ImageCreator implements Runnable {
 				BufferedImage bi=ImageIO.read(imageFile);
 
 				if(bi != null){
-
+					singleImageDimension=new Dimension(bi.getWidth(),bi.getHeight()); // set single image dimension for painting grid
 					ArrayList<MarkingLayer> layersToDraw=getPrintingLayerList(imageLayer, mLayerIDlist);
 					if(layersToDraw != null && layersToDraw.size()>0){
 						int maxShapeSize=getMaxShapeSize(layersToDraw);

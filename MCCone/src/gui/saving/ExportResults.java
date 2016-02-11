@@ -4,6 +4,7 @@ import gui.saving.SaverDialog;
 import gui.Color_schema;
 import gui.GUI;
 import gui.saving.SelectFileDialog;
+import gui.saving.image.ExImaSingleImagePanel;
 import gui.MouseListenerCreator;
 import gui.ShadyMessageDialog;
 import information.ID;
@@ -101,7 +102,10 @@ public class ExportResults extends SaverDialog{
 	 * @see gui.saving.SaverDialog#createSingleImagePanel(information.ImageLayer)
 	 */
 	protected SingleImagePanel createSingleImagePanel(ImageLayer layer) throws Exception{
-		return new ExSingleImagePanel(layer,this);
+		if(this.savingType == ID.EXPORT_PREVIEW_IMAGES)
+			return new ExImaSingleImagePanel(layer, this);
+		else
+			return new ExSingleImagePanel(layer,this);
 	}
 
 	/**

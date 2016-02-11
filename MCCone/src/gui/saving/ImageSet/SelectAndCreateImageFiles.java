@@ -12,6 +12,7 @@ import operators.ImageCreator;
 import gui.GUI;
 import gui.saving.ExportResults;
 import gui.saving.SingleImagePanel;
+import gui.saving.image.ExImaSingleImagePanel;
 
 /**
  * The Class SelectAndCreateImageFiles extends ExportResult to export image files.
@@ -89,9 +90,11 @@ public class SelectAndCreateImageFiles extends ExportResults {
 				if(imPanelList != null && imPanelList.length>0 ){
 					// create new LayersOfPath objects and add them to list
 					 for (int i = 0; i < imPanelList.length; i++) {
-						SingleImagePanel imp= (SingleImagePanel)imPanelList[i];
+						ExImaSingleImagePanel imp= (ExImaSingleImagePanel)imPanelList[i];
+						
 						ArrayList<MarkingLayer> selectedMarkingLayers = imp.getAllSelectedMarkingLayers();
 						if(selectedMarkingLayers != null && selectedMarkingLayers.size()>0){
+							imp.updateGridDrawing();
 						BufferedImage created = imageCreator.createBufferedImage(imp.getImageLayer(), imp.getAllSelectedMarkingLayerIDs());
 						if(created != null) // creation successful -> add to list.
 							this.createdImages.add(new BufferedImageWithName(created, imp.getImageLayerName()));
