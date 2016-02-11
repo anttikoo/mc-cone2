@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
+import java.util.logging.Logger;
+
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,6 +19,9 @@ import managers.TaskManager;
  */
 public class SingleDrawImagePanel extends JPanel{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 489319581557270431L;
+
 	/** The single image. */
 	private SingleImage singleImage;
 	
@@ -43,6 +48,9 @@ public class SingleDrawImagePanel extends JPanel{
 	
 	/** The panel dimension. */
 	private Dimension panelDimension;
+	
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 
 	/**
@@ -54,15 +62,20 @@ public class SingleDrawImagePanel extends JPanel{
 	 * @param font the font
 	 */
 	public SingleDrawImagePanel(BufferedImage bi, String title,TaskManager taskManager, Font font ){
-		this.setOpaque(true);
-		this.taskManager=taskManager;
-		this.singleImage=new SingleImage(bi, this.taskManager);
-		this.title=title;
-		this.setImage(bi);
-		this.font=font;
-		initPanel();
-		this.revalidate();
-		this.repaint();
+		try {
+			this.setOpaque(true);
+			this.taskManager=taskManager;
+			this.singleImage=new SingleImage(bi, this.taskManager);
+			this.title=title;
+			this.setImage(bi);
+			this.font=font;
+			initPanel();
+			this.revalidate();
+			this.repaint();
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing SingleDrawImagePanel !");
+			e.printStackTrace();
+		}
 
 	}
 
@@ -77,8 +90,9 @@ public class SingleDrawImagePanel extends JPanel{
 	 * Returns the grid position.
 	 *
 	 * @return the grid position
+	 * @throws Exception the exception
 	 */
-	public int[] getGridPosition(){
+	public int[] getGridPosition() throws Exception{
 		return this.gridPosition;
 	}
 
@@ -86,8 +100,9 @@ public class SingleDrawImagePanel extends JPanel{
 	 * Returns the image.
 	 *
 	 * @return the image
+	 * @throws Exception the exception
 	 */
-	public BufferedImage getImage() {
+	public BufferedImage getImage() throws Exception{
 		return image;
 	}
 
@@ -95,8 +110,9 @@ public class SingleDrawImagePanel extends JPanel{
 	 * Returns the panel size.
 	 *
 	 * @return the panel size
+	 * @throws Exception the exception
 	 */
-	public Dimension getPanelSize(){
+	public Dimension getPanelSize() throws Exception{
 		return this.panelDimension;
 	}
 
@@ -105,8 +121,9 @@ public class SingleDrawImagePanel extends JPanel{
 	 *
 	 * @param destination the destination
 	 * @return the scaled image
+	 * @throws Exception the exception
 	 */
-	public BufferedImage getScaledImage(Dimension destination){
+	public BufferedImage getScaledImage(Dimension destination) throws Exception{
 		return this.singleImage.getScaledImage(destination);
 	}
 
@@ -114,8 +131,9 @@ public class SingleDrawImagePanel extends JPanel{
 	 * Returns the scaled image dimension.
 	 *
 	 * @return the scaled image dimension
+	 * @throws Exception the exception
 	 */
-	public Dimension getScaledImageDimension(){
+	public Dimension getScaledImageDimension() throws Exception{
 		return this.singleImage.getScaledImageDimension();
 	}
 
@@ -123,8 +141,9 @@ public class SingleDrawImagePanel extends JPanel{
 	 * Returns the title.
 	 *
 	 * @return the title
+	 * @throws Exception the exception
 	 */
-	public String getTitle() {
+	public String getTitle() throws Exception {
 		return this.titleField.getText();
 	}
 
@@ -132,8 +151,9 @@ public class SingleDrawImagePanel extends JPanel{
 	 * Returns the title panel height.
 	 *
 	 * @return the title panel height
+	 * @throws Exception the exception
 	 */
-	public int getTitlePanelHeight(){
+	public int getTitlePanelHeight() throws Exception{
 		return this.titlePanel.getPreferredSize().height;
 	}
 
@@ -142,15 +162,18 @@ public class SingleDrawImagePanel extends JPanel{
 	 *
 	 * @param f the Font
 	 * @return the title width
+	 * @throws Exception the exception
 	 */
-	private int getTitleWidth(Font f){
+	private int getTitleWidth(Font f) throws Exception{
 		return this.titleField.getFontMetrics(f).stringWidth(this.title);
 	}
 
 	/**
 	 * Initializes the panel.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void initPanel(){
+	private void initPanel() throws Exception{
 
 		this.setLayout(new BorderLayout());
 		this.setBackground(Color_schema.white_230);
@@ -200,8 +223,9 @@ public class SingleDrawImagePanel extends JPanel{
 	 *
 	 * @param r the r
 	 * @param c the c
+	 * @throws Exception the exception
 	 */
-	public void setGridPosition(int r, int c){
+	public void setGridPosition(int r, int c) throws Exception{
 		this.gridPosition=new int[]{r,c};
 	}
 
@@ -209,15 +233,18 @@ public class SingleDrawImagePanel extends JPanel{
 	 * Sets the selected grid position.
 	 *
 	 * @param rc the new grid position
+	 * @throws Exception the exception
 	 */
-	public void setGridPosition(int[] rc){
+	public void setGridPosition(int[] rc) throws Exception{
 		this.gridPosition=rc;
 	}
 
 	/**
 	 * Sets the grid position null.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void setGridPositionNull(){
+	public void setGridPositionNull() throws Exception{
 		this.gridPosition=null;
 	}
 
@@ -225,8 +252,9 @@ public class SingleDrawImagePanel extends JPanel{
 	 * Sets the image.
 	 *
 	 * @param image the new image
+	 * @throws Exception the exception
 	 */
-	public void setImage(BufferedImage image) {
+	public void setImage(BufferedImage image) throws Exception {
 		this.image = image;
 	}
 
@@ -234,8 +262,9 @@ public class SingleDrawImagePanel extends JPanel{
 	 * Update font of titles.
 	 *
 	 * @param f the Font
+	 * @throws Exception the exception
 	 */
-	public void updateFont(Font f) {
+	public void updateFont(Font f) throws Exception{
 		if(this.titlePanel.getPreferredSize().width >0)
 		while(this.titlePanel.getPreferredSize().width < getTitleWidth(f)){
 			f=new Font(f.getFontName(),f.getStyle(),f.getSize()-1);

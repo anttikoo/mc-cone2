@@ -9,6 +9,8 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.util.logging.Logger;
+
 import javax.swing.JComponent;
 import org.imgscalr.Scalr;
 import managers.TaskManager;
@@ -18,6 +20,9 @@ import managers.TaskManager;
  */
 public class SingleImage extends JComponent implements MouseListener{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 6868042057177803472L;
+
 	/** The original image. */
 	private BufferedImage originalImage;
 	
@@ -35,6 +40,9 @@ public class SingleImage extends JComponent implements MouseListener{
 	
 	/** The task manager. */
 	private TaskManager taskManager;
+	
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	/**
 	 * Instantiates a new SingleImage
@@ -43,20 +51,26 @@ public class SingleImage extends JComponent implements MouseListener{
 	 * @param taskManager the task manager
 	 */
 	public SingleImage(BufferedImage image,TaskManager taskManager){
-		this.setOpaque(true);
-		this.originalImage=image;
-		this.taskManager=taskManager;
-		this.setBackground(new Color(0,0,0,255));
-		this.setLayout(null);
-		this.imageDimension=null;
+		try {
+			this.setOpaque(true);
+			this.originalImage=image;
+			this.taskManager=taskManager;
+			this.setBackground(new Color(0,0,0,255));
+			this.setLayout(null);
+			this.imageDimension=null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing SingleImage!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Returns the horizontal margin.
 	 *
 	 * @return the margin_x
+	 * @throws Exception the exception
 	 */
-	public int getMargin_x() {
+	public int getMargin_x() throws Exception{
 		return margin_x;
 	}
 
@@ -64,8 +78,9 @@ public class SingleImage extends JComponent implements MouseListener{
 	 * Returns the vertical margin.
 	 *
 	 * @return the margin_y
+	 * @throws Exception the exception
 	 */
-	public int getMargin_y() {
+	public int getMargin_y() throws Exception {
 		return margin_y;
 	}
 
@@ -74,8 +89,9 @@ public class SingleImage extends JComponent implements MouseListener{
 	 *
 	 * @param destinationDimension the destination dimension
 	 * @return the scaled image
+	 * @throws Exception the exception
 	 */
-	public BufferedImage getScaledImage(Dimension destinationDimension){
+	public BufferedImage getScaledImage(Dimension destinationDimension) throws Exception{
 		if(this.originalImage != null){
 			Scalr.Mode scalingMode= taskManager.getScalingMode(this.originalImage.getWidth(), this.originalImage.getHeight(), destinationDimension);
 
@@ -92,8 +108,9 @@ public class SingleImage extends JComponent implements MouseListener{
 	 * Returns the scaled image dimension.
 	 *
 	 * @return the scaled image dimension
+	 * @throws Exception the exception
 	 */
-	public Dimension getScaledImageDimension(){
+	public Dimension getScaledImageDimension() throws Exception{
 		return this.imageDimension;
 	}
 
@@ -147,18 +164,26 @@ public class SingleImage extends JComponent implements MouseListener{
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D g2d= (Graphics2D)g;
-	     g2d.setPaint(new Color(0,0,0,255));
-         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC, 1.0f));
-		if(this.image_to_shown != null){
-			//g.drawImage(this.image_to_shown,0,0,this.getWidth(),this.getHeight(),null);
-			g2d.drawImage(this.image_to_shown, this.margin_x,this.margin_y,null);
+		Graphics2D g2d= null;
+		try {
+			g2d= (Graphics2D)g;
+			 g2d.setPaint(new Color(0,0,0,255));
+			 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC, 1.0f));
+			if(this.image_to_shown != null){
+				//g.drawImage(this.image_to_shown,0,0,this.getWidth(),this.getHeight(),null);
+				g2d.drawImage(this.image_to_shown, this.margin_x,this.margin_y,null);
+			}
+			else{
+				g2d.setPaint(Color_schema.dark_50);
+				g2d.fillRect(0, 0, this.imageDimension.width, this.imageDimension.height);
+			}
+			g2d.dispose();
+		} catch (Exception e) {
+			LOGGER.severe("Error in !");
+			e.printStackTrace();
+			if(g2d != null)
+				g2d.dispose();
 		}
-		else{
-			g2d.setPaint(Color_schema.dark_50);
-			g2d.fillRect(0, 0, this.imageDimension.width, this.imageDimension.height);
-		}
-		g2d.dispose();
 
 	}
 
@@ -167,8 +192,9 @@ public class SingleImage extends JComponent implements MouseListener{
 	 *
 	 * @param panelDimension the panel dimension
 	 * @return the dimension
+	 * @throws ex the Exeption
 	 */
-	public Dimension setImageDimension(Dimension panelDimension){
+	public Dimension setImageDimension(Dimension panelDimension) throws Exception{
 		if(this.originalImage != null){
 			// get new image scaled to Dimension of ImagePanel
 			BufferedImage scaledImage= getScaledImage(panelDimension);
@@ -191,8 +217,9 @@ public class SingleImage extends JComponent implements MouseListener{
 	 * Sets the horizontal margin.
 	 *
 	 * @param margin the new horizontal margin.
+	 * @throws Exception the exception
 	 */
-	public void setMargin_x(int margin) {
+	public void setMargin_x(int margin)  throws Exception{
 		this.margin_x = margin;
 	}
 
@@ -200,8 +227,9 @@ public class SingleImage extends JComponent implements MouseListener{
 	 * Sets the vertical margin.
 	 *
 	 * @param margin the new vertical margin.
+	 * @throws Exception the exception
 	 */
-	public void setMargin_y(int margin) {
+	public void setMargin_y(int margin)  throws Exception{
 		this.margin_y = margin;
 	}
 

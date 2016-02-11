@@ -5,6 +5,8 @@ import information.MarkingLayer;
 import java.awt.Component;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,8 +21,14 @@ import gui.saving.image.ExImaSingleImagePanel;
  */
 public class SelectAndCreateImageFiles extends ExportResults {
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -6587765426740803107L;
+	
 	/** The created images. The list of BUfferedImageWithName -objects. */
 	private ArrayList<BufferedImageWithName> createdImages;
+	
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	
 	/**
@@ -51,8 +59,9 @@ public class SelectAndCreateImageFiles extends ExportResults {
 	 * Returns the created buffered images.
 	 *
 	 * @return the created buffered images
+	 * @throws Exception the exception
 	 */
-	public ArrayList<BufferedImageWithName> getCreatedBufferedImages(){
+	public ArrayList<BufferedImageWithName> getCreatedBufferedImages() throws Exception{
 		return this.createdImages;
 	}
 
@@ -66,7 +75,7 @@ public class SelectAndCreateImageFiles extends ExportResults {
 	/* (non-Javadoc)
 	 * @see gui.saving.ExportResults#initImageViewPanelWithTitle()
 	 */
-	protected JPanel initImageViewPanelWithTitle(){
+	protected JPanel initImageViewPanelWithTitle() throws Exception{
 		return initImageViewPanel("Select ImageLayer and MarkingLayers");
 	}
 
@@ -105,6 +114,9 @@ public class SelectAndCreateImageFiles extends ExportResults {
 				cancelSelected();
 
 			} catch (Exception e) {
+				
+				LOGGER.severe("Error in starting saving in CreateImageFiles!");
+				
 				e.printStackTrace();
 			}
 	}
