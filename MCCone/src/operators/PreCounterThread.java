@@ -956,7 +956,6 @@ public class PreCounterThread implements Runnable{
     * Returns the original image as byte array.
     *
     * @param imageIn the image in
-    * @return the original image as byte array
     * @throws Exception the exception
     */
    private void getOriginalImageAsByteArray(BufferedImage imageIn) throws Exception{
@@ -1119,7 +1118,6 @@ private ArrayList<Integer> getRelaxedColorsWideRange(int relaxation, int colorIn
     * Returns the sub image as byte array.
     *
     * @param imageIn the image of picked cell
-    * @return the sub image as byte array
     * @throws Exception the exception
     */
    private void getSubImageAsByteArray(BufferedImage imageIn) throws Exception{
