@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
@@ -24,11 +25,19 @@ public class ExImaSingleMarkingPanel extends SingleMarkingPanel{
 	private static final long serialVersionUID = -1223670385210740176L;
 	
 	/** The draw grid check box. */
-	private JCheckBox drawGridCheckBox;
+	private JCheckBox drawGridCheckBox=null;
+	
+	/** The draw grid panel. */
+	private JPanel drawGridPanel=null;
+
+	/** The draw grid label. */
+	private JLabel drawGridLabel=null;
 	
 
-/** The Constant LOGGER. */
-private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+
+
 
 	/**
 	 * Instantiates a new Panel.
@@ -38,7 +47,24 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	public ExImaSingleMarkingPanel(MarkingLayer mlayer){
 		super(mlayer);
 	}
-
+/*	
+	protected void setBGColorBySuccessfullSaving(boolean savedSuccessfully) throws Exception{
+		super.setBGColorBySuccessfullSaving(savedSuccessfully);
+		if(this.drawGridCheckBox != null && this.drawGridLabel != null && this.drawGridPanel != null){
+			if(savedSuccessfully){
+	
+				this.drawGridCheckBox.setBackground(Color_schema.darkest_green);
+				this.drawGridLabel.setBackground(Color_schema.darkest_green);
+			}
+			else{
+	
+				this.drawGridCheckBox.setBackground(Color_schema.dark_35);
+				this.drawGridPanel.setBackground(Color_schema.dark_35);
+				this.drawGridLabel.setBackground(Color_schema.dark_35);
+			}
+		}
+	}
+*/
 	/* (non-Javadoc)
 	 * @see gui.saving.SingleMarkingPanel#initDrawGridCheckBoxPanel()
 	 */
@@ -46,7 +72,7 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 		try {
 			drawGridCheckBox=null;
 			if(this.mLayer.getGridProperties() != null && this.mLayer.getGridProperties().isGridON()){
-			JPanel drawGridPanel=new JPanel();
+			drawGridPanel = new JPanel();
 			drawGridPanel.setMaximumSize(new Dimension(110,40));
 			drawGridPanel.setPreferredSize(new Dimension(110,40));
 			drawGridPanel.setMinimumSize(new Dimension(110,40));
@@ -59,8 +85,7 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 			drawGridCheckBox.setMinimumSize(new Dimension(20,20));
 			drawGridCheckBox.setMargin(new Insets(0, 0, 0, 0));
 
-			// marking title
-			JLabel drawGridLabel = new JLabel("Draw Grid");
+			drawGridLabel = new JLabel("Draw Grid");
 			drawGridLabel.setFont(Fonts.p15);
 			drawGridLabel.setForeground(Color_schema.white_180);
 			drawGridPanel.add(Box.createRigidArea(new Dimension(5,0)));

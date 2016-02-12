@@ -6,6 +6,8 @@ import information.Fonts;
 import information.MarkingLayer;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -66,6 +68,20 @@ public class SingleMarkingPanel extends JPanel{
 			saveCheckBox.setMaximumSize(new Dimension(25,25));
 			saveCheckBox.setPreferredSize(new Dimension(25,25));
 			saveCheckBox.setMinimumSize(new Dimension(25,25));
+			saveCheckBox.addItemListener(new ItemListener() {
+				
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					try {
+						setGridCheckBoxEnableState(((JCheckBox)e.getSource()).isSelected());
+					} catch (Exception e1) {
+						LOGGER.severe("Error in setting grid check box selection!");
+						e1.printStackTrace();
+					}
+					
+				}
+			});
+		
 
 			// marking title
 			JLabel markingLabel = new JLabel(getMarkingName());		
@@ -155,16 +171,20 @@ public class SingleMarkingPanel extends JPanel{
 	 * @param savedSuccessfully the new background color by successfull saving
 	 * @throws Exception the exception
 	 */
-	public void setBGColorBySuccessfullSaving(boolean savedSuccessfully) throws Exception{
+	protected void setBGColorBySuccessfullSaving(boolean savedSuccessfully) throws Exception{
 		if(savedSuccessfully){
 			this.setBackground(Color_schema.darkest_green);
 			this.saveCheckBox.setBackground(Color_schema.darkest_green);
 			this.markingLabelPanel.setBackground(Color_schema.darkest_green);
+			if(this.gridDrawingSelection != null) // set color of grid panel if found
+				this.gridDrawingSelection.setBackground(Color_schema.darkest_green);
 		}
 		else{
-		this.setBackground(Color_schema.dark_35);
-		this.saveCheckBox.setBackground(Color_schema.dark_35);
-		this.markingLabelPanel.setBackground(Color_schema.dark_35);
+			this.setBackground(Color_schema.dark_35);
+			this.saveCheckBox.setBackground(Color_schema.dark_35);
+			this.markingLabelPanel.setBackground(Color_schema.dark_35);
+			if(this.gridDrawingSelection != null) // set color of grid panel if found
+				this.gridDrawingSelection.setBackground(Color_schema.dark_35);
 		}
 	}
 
@@ -178,7 +198,21 @@ public class SingleMarkingPanel extends JPanel{
 		this.saveCheckBox.setEnabled(state);
 		this.repaint();
 	}
+	
+	/**
+	 * Sets the grid check box enable state.
+	 *
+	 * @param state the new grid check box enable state
+	 * @throws Exception the exception
+	 */
+	protected void setGridCheckBoxEnableState(boolean state) throws Exception{
 
+		if(this.gridDrawingSelection != null){ // set color of grid panel if found
+			this.gridDrawingSelection.setVisible(state);
+			this.repaint();
+		}
+				
+	}
 
 
 	/**
