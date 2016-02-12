@@ -26,6 +26,9 @@ import javax.swing.JSplitPane;
  */
 public class PrecountGlassPane extends JComponent{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 4401382058309328948L;
+
 	/** The rectangle size. The size of the rectangle used in picking cell. */
 	private int rectangleSize=100;
 	
@@ -70,9 +73,10 @@ public class PrecountGlassPane extends JComponent{
 	}
 
 	 /**
- 	 * Determine right panel size and location
+ 	 * Determine right panel size and location.
  	 *
  	 * @return the rectangle Rectangle containing position and size of right panel (Info of ImageLayers).
+ 	 * @throws Exception the exception
  	 */
  	private Rectangle determineRightPanelBounds() throws Exception{
 		 Point dp = doublePanel.getLocation();
@@ -81,10 +85,11 @@ public class PrecountGlassPane extends JComponent{
 	 }
 
 	 /**
-	 * Gets the center point.
-	 *
-	 * @return the center point
-	 */
+ 	 * Gets the center point.
+ 	 *
+ 	 * @return the center point
+ 	 * @throws Exception the exception
+ 	 */
 	public Point getCenterPoint() throws Exception{
 		return centerPoint;
 	}
@@ -94,6 +99,7 @@ public class PrecountGlassPane extends JComponent{
 	 * Gets the rectangle size.
 	 *
 	 * @return the rectangle size
+	 * @throws Exception the exception
 	 */
 	public int getRectangleSize() throws Exception{
 		return rectangleSize;
@@ -135,6 +141,7 @@ public class PrecountGlassPane extends JComponent{
 	 * Sets the center point.
 	 *
 	 * @param circleCenterPoint the new center point
+	 * @throws Exception the exception
 	 */
 	public void setCenterPoint(Point circleCenterPoint) throws Exception{
 		this.centerPoint = circleCenterPoint;
@@ -144,6 +151,7 @@ public class PrecountGlassPane extends JComponent{
 	 * Sets the rectangle size.
 	 *
 	 * @param circleSize the new rectangle size
+	 * @throws Exception the exception
 	 */
 	public void setRectangleSize(int circleSize) throws Exception{
 		this.rectangleSize = circleSize;

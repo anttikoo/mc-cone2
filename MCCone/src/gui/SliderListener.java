@@ -87,6 +87,7 @@ public class SliderListener extends MouseInputAdapter{
 	 * Checks if is slider timer running.
 	 *
 	 * @return true, if is slider timer running
+	 * @throws Exception the exception
 	 */
 	public boolean isSliderTimerRunning() throws Exception{
 		return this.sliderTimer.isRunning();
@@ -96,6 +97,7 @@ public class SliderListener extends MouseInputAdapter{
 	 * Checks if is sliding on.
 	 *
 	 * @return true, if is sliding on
+	 * @throws Exception the exception
 	 */
 	public boolean isSlidingON() throws Exception {
 		return slidingON;
@@ -131,6 +133,7 @@ public class SliderListener extends MouseInputAdapter{
 	 * Sets the sliding on.
 	 *
 	 * @param sliderPressed the new sliding on
+	 * @throws Exception the exception
 	 */
 	public void setSlidingON(boolean sliderPressed) throws Exception{
 		this.slidingON = sliderPressed;
@@ -140,6 +143,7 @@ public class SliderListener extends MouseInputAdapter{
 	 * Sets the start value.
 	 *
 	 * @param startValue the new start value
+	 * @throws Exception the exception
 	 */
 	public void setStartValue(int startValue) throws Exception{
 		this.startValue = startValue;
@@ -147,6 +151,8 @@ public class SliderListener extends MouseInputAdapter{
 	
 	/**
 	 * Start slider timer.
+	 *
+	 * @throws Exception the exception
 	 */
 	public void startSliderTimer() throws Exception{
 		this.sliderTimer.start();

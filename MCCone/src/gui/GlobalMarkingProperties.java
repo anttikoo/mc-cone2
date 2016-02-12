@@ -21,9 +21,8 @@ import javax.swing.JPanel;
  *
  */
 public class GlobalMarkingProperties extends MarkingProperties{
-	/**
-	 * 
-	 */
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 4126323147844935368L;
 
 	/**

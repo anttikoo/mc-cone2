@@ -298,12 +298,20 @@ public class PropertiesDialog extends JDialog {
 		return null;
 	}
 	
+	/**
+	 * Checks if is made_changes.
+	 *
+	 * @return true, if is made_changes
+	 * @throws Exception the exception
+	 */
 	public boolean isMade_changes() throws Exception{
 		return made_changes;
 	}
 
 	/**
 	 * Sets the panel position. Calculates a good position for panel by checking bounds of parent frame.
+	 *
+	 * @throws Exception the exception
 	 */
 	protected void setPanelPosition() throws Exception{
 		
@@ -321,6 +329,8 @@ public class PropertiesDialog extends JDialog {
 
 	/**
 	 * Sets the Dialog visible.
+	 *
+	 * @throws Exception the exception
 	 */
 	public void showDialog() throws Exception{
 		setVisible(true);	

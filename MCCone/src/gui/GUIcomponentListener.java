@@ -166,6 +166,7 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	 * Sets the child dialog.
 	 *
 	 * @param childDialog the new child dialog
+	 * @throws Exception the exception
 	 */
 	public void setChildDialog(JDialog childDialog) throws Exception {
 		this.childDialog = childDialog;

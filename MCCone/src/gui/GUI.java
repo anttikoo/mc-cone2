@@ -83,135 +83,133 @@ import managers.ProgramLogger;
 
 public class GUI extends JFrame{
 	
-/** The Constant LOGGER for Logging purposes. */
-private final static Logger LOGGER = Logger.getLogger("MCCLogger");
-
-/** The log frame. */
-public static LogFrame logFrame;
-
-/** The task manager. Mediates the job to worker classes*/
-public TaskManager taskManager;
-
-/** The menubar. */
-private JMenuBar menubar;
-
-/** The double panel. Contains all panels below menubar. */
-private JSplitPane doublePanel;
-
-/** The left panel.  Contains visualpanel and downBarPanel*/
-protected JPanel leftPanel;
-
-/** The visual panel. Contains the panel showing image, markings, grid.*/
-protected JPanel visualPanel;
-
-/** The down bar panel. Contains zoom slider and button for precounting*/
-protected JPanel downBarPanel;
-
-/** The layers. JLayeredPane containing all panels of visualPanel.*/
-private JLayeredPane layers;
-
-/** The image panel. Shows image*/
-private ImagePanel imagePanel;
-
-/** The right panel. Contains the info of the ImageLayers*/
-private JPanel rightPanel;
-
-
-/** The JPAnel for lists of ImageLayerInfos */
-private JPanel layerInfoListJPanel;
-
-/** The JPAnel for button adding Images at rightPanel */
-private JPanel addImageLayerJPanel;
-
-/** The JButton for precounting */
-private JButton preCountButton;
-
-/** The menu_show_all_markings. */
-private JMenuItem menu_show_all_markings;
-
-/** The menu_edit_set_marking_properties. */
-private JMenuItem menu_edit_set_marking_properties;
-
-/** The zoom slider. */
-private JSlider zoomSlider;
-
-/** The zoom value label. */
-private JLabel zoomValueLabel;
-
-/** The listener for GUI. */
-private GUIListener guiListener;
-
-/** The glass pane for precounting. Shows square and round for picking cell */
-private PrecountGlassPane glassPane;
-
-/** The slider panel. */
-private JPanel sliderPanel;
-
-/** The slider listener. */
-private SliderListener sliderListener;
-
-/** The highlight panel. Highligtning drawed on this JPanel.*/
-private HighlightPanel highlightPanel;
-
-/** The grid panel. */
-private GridPanel gridPanel;
-
-/** The right panel width. */
-private int rightPanelWidth=0;
-
-/** The listener for Components of GUI. This is used for getting modality work in linux. 
- * Manages the printing of child panels, because in linux the modality is not working fully.*/
-private GUIcomponentListener guiComponentListener=null;
-
-/** The shady message dialog. */
-private ShadyMessageDialog shadyMessageDialog=null;
-
-/** The grid dialog. */
-private GridPropertiesPanel gridDialog=null;
-
-/** The menu grid hide. */
-private JMenuItem menu_grid_hide;
-
-/** The menu grid show. */
-private JMenuItem menu_grid_show;
-
-/** The menu grid. */
-private JMenu menu_grid;
-
-/** The menu item save markings. */
-private JMenuItem menu_item_save_markings;
-
-/** The menu export results. */
-private JMenu menu_export_results;
-
-/** The menu edit clear singlecountings. */
-private JMenuItem menu_edit_clear_single_countings;
-
-/** The menu edit clear all countings. */
-private JMenuItem menu_edit_clear_all_countings;
-
-/** The menu hide all markings. */
-private JMenuItem menu_hide_all_markings;
-
-/** The menu show. */
-private JMenu menu_show;
-
-/** The menu edit. */
-private JMenu menu_edit;
-
-/** The menu export images. */
-private JMenuItem menu_export_images;
-
-/** The zoom in button. */
-private JButton zoomInButton;
-
-/** The zoom out button. */
-private JButton zoomOutButton;
-
-
-
-
-
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 2411930638629679857L;
+	
+	/** The Constant LOGGER for Logging purposes. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+	
+	/** The log frame. */
+	public static LogFrame logFrame;
+	
+	/** The task manager. Mediates the job to worker classes*/
+	public TaskManager taskManager;
+	
+	/** The menubar. */
+	private JMenuBar menubar;
+	
+	/** The double panel. Contains all panels below menubar. */
+	private JSplitPane doublePanel;
+	
+	/** The left panel.  Contains visualpanel and downBarPanel*/
+	protected JPanel leftPanel;
+	
+	/** The visual panel. Contains the panel showing image, markings, grid.*/
+	protected JPanel visualPanel;
+	
+	/** The down bar panel. Contains zoom slider and button for precounting*/
+	protected JPanel downBarPanel;
+	
+	/** The layers. JLayeredPane containing all panels of visualPanel.*/
+	private JLayeredPane layers;
+	
+	/** The image panel. Shows image*/
+	private ImagePanel imagePanel;
+	
+	/** The right panel. Contains the info of the ImageLayers*/
+	private JPanel rightPanel;
+	
+	
+	/** The JPAnel for lists of ImageLayerInfos */
+	private JPanel layerInfoListJPanel;
+	
+	/** The JPAnel for button adding Images at rightPanel */
+	private JPanel addImageLayerJPanel;
+	
+	/** The JButton for precounting */
+	private JButton preCountButton;
+	
+	/** The menu_show_all_markings. */
+	private JMenuItem menu_show_all_markings;
+	
+	/** The menu_edit_set_marking_properties. */
+	private JMenuItem menu_edit_set_marking_properties;
+	
+	/** The zoom slider. */
+	private JSlider zoomSlider;
+	
+	/** The zoom value label. */
+	private JLabel zoomValueLabel;
+	
+	/** The listener for GUI. */
+	private GUIListener guiListener;
+	
+	/** The glass pane for precounting. Shows square and round for picking cell */
+	private PrecountGlassPane glassPane;
+	
+	/** The slider panel. */
+	private JPanel sliderPanel;
+	
+	/** The slider listener. */
+	private SliderListener sliderListener;
+	
+	/** The highlight panel. Highligtning drawed on this JPanel.*/
+	private HighlightPanel highlightPanel;
+	
+	/** The grid panel. */
+	private GridPanel gridPanel;
+	
+	/** The right panel width. */
+	private int rightPanelWidth=0;
+	
+	/** The listener for Components of GUI. This is used for getting modality work in linux. 
+	 * Manages the printing of child panels, because in linux the modality is not working fully.*/
+	private GUIcomponentListener guiComponentListener=null;
+	
+	/** The shady message dialog. */
+	private ShadyMessageDialog shadyMessageDialog=null;
+	
+	/** The grid dialog. */
+	private GridPropertiesPanel gridDialog=null;
+	
+	/** The menu grid hide. */
+	private JMenuItem menu_grid_hide;
+	
+	/** The menu grid show. */
+	private JMenuItem menu_grid_show;
+	
+	/** The menu grid. */
+	private JMenu menu_grid;
+	
+	/** The menu item save markings. */
+	private JMenuItem menu_item_save_markings;
+	
+	/** The menu export results. */
+	private JMenu menu_export_results;
+	
+	/** The menu edit clear singlecountings. */
+	private JMenuItem menu_edit_clear_single_countings;
+	
+	/** The menu edit clear all countings. */
+	private JMenuItem menu_edit_clear_all_countings;
+	
+	/** The menu hide all markings. */
+	private JMenuItem menu_hide_all_markings;
+	
+	/** The menu show. */
+	private JMenu menu_show;
+	
+	/** The menu edit. */
+	private JMenu menu_edit;
+	
+	/** The menu export images. */
+	private JMenuItem menu_export_images;
+	
+	/** The zoom in button. */
+	private JButton zoomInButton;
+	
+	/** The zoom out button. */
+	private JButton zoomOutButton;
 
 
 	/**
@@ -601,7 +599,9 @@ private JButton zoomOutButton;
 	
 	/**
 	 * Adds imported ImageLayers to InformationCenter. Updates the selected layers and GUI
+	 *
 	 * @param iLayerList Array of one or more ImageLayers.
+	 * @throws Exception the exception
 	 */
 	public void addImageLayerList(ArrayList<ImageLayer> iLayerList) throws Exception{
 		// set the ImageLayers through TaskManager -> InformationCenter.imageLayerList	(finalizes the layers -> gives ids)
@@ -614,64 +614,13 @@ private JButton zoomOutButton;
 		cleanPreCountingIfNecessary();
 	}
 
-/**
- * Adds a MouseListener to given JButton. Listener affects to a graphical view of button.
- * @param button JButton where mouse listener is added.
- */
-	/*
-private void addMouseListenerForJButton(JButton button){
-	
-	button.addMouseListener(new MouseListener() {
 
-		@Override
-		public void mouseClicked(MouseEvent arg0) {
-			// do nothing
-
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent arg0) {
-			try {
-				if(((JButton)arg0.getSource()).isEnabled())
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 2));
-			} catch (Exception e) {
-				LOGGER.severe("Error in mouse entering!");
-				e.printStackTrace();
-			}
-
-		}
-
-		@Override
-		public void mouseExited(MouseEvent arg0) {
-			if(((JButton)arg0.getSource()).isEnabled())
-			((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
-
-		}
-
-		@Override
-		public void mousePressed(MouseEvent arg0) {
-			if(((JButton)arg0.getSource()).isEnabled())
-			((JButton)arg0.getSource()).setForeground(Color_schema.orange_dark);
-
-
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent arg0) {
-			if(((JButton)arg0.getSource()).isEnabled())
-			((JButton)arg0.getSource()).setForeground(Color_schema.button_light_border);
-			if(guiListener.isCellPickingON())
-				((JButton)arg0.getSource()).setForeground(Color_schema.orange_medium);
-
-		}
-	});
-	
-}
-*/
 	/**
 	 * Adds a single marking to Point p, if no any marking found too close. 
+	 *
 	 * @param p Point at screen where mouse was pressed
 	 * @return boolean true if marking was added; otherwise false
+	 * @throws Exception the exception
 	 */
 	public boolean addSingleMarking(Point p) throws Exception{
 		Point panelPoint =getClosestMarkingPointAtScreen(p, SharedVariables.DISTANCE_TO_ADD);
@@ -690,7 +639,9 @@ private void addMouseListenerForJButton(JButton button){
 	
 	/**
 	 * Changes the selected MarkingLayer one up or down in MarkingLayerImageLayerlist.
+	 *
 	 * @param directionID int ID.MOVE_DOWN or ID.MOVE.UP
+	 * @throws Exception the exception
 	 */
 	public void changeSelectedMarkingLayerUpOrDown(int directionID) throws Exception{
 		setSelectedMarkingLayer(this.taskManager.getSelectedMarkingLayerAtUpOrDown(directionID));
@@ -729,6 +680,8 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 *  Removes all markings of all MarkingLayers. Refreshes the MarkingPanels and ImageLayerInfos.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void clearMarkingsOfAllMarkingLayers() throws Exception{
 		ArrayList<MarkingLayer> allMarkingLayers=this.taskManager.getAllMarkingLayers();
@@ -758,6 +711,8 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 *  Removes all markings of selected MarkingLayer. Refreshes the selected MarkingPanel and ImageLayerInfos.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void clearMarkingsOfSelectedMarkingLayer() throws Exception{
 		MarkingLayer sMlayer=this.taskManager.getSelectedMarkingLayer();
@@ -850,6 +805,8 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Sets Grid to transparent.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void diminishGrid() throws Exception{
 		this.gridPanel.setExtraDimTransparency();
@@ -858,7 +815,9 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Organizes the dragging of image and visible markings at screen.
+	 *
 	 * @param e MouseEvent which has triggered the dragging.
+	 * @throws Exception the exception
 	 */
 	public void dragLayers(MouseEvent e) throws Exception{
 		int x= e.getX();
@@ -888,6 +847,8 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 *  Opens a dialog to export image(s).
+	 *
+	 * @throws Exception the exception
 	 */
 	public void exportImages() throws Exception{
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
@@ -903,6 +864,8 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 *  Opens a new dialog for selecting images and organizing images to create set of images.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void exportImageSet() throws Exception{
 
@@ -920,7 +883,9 @@ private void addMouseListenerForJButton(JButton button){
 	
 	/**
 	 * Opens a dialog to export results.
+	 *
 	 * @param id int ID type of saving type (ID.FILE_TYPE_TEXT_FILE, ID.FILE_TYPE_CSV or ID.CLIPBOARD).
+	 * @throws Exception the exception
 	 */
 	public void exportResults(int id) throws Exception{
 		if(taskManager.getImageLayerList() != null && taskManager.getImageLayerList().size()>0){
@@ -949,9 +914,11 @@ private void addMouseListenerForJButton(JButton button){
 	/**
 	 * Finds from selected MarkingPanel a marking closest to point where mouse was pressed. 
 	 * If (Manhattan) distance between them is shorter than given limit the point is returned.
+	 *
 	 * @param p Point at screen where mouse button was pressed
 	 * @param minDistance int minimum distance between single marking and where mouse was pressed
 	 * @return Point if closed any close enough. Otherwise null;
+	 * @throws Exception the exception
 	 */
 	private Point getClosestMarkingPointAtScreen(Point p, int minDistance) throws Exception{
 		MarkingLayer selectedMarkingLayer= taskManager.getSelectedMarkingLayer();
@@ -967,9 +934,11 @@ private void addMouseListenerForJButton(JButton button){
 	
 	/**
 	 * Returns the object of main window. Only one GUI object exists.
+	 *
 	 * @return GUI the main window object.
+	 * @throws Exception the exception
 	 */
-	private GUI getGUI(){
+	private GUI getGUI() throws Exception{
 		return this;
 	}
 
@@ -977,10 +946,11 @@ private void addMouseListenerForJButton(JButton button){
 	 * Gets the guiComponentListener.
 	 *
 	 * @return the guiComponentListener
+	 * @throws Exception the exception
 	 */
-	public GUIcomponentListener getGuiComponentListener() {
-	return guiComponentListener;
-}
+	public GUIcomponentListener getGuiComponentListener() throws Exception {
+		return guiComponentListener;
+	}
 
 	/**
 	 * Gets the GUIcomponentListener of GUI if found.
@@ -988,22 +958,29 @@ private void addMouseListenerForJButton(JButton button){
 	 * @return the GUI component listener
 	 */
 	public GUIcomponentListener getGUIComponentListener(){
-		ComponentListener[] list = this.getComponentListeners();
-		if(list != null && list.length>0){
-			for (int i = 0; i < list.length; i++) {
-				if(list[i].getClass().getName().toString().equals("gui.GUIcomponentListener")){				
-					return (GUIcomponentListener)list[i];				
-				}
+		try {
+			ComponentListener[] list = this.getComponentListeners();
+			if(list != null && list.length>0){
+				for (int i = 0; i < list.length; i++) {
+					if(list[i].getClass().getName().toString().equals("gui.GUIcomponentListener")){				
+						return (GUIcomponentListener)list[i];				
+					}
+				}		
 			}		
-		}		
-		return null;
+			return null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting GUIComponent Listener!");
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**
 	 * Creates ImageIcon from giving image path.
+	 *
 	 * @param path String path of image file
 	 * @return ImageIcon the created icon.
-	 * @throws Exception
+	 * @throws Exception the exception
 	 */
 	public ImageIcon getImageIcon(String path) throws Exception{
 
@@ -1080,8 +1057,10 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Fetches and returns a MarkingPanel corresponding to given MarkingLayer ID.
+	 *
 	 * @param mLayerID int ID of MarkingLayer, which MarkingPanel is fetched.
 	 * @return MarkingPanel corresponding to given MarkingLayer ID. If not found, null is returned.
+	 * @throws Exception the exception
 	 */
 	private MarkingPanel getMarkingPanelByLayerID(int mLayerID) throws Exception{
 		Component[] mPanels=this.layers.getComponents();
@@ -1100,7 +1079,9 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Returns the folder name which is previously used.
+	 *
 	 * @return String folder name which is previously used.
+	 * @throws Exception the exception
 	 */
 	public String getPresentFolder() throws Exception{
 		return taskManager.getPresentFolder();
@@ -1120,7 +1101,9 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Returns width of rightpanel.
+	 *
 	 * @return int width of rightpanel
+	 * @throws Exception the exception
 	 */
 	public int getRightPanelWidth() throws Exception{
 		return this.rightPanelWidth;
@@ -1128,7 +1111,9 @@ private void addMouseListenerForJButton(JButton button){
 	
 	/**
 	 * Returns screen size.
+	 *
 	 * @return Dimension screen size.
+	 * @throws Exception the exception
 	 */
 	public Dimension getScreenSize() throws Exception{
 		// return this.screenSize;
@@ -1137,7 +1122,9 @@ private void addMouseListenerForJButton(JButton button){
 	
 	/**
 	 * Returns a relation value between dimension of image and dimension of visible part of image.
+	 *
 	 * @return double size multiplier which is relation between dimension of image and dimension of visible part of image.
+	 * @throws Exception the exception
 	 */
 	public double getSizeMultiplier() throws Exception{
 		return this.taskManager.getShapeSizeMultiplier();
@@ -1244,6 +1231,8 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 *  Initializes GlassPane, which is used in precounting cells.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void initGlassPane() throws Exception{
 		glassPane = new PrecountGlassPane(this, this.doublePanel, this.menubar, guiListener);
@@ -1304,7 +1293,9 @@ private void addMouseListenerForJButton(JButton button){
 	}
 
 	/**
-	 *  Initializes the menubar components
+	 *  Initializes the menubar components.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void initMenubar() throws Exception{
 		try {
@@ -1466,6 +1457,8 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 *  Initializes the Splitpane which contains GUI components for showing images, markings and info of them in list.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void initSplitPane() throws Exception {
 		try{
@@ -2057,8 +2050,10 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Removes a single marking closest to Point p. If no any marking found close enough, no any removed. 
+	 *
 	 * @param p Point at screen where right mouse button was pressed
 	 * @return boolean true if marking was removed; otherwise false
+	 * @throws Exception the exception
 	 */
 	public boolean removeSingleMarking(Point p) throws Exception{
 		Point panelPoint =getClosestMarkingPointAtScreen(p, SharedVariables.DISTANCE_TO_REMOVE);
@@ -2101,6 +2096,8 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 *  Opens dialog for selecting which markings to save.
+	 *
+	 * @throws Exception the exception
 	 */
 	public void saveMarkings() throws Exception{
 
@@ -2122,7 +2119,9 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Sets Cursor type when hovering over ImagePanel.
+	 *
 	 * @param typeOfCursor int ID of type of Cursor
+	 * @throws Exception the exception
 	 */
 	public void setCursorOverLeftPanel(int typeOfCursor) throws Exception{
 		switch(typeOfCursor){
@@ -2150,7 +2149,9 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * When user presses mouse on a Grid cell (SHIFT key pressed down at same time) this method sets the Grid cell as selected or unselected.
-	 * @param p Point where mouse was pressed 
+	 *
+	 * @param p Point where mouse was pressed
+	 * @throws Exception the exception
 	 */
 	public void setGridSelectedRectangle(Point p) throws Exception{
 		this.taskManager.changeGridCellSelection(p);
@@ -2162,7 +2163,9 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Sets the PositionedImage to ImagePanel, which is painted.
+	 *
 	 * @param pi @see PositionedImage the image to set to ImagePanel.
+	 * @throws Exception the exception
 	 */
 	public void setImage(PositionedImage pi) throws Exception{
 		this.imagePanel.setImage(pi);
@@ -2170,7 +2173,9 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Replaces the array of ImageLayer s in InformationCenter with new list. After updating the list -> the GUI is updated.
+	 *
 	 * @param iLayerList Array of ImageLayer s.
+	 * @throws Exception the exception
 	 */
 	public void setImageLayerList(ArrayList<ImageLayer> iLayerList) throws Exception{
 		this.taskManager.setImageLayerList(iLayerList); // replaces the existing ImageLayerList with new one finally in InformationCenter
@@ -2189,6 +2194,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * This method and procedure is still under development. Fill be finalized in future updates.
 	 *
 	 * @param mc boolean has made changes
+	 * @throws Exception the exception
 	 */
 	public void setMadeChanges(boolean mc) throws Exception{
 		this.taskManager.setMadeChange(); //
@@ -2199,9 +2205,11 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Modifies the name of MarkingLayer given by ID.
+	 *
 	 * @param iLayerID int ID of ImageLayer which MarkingLayeris modified.
 	 * @param mLayerID int ID of MarkingLayer, which name is modified.
 	 * @param markingName String the new name.
+	 * @throws Exception the exception
 	 */
 	public void setMarkingLayerName(int iLayerID, int mLayerID, String markingName) throws Exception{
 		taskManager.setMarkingLayerName(iLayerID, mLayerID, markingName);
@@ -2209,8 +2217,10 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Sets visibility of MarkingLayer.
+	 *
 	 * @param mLayerID int ID of MarkingLayer, which visibility is modified.
 	 * @param visible boolean true if visible and false to invisible.
+	 * @throws Exception the exception
 	 */
 	public void setMarkingLayerVisibility(int mLayerID, Boolean visible) throws Exception{
 		// add or remove MarkingLayer from InformationCenter.visibleMarkingLayers
@@ -2234,8 +2244,10 @@ private void addMouseListenerForJButton(JButton button){
 	}
 
 	/**
-	* Sets the selected MarkingLayer to highlightPanel -> HighlightPanel uses information of that MarkingLayer for highlighting. 
-	*/
+	 * Sets the selected MarkingLayer to highlightPanel -> HighlightPanel uses information of that MarkingLayer for highlighting.
+	 *
+	 * @throws Exception the exception
+	 */
 	private void setMarkingsOfHighlightLayer() throws Exception {
 		MarkingLayer selectedMarkingLayer= taskManager.getSelectedMarkingLayer();
 		this.highlightPanel.setLayer(selectedMarkingLayer);
@@ -2245,6 +2257,7 @@ private void addMouseListenerForJButton(JButton button){
 	 * Sets the menu items enabled or unenabled depending on has ImageLayers or MarkingLayers available.
 	 *
 	 * @param itemType the new menu items enabled
+	 * @throws Exception the exception
 	 */
 	public void setMenuItemsEnabled(int itemType) throws Exception{
 		
@@ -2298,7 +2311,9 @@ private void addMouseListenerForJButton(JButton button){
 
 /**
  * Sets the folder name which is previously used.
+ *
  * @param folder String folder name which is previously used.
+ * @throws Exception the exception
  */
 public void setPresentFolder(String folder) throws Exception{
 	this.taskManager.setPresentFolder(folder);
@@ -2306,7 +2321,9 @@ public void setPresentFolder(String folder) throws Exception{
 
 /**
  * Opens a dialog to set size, thickness and transparency of all MarkingLayers if any MarkingLayers found. 
+ *
  * @param guiPoint Point where mouse was pressed to menuitem.
+ * @throws Exception the exception
  */
 private void setPropertiesOfAllMarkinglayers(Point guiPoint) throws Exception{
 	ArrayList<MarkingLayer> mLayerList=taskManager.getAllMarkingLayers();
@@ -2322,6 +2339,8 @@ private void setPropertiesOfAllMarkinglayers(Point guiPoint) throws Exception{
 
 /**
  * Updates properties (size, color, thickness ...) of all MarkingPanels by fetching updated properties from ImageLayer at InformationCenter.
+ *
+ * @throws Exception the exception
  */
 
 private void setPropertiesOfAllMarkingPanels() throws Exception{
@@ -2346,6 +2365,7 @@ private void setPropertiesOfAllMarkingPanels() throws Exception{
  * Updates properties (size, color, thickness ...) of MarkingPanel by fetching updated properties from ImageLayer at InformationCenter.
  *
  * @param mLayerID the ID of MarkingLayer
+ * @throws Exception the exception
  */
 private void setPropertiesOfMarkingPanel(int mLayerID) throws Exception{
 	getMarkingPanelByLayerID(mLayerID).setMarkingPanelProperties(taskManager.getMarkingLayer(mLayerID));
@@ -2396,7 +2416,9 @@ public void setSelectedImageLayerAndImage(int iLayerID, int selectionChangeType)
 
 /**
  * Sets the given MarkingLayer to visible. GridPanel and highlightPanel are updated. All layers repainted.
+ *
  * @param mLayerID int ID of MarkingLayer, which is been selected.
+ * @throws Exception the exception
  */
 public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	// set the MarkingLayer selected in InfromationCenter
@@ -2428,6 +2450,8 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 
 	/**
 	 * Moves the MarkingLayer corresponding to selectedMarkingLayer (@see InformationCenter) to front of JLayeredPane.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void setSelectedMarkingPanelToFront() throws Exception{
 
@@ -2616,7 +2640,9 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 
 	/**
 	 * Sets visibility of all MarkingLayers.
+	 *
 	 * @param visible boolean true/false to set visibility
+	 * @throws Exception the exception
 	 */
 	public void setVisibilityOfAllMarkingLayers(boolean visible) throws Exception{
 		ArrayList<MarkingLayer> allMarkingLayers=this.taskManager.getAllMarkingLayers();
@@ -2635,7 +2661,10 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	
 	/**
 	 * Sets visibility of all MarkingLayers of single ImageLayer. Not updates GUI. 
+	 *
 	 * @param visible boolean true/false to set visibility
+	 * @param iLayerID the i layer id
+	 * @throws Exception the exception
 	 */
 	public void setVisibilityOfAllMarkingLayersOfSingleImageLayer(boolean visible, int iLayerID) throws Exception{
 		ImageLayer iLayer = this.taskManager.getImageLayerByID(iLayerID);
@@ -2659,6 +2688,8 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 
 	/**
 	 * Sets Grid visible if the Grid is selected as ON.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void showGrid() throws Exception{
 
@@ -2706,8 +2737,10 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	/**
 	 * Organizes opening a GridPropertiesDialog for modifying the Grid Properties of all MarkingLayers.
 	 * Updates ImageLayerInfos and MarkingPanels.
+	 *
 	 * @param point Point where mouse was pressed the JButton to call this method.
 	 * @param mLayerList ArrayList<MarkingLayer> of all MarkingLayers.
+	 * @throws Exception the exception
 	 */
 	public void showGridPropertiesPanelForAllMarkingLayers(Point point, ArrayList<MarkingLayer> mLayerList) throws Exception{
 		showGridPropertiesPanel(point, mLayerList);
@@ -2718,8 +2751,10 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	/**
 	 * Organizes opening a GridPropertiesDialog for modifying the Grid Properties of all MarkingLayers under Single ImageLayer.
 	 * Updates ImageLayerInfos and MarkingPanels.
+	 *
 	 * @param point Point where mouse was pressed the JButton to call this method.
 	 * @param iLayerID int ID of ImageLayer which MarkingLayers (GridProperties) are modified.
+	 * @throws Exception the exception
 	 */
 	public void showGridPropertiesPanelForMarkingLayersOfImageLayer(Point point, int iLayerID) throws Exception{
 		ImageLayer iLayer= this.taskManager.getImageLayerByID(iLayerID);
@@ -2741,8 +2776,10 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	/**
 	 * Organizes opening a GridPropertiesDialog for modifying the Grid Properties of Single MarkingLayer.
 	 * Updates ImageLayerInfos and MarkingPanels.
+	 *
 	 * @param point Point where mouse was pressed the JButton to call this method.
-	 * @param mLayerID int ID of MarkingLayer which GridProperty is modified. 
+	 * @param mLayerID int ID of MarkingLayer which GridProperty is modified.
+	 * @throws Exception the exception
 	 */
 	public void showGridPropertiesPanelForSingleMarkingLayer(Point point, int mLayerID) throws Exception{
 		ArrayList<MarkingLayer> mLayerList = new ArrayList<MarkingLayer>();
@@ -2766,7 +2803,9 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 
 	/**
 	 * Opens info dialog showing information of MC-Cone.
+	 *
 	 * @param p Point where menu item was pressed.
+	 * @throws Exception the exception
 	 */
 	private void showInfo(Point p) throws Exception{
 		InfoDialog iDialog = new InfoDialog(this, this,p);
@@ -2797,6 +2836,8 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 
 	/**
 	 *  Opens web browser and web site http://www.mc-cone.com/web_tutorial.html. If Operation system doesn't allow opening web browere
+	 *
+	 * @throws Exception the exception
 	 */
 	private void showWebInstructions() throws Exception{
 		String url ="http://mc-cone.com/instructions/";
@@ -2825,8 +2866,10 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 
 	/**
 	 * Starts the precounting, opens a progress bar and calculates the cell positions.
+	 *
 	 * @param imagePanelPoint Middle Point of cell that user has picked
 	 * @param size Size of picked cell
+	 * @throws Exception the exception
 	 */
 	public void startCellCounting(Point imagePanelPoint, int size) throws Exception{
 
@@ -2909,6 +2952,12 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	
 	
 	
+	/**
+	 * Move selected marking layer.
+	 *
+	 * @param direction the direction
+	 * @throws Exception the exception
+	 */
 	public void moveSelectedMarkingLayer(int direction) throws Exception{
 		if(this.taskManager.moveSelectedMarkingLayer(direction)){
 			updateImageLayerInfos();
@@ -2951,6 +3000,8 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 
 	/**
 	 * Updates properties (color, size thickness, etc.) of all MarkingPanels.
+	 *
+	 * @throws Exception the exception
 	 */
 	public void updateAllMarkingPanelProperties() throws Exception{
 
@@ -2988,6 +3039,8 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	
 	/**
 	 * Updates the coordinates of markings in MarkingPanels by calculating the points at image to the points at screen.
+	 *
+	 * @throws Exception the exception
 	 */
 	public void updateCoordinatesOfVisibleMarkingPanels() throws Exception{
 		// the size or position of viewed area may have changed -> calculate new positions of visible markings
@@ -3008,7 +3061,9 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	}
 
 	/**
-	 *  Refreshes GridPanel if selected MarkingLayer has Grid set as visible
+	 *  Refreshes GridPanel if selected MarkingLayer has Grid set as visible.
+	 *
+	 * @throws Exception the exception
 	 */
 	public void updateGridPanel() throws Exception{
 		this.gridPanel.setGridProperties(taskManager.getConvertedGridProperties());
@@ -3021,7 +3076,9 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 
 	/**
 	 * Highlights a single marking if found close the Point p.
+	 *
 	 * @param p Point where mouse was hovered
+	 * @throws Exception the exception
 	 */
 	public void updateHighlight(Point p) throws Exception{
 
@@ -3073,6 +3130,8 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	 * Informs the LayerVisualManger of the changed dimension of ImagePanel.
 	 * The dimension is needed in transformation of image to fit in ImagePanel.
 	 * This method is called always when ImagePanel size is changed (Splitpane size changed or GUI window size changed)
+	 *
+	 * @throws Exception the exception
 	 */
 	private void updateImagePanelSize() throws Exception{
 		this.taskManager.setImagePanelDimension(new Dimension((int)this.imagePanel.getBounds().getWidth(), (int)this.imagePanel.getBounds().getHeight()));
@@ -3081,7 +3140,9 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 
 	/**
 	 * Updates properties (color, size thickness, etc.) of MarkingPanel, which id is given.
+	 *
 	 * @param mLayerID int ID of the MarkingLayer which information is used.
+	 * @throws Exception the exception
 	 */
 	public void updateMarkingPanelProperties(int mLayerID) throws Exception{		
 		// update the properties
@@ -3094,9 +3155,11 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 
 	/**
 	 * Organizes the zooming of image in or out to given point and given zoom multiplier. Determines and refreshes also the markings, grid and highlight.
+	 *
 	 * @param midPoint Point where zooming will focus
 	 * @param zoomValue double multiplier how much is zoomed (1.25 -> 25% zoom)
 	 * @param processinID int ID quality of Image (ID.IMAGE_PROCESSING_BEST_QUALITY, etc.)
+	 * @throws Exception the exception
 	 */
 	public void zoomAndUpdateImage(Point midPoint, double zoomValue, int processinID) throws Exception{
 		PositionedImage im = taskManager.getZoomedImage(midPoint, zoomValue);

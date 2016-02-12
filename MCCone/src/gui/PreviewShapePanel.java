@@ -63,6 +63,7 @@ public class PreviewShapePanel extends JPanel{
 	 * Sets the Panel Bounds.
 	 *
 	 * @param backPanelRectangle the new Bounds of panel
+	 * @throws Exception the exception
 	 */
 	public void setPanelBounds(Rectangle backPanelRectangle) throws Exception{
 		this.setBounds(new Rectangle((int)backPanelRectangle.getX()-300, (int)backPanelRectangle.getY(), 300,(int)this.recOfBackPanel.getHeight()));		
@@ -99,6 +100,7 @@ public class PreviewShapePanel extends JPanel{
 	 * Sets the shape thickness.
 	 *
 	 * @param thickness Float the new shape thickness
+	 * @throws Exception the exception
 	 */
 	public void setShapeThickness(float thickness) throws Exception{
 		this.shapeDrawer.setThickness(thickness);
@@ -108,8 +110,9 @@ public class PreviewShapePanel extends JPanel{
 	 * Sets the shape size.
 	 *
 	 * @param size the new shape size
+	 * @throws Exception the exception
 	 */
-	public void setShapeSize(int size){
+	public void setShapeSize(int size) throws Exception{
 		this.shapeDrawer.setShapeSize(size);
 	}
 	
@@ -117,6 +120,7 @@ public class PreviewShapePanel extends JPanel{
 	 * Sets the shape opacity.
 	 *
 	 * @param opacity the new shape opacity
+	 * @throws Exception the exception
 	 */
 	public void setShapeOpacity(float opacity) throws Exception{
 		this.shapeDrawer.setOpacity(opacity);
@@ -126,6 +130,7 @@ public class PreviewShapePanel extends JPanel{
 	 * Sets the shape id.
 	 *
 	 * @param shapeID the new shape id
+	 * @throws Exception the exception
 	 */
 	public void setShapeID(int shapeID) throws Exception{
 		this.shapeDrawer.setShapeID(shapeID);
@@ -135,6 +140,7 @@ public class PreviewShapePanel extends JPanel{
 	 * Sets the shape color.
 	 *
 	 * @param c the new shape color
+	 * @throws Exception the exception
 	 */
 	public void setShapeColor(Color c) throws Exception{
 		this.shapeDrawer.setShapeColor(c);

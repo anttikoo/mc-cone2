@@ -741,14 +741,17 @@ public class GUIListener extends MouseInputAdapter {
 	 * Gets the previous dragging point.
 	 *
 	 * @return the previous dragging point
+	 * @throws Exception the exception
 	 */
 	
-	public Point getPreviousDraggingPoint() {
+	public Point getPreviousDraggingPoint() throws Exception {
 		return previousDraggingPoint;
 	}
 
 	/**
 	 * Inits the highlight timer.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void initHighlightTimer() throws Exception{
 		this.hightLightTimer=new Timer(100, new ActionListener() {
@@ -764,6 +767,8 @@ public class GUIListener extends MouseInputAdapter {
 
 	/**
 	 * Initializes the space action timers for activating and inactivating dragging.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void initSPACEactions() throws Exception{
 		timerSPACEactivate=new Timer(50,new ActionListener() {
@@ -812,6 +817,8 @@ public class GUIListener extends MouseInputAdapter {
 
 	/**
 	 * Initializes the timer for zooming.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void initZoomTimer() throws Exception{
 		this.zoomTimer=new Timer(100, new ActionListener() {
@@ -827,9 +834,11 @@ public class GUIListener extends MouseInputAdapter {
 
 	/**
 	 * Returns true if precounting Thread is running. Otherwise false.
+	 *
 	 * @return boolean true if Precounting Thread is running.
+	 * @throws Exception the exception
 	 */
-	public boolean isCellPickingON() {
+	public boolean isCellPickingON() throws Exception {
 		return isCellPickingON;
 	}
 
@@ -1041,8 +1050,10 @@ public class GUIListener extends MouseInputAdapter {
 
 	/**
 	 * Paints the circle and square for precounting if fits fully to imagePanel.
+	 *
 	 * @param imagePanelPoint Point at imagePanel where mouse focused
 	 * @param glassPanePoint Point at glassPane where mouse focused
+	 * @throws Exception the exception
 	 */
 	private void paintCircle(Point imagePanelPoint, Point glassPanePoint) throws Exception{
 		Point up = new Point(imagePanelPoint.x, imagePanelPoint.y -glassPane.getRectangleSize()/2);
@@ -1066,9 +1077,11 @@ public class GUIListener extends MouseInputAdapter {
 
 	/**
 	 * Dispatches the triggered event to given component. Determines is the event mouseWheel event or some other.
+	 *
 	 * @param e MouseEvent the event triggered at glassPane.
 	 * @param glassPanePoint Point the point where mouse triggered event.
 	 * @param guiComponent Component the component of GUI where event is wanted to work.
+	 * @throws Exception the exception
 	 */
 	private void redirectEventToGUIComponents(MouseEvent e, Point glassPanePoint, Component guiComponent) throws Exception{
 	
@@ -1086,9 +1099,11 @@ public class GUIListener extends MouseInputAdapter {
 	}
 
 	/**
-	 * Sets the variable is_CTRL_down to false;
+	 * Sets the variable is_CTRL_down to false;.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void releaseCtrl(){
+	public void releaseCtrl() throws Exception{
 		is_CTRL_pressed=false;
 	}
 
@@ -1097,9 +1112,11 @@ public class GUIListener extends MouseInputAdapter {
 
 	/**
 	 *  Sets is the precounting Thread running.
+	 *
 	 * @param isCellPickingON boolean running or not running
+	 * @throws Exception the exception
 	 */
-	public void setCellPickingON(boolean isCellPickingON) {
+	public void setCellPickingON(boolean isCellPickingON) throws Exception {
 		this.isCellPickingON = isCellPickingON;
 	}
 
@@ -1116,6 +1133,7 @@ public class GUIListener extends MouseInputAdapter {
 	 * @param downBarPanel the down bar panel at gui
 	 * @param zoomSlider the zoom slider at gui
 	 * @param sliderPanel the slider panel at gui
+	 * @throws Exception the exception
 	 */
 	public void setComponents(GUI gui, TaskManager tm, Container contentPane, PrecountGlassPane glassPane, ImagePanel imagePanel,
 			AbstractButton precountButton, JLayeredPane layers, JPanel downBarPanel, JSlider zoomSlider, JPanel sliderPanel) throws Exception{

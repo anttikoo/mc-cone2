@@ -29,6 +29,9 @@ import javax.swing.event.HyperlinkListener;
  */
 public class InfoDialog extends PropertiesDialog{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -2025422213114950053L;
+	
 	/** The Constant LOGGER. */
 	protected final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
@@ -50,78 +53,83 @@ public class InfoDialog extends PropertiesDialog{
 	 * @see gui.PropertiesDialog#initCenterPanels()
 	 */
 	protected JPanel initCenterPanels(){
-		JPanel infoPanel=new JPanel();
-		infoPanel.setLayout(new GridBagLayout());
-		infoPanel.setBackground(Color_schema.dark_40);
+		try {
+			JPanel infoPanel=new JPanel();
+			infoPanel.setLayout(new GridBagLayout());
+			infoPanel.setBackground(Color_schema.dark_40);
 
-		JTextArea textArea = new JTextArea();
-		textArea.setMinimumSize(new Dimension(380,400));
-		textArea.setPreferredSize(new Dimension(380,400));
-		textArea.setMaximumSize(new Dimension(380,400));
-		textArea.setBackground(Color_schema.dark_40);
-		textArea.setForeground(Color_schema.white_230);
-		textArea.setFont(Fonts.p16);
+			JTextArea textArea = new JTextArea();
+			textArea.setMinimumSize(new Dimension(380,400));
+			textArea.setPreferredSize(new Dimension(380,400));
+			textArea.setMaximumSize(new Dimension(380,400));
+			textArea.setBackground(Color_schema.dark_40);
+			textArea.setForeground(Color_schema.white_230);
+			textArea.setFont(Fonts.p16);
 
-		final JEditorPane editor = new JEditorPane();
-		editor.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
-		editor.setEditable(false);
-		editor.setMinimumSize(new Dimension(350,400));
-		editor.setPreferredSize(new Dimension(350,400));
-		editor.setMaximumSize(new Dimension(350,400));
-		editor.setBackground(Color_schema.dark_40);
-		editor.setForeground(Color_schema.white_230);
-		editor.setFont(Fonts.p16);
-		editor.setEditable(false);
-		
-		URL infoURL = InformationCenter.class.getResource("/information/html/program_info.html");
-		if (infoURL != null) {
-		    try {
-		     
-		    	String codeString = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html lang=\"en-us\"><title color=\"#EDEDED\">INFO of MC-Cone </title><body text=\"#EDEDED\" bgcolor=\"#282828\"><div><img src=\"/images/MC-Cone_small_200.png\" width=\"171\" height=\"200\" alt=\"MC-Cone icon\" align=\"left\"/><p ><strong>MC-Cone</strong> <br>Version: 0.1 <br></p> </div><div><p>Developed by: Antti Kurronen <br>License: <a href=\"http://www.gnu.org/copyleft/gpl.html\" style=\"color:#FFAD33\">GNU GENERAL PUBLIC LICENSE v3.0</a> <br>Home page: <a href=\"http://mc-cone.com\" style=\"color:#FFAD33\">MC-Cone.com</a><br>Contact: info@mc-cone.com</p></div></body></html>";	        
-		        String imagePath = InformationCenter.class.getResource("/images/MC-Cone_small_200.png").toString();
-		        String newCodeText= codeString.replaceFirst("/images/MC-Cone_small_200.png", imagePath);
-		        LOGGER.fine("page text: "+codeString+ " imagePath: "+imagePath);
-		        
-		        editor.setText(newCodeText);
-		        		 		        		        
-		    } catch (Exception e) {
-		    	LOGGER.severe("Attempted to read a bad URL: " + infoURL);
-		    }
-		} else {
-		    LOGGER.severe("Couldn't find file: program_info.html");
+			final JEditorPane editor = new JEditorPane();
+			editor.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
+			editor.setEditable(false);
+			editor.setMinimumSize(new Dimension(350,400));
+			editor.setPreferredSize(new Dimension(350,400));
+			editor.setMaximumSize(new Dimension(350,400));
+			editor.setBackground(Color_schema.dark_40);
+			editor.setForeground(Color_schema.white_230);
+			editor.setFont(Fonts.p16);
+			editor.setEditable(false);
+			
+			URL infoURL = InformationCenter.class.getResource("/information/html/program_info.html");
+			if (infoURL != null) {
+			    try {
+			     
+			    	String codeString = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html lang=\"en-us\"><title color=\"#EDEDED\">INFO of MC-Cone </title><body text=\"#EDEDED\" bgcolor=\"#282828\"><div><img src=\"/images/MC-Cone_small_200.png\" width=\"171\" height=\"200\" alt=\"MC-Cone icon\" align=\"left\"/><p ><strong>MC-Cone</strong> <br>Version: 0.1 <br></p> </div><div><p>Developed by: Antti Kurronen <br>License: <a href=\"http://www.gnu.org/copyleft/gpl.html\" style=\"color:#FFAD33\">GNU GENERAL PUBLIC LICENSE v3.0</a> <br>Home page: <a href=\"http://mc-cone.com\" style=\"color:#FFAD33\">MC-Cone.com</a><br>Contact: info@mc-cone.com</p></div></body></html>";	        
+			        String imagePath = InformationCenter.class.getResource("/images/MC-Cone_small_200.png").toString();
+			        String newCodeText= codeString.replaceFirst("/images/MC-Cone_small_200.png", imagePath);
+			        LOGGER.fine("page text: "+codeString+ " imagePath: "+imagePath);
+			        
+			        editor.setText(newCodeText);
+			        		 		        		        
+			    } catch (Exception e) {
+			    	LOGGER.severe("Attempted to read a bad URL: " + infoURL);
+			    }
+			} else {
+			    LOGGER.severe("Couldn't find file: program_info.html");
+			}
+
+
+			editor.addHyperlinkListener(new HyperlinkListener() {
+			    public void hyperlinkUpdate(HyperlinkEvent e) {
+			        if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+
+			        	if(Desktop.isDesktopSupported()) {
+			        	    try {
+			        	    	if(Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))
+								Desktop.getDesktop().browse(e.getURL().toURI());
+			        	    	else
+			        	    		LOGGER.warning("Browser not supported");
+								
+							
+								
+							} catch (IOException e1) {
+								LOGGER.severe("Can't open the link. Not supported by Operation system!");
+								e1.printStackTrace();
+							} catch (URISyntaxException e1) {
+
+								LOGGER.severe("Can't open the link. Not supported by Operation system!");
+								e1.printStackTrace();
+							}
+			        	}
+			        	else{
+			        		LOGGER.severe("Can't open the link. Not supported by Operation system!");
+			        	}
+			        }
+			    }
+			});
+			infoPanel.add(editor);
+			return infoPanel;
+		} catch (Exception e) {			
+			e.printStackTrace();
+			return null;
 		}
-
-
-		editor.addHyperlinkListener(new HyperlinkListener() {
-		    public void hyperlinkUpdate(HyperlinkEvent e) {
-		        if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-
-		        	if(Desktop.isDesktopSupported()) {
-		        	    try {
-		        	    	if(Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))
-							Desktop.getDesktop().browse(e.getURL().toURI());
-		        	    	else
-		        	    		LOGGER.warning("Browser not supported");
-							
-						
-							
-						} catch (IOException e1) {
-							LOGGER.severe("Can't open the link. Not supported by Operation system!");
-							e1.printStackTrace();
-						} catch (URISyntaxException e1) {
-
-							LOGGER.severe("Can't open the link. Not supported by Operation system!");
-							e1.printStackTrace();
-						}
-		        	}
-		        	else{
-		        		LOGGER.severe("Can't open the link. Not supported by Operation system!");
-		        	}
-		        }
-		    }
-		});
-		infoPanel.add(editor);
-		return infoPanel;
 	}
 
 	/* (non-Javadoc)

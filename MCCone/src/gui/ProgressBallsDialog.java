@@ -24,6 +24,9 @@ import managers.PreCountThreadManager;
  */
 public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable {
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -6992628985272172668L;
+
 	/** The painted ball. Shows which ball is presently painted */
 	private int paintedBall=-1;
 	
@@ -64,6 +67,7 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 
 	}
 
+	
 	/* Overrides super class createButton -method. In ProgressBallsDialog only one button is created -> setup it here.
 	 * @see gui.ShadyMessageDialog#createButton(int)
 	 */
@@ -92,7 +96,12 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 		return button;
 	}
 
-	public void refreshDialog(){
+	/**
+	 * Refresh dialog.
+	 *
+	 * @throws Exception the exception
+	 */
+	public void refreshDialog() throws Exception{
 		setShowON(true);
 		nextBallBigger=true;
 		initBalls();
@@ -100,6 +109,11 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 	}
 
 
+	/**
+	 * Inits the button action.
+	 *
+	 * @throws Exception the exception
+	 */
 	private void initButtonAction() throws Exception{
 			if(super.getFirstButton() != null){
 				super.getFirstButton().removeActionListener(super.getFirstButton().getActionListeners()[0]);
@@ -206,8 +220,9 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 	 * Sets the PreCountThreadManager.
 	 *
 	 * @param pctm the new manager
+	 * @throws Exception the exception
 	 */
-	public void setManager(PreCountThreadManager pctm){
+	public void setManager(PreCountThreadManager pctm) throws Exception{
 		this.pctm=pctm;
 	}
 
@@ -273,8 +288,9 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 	 * Checks if is show on.
 	 *
 	 * @return true, if is show on
+	 * @throws Exception the exception
 	 */
-	public boolean isShowON() {
+	public boolean isShowON() throws Exception {
 		return showON;
 	}
 
@@ -282,9 +298,15 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 	 * Sets the show on.
 	 *
 	 * @param showON the new show on
+	 * @throws Exception the exception
 	 */
-	public void setShowON(boolean showON) {
-		this.showON = showON;
+	public void setShowON(boolean showON){
+		try {
+			this.showON = showON;
+		} catch (Exception e) {
+			LOGGER.severe("Error in setting on or off the progress window!");
+			e.printStackTrace();
+		}
 	}
 
 
@@ -317,6 +339,11 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 	 * The Class SingleBall.
 	 */
 	private class SingleBall extends JPanel{
+		
+		/** The Constant serialVersionUID. */
+		private static final long serialVersionUID = 4460095647221966962L;
+		
+		/** The argb opacity. */
 		private int aRGBopacity=30;
 
 
@@ -324,13 +351,18 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 		 * Instantiates a new single ball.
 		 */
 		private SingleBall(){
-			this.setOpaque(false);
-			this.setBorder(null);
-			this.setMaximumSize(new Dimension(20,20));
-			this.setPreferredSize(new Dimension(20,20));
-			this.setMinimumSize(new Dimension(20,20));
-			this.setBackground(Color_schema.dark_30);
-			this.setLayout(null);
+			try {
+				this.setOpaque(false);
+				this.setBorder(null);
+				this.setMaximumSize(new Dimension(20,20));
+				this.setPreferredSize(new Dimension(20,20));
+				this.setMinimumSize(new Dimension(20,20));
+				this.setBackground(Color_schema.dark_30);
+				this.setLayout(null);
+			} catch (Exception e) {
+				LOGGER.severe("Error in initializing SingleBall of progress window!");
+				e.printStackTrace();
+			}
 		}
 
 		
@@ -339,6 +371,7 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 		 * Sets the new integer for creating new argb color.
 		 *
 		 * @param newARGB the new argb
+		 * @throws Exception the exception
 		 */
 		private void paintWithOpacity(int newARGB) throws Exception{
 
@@ -350,6 +383,7 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 		 * Gets the a rgb opacity.
 		 *
 		 * @return the a rgb opacity
+		 * @throws Exception the exception
 		 */
 		public int getaRGBopacity() throws Exception{
 			return aRGBopacity;

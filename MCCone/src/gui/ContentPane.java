@@ -16,6 +16,8 @@ import javax.swing.JPanel;
  */
 public class ContentPane extends JPanel{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 2680468042227015564L;
 	/** The Constant LOGGER. for Logging purposes */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	

@@ -18,6 +18,9 @@ import javax.swing.text.StyledDocument;
  */
 public class LogFrame extends JFrame{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -4057171876250311487L;
+
 	/** The document to be styled. */
 	private StyledDocument document;
 	

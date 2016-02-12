@@ -53,6 +53,9 @@ import information.*;
  */
 public class AddImageLayerDialog extends JDialog{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -6514281535063810182L;
+
 	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
@@ -326,154 +329,7 @@ public class AddImageLayerDialog extends JDialog{
 		}
 	}
 
-	/*
-	 * Adds MouseListener to given JButton.
-	 * @param button JButton where to add MouseListener
-	 * @param id int type of button
-	 * @throws Exception
-	 */
-/*	private void addMouseListenerToButtons(JButton button, int id) throws Exception{
-		if(id == ID.BUTTON_CLOSE_SMALL){
-		button.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-			}
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 1));
-			}
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setIcon(getImageIcon("/images/close_small_selected.png"));
-			}
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				((JButton)arg0.getSource()).setIcon(getImageIcon("/images/close_small.png"));
-			}
-		});
-		}
-		else if(id == ID.BUTTON_CLOSE_25){
-			button.addMouseListener(new MouseListener() {
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-				}
-				@Override
-				public void mouseEntered(MouseEvent arg0) {
-					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 1));
-				}
-				@Override
-				public void mouseExited(MouseEvent arg0) {
-					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_40, 1));
-				}
-				@Override
-				public void mousePressed(MouseEvent arg0) {
-					((JButton)arg0.getSource()).setIcon(new BigCloseIcon(true));
-				}
-				@Override
-				public void mouseReleased(MouseEvent arg0) {
-					((JButton)arg0.getSource()).setIcon(new BigCloseIcon(false));
-				}
-			});
-		}
-		else if(id == ID.BUTTON_CLOSE_BIG){
-			button.addMouseListener(new MouseListener() {
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-				}
-				@Override
-				public void mouseEntered(MouseEvent arg0) {
-					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 1));
-				}
-				@Override
-				public void mouseExited(MouseEvent arg0) {
-					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 1));
-				}
-				@Override
-				public void mousePressed(MouseEvent arg0) {
-					((JButton)arg0.getSource()).setIcon(getImageIcon("/images/close_big_selected.png"));
-				}
-				@Override
-				public void mouseReleased(MouseEvent arg0) {
-					((JButton)arg0.getSource()).setIcon(getImageIcon("/images/close_big.png"));
-				}
-			});
-		}
-		else if(id == ID.BUTTON_IMPORT_MARKINGS){
-			button.addMouseListener(new MouseListener() {
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-				}
-				@Override
-				public void mouseEntered(MouseEvent arg0) {
-					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 1));
-				}
-				@Override
-				public void mouseExited(MouseEvent arg0) {
-					((JButton)arg0.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.dark_40, 1));
-				}
-				@Override
-				public void mousePressed(MouseEvent arg0) {
-					((JButton)arg0.getSource()).setIcon(new BigMarkingIcon(true));
-				}
-				@Override
-				public void mouseReleased(MouseEvent arg0) {
-					((JButton)arg0.getSource()).setIcon(new BigMarkingIcon(false));
-				}
-			});
-		}else if(id == ID.BUTTON_CANCEL){
-			button.addMouseListener(new MouseListener() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-				}
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					if(((JButton)e.getSource()).isEnabled())
-					((JButton)e.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 2));
-				}
-				@Override
-				public void mouseExited(MouseEvent e) {
-					((JButton)e.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
-				}
-				@Override
-				public void mousePressed(MouseEvent e) {
-					((JButton)e.getSource()).setForeground(Color_schema.red);
-				}
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					((JButton)e.getSource()).setForeground(Color_schema.orange_dark);
-				}
-			});
-		}else if(id == ID.BUTTON_NORMAL){
-			button.addMouseListener(new MouseListener() {
 
-				@Override
-				public void mouseClicked(MouseEvent e) {
-				}
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					if(((JButton)e.getSource()).isEnabled())
-					((JButton)e.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_orange_border, 2));
-				}
-				@Override
-				public void mouseExited(MouseEvent e) {
-					((JButton)e.getSource()).setBorder(BorderFactory.createLineBorder(Color_schema.button_grey_border, 2));
-				}
-				@Override
-				public void mousePressed(MouseEvent e) {
-					((JButton)e.getSource()).setForeground(Color_schema.orange_dark);
-				}
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					((JButton)e.getSource()).setForeground(Color_schema.white_230);
-				}
-			});
-		}
-	}
-*/
 	/**
 	 * Hides window.
 	 */
@@ -519,8 +375,10 @@ public class AddImageLayerDialog extends JDialog{
 
 	/**
 	 * Creates ImageAndMarkingPanel from given ImageLayer and it's MarkingLayers.
+	 *
 	 * @param layer @see ImageLayer which data is used.
-	 * @return @see ImageAndMarkingPanel a Panel showing information of given ImageLayer and it's MarkingLayers. 
+	 * @return @see ImageAndMarkingPanel a Panel showing information of given ImageLayer and it's MarkingLayers.
+	 * @throws Exception the exception
 	 */
 	private ImageAndMarkingPanel createImagePanel(ImageLayer layer) throws Exception{
 		return new ImageAndMarkingPanel(layer);
@@ -528,7 +386,9 @@ public class AddImageLayerDialog extends JDialog{
 
 	/**
 	 * Removes temporary ImageLayer from list in AddImageLayerDialog.
+	 *
 	 * @param path String image path in ImageLayer to be deleted from list.
+	 * @throws Exception the exception
 	 */
 	private void deleteImageLayer(String path) throws Exception{
 		try {
@@ -596,9 +456,11 @@ public class AddImageLayerDialog extends JDialog{
 
 	/**
 	 * Returns the size of BackPanel.
+	 *
 	 * @return @see Rectangle size of BackPanel
+	 * @throws Exception the exception
 	 */
-	public Rectangle getBackPanelSize(){
+	public Rectangle getBackPanelSize() throws Exception{
 		return this.backPanel.getBounds();
 	}
 
@@ -637,10 +499,17 @@ private int getHeightOfAllImageAndMarkingPanels(){
 }
 
 /**
+ * Returns the image layer.
+ *
+ * @param path the path
+ * @return the image layer
+ * @throws Exception the exception
+ */
+/*
  * Creates ImageIcon from given image path.
  * @param path String image path
  * @return @see ImageIcon
- */
+ *
 private ImageIcon getImageIcon(String path) {
 
 		try {
@@ -652,7 +521,7 @@ private ImageIcon getImageIcon(String path) {
 			return null;
 		}
 }
-
+*/
 
 
 
@@ -683,7 +552,9 @@ private ImageLayer getImageLayer(String path){
 
 /**
  * Returns  path of previously used folder.
+ *
  * @return String path of previously used folder
+ * @throws Exception the exception
  */
 public String getPresentFolder()throws Exception{
 	return gui.getPresentFolder();
@@ -1150,6 +1021,8 @@ private JPanel initImageViewPanel(){
 
 	/**
 	 * Opens a file dialog, which type depends on which file type will be opened.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void selectAndAddImages() throws Exception{
 		
@@ -1194,7 +1067,9 @@ private JPanel initImageViewPanel(){
 
 	/**
 	 * Sets the allowed ImageDimension = present dimension of image(s) in main GUI.
+	 *
 	 * @param importAllowedImageDimension @see Dimension allowed dimension
+	 * @throws Exception the exception
 	 */
 	public void setImportAllowedImageDimension(Dimension importAllowedImageDimension) throws Exception {
 		this.importAllowedImageDimension = importAllowedImageDimension;
@@ -1223,7 +1098,9 @@ private JPanel initImageViewPanel(){
 
 	/**
 	 * Sets the folder that is previously used.
+	 *
 	 * @param folder String path of used folder
+	 * @throws Exception the exception
 	 */
 	public void setPresentFolder(String folder) throws Exception{
 		gui.setPresentFolder(folder);
@@ -1232,6 +1109,8 @@ private JPanel initImageViewPanel(){
 
 	/**
 	 * Sets dialog visible.
+	 *
+	 * @throws Exception the exception
 	 */
 	public void showDialog() throws Exception{
 		this.setVisible(true);
@@ -1240,8 +1119,10 @@ private JPanel initImageViewPanel(){
 	
 	/**
 	 * Opens message dialog with ok-button.
+	 *
 	 * @param title String title of message
 	 * @param message String message
+	 * @throws Exception the exception
 	 */
 	private void showMessage(String title, String message) throws Exception{
 		shadyMessageDialog = new ShadyMessageDialog(this, title, message, ID.OK, this);
@@ -1329,6 +1210,9 @@ private JPanel initImageViewPanel(){
 	 *
 	 */
 	private class ImageAndMarkingPanel extends JPanel{
+		
+		/** The Constant serialVersionUID. */
+		private static final long serialVersionUID = -3486848797936767446L;
 		private String path; // image path
 		private ArrayList<MarkingLayer> markingLayerList;
 		private JButton closeJButton;
@@ -1465,6 +1349,9 @@ private JPanel initImageViewPanel(){
 	 *
 	 */
 	private class SingleMarking extends JPanel{
+		
+		/** The Constant serialVersionUID. */
+		private static final long serialVersionUID = -4350091943683475060L;
 		private String markingName;
 		private String imageLayerPath;
 
@@ -1529,7 +1416,9 @@ private JPanel initImageViewPanel(){
 
 		/**
 		 * Returns a String path of image of the ImageLayer.
+		 *
 		 * @return String path of image of the ImageLayer
+		 * @throws Exception the exception
 		 */
 		public String getImageLayerPath() throws Exception {
 			return imageLayerPath;
@@ -1537,7 +1426,9 @@ private JPanel initImageViewPanel(){
 
 		/**
 		 * Returns a String name of MarkingLayer.
+		 *
 		 * @return String name of MarkingLayer
+		 * @throws Exception the exception
 		 */
 		public String getMarkingName() throws Exception {
 			return markingName;
@@ -1545,7 +1436,9 @@ private JPanel initImageViewPanel(){
 
 		/**
 		 * Sets a path of image of the ImageLayer.
+		 *
 		 * @param imageLayerPath String path of image of the ImageLayer
+		 * @throws Exception the exception
 		 */
 		public void setImageLayerPath(String imageLayerPath) throws Exception {
 			this.imageLayerPath = imageLayerPath;
@@ -1553,7 +1446,9 @@ private JPanel initImageViewPanel(){
 
 		/**
 		 *  Sets a String name of MarkingLayer.
+		 *
 		 * @param markingName String name of MarkingLayer
+		 * @throws Exception the exception
 		 */
 		public void setMarkingName(String markingName) throws Exception {
 			this.markingName = markingName;

@@ -3,7 +3,7 @@ package gui;
 import javax.swing.SwingUtilities;
 
 /**
- * Contains the Main-method, which starts the Graphical user interface (GUI)
+ * Contains the Main-method, which starts the Graphical user interface (GUI) and whole program.
  * @author Antti Kurronen
  */
 public class MCCone {

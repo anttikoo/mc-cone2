@@ -41,6 +41,9 @@ import javax.swing.plaf.metal.MetalComboBoxUI;
  */
 public class MarkingProperties extends PropertiesDialog {
 		
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1582174048338003703L;
+
 	protected final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
 	/** The GUI. */
@@ -217,9 +220,11 @@ public class MarkingProperties extends PropertiesDialog {
 	}
 
 	/**
-	 * Manages creation of shape Icon
+	 * Manages creation of shape Icon.
+	 *
 	 * @param id shape ID. @see information.ID
 	 * @return Custom Icon with painted shape
+	 * @throws Exception the exception
 	 */
 	private ShapeIcon createShapeIcon(int id) throws Exception{
 			return new ShapeIcon(id, 32,32,getSelectedColor(), Color_schema.dark_40);
@@ -241,6 +246,9 @@ public class MarkingProperties extends PropertiesDialog {
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see gui.PropertiesDialog#setPanelPosition()
+	 */
 	protected void setPanelPosition() throws Exception{
 		recOfBackpanel = getGoodBoundsForPanel();
 		if(recOfBackpanel != null){
@@ -261,8 +269,10 @@ public class MarkingProperties extends PropertiesDialog {
 	}
 
 	/**
+	 * Returns the selected color.
 	 *
 	 * @return the selected color for marking
+	 * @throws Exception the exception
 	 */
 	private Color getSelectedColor() throws Exception{
 		return this.selectedColor;
@@ -291,10 +301,12 @@ public class MarkingProperties extends PropertiesDialog {
 
 
 	 /**
-	 * Returns selected opacity of MarkingProperties.
-	 * @return the selected opacity (float)
-	 */
-	public int getSelectedOpacity() {
+ 	 * Returns selected opacity of MarkingProperties.
+ 	 *
+ 	 * @return the selected opacity (float)
+ 	 * @throws Exception the exception
+ 	 */
+	public int getSelectedOpacity() throws Exception{
 		return this.selectedOpacity;
 	}
 
@@ -302,36 +314,44 @@ public class MarkingProperties extends PropertiesDialog {
 
 	/**
 	 * Return selected ShapeId of MarkingProperties.
+	 *
 	 * @return the shape ID of selected shape. @see information.ID
+	 * @throws Exception the exception
 	 */
-	public int getSelectedShapeID() {
+	public int getSelectedShapeID()  throws Exception{
 		return this.selectedShapeID;
 	}
 
 	/**
 	 * Return selected shape size of MarkingProperties.
+	 *
 	 * @return the size of shape
+	 * @throws Exception the exception
 	 */
-	public int getSelectedSize() {
+	public int getSelectedSize() throws Exception  {
 		return selectedSize;
 	}
 
 	/**
 	 * Return selected thickness of MarkingProperties.
+	 *
 	 * @return the selected thickness (int)
+	 * @throws Exception the exception
 	 */
-	public int getSelectedThickness() {
+	public int getSelectedThickness()  throws Exception {
 		return selectedThickness;
 	}
 
 
 
 /**
- * Return shape ID (int) located from shapeIDs-array at given index
+ * Return shape ID (int) located from shapeIDs-array at given index.
+ *
  * @param index the index of shapeComboBox
  * @return ID (int) of shape that corresponds to shapeIDs -array at given index
+ * @throws Exception the exception
  */
-private int getShapeIDfromComboBoxIndex(int index){
+private int getShapeIDfromComboBoxIndex(int index)  throws Exception{
 
 	if(index >=0 && index < shapeIDs.length)
 		return shapeIDs[index];
@@ -341,7 +361,9 @@ private int getShapeIDfromComboBoxIndex(int index){
 
 /**
  * Hides Dialog window and saves the changes made to MarkingLayer.
+ *
  * @param saveChanges boolean value should the changes be saved to MarkingLayer
+ * @throws Exception the exception
  */
 protected void hideDialog(boolean saveChanges){
 	if(saveChanges){
@@ -461,10 +483,13 @@ protected void initDialog(){
 		e.printStackTrace();
 	}
 }
+
 /**
  * Initializes the marking properties panel.
+ *
+ * @throws Exception the exception
  */
-protected void initMarkingPropertiesPanel(){
+protected void initMarkingPropertiesPanel() throws Exception{
 	
 	initDialog();
 	this.revalidate();
@@ -472,8 +497,12 @@ protected void initMarkingPropertiesPanel(){
 }
 
 
-/** 
+/**
+ *  
  * Initializes the uppermost JPanel showing a color chooser. Color chooser is modified from default color chooser by removing swatch, rgb and hsb views.
+ *
+ * @return the j panel
+ * @throws Exception the exception
  */
 protected JPanel initUPPanels() throws Exception{
 	// contains title and colorchooser panels
@@ -578,6 +607,7 @@ protected JPanel initUPPanels() throws Exception{
  * Saves the made changes of properties to MarkingLayer.
  *
  * @param mLayer the MarkingLayer
+ * @throws Exception the exception
  */
 protected void saveChanges(MarkingLayer mLayer) throws Exception{
 	// save changes to markinglayer
@@ -605,6 +635,8 @@ protected void saveChanges(MarkingLayer mLayer) throws Exception{
 /**
  *  This method is called when the value of sizeSlider is changed.
  *  -> Changes the maximum and present value of thicknessSlider, because small shape shouldn't be very thick.
+ *
+ * @throws Exception the exception
  */
 private void setMaximumThickness() throws Exception{
 	  try {
@@ -635,11 +667,12 @@ private void setMaximumThickness() throws Exception{
   }
 
 /**
- * 
  *  Sets the selected color of MarkingProperties.
+ *
  * @param color the color that will be saved
+ * @throws Exception the exception
  */
-protected void setSelectedColor(Color color){
+protected void setSelectedColor(Color color) throws Exception{
 	if(color != null)
 		this.selectedColor=color;
 	else
@@ -648,33 +681,41 @@ protected void setSelectedColor(Color color){
 
 /**
  * Sets the selected opacity of MarkingProperties.
+ *
  * @param selectedOpacity the new opacity value (float) of shape to be saved
+ * @throws Exception the exception
  */
-public void setSelectedOpacity(int selectedOpacity) {
+public void setSelectedOpacity(int selectedOpacity) throws Exception {
 	this.selectedOpacity = selectedOpacity;
 }
 
 /**
  * Sets the selected shape id of MarkingProperties.
+ *
  * @param selectedShapeID the shape id (int) to been saved
+ * @throws Exception the exception
  */
-public void setSelectedShapeID(int selectedShapeID) {
+public void setSelectedShapeID(int selectedShapeID)  throws Exception{
 	this.selectedShapeID = selectedShapeID;
 }
 
 /**
  * Sets the selected size of MarkingProperties.
+ *
  * @param selectedSize the new size (int) of shape to be saved
+ * @throws Exception the exception
  */
-public void setSelectedSize(int selectedSize) {
+public void setSelectedSize(int selectedSize)  throws Exception{
 	this.selectedSize = selectedSize;
 }
 
 /**
  * Sets the selected thickness of MarkingProperties.
+ *
  * @param selectedThickness the thickenss (int) of shape to be saved
+ * @throws Exception the exception
  */
-public void setSelectedThickness(int selectedThickness) {
+public void setSelectedThickness(int selectedThickness)  throws Exception{
 	this.selectedThickness = selectedThickness;
 }
 
@@ -740,7 +781,8 @@ private JComboBox<Integer> setUpComboBox(){
 
 /**
  * Setups the combobox JPanel for selecting shape of marking.
- * @throws Exception 
+ *
+ * @throws Exception the exception
  */
 protected void setUpComboBoXPanel() throws Exception{
 	// contains JComboBox-component and label
@@ -918,9 +960,11 @@ protected void setUpComboBoXPanel() throws Exception{
 	}
 	
 	/**
-	 * Sets the Dialog visible
+	 * Sets the Dialog visible.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void showDialog(){
+	public void showDialog() throws Exception{
 		setVisible(true);
 	}
 
@@ -932,6 +976,9 @@ protected void setUpComboBoXPanel() throws Exception{
 	@SuppressWarnings("rawtypes")
 	class ComboBoxIconRenderer extends JLabel implements ListCellRenderer {
 
+
+	/** The Constant serialVersionUID. */
+		private static final long serialVersionUID = -1398189975099717216L;
 
 	/**
 	 * Class constructor

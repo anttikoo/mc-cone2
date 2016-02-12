@@ -37,9 +37,7 @@ import javax.swing.KeyStroke;
  */
 public class ShadyMessageDialog extends JDialog{
 	
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 3759564265081943415L;
 
 	/** The Constant LOGGER. */
@@ -266,6 +264,7 @@ public class ShadyMessageDialog extends JDialog{
 	 * Calculates and returns the width of downButton Panel. Width depends on how many buttons there are.
 	 *
 	 * @return the down button panel width
+	 * @throws Exception the exception
 	 */
 	private int getDownButtonPanelWidth() throws Exception{
 		int width=0;
@@ -332,6 +331,7 @@ public class ShadyMessageDialog extends JDialog{
 	 * Sets the panel position with given Rectangle.
 	 *
 	 * @param bounds the new panel position
+	 * @throws Exception the exception
 	 */
 	public void setPanelPosition(Rectangle bounds) throws Exception{
 		if(bounds != null)
@@ -344,6 +344,7 @@ public class ShadyMessageDialog extends JDialog{
 	 *
 	 * @param id the ID
 	 * @return the button text
+	 * @throws Exception the exception
 	 */
 	protected String getButtonText(int id) throws Exception{
 		switch (id) {
@@ -388,6 +389,8 @@ public class ShadyMessageDialog extends JDialog{
 
 	/**
 	 * Hides dialog.
+	 *
+	 * @throws Exception the exception
 	 */
 	private void hideDialog() throws Exception{
 		
@@ -396,9 +399,10 @@ public class ShadyMessageDialog extends JDialog{
 	}
 
 	/**
-	 * Gets the backPanel of dialog
+	 * Gets the backPanel of dialog.
 	 *
 	 * @return the dialog back panel
+	 * @throws Exception the exception
 	 */
 	public JPanel getDialogBackPanel() throws Exception{
 		return this.dialogBackPanel;
