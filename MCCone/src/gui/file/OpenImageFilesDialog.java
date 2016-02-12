@@ -4,6 +4,8 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.logging.Logger;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -12,6 +14,12 @@ import javax.swing.JFrame;
  * The Class OpenImageFilesDialog.
  */
 public class OpenImageFilesDialog extends OpenFileDialog{
+	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -4739394346859180464L;
+	
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	public OpenImageFilesDialog(JFrame frame, Rectangle pcb, Rectangle pcbb, String presentFolder) {
 		super(frame, pcb, pcbb, presentFolder);
@@ -32,7 +40,7 @@ public class OpenImageFilesDialog extends OpenFileDialog{
 	/* (non-Javadoc)
 	 * @see gui.file.OpenFileDialog#getWindowTitle()
 	 */
-	protected String getWindowTitle(){
+	protected String getWindowTitle() throws Exception{
 		return "SELECT IMAGES";
 	}
 
@@ -57,17 +65,22 @@ public class OpenImageFilesDialog extends OpenFileDialog{
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(fileChooser.getSelectedFiles() != null && fileChooser.getSelectedFiles().length>0){
-					hideDialog();
-					selectedFiles=fileChooser.getSelectedFiles();
-					// update present folder to ->-> informationCenter
-					String commonFolder = getMostCommonPath(fileChooser.getSelectedFiles());
-					if(commonFolder != null && commonFolder.length()>0){
-						File file = new File(commonFolder);
-						if(file.exists() && file.isDirectory()) // folder exists
-							setPresentFolder(commonFolder);
-					}
+				try {
+					if(fileChooser.getSelectedFiles() != null && fileChooser.getSelectedFiles().length>0){
+						hideDialog();
+						selectedFiles=fileChooser.getSelectedFiles();
+						// update present folder to ->-> informationCenter
+						String commonFolder = getMostCommonPath(fileChooser.getSelectedFiles());
+						if(commonFolder != null && commonFolder.length()>0){
+							File file = new File(commonFolder);
+							if(file.exists() && file.isDirectory()) // folder exists
+								setPresentFolder(commonFolder);
+						}
 
+					}
+				} catch (Exception e1) {
+					LOGGER.severe("Error in selection of file(s)!");
+					e1.printStackTrace();
 				}
 			}
 		});

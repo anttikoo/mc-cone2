@@ -38,10 +38,8 @@ import javax.swing.SwingUtilities;
 	 */
 	public class OpenFileDialog extends JDialog{
 		
-		/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+		/** The Constant serialVersionUID. */
+		private static final long serialVersionUID = 1L;
 
 		/** The open dialog back panel. */
 		private JPanel openDialogBackPanel;
@@ -83,11 +81,16 @@ import javax.swing.SwingUtilities;
 		 */
 		public OpenFileDialog(JFrame frame, Rectangle parentComponentBounds, Rectangle backPanelBounds, String presentFolder){
 			super(frame, true);
-			this.setResizable(false);
-			this.parentComponentBounds=parentComponentBounds;
-			this.parentComponentBackPanelBounds=backPanelBounds;
-			this.presentFolder=getFolderString(presentFolder);
-			initFileDialog();
+			try {
+				this.setResizable(false);
+				this.parentComponentBounds=parentComponentBounds;
+				this.parentComponentBackPanelBounds=backPanelBounds;
+				this.presentFolder=getFolderString(presentFolder);
+				initFileDialog();
+			} catch (Exception e) {
+				LOGGER.severe("Error in initializing OpenFileDialog!");
+				e.printStackTrace();
+			}
 		}
 		
 		
@@ -102,18 +105,23 @@ import javax.swing.SwingUtilities;
 		 */
 		public OpenFileDialog(JDialog d, Rectangle parentComponentBounds, Rectangle backPanelBounds, String presentFolder){
 			super(d, true); 
-			this.setResizable(false);
-			this.parentComponentBounds=parentComponentBounds;
-			this.parentComponentBackPanelBounds=backPanelBounds;
-			this.presentFolder=getFolderString(presentFolder);
-			initFileDialog();
+			try {
+				this.setResizable(false);
+				this.parentComponentBounds=parentComponentBounds;
+				this.parentComponentBackPanelBounds=backPanelBounds;
+				this.presentFolder=getFolderString(presentFolder);
+				initFileDialog();
+			} catch (Exception e) {
+				LOGGER.severe("Error in initializing OpenFileDialog!");
+				e.printStackTrace();
+			}
 		}
 
 
 		/**
 		 * Initializes the dialog opening a file.
 		 */
-		private void initFileDialog(){
+		private void initFileDialog() throws Exception{
 
 			this.setBounds(this.parentComponentBounds); //sets the size of window same as the parent window size
 			this.setUndecorated(true); // no titlebar or buttons
@@ -221,7 +229,12 @@ import javax.swing.SwingUtilities;
 				cancelFileChooserJButton.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-					hideDialog();
+					try {
+						hideDialog();
+					} catch (Exception e1) {
+						LOGGER.severe("Error in hiding the dialog!");
+						e1.printStackTrace();
+					}
 					}
 				});
 
@@ -243,15 +256,18 @@ import javax.swing.SwingUtilities;
 		 * Gets the title of dialog.
 		 *
 		 * @return the window title
+		 * @throws Exception the exception
 		 */
-		protected String getWindowTitle(){
+		protected String getWindowTitle() throws Exception{
 			return "Title";
 		}
 
 		/**
 		 * Sets the up filechooser settings.
+		 *
+		 * @throws Exception the exception
 		 */
-		protected void setUpFilechooserSettings(){
+		protected void setUpFilechooserSettings() throws Exception{
 			//
 		}
 
@@ -259,8 +275,9 @@ import javax.swing.SwingUtilities;
 		 * Adds the actions to file dialog buttons.
 		 *
 		 * @param button the button
+		 * @throws Exception the exception
 		 */
-		protected void addActionsToFileDialogButtons(JButton button){
+		protected void addActionsToFileDialogButtons(JButton button) throws Exception{
 			// create code to extended class
 		}
 
@@ -269,8 +286,9 @@ import javax.swing.SwingUtilities;
 		 *
 		 * @param button the button
 		 * @return the j button
+		 * @throws Exception the exception
 		 */
-		private JButton addKeyListenerToButton(final JButton button){
+		private JButton addKeyListenerToButton(final JButton button) throws Exception{
 
 			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 			inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
@@ -298,8 +316,9 @@ import javax.swing.SwingUtilities;
 		 * Gets the selected files.
 		 *
 		 * @return the selected files
+		 * @throws Exception the exception
 		 */
-		public File[] getSelectedFiles(){
+		public File[] getSelectedFiles() throws Exception{
 			return this.selectedFiles;
 		}
 
@@ -307,8 +326,9 @@ import javax.swing.SwingUtilities;
 		 * Sets the present folder.
 		 *
 		 * @param path the new present folder
+		 * @throws Exception the exception
 		 */
-		protected void setPresentFolder(String path){
+		protected void setPresentFolder(String path) throws Exception{
 			this.presentFolder=path;
 		}
 
@@ -316,8 +336,9 @@ import javax.swing.SwingUtilities;
 		 * Gets the present folder.
 		 *
 		 * @return the present folder
+		 * @throws Exception the exception
 		 */
-		public String getPresentFolder(){
+		public String getPresentFolder() throws Exception{
 			return this.presentFolder;
 		}
 
@@ -438,15 +459,16 @@ import javax.swing.SwingUtilities;
 		 *
 		 * @param filePath the file path
 		 * @return the folder string
+		 * @throws Exception the exception
 		 */
-		private String getFolderString(String filePath){
+		private String getFolderString(String filePath) throws Exception{
 			return getFolder(filePath).getAbsolutePath();
 		}
 
 		/**
 		 * Calls the hiding method to close dialog.
 		 */
-		protected void hideDialog(){
+		protected void hideDialog() throws Exception{
 			SwingUtilities.invokeLater(new Runnable() {
 
 				@Override
