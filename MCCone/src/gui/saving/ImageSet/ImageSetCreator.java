@@ -205,7 +205,7 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 			this.presentFolder=gui.getPresentFolder();
 			this.createImageThread=new Thread(this, "CreateImage_"+threadNumber++);
 			initComponents();
-			this.progressBallsDialog = new ProgressBallsDialog(new JFrame(), "Creating set of Images", "", ID.CANCEL, this);
+			this.progressBallsDialog = new ProgressBallsDialog(this, "Creating set of Images", "", ID.CANCEL, this);
 			// adding this progressWithoutButtons in later versions to work
 			this.addMouseListener(this);
 			

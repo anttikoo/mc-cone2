@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -54,6 +55,21 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 
 	public ProgressBallsDialog(JFrame frame, String title, String message,int id, Component comp){
 		super(frame, title, message, id, comp);
+
+		try {
+			initBalls();
+			initButtonAction();
+			this.painterThread = new Thread(this, title+threadNumber++);
+			this.validate();
+		} catch (Exception e) {
+			LOGGER.severe("Error starting Progress dialog.");
+			e.printStackTrace();
+		}
+
+	}
+	
+	public ProgressBallsDialog(JDialog jdialog, String title, String message,int id, Component comp){
+		super(jdialog, title, message, id, comp);
 
 		try {
 			initBalls();
