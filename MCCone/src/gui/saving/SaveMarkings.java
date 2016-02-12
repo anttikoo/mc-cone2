@@ -58,8 +58,9 @@ public class SaveMarkings extends SaverDialog{
 	 * Collect all names of ImageLayers.
 	 *
 	 * @return the ArrayList of names of ImageLayers.
+	 * @throws Exception the exception
 	 */
-	private ArrayList<String> collectAllImageLayerNames(){
+	private ArrayList<String> collectAllImageLayerNames() throws Exception{
 		ArrayList<String> list=new ArrayList<String>();
 		Component[] imPanelList= imageScrollPanel.getComponents();
 		//go through all panels of ImageLayers
@@ -106,6 +107,7 @@ public class SaveMarkings extends SaverDialog{
 	 *
 	 * @param fileName the path of the file.
 	 * @return true, if successful
+	 * @throws Exception the exception
 	 */
 	public boolean hasImageLayersFound(String fileName) throws Exception{
 		XMLreadManager readManager=new XMLreadManager();

@@ -167,8 +167,9 @@ public class SingleImagePanel extends JPanel{
 	 * Returns the file validity.
 	 *
 	 * @return the file validity
+	 * @throws Exception the exception
 	 */
-	public int getFileValidity() {
+	public int getFileValidity() throws Exception{
 		return fileValidity;
 	}
 
@@ -176,8 +177,9 @@ public class SingleImagePanel extends JPanel{
 	 * Returns the ImageLayer.
 	 *
 	 * @return the image layer
+	 * @throws Exception the exception
 	 */
-	public ImageLayer getImageLayer(){
+	public ImageLayer getImageLayer() throws Exception{
 		return this.imageLayer;
 	}
 
@@ -187,8 +189,9 @@ public class SingleImagePanel extends JPanel{
 	 * Returns the name of ImageLayer.
 	 *
 	 * @return the image layer name
+	 * @throws Exception the exception
 	 */
-	public String getImageLayerName() {
+	public String getImageLayerName() throws Exception{
 		return imageLayer.getImageFileName();
 	}
 
@@ -198,8 +201,9 @@ public class SingleImagePanel extends JPanel{
 	 * Returns the image path.
 	 *
 	 * @return the image path
+	 * @throws Exception the exception
 	 */
-	public String getImagePath() {
+	public String getImagePath() throws Exception{
 		return imagePath;
 	}
 
@@ -207,8 +211,9 @@ public class SingleImagePanel extends JPanel{
 	 * Returns the layer id.
 	 *
 	 * @return the layer id
+	 * @throws Exception the exception
 	 */
-	public int getLayerID(){
+	public int getLayerID() throws Exception{
 		return this.imageLayer.getLayerID();
 	}
 
@@ -217,8 +222,9 @@ public class SingleImagePanel extends JPanel{
 	 * Returns the proper file path for saving.
 	 *
 	 * @return the proper file path for saving
+	 * @throws Exception the exception
 	 */
-	public String getProperFilePathForSaving(){
+	public String getProperFilePathForSaving() throws Exception{
 		return this.properFilePath;
 	}
 
@@ -482,6 +488,7 @@ public class SingleImagePanel extends JPanel{
 	 * Sets the buttons enabled.
 	 *
 	 * @param enable the new buttons enabled
+	 * @throws Exception the exception
 	 */
 	public void setButtonsEnabled(boolean enable) throws Exception{
 		saveSingleJButton.setEnabled(enable);
@@ -490,8 +497,10 @@ public class SingleImagePanel extends JPanel{
 	
 	/**
 	 * Sets the heights of JPanels of SingleImagePanel and SingleMarkingPanel.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void setHeights(){
+	private void setHeights() throws Exception{
 		this.oneImageTitleHeight=this.saverDialog.oneImageTitleHeight;
 		this.oneImagePathHeight=this.saverDialog.oneImagePathHeight;
 		this.oneMarkingHeight=this.saverDialog.oneMarkingHeight;
@@ -499,8 +508,10 @@ public class SingleImagePanel extends JPanel{
 
 	/**
 	 * Sets the listener to image check box.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void setListenerToImageCheckBox(){
+	private void setListenerToImageCheckBox() throws Exception{
 		this.saveImageCheckBox.addItemListener(new ItemListener() {
 			
 			@Override
@@ -524,8 +535,9 @@ public class SingleImagePanel extends JPanel{
 	 * Sets the path.
 	 *
 	 * @param path the new path
+	 * @throws Exception the exception
 	 */
-	public void setPath(String path) {
+	public void setPath(String path) throws Exception {
 		this.imagePath = path;
 	}
 

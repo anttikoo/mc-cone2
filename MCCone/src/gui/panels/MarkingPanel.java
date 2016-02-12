@@ -117,8 +117,9 @@ public class MarkingPanel extends JPanel {
 	 * Returns the coordinate list.
 	 *
 	 * @return the coordinate list
+	 * @throws Exception the exception
 	 */
-	public ArrayList<Point> getCoordinateList() {
+	public ArrayList<Point> getCoordinateList() throws Exception {
 		return coordinateList;
 	}
 
@@ -126,15 +127,16 @@ public class MarkingPanel extends JPanel {
 	 * Returns the ID of the MarkingLayer of this MarkingPanel.
 	 *
 	 * @return the id
+	 * @throws Exception the exception
 	 */
-	public int getId() {
+	public int getId()  throws Exception{
 		return id;
 	}
 
 	/* (non-Javadoc)
 	 * @see java.awt.Component#isVisible()
 	 */
-	public boolean isVisible() {
+	public boolean isVisible(){
 		return isVisible;
 	}
 
@@ -242,6 +244,7 @@ public class MarkingPanel extends JPanel {
 	 * Sets the new cursor.
 	 *
 	 * @param cursor the new new cursor
+	 * @throws Exception the exception
 	 */
 	public void setNewCursor(Cursor cursor) throws Exception{
 		this.setCursor(cursor);

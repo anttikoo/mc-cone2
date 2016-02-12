@@ -111,17 +111,22 @@ public class ExportImage extends SaverDialog{
 	 * @see gui.saving.SaverDialog#setSaveButtonEnabledByFileValidity(int)
 	 */
 	protected void setSaveButtonEnabledByFileValidity(int vID){ //vID not used
-		// go through all SingleImagePanels and if any has fileValidity ok -> enable saveButton
-		Component[] imPanelList= imageScrollPanel.getComponents();
+		try {
+			// go through all SingleImagePanels and if any has fileValidity ok -> enable saveButton
+			Component[] imPanelList= imageScrollPanel.getComponents();
 
-		if(imPanelList != null && imPanelList.length>0){
-			 for (int i = 0; i < imPanelList.length; i++) {
-				 int filVal=((SingleImagePanel)imPanelList[i]).getFileValidity();
-				if(filVal==ID.FILE_OK || filVal == ID.FILE_NEW_FILE){
-					this.saveJButton.setEnabled(true);
-					return;
+			if(imPanelList != null && imPanelList.length>0){
+				 for (int i = 0; i < imPanelList.length; i++) {
+					 int filVal=((SingleImagePanel)imPanelList[i]).getFileValidity();
+					if(filVal==ID.FILE_OK || filVal == ID.FILE_NEW_FILE){
+						this.saveJButton.setEnabled(true);
+						return;
+					}
 				}
 			}
+		} catch (Exception e) {
+			LOGGER.severe("Error in setting save button enabled when checkded file validity!");
+			e.printStackTrace();
 		}
 		this.saveJButton.setEnabled(false);
 	}

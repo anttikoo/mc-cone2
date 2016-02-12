@@ -80,16 +80,20 @@ public class GridPanel extends JPanel {
 
 	/**
 	 * Sets the extra dim transparency. Set the unselected grid cells to transparent.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void setExtraDimTransparency(){
+	public void setExtraDimTransparency() throws Exception{
 		this.used_transparency_hard=extra_dim_transparency_hard;
 		this.used_transparency_soft=extra_dim_transparency_soft;
 	}
 	
 	/**
 	 * Sets the basic transparency. Sets the transparency of unselected grid cell to normal state.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void setBasicTransparency(){
+	public void setBasicTransparency() throws Exception{
 		this.used_transparency_hard=basic_transparency_hard;
 		this.used_transparency_soft=basic_transparency_soft;
 	}
@@ -98,8 +102,9 @@ public class GridPanel extends JPanel {
 	 * Sets the grid properties.
 	 *
 	 * @param gp the new GridProperties
+	 * @throws Exception the exception
 	 */
-	public void setGridProperties(GridProperties gp){
+	public void setGridProperties(GridProperties gp) throws Exception{
 		this.gridProperty=gp;
 		if(this.gridProperty==null){
 			setBasicTransparency(); // set the transparency to normal
@@ -246,17 +251,22 @@ private void drawEdgeLine(int x1, int y1, int x2, int y2, Graphics2D g2) throws 
 	}
 
 	/**
+	 * Checks if is show grid.
+	 *
 	 * @return boolean is grid shown.
+	 * @throws Exception the exception
 	 */
-	public boolean isShowGrid() {
+	public boolean isShowGrid() throws Exception{
 		return showGrid;
 	}
 
 	/**
-	 * 
+	 * Sets the show grid.
+	 *
 	 * @param showGrid boolean to set grid visible or invisible
+	 * @throws Exception the exception
 	 */
-	public void setShowGrid(boolean showGrid) {
+	public void setShowGrid(boolean showGrid) throws Exception{
 		this.showGrid = showGrid;
 	}
 }

@@ -71,8 +71,9 @@ public class ImagePanel extends JPanel {
 	 * Sets the buffered image.
 	 *
 	 * @param im the new buffered image
+	 * @throws Exception the exception
 	 */
-	public void setBufferedImage(BufferedImage im){
+	public void setBufferedImage(BufferedImage im) throws Exception{
 		this.image_to_shown = im;
 
 	}
@@ -82,6 +83,7 @@ public class ImagePanel extends JPanel {
 	 * Sets the image location.
 	 *
 	 * @param p the new image location
+	 * @throws Exception the exception
 	 */
 	public void setImageLocation(Point p) throws Exception{
 		this.location=p;

@@ -428,8 +428,11 @@ private JButton selectedImageLayerJButton;
 									}
 	}
 
-	/** Adds MarkingLayers to markingArea JPanel
-	 * @param markingLayerList
+	/**
+	 *  Adds MarkingLayers to markingArea JPanel.
+	 *
+	 * @param markingLayerList the marking layer list
+	 * @throws Exception the exception
 	 */
 	private void addMarkingLayers(ArrayList<MarkingLayer> markingLayerList) throws Exception{
 
@@ -703,8 +706,9 @@ private JButton selectedImageLayerJButton;
  * Returns the ID of ImageLayer.
  *
  * @return the image layer id
+ * @throws Exception the exception
  */
-public int getImageLayerID() {
+public int getImageLayerID() throws Exception {
 	return imageLayerID;
 }
 
@@ -712,8 +716,9 @@ public int getImageLayerID() {
  * Returns the image layer name.
  *
  * @return the image layer name
+ * @throws Exception the exception
  */
-public String getImageLayerName() {
+public String getImageLayerName() throws Exception {
 	return imageLayerName;
 }
 
@@ -721,10 +726,11 @@ public String getImageLayerName() {
 	 * Returns the width of JLabel with given text.
 	 *
 	 * @param font the font
-	 * @param  lab the JLabel
+	 * @param lab the lab
 	 * @return the width of text
+	 * @throws Exception the exception
 	 */
-	private int getWidthOfText(Font font, JLabel lab){
+	private int getWidthOfText(Font font, JLabel lab) throws Exception{
 
 		try {
 			return lab.getFontMetrics(font).stringWidth(lab.getText());
@@ -804,11 +810,12 @@ public String getImageLayerName() {
 	}
 
 	/**
-	 * Sets the ID of ImageLayer 
+	 * Sets the ID of ImageLayer .
 	 *
 	 * @param layer_ID the new ID of ImageLayer
+	 * @throws Exception the exception
 	 */
-	public void setImageLayer_ID(int layer_ID) {
+	public void setImageLayer_ID(int layer_ID)throws Exception {
 		this.imageLayerID = layer_ID;
 	}
 	
@@ -816,14 +823,20 @@ public String getImageLayerName() {
 	 * Sets the name of ImageLayer.
 	 *
 	 * @param layer_name the new image layer name
+	 * @throws Exception the exception
 	 */
-	public void setImageLayerName(String layer_name) {
+	public void setImageLayerName(String layer_name) throws Exception{
 		this.imageLayerName = layer_name;
 	}
+	
 	/**
 	 * Changes font size for title text for getting it to fit to panel.
+	 *
 	 * @param text string which length affects to font size
+	 * @param font the font
+	 * @param bold the bold
 	 * @return font which size has been set
+	 * @throws Exception the exception
 	 */
 	private Font setRightTitleFont(String text, Font font, boolean bold) throws Exception{
 
@@ -861,6 +874,7 @@ public String getImageLayerName() {
 	 *
 	 * @param text the text
 	 * @return the string
+	 * @throws Exception the exception
 	 */
 	private String splitTextIfTooLong(String text) throws Exception{
 		try {
@@ -1029,9 +1043,14 @@ public String getImageLayerName() {
 
 			        @Override
 			        public void caretUpdate(CaretEvent e) {
-			        	setMarking_layer_name(markingTitleJTextField.getText());
+			        	try {
+							setMarking_layer_name(markingTitleJTextField.getText());
 
-			        	closeJButton.setToolTipText("Delete Marking Layer: " +getMarking_layer_name());
+							closeJButton.setToolTipText("Delete Marking Layer: " +getMarking_layer_name());
+						} catch (Exception e1) {
+							LOGGER.severe("Error when updating title of MarkingLayer!");
+							e1.printStackTrace();
+						}
 
 			        }
 			    });
@@ -1084,15 +1103,20 @@ public String getImageLayerName() {
 
 					@Override
 					public void focusLost(FocusEvent e) {
-						markingTitleJTextField.setEnabled(false);
+						try {
+							markingTitleJTextField.setEnabled(false);
 
-					//	System.out.println("text par"+((JTextField)e.getSource()).getParent().getClass().toString());
-						if(((SingleMarkingPanel)((JTextField)e.getSource()).getParent()).isMarkingLayerSelected())
-							markingTitleJTextField.setFont(Fonts.b18);
-						else
-							markingTitleJTextField.setFont(Fonts.p17);
-						
-						markingTitleJTextField.setCaretPosition(0);
+//	System.out.println("text par"+((JTextField)e.getSource()).getParent().getClass().toString());
+							if(((SingleMarkingPanel)((JTextField)e.getSource()).getParent()).isMarkingLayerSelected())
+								markingTitleJTextField.setFont(Fonts.b18);
+							else
+								markingTitleJTextField.setFont(Fonts.p17);
+							
+							markingTitleJTextField.setCaretPosition(0);
+						} catch (Exception e1) {
+							LOGGER.severe("Error when focus lost from title of MarkingLayer!");
+							e1.printStackTrace();
+						}
 						
 						
 						
@@ -1220,8 +1244,9 @@ public String getImageLayerName() {
 		 * Returns the ID of MarkingLayer.
 		 *
 		 * @return the marking_layer_id
+		 * @throws Exception the exception
 		 */
-		public int getMarking_layer_id() {
+		public int getMarking_layer_id() throws Exception{
 			return marking_layer_id;
 		}
 
@@ -1229,8 +1254,9 @@ public String getImageLayerName() {
 		 * Returns the name of MarkingLayer.
 		 *
 		 * @return the marking_layer_name
+		 * @throws Exception the exception
 		 */
-		public String getMarking_layer_name() {
+		public String getMarking_layer_name() throws Exception{
 			return marking_layer_name;
 		}
 
@@ -1238,8 +1264,9 @@ public String getImageLayerName() {
 		 * Checks if is grid on.
 		 *
 		 * @return true, if is grid on
+		 * @throws Exception the exception
 		 */
-		public boolean isGridON() {
+		public boolean isGridON()throws Exception {
 			return isGridON;
 		}
 
@@ -1247,8 +1274,9 @@ public String getImageLayerName() {
 		 * Checks if is marking layer selected.
 		 *
 		 * @return true, if is marking layer selected
+		 * @throws Exception the exception
 		 */
-		public boolean isMarkingLayerSelected(){
+		public boolean isMarkingLayerSelected() throws Exception{
 			try {
 				if(this.markingLayer!= null){
 					return this.markingLayer.isSelected();
@@ -1266,8 +1294,9 @@ public String getImageLayerName() {
 		 * Checks if is visible layer.
 		 *
 		 * @return true, if is visible layer
+		 * @throws Exception the exception
 		 */
-		public boolean isVisibleLayer() {
+		public boolean isVisibleLayer() throws Exception{
 			return isVisibleLayer;
 		}
 
@@ -1275,16 +1304,19 @@ public String getImageLayerName() {
 		 * Sets the grid on.
 		 *
 		 * @param isGridON the new grid on
+		 * @throws Exception the exception
 		 */
-		public void setGridON(boolean isGridON) {
+		public void setGridON(boolean isGridON) throws Exception {
 			this.isGridON = isGridON;
 		}
 		
 		/**
-		 * sets this Marking Layer name
+		 * sets this Marking Layer name.
+		 *
 		 * @param marking_layer_name name for Marking Layer
+		 * @throws Exception the exception
 		 */
-		public void setMarking_layer_name(String marking_layer_name) {
+		public void setMarking_layer_name(String marking_layer_name) throws Exception{
 			this.marking_layer_name = marking_layer_name;
 		}
 
@@ -1292,8 +1324,9 @@ public String getImageLayerName() {
 		 * Sets the layer visibility.
 		 *
 		 * @param isVisibleLayer the new visible layer
+		 * @throws Exception the exception
 		 */
-		public void setVisibleLayer(boolean isVisibleLayer) {
+		public void setVisibleLayer(boolean isVisibleLayer) throws Exception{
 			this.isVisibleLayer = isVisibleLayer;
 		}
 

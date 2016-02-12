@@ -182,7 +182,12 @@ private Component parentComponent=null;
 
 			@Override
 			public void run() {
-				hideThis();
+				try {
+					hideThis();
+				} catch (Exception e) {
+					LOGGER.severe("Error in cancelling saving dialog!");
+					e.printStackTrace();
+				}
 
 			}
 		});
@@ -275,8 +280,9 @@ private Component parentComponent=null;
 	 * Returns the size and position of dialog.
 	 *
 	 * @return the marking saver bounds
+	 * @throws Exception the exception
 	 */
-	public Rectangle getMarkingSaverBounds(){
+	public Rectangle getMarkingSaverBounds() throws Exception{
 		return this.getBounds();
 	}
 
@@ -293,8 +299,9 @@ private Component parentComponent=null;
 	 * Returns the saving type id (Integer). 
 	 *
 	 * @return the saving type ID.
+	 * @throws Exception the exception
 	 */
-	public int getSavingID(){
+	public int getSavingID() throws Exception{
 		return this.savingType;
 	}
 
@@ -310,8 +317,10 @@ private Component parentComponent=null;
 
 	/**
 	 * Hides dialog.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void hideThis(){
+	private void hideThis() throws Exception{
 		this.setVisible(false);
 		this.dispose();
 	}

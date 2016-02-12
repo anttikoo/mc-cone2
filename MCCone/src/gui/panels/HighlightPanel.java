@@ -166,8 +166,9 @@ public class HighlightPanel extends JPanel{
 	 * Updates highlighted point.
 	 *
 	 * @param highlightPoint the highlight Point
+	 * @throws Exception the exception
 	 */
-	public void updateHighlightPoint(Point highlightPoint) {
+	public void updateHighlightPoint(Point highlightPoint) throws Exception{
 
 		this.highlightPoint = highlightPoint;
 
