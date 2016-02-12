@@ -51,8 +51,9 @@ public SingleGridSize(int size, int hAlign, int wAlign, int r, int c){
  * Gets the columns.
  *
  * @return the columns
+ * @throws Exception the exception
  */
-public int getColumns() {
+public int getColumns()  throws Exception{
 	return columns;
 }
 
@@ -60,8 +61,9 @@ public int getColumns() {
  * Gets the grid cell size.
  *
  * @return the grid cell size in pixels
+ * @throws Exception the exception
  */
-public int getGridCellSize() {
+public int getGridCellSize()  throws Exception{
 	return gridCellSize;
 }
 
@@ -69,8 +71,9 @@ public int getGridCellSize() {
  * Gets the height align.
  *
  * @return the height align
+ * @throws Exception the exception
  */
-public int getHeightAlign() {
+public int getHeightAlign()  throws Exception{
 	return heightAlign;
 }
 
@@ -78,8 +81,9 @@ public int getHeightAlign() {
  * Gets the rows.
  *
  * @return the rows
+ * @throws Exception the exception
  */
-public int getRows() {
+public int getRows()  throws Exception {
 	return rows;
 }
 
@@ -87,8 +91,9 @@ public int getRows() {
  * Gets the width align.
  *
  * @return the width align
+ * @throws Exception the exception
  */
-public int getWidthAlign() {
+public int getWidthAlign()  throws Exception{
 	return widthAlign;
 }
 
@@ -96,8 +101,9 @@ public int getWidthAlign() {
  * Sets the columns.
  *
  * @param columns the new columns
+ * @throws Exception the exception
  */
-public void setColumns(int columns) {
+public void setColumns(int columns)  throws Exception{
 	this.columns = columns;
 }
 
@@ -105,8 +111,9 @@ public void setColumns(int columns) {
  * Sets the grid cell size.
  *
  * @param gridCellSize the new grid cell size
+ * @throws Exception the exception
  */
-public void setGridCellSize(int gridCellSize) {
+public void setGridCellSize(int gridCellSize) throws Exception {
 	this.gridCellSize = gridCellSize;
 }
 
@@ -114,8 +121,9 @@ public void setGridCellSize(int gridCellSize) {
  * Sets the height align.
  *
  * @param heightAlign the new height align
+ * @throws Exception the exception
  */
-public void setHeightAlign(int heightAlign) {
+public void setHeightAlign(int heightAlign)  throws Exception{
 	this.heightAlign = heightAlign;
 }
 
@@ -123,8 +131,9 @@ public void setHeightAlign(int heightAlign) {
  * Sets the rows.
  *
  * @param rows the new rows
+ * @throws Exception the exception
  */
-public void setRows(int rows) {
+public void setRows(int rows)  throws Exception{
 	this.rows = rows;
 }
 
@@ -132,8 +141,9 @@ public void setRows(int rows) {
  * Sets the width align.
  *
  * @param widthAlign the new width align
+ * @throws Exception the exception
  */
-public void setWidthAlign(int widthAlign) {
+public void setWidthAlign(int widthAlign)  throws Exception{
 	this.widthAlign = widthAlign;
 }
 }

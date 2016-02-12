@@ -16,30 +16,35 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class GridRectangle. Contains data of single Grid cell: position and is selected.
  */
 public class GridRectangle extends JPanel {
 	
-/** The Constant LOGGER. */
-private final static Logger LOGGER = Logger.getLogger("MCCLogger");
- 
- /** The grid row and column number. */
- private Dimension grid_row_column;
- 
- /** The row. */
- private int row;
- 
- /** The column. */
- private int column;
- 
- /** The is selected. */
- private boolean isSelected=true;
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -8475739093023436354L;
 
-/** The label. */
-private JLabel label;
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+ 
+	/** The grid row and column number. */
+	private Dimension grid_row_column;
+ 
+	/** The row. */
+	private int row;
+ 
+	/** The column. */
+	private int column;
+ 
+	/** The is selected. */
+	private boolean isSelected=true;
 
-private GridPropertiesPanel gridPropertiesPanel;
+	/** The label. */
+	private JLabel label;
+
+	/** The grid properties panel. */
+	private GridPropertiesPanel gridPropertiesPanel;
 
  /**
   * Instantiates a new grid rectangle.
@@ -47,6 +52,7 @@ private GridPropertiesPanel gridPropertiesPanel;
   * @param r the row position
   * @param c the column position
   * @param selected boolean is grid cell selected
+  * @param gpp the gpp
   */
  public GridRectangle(int r, int c, boolean selected, GridPropertiesPanel gpp){
 	 try {
@@ -77,8 +83,9 @@ private GridPropertiesPanel gridPropertiesPanel;
   * Checks if is grid selected.
   *
   * @return true, if is selected
+  * @throws Exception the exception
   */
- public boolean isSelected() {
+ public boolean isSelected() throws Exception{
 	return isSelected;
 }
 
@@ -86,8 +93,9 @@ private GridPropertiesPanel gridPropertiesPanel;
  * Sets the shown.
  *
  * @param selected boolean is grid cell selected
+ * @throws Exception the exception
  */
-public void setSelected(boolean selected) {
+public void setSelected(boolean selected) throws Exception {
 	this.isSelected = selected;
 }
 
@@ -96,8 +104,9 @@ public void setSelected(boolean selected) {
  * Gets the grid_row_column.
  *
  * @return the Dimension grid_row_column
+ * @throws Exception the exception
  */
-public Dimension getGrid_row_column() {
+public Dimension getGrid_row_column() throws Exception{
 	return grid_row_column;
 }
 
@@ -106,16 +115,19 @@ public Dimension getGrid_row_column() {
  * Sets the grid_row_column.
  *
  * @param grid_row_column the new grid_row_column
+ * @throws Exception the exception
  */
-public void setGrid_row_column(Dimension grid_row_column) {
+public void setGrid_row_column(Dimension grid_row_column) throws Exception {
 	this.grid_row_column = grid_row_column;
 }
 
 
 /**
  * Sets up the mouseListener.
+ *
+ * @throws Exception the exception
  */
-private void setUpMouseListener(){
+private void setUpMouseListener() throws Exception{
 
 	 this.addMouseListener(new MouseListener() {
 
@@ -218,8 +230,9 @@ public void updatePanel() throws Exception{
  * Returns the column.
  *
  * @return the column
+ * @throws Exception the exception
  */
-public int getColumn() {
+public int getColumn() throws Exception {
 	return column;
 }
 
@@ -228,8 +241,9 @@ public int getColumn() {
  * Sets the column.
  *
  * @param column the new column
+ * @throws Exception the exception
  */
-public void setColumn(int column) {
+public void setColumn(int column) throws Exception {
 	this.column = column;
 }
 
@@ -238,8 +252,9 @@ public void setColumn(int column) {
  * returns the row in grid.
  *
  * @return the row
+ * @throws Exception the exception
  */
-public int getRow() {
+public int getRow()  throws Exception{
 	return row;
 }
 
@@ -248,8 +263,9 @@ public int getRow() {
  * Sets the row in grid.
  *
  * @param row the new row
+ * @throws Exception the exception
  */
-public void setRow(int row) {
+public void setRow(int row)  throws Exception{
 	this.row = row;
 }
 
