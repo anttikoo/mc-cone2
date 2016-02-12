@@ -96,7 +96,7 @@ public class SearchImageLayersHandler extends DefaultHandler {
 	 *
 	 * @return true, if is found image layer
 	 */
-	public boolean isFoundImageLayer() {
+	public boolean isFoundImageLayer(){
 		return foundImageLayer;
 	}
 

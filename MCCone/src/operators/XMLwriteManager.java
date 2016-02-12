@@ -87,11 +87,16 @@ public class XMLwriteManager {
 	 * Instantiates a new XMLWriteManager.
 	 */
 	public XMLwriteManager(){
-		this.layersOfPath=null;
-		this.savingType=ID.UNDEFINED;
-		this.unsavedMarkingLayers=new ArrayList<Integer>();
-		this.successfullySavedMarkingLayers=new ArrayList<Integer>();
-		rm = new XMLreadManager();
+		try {
+			this.layersOfPath=null;
+			this.savingType=ID.UNDEFINED;
+			this.unsavedMarkingLayers=new ArrayList<Integer>();
+			this.successfullySavedMarkingLayers=new ArrayList<Integer>();
+			rm = new XMLreadManager();
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing XMLWriteManager!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -259,8 +264,9 @@ public class XMLwriteManager {
 	 * Returns the successfully saved marking layers.
 	 *
 	 * @return the successfully saved marking layers
+	 * @throws Exception the exception
 	 */
-	public ArrayList<Integer> getSuccessfullySavedMarkingLayers() {
+	public ArrayList<Integer> getSuccessfullySavedMarkingLayers() throws Exception{
 		return successfullySavedMarkingLayers;
 	}
 
@@ -268,8 +274,9 @@ public class XMLwriteManager {
 	 * Returns the unsaved marking layers.
 	 *
 	 * @return the unsaved marking layers
+	 * @throws Exception the exception
 	 */
-	public ArrayList<Integer> getUnsavedMarkingLayers() {
+	public ArrayList<Integer> getUnsavedMarkingLayers() throws Exception {
 		return unsavedMarkingLayers;
 	}
 
@@ -329,8 +336,9 @@ public class XMLwriteManager {
 	 * !!Waiting to testing and would users want to select for every MarkingLayer to overwrite !!
 	 *
 	 * @return the int ID of savingType
+	 * @throws Exception the exception
 	 */
-	private int inquireSavingType(){
+	private int inquireSavingType() throws Exception{
 		return ID.OVERWRITE; // overwrites always
 
 	}
@@ -428,8 +436,10 @@ public class XMLwriteManager {
 
 	/**
 	 * Skips reading MarkingLayer. Reads xml-document until end element od MarkingLayer is reached.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void skipReadingMarkingLayer(){
+	private void skipReadingMarkingLayer() throws Exception{
 		try {
 			while(xer.hasNext()){
 				XMLEvent event=xer.nextEvent();
@@ -570,10 +580,11 @@ public class XMLwriteManager {
 
 	/**
 	 *  Writes the information of single ImageLayer-object to XML file inside <imagelayer> tags.
+	 *
 	 * @param iLayer The ImageLayer-object, which information is written to xml-file.
-	 * @throws Exception
+	 * @throws Exception the exception
 	 */
-	private void writeImageLayerFromImageLayer(ImageLayer iLayer){
+	private void writeImageLayerFromImageLayer(ImageLayer iLayer) throws Exception{
 
 		try {
 			se= xef.createStartElement("", "", XMLtags.imagelayer);
@@ -610,9 +621,12 @@ public class XMLwriteManager {
 
 	}
 
-	/** Writes all information of MarkingLayer-object to XML-file inside <markinglayer> tags.
+	/**
+	 *  Writes all information of MarkingLayer-object to XML-file inside <markinglayer> tags.
+	 *
 	 * @param mLayer MarkingLayer-object, which information is saved to XML-file.
-	 * @throws Exception
+	 * @return true, if successful
+	 * @throws Exception the exception
 	 */
 	private boolean writeMarkingLayer(MarkingLayer mLayer){
 		try {

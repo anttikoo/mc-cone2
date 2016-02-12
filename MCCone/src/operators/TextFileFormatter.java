@@ -60,9 +60,14 @@ public class TextFileFormatter extends Formatter{
 	 * @return time in String
 	 */
 	 private String getTime(long ms) {
-		    SimpleDateFormat date_format = new SimpleDateFormat("yyyy MMM dd HH:mm");
-		    Date resultdate = new Date(ms);
-		    return date_format.format(resultdate);
+		    try {
+				SimpleDateFormat date_format = new SimpleDateFormat("yyyy MMM dd HH:mm");
+				Date resultdate = new Date(ms);
+				return date_format.format(resultdate);
+			} catch (Exception e) {			
+				e.printStackTrace();
+				return null;
+			}
 		  }
 
 }

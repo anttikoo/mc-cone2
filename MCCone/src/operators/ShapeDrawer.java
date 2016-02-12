@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
+import java.util.logging.Logger;
 
 /**
  * The Class ShapeDrawer. Draws shape to Graphics2D object with given size, color, thickness and opacity.
@@ -43,6 +44,9 @@ public class ShapeDrawer {
 	
 	/** The shape size. */
 	private int shapeSize;
+	
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 
 	/**
@@ -55,15 +59,20 @@ public class ShapeDrawer {
 	 * @param shapeColor the shape color
 	 */
 	public ShapeDrawer(int shapeID, int size, float thick, float opa, Color shapeColor){
-		this.shapeColor=shapeColor;
-		this.rule_alpha=SharedVariables.transparencyModeOVER;
-		this.thickness=thick;
-		this.opacity= opa;
-		this.setShapeID(shapeID);
-		this.shapeSize=size;
-		this.strokeThin=new BasicStroke(this.thickness);
-		this.strokeThick=new BasicStroke(this.thickness*3);
-		this.isPreview=true;
+		try {
+			this.shapeColor=shapeColor;
+			this.rule_alpha=SharedVariables.transparencyModeOVER;
+			this.thickness=thick;
+			this.opacity= opa;
+			this.setShapeID(shapeID);
+			this.shapeSize=size;
+			this.strokeThin=new BasicStroke(this.thickness);
+			this.strokeThick=new BasicStroke(this.thickness*3);
+			this.isPreview=true;
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing ShapeDrawer!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -76,21 +85,28 @@ public class ShapeDrawer {
 	 * @param shapeColor the shape color
 	 */
 	public ShapeDrawer(MarkingLayer ml, int size, int thick, float opacity, Color shapeColor){
-		this.shapeColor=shapeColor;
-		this.rule_alpha=SharedVariables.transparencyModeOVER;
-		this.thickness=thick;
-		this.opacity= opacity;
-		this.setShapeID(ml.getShapeID());
-		this.shapeSize=size;
-		this.strokeThin=new BasicStroke(this.thickness);
-		this.strokeThick=new BasicStroke(this.thickness*3);
+		try {
+			this.shapeColor=shapeColor;
+			this.rule_alpha=SharedVariables.transparencyModeOVER;
+			this.thickness=thick;
+			this.opacity= opacity;
+			this.setShapeID(ml.getShapeID());
+			this.shapeSize=size;
+			this.strokeThin=new BasicStroke(this.thickness);
+			this.strokeThick=new BasicStroke(this.thickness*3);
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing ShapeDrawer!");
+			e.printStackTrace();
+		}
 
 	}
 	
 	/**
 	 * Decreases thickness.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void decreaseThickness(){
+	public void decreaseThickness() throws Exception{
 		this.thickness-=2;
 		this.strokeThick=new BasicStroke((thickness*3));
 		this.strokeThin = new BasicStroke((this.thickness));
@@ -103,8 +119,9 @@ public class ShapeDrawer {
 	 * @param x the top left horizontal point of shape
 	 * @param y the y top left vertical point of shape
 	 * @return the Graphics2D object.
+	 * @throws Exception the exception
 	 */
-	public Graphics2D drawCircle(Graphics2D g2d, int x, int y){
+	public Graphics2D drawCircle(Graphics2D g2d, int x, int y) throws Exception{
 		x=(int)((double)x-((double)shapeSize)/2);
 		y=(int)((double)y-((double)shapeSize)/2);
 		
@@ -133,8 +150,9 @@ public class ShapeDrawer {
 	 * @param x the top left horizontal point of shape
 	 * @param y the y top left vertical point of shape
 	 * @return the Graphics2D object.
+	 * @throws Exception the exception
 	 */
-	public Graphics2D drawCross(Graphics2D g2d, int x, int y){
+	public Graphics2D drawCross(Graphics2D g2d, int x, int y) throws Exception{
 		Point[] cornerPoints = getCornerPoints(x, y);
 		Point upleft =cornerPoints[0];
 		Point upright = cornerPoints[1];
@@ -174,8 +192,9 @@ public class ShapeDrawer {
 	 * @param x the top left horizontal point of shape
 	 * @param y the y top left vertical point of shape
 	 * @return the Graphics2D object.
+	 * @throws Exception the exception
 	 */
-	public Graphics2D drawDiamond(Graphics2D g2d, int x, int y){
+	public Graphics2D drawDiamond(Graphics2D g2d, int x, int y) throws Exception{
 
 		Point[] middlePoints = getMiddlePoints(x, y);
 		Point up =middlePoints[0];
@@ -217,8 +236,9 @@ public class ShapeDrawer {
 	 * @param x the top left horizontal point of shape
 	 * @param y the y top left vertical point of shape
 	 * @return the Graphics2D object.
+	 * @throws Exception the exception
 	 */
-	public Graphics2D drawOval(Graphics2D g2d, int x, int y){
+	public Graphics2D drawOval(Graphics2D g2d, int x, int y) throws Exception{
 		x=(int)((double)x-((double)shapeSize)/2);
 		y=(int)((double)y-((double)shapeSize)/2);
 		
@@ -248,8 +268,9 @@ public class ShapeDrawer {
 	 * @param x the top left horizontal point of shape
 	 * @param y the y top left vertical point of shape
 	 * @return the Graphics2D object.
+	 * @throws Exception the exception
 	 */
-	public Graphics2D drawPlus(Graphics2D g2d, int x, int y){
+	public Graphics2D drawPlus(Graphics2D g2d, int x, int y) throws Exception{
 		Point[] middlePoints = getMiddlePoints(x, y);
 		Point up =middlePoints[0];
 		Point right = middlePoints[1];
@@ -286,7 +307,16 @@ public class ShapeDrawer {
 
 	}
 
-	public Graphics2D drawShape(Graphics2D g2d, int x, int y){
+	/**
+	 * Draw shape.
+	 *
+	 * @param g2d the g2d
+	 * @param x the x
+	 * @param y the y
+	 * @return the graphics2 d
+	 * @throws Exception the exception
+	 */
+	public Graphics2D drawShape(Graphics2D g2d, int x, int y) throws Exception{
 		switch (shapeID){
 			case ID.SHAPE_CIRCLE:
 				return drawCircle(g2d,x, y);
@@ -320,8 +350,9 @@ public class ShapeDrawer {
 	 * @param x the top left horizontal point of shape
 	 * @param y the y top left vertical point of shape
 	 * @return the Graphics2D object.
+	 * @throws Exception the exception
 	 */
-	public Graphics2D drawSquare(Graphics2D g2d, int x, int y){
+	public Graphics2D drawSquare(Graphics2D g2d, int x, int y) throws Exception{
 		x=(int)((double)x-((double)shapeSize)/2);
 		y=(int)((double)y-((double)shapeSize)/2);
 
@@ -350,9 +381,10 @@ public class ShapeDrawer {
 	 * @param g2d the Graphics2D object.
 	 * @param x the top left horizontal point of shape
 	 * @param y the y top left vertical point of shape
-	 * @return the Graphics2D object.	 
+	 * @return the Graphics2D object.
+	 * @throws Exception the exception
 	 */
-	public Graphics2D drawTriangle(Graphics2D g2d, int x, int y){
+	public Graphics2D drawTriangle(Graphics2D g2d, int x, int y) throws Exception{
 		Point up = new Point((x),(int)((double)y-((double)shapeSize)/2));
 		Point downright = new Point((int)((double)x+((double)shapeSize)/2),(int)((double)y+((double)shapeSize)/2));
 		Point downleft = new Point((int)((double)x-((double)shapeSize)/2),(int)((double)y+((double)shapeSize)/2));
@@ -388,8 +420,9 @@ public class ShapeDrawer {
 	 * @param x the horizontal position
 	 * @param y the vertical position
 	 * @return the corner points
+	 * @throws Exception the exception
 	 */
-	private Point[] getCornerPoints(int x,int y){
+	private Point[] getCornerPoints(int x,int y) throws Exception{
 		Point upLeft = new Point((int)((double)x-((double)shapeSize)/2),(int)((double)y-((double)shapeSize)/2));
 		Point upright = new Point((int)((double)x+((double)shapeSize)/2),(int)((double)y-((double)shapeSize)/2));
 		Point downright = new Point((int)((double)x+((double)shapeSize)/2),(int)((double)y+((double)shapeSize)/2));
@@ -403,8 +436,9 @@ public class ShapeDrawer {
 	 * @param x the x
 	 * @param y the y
 	 * @return the middle points
+	 * @throws Exception the exception
 	 */
-	private Point[] getMiddlePoints(int x,int y){
+	private Point[] getMiddlePoints(int x,int y) throws Exception{
 		Point up = new Point((x),(int)((double)y-((double)shapeSize)/2));
 		Point right = new Point((int)((double)x+((double)shapeSize)/2),y);
 		Point down = new Point((x),(int)((double)y+((double)shapeSize)/2));
@@ -470,8 +504,10 @@ public class ShapeDrawer {
 
 	/**
 	 * Increasse thickness.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void increaseThickness(){
+	public void increaseThickness() throws Exception{
 		this.thickness+=2;
 		this.strokeThick=new BasicStroke((thickness*3));
 		this.strokeThin = new BasicStroke((this.thickness));
@@ -527,8 +563,9 @@ public class ShapeDrawer {
 	 * Sets the thickness.
 	 *
 	 * @param thickness the new thickness
+	 * @throws Exception the exception
 	 */
-	public void setThickness(float thickness) {
+	public void setThickness(float thickness) throws Exception {
 		this.thickness = thickness;
 		this.strokeThin=new BasicStroke(this.thickness);
 		this.strokeThick=new BasicStroke(this.thickness*3);
