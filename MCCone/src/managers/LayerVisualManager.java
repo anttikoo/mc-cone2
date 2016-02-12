@@ -185,8 +185,9 @@ public class LayerVisualManager {
 	 *
 	 * @param gp the GridProperty
 	 * @param p the Point
+	 * @throws Exception the exception
 	 */
-	public void changeSelectedRectangleOfGridProperty(GridProperties gp, Point p){
+	public void changeSelectedRectangleOfGridProperty(GridProperties gp, Point p)  throws Exception{
 		Point imagePoint = convertScreenPointToImagePoint(p);
 		gp.changeSelectionOfPositionedRectangle(imagePoint);
 	}

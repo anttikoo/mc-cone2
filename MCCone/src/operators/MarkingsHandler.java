@@ -94,43 +94,81 @@ public class MarkingsHandler extends DefaultHandler {
             this.selectedMarkingLayer.addStringPoint(new String(ch, start, length));
             isSingleCoordinate = false;
         } else if (isShape) {
-        	int shapeID = getIntFromString(new String(ch, start, length));
-        	if(shapeID >0)
-        		this.selectedMarkingLayer.setShapeID(shapeID);
-            isShape = false;
+        	try {
+				int shapeID = getIntFromString(new String(ch, start, length));
+				if(shapeID >0)
+					this.selectedMarkingLayer.setShapeID(shapeID);
+				isShape = false;
+			} catch (Exception e) {
+				LOGGER.severe("Error in setting shapeID to MarkingLayer!");
+				e.printStackTrace();
+				isShape=false;
+			}
         }else if (isSize) {
-        	int size = getIntFromString(new String(ch, start, length));
-        	if(size >0)
-        		this.selectedMarkingLayer.setSize(size);
+        	try {
+				int size = getIntFromString(new String(ch, start, length));
+				if(size >0)
+					this.selectedMarkingLayer.setSize(size);
+			} catch (Exception e) {
+				LOGGER.severe("Error in setting size to selected MarkingLayer!");
+				e.printStackTrace();
+			}
             isSize = false;
         }else if (isOpacity) {
-        	float opacity = getFloatFromString(new String(ch, start, length));
-        	if(opacity >0.0f)
-        		this.selectedMarkingLayer.setOpacity(opacity);
+        	try {
+				float opacity = getFloatFromString(new String(ch, start, length));
+				if(opacity >0.0f)
+					this.selectedMarkingLayer.setOpacity(opacity);
+			} catch (Exception e) {
+				LOGGER.severe("Error in setting opacity to selected MarkingLayer!");
+				e.printStackTrace();
+			}
             isOpacity = false;
         }else if (isThickness) {
-        	int thickness= getIntFromString(new String(ch, start, length));
-        	if(thickness > 0)
-        		this.selectedMarkingLayer.setThickness(thickness);
+        	try {
+				int thickness= getIntFromString(new String(ch, start, length));
+				if(thickness > 0)
+					this.selectedMarkingLayer.setThickness(thickness);
+			} catch (Exception e) {
+				LOGGER.severe("Error in setting thickness to selected MarkingLayer!");
+				e.printStackTrace();
+			}
             isThickness = false;
         }
         else if (isGrid_on) {
-        	String value=new String(ch, start, length);
-        	if(value.equalsIgnoreCase(XMLtags.value_true))
-        		this.gridProperty.setGridON(true);
-        	else if(value.equalsIgnoreCase(XMLtags.value_false))
-        		this.gridProperty.setGridON(false);
+        	try {
+				String value=new String(ch, start, length);
+				if(value.equalsIgnoreCase(XMLtags.value_true))
+					this.gridProperty.setGridON(true);
+				else if(value.equalsIgnoreCase(XMLtags.value_false))
+					this.gridProperty.setGridON(false);
+			} catch (Exception e) {
+				LOGGER.severe("Error in getting grid on off -value from xml !");
+				e.printStackTrace();
+			}
             isGrid_on= false;
         }
         else if (isX) {
-        	int x = getIntFromString(new String(ch, start, length));
-        	this.gridProperty.addColumnLineX(x);
-            isX= false;
+        	try {
+				int x = getIntFromString(new String(ch, start, length));
+				this.gridProperty.addColumnLineX(x);
+				isX= false;
+			} catch (Exception e) {
+				LOGGER.severe("Error in reading grid column lines from xml!");
+				e.printStackTrace();
+				isX=false;
+			}
         }
         else if (isY) {
-        	int y = getIntFromString(new String(ch, start, length));
-        	this.gridProperty.addRowLineY(y);
-            isY= false;
+        	try {
+				int y = getIntFromString(new String(ch, start, length));
+				this.gridProperty.addRowLineY(y);
+				isY= false;
+			} catch (Exception e) {
+				LOGGER.severe("Error in reading grid row lines from xml!");
+				e.printStackTrace();
+				isY=false;
+			}
         }
     }
 
@@ -146,17 +184,27 @@ public class MarkingsHandler extends DefaultHandler {
           //  this.isFoundImageLayer=false;
         }
         else if (qName.equalsIgnoreCase(XMLtags.markinglayer)) {
-        	 	if(this.selectedImageLayer != null && this.selectedMarkingLayer != null){
-        	 		this.selectedImageLayer.addMarkingLayer(this.selectedMarkingLayer);
-             }
+        	 	try {
+					if(this.selectedImageLayer != null && this.selectedMarkingLayer != null){
+						this.selectedImageLayer.addMarkingLayer(this.selectedMarkingLayer);
+          }
+				} catch (Exception e) {
+					LOGGER.severe("Error in adding MarkingLayer from xml!");
+					e.printStackTrace();
+				}
 
         	this.selectedMarkingLayer = null;
         }
         else if (qName.equalsIgnoreCase(XMLtags.grid)) {
-       	 if(this.selectedMarkingLayer != null){
-       		 this.selectedMarkingLayer.setGridProperties(this.gridProperty);
-       		 this.gridProperty=null;
-          }
+       	 try {
+			if(this.selectedMarkingLayer != null){
+				 this.selectedMarkingLayer.setGridProperties(this.gridProperty);
+				 this.gridProperty=null;
+			  }
+		} catch (Exception e) {
+			LOGGER.severe("Error in setting GridProperty to selected MarkingLayer when read from xml file!");
+			e.printStackTrace();
+		}
         }
     }
 
@@ -165,8 +213,9 @@ public class MarkingsHandler extends DefaultHandler {
      *
      * @param s the String
      * @return the boolean from string
+     * @throws Exception the exception
      */
-    private boolean getBooleanFromString(String s){
+    private boolean getBooleanFromString(String s) throws Exception{
     	if(s.equals(XMLtags.value_true))
     		return true;
     	else
@@ -178,8 +227,9 @@ public class MarkingsHandler extends DefaultHandler {
      *
      * @param s the String
      * @return the float from string
+     * @throws Exception the exception
      */
-    private Float getFloatFromString(String s){
+    private Float getFloatFromString(String s)  throws Exception{
     	try {
 			return Float.parseFloat(s);
 		} catch (NumberFormatException e) {
@@ -192,8 +242,9 @@ public class MarkingsHandler extends DefaultHandler {
      * Returns the ImageLayer.
      *
      * @return the ImageLayer
+     * @throws Exception the exception
      */
-    public ImageLayer getImageLayer(){
+    public ImageLayer getImageLayer() throws Exception{
     	return this.singleImageLayer;
     }
     
@@ -201,8 +252,9 @@ public class MarkingsHandler extends DefaultHandler {
      * Returns the list of ImageLayers.
      *
      * @return the list of ImageLayers
+     * @throws Exception the exception
      */
-    public ArrayList<ImageLayer> getImageLayerList(){
+    public ArrayList<ImageLayer> getImageLayerList() throws Exception{
     	return this.imageLayerList;
     }
 
@@ -211,8 +263,9 @@ public class MarkingsHandler extends DefaultHandler {
      *
      * @param s the String
      * @return the Integer from string
+     * @throws Exception the exception
      */
-    private int getIntFromString(String s){
+    private int getIntFromString(String s) throws Exception{
     	try {
 			return Integer.parseInt(s);
 		} catch (NumberFormatException e) {
@@ -306,15 +359,20 @@ public class MarkingsHandler extends DefaultHandler {
 	        } 
 	        else if (qName.equalsIgnoreCase(XMLtags.rec)) {
 	        	if(this.gridProperty != null){
-	        		PositionedRectangle posRec=new PositionedRectangle(
-        			getIntFromString(attributes.getValue(XMLtags.x)),
-        			getIntFromString(attributes.getValue(XMLtags.y)),
-        			getIntFromString(attributes.getValue(XMLtags.width)),
-        			getIntFromString(attributes.getValue(XMLtags.height)),
-        			getIntFromString(attributes.getValue(XMLtags.row)),
-        			getIntFromString(attributes.getValue(XMLtags.column)),
-        			getBooleanFromString(attributes.getValue(XMLtags.selected)));
-	        		this.gridProperty.addSinglePositionedRectangle(posRec);
+	        		try {
+						PositionedRectangle posRec=new PositionedRectangle(
+						getIntFromString(attributes.getValue(XMLtags.x)),
+						getIntFromString(attributes.getValue(XMLtags.y)),
+						getIntFromString(attributes.getValue(XMLtags.width)),
+						getIntFromString(attributes.getValue(XMLtags.height)),
+						getIntFromString(attributes.getValue(XMLtags.row)),
+						getIntFromString(attributes.getValue(XMLtags.column)),
+						getBooleanFromString(attributes.getValue(XMLtags.selected)));
+						this.gridProperty.addSinglePositionedRectangle(posRec);
+					} catch (Exception e) {
+						LOGGER.severe("Error in adding positioned rectangle to gridproperties!");
+						e.printStackTrace();
+					}
 	        	}
 	        }
         }

@@ -32,22 +32,23 @@ public class Fonts {
 	 * @return the font SourceSansPro-Regualar
 	 * @throws FontFormatException the font format exception
 	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
-	private static Font getSourceSansPro(float size) throws FontFormatException, IOException{
+	private static Font getSourceSansPro(float size) throws FontFormatException, IOException, Exception{
 		Font font = Font.createFont(Font.TRUETYPE_FONT, Fonts.class.getResourceAsStream("/information/fonts/SourceSansPro-Regular.otf"));
 		return font.deriveFont(size);
 	}
 	
 	/**
-	 * 
- * Returns the SourceSansPro bold font.
- *
- * @param size the size of font
- * @return the font SourceSansPro-Bold
- * @throws FontFormatException the font format exception
- * @throws IOException Signals that an I/O exception has occurred.
- */
-private static Font getSourceSansProBold(float size) throws FontFormatException, IOException{
+	 * Returns the SourceSansPro bold font.
+	 *
+	 * @param size the size of font
+	 * @return the font SourceSansPro-Bold
+	 * @throws FontFormatException the font format exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
+	 */
+private static Font getSourceSansProBold(float size) throws FontFormatException, IOException, Exception{
 		
 		Font font = Font.createFont(Font.TRUETYPE_FONT, Fonts.class.getResourceAsStream("/information/fonts/SourceSansPro-Bold.otf"));
 		return font.deriveFont(size);
@@ -82,24 +83,4 @@ private static Font getSourceSansProBold(float size) throws FontFormatException,
 
 	}
 	
-/*//unused
-	private static Font getInconsolata(float size) throws FontFormatException, IOException{
-		Font font = Font.createFont(Font.TRUETYPE_FONT, Fonts.class.getResourceAsStream("/information/fonts/Inconsolata.otf"));
-		return font.deriveFont(size);
-	}
-
-	private static Font getInconsolataBold(float size) throws FontFormatException, IOException{
-		Font font = Font.createFont(Font.TRUETYPE_FONT, Fonts.class.getResourceAsStream("/information/fonts/Inconsolata-Bold.ttf"));
-		return font.deriveFont(size);
-	}
-	private static Font getDejaVuSansMono(float size) throws FontFormatException, IOException{
-		Font font = Font.createFont(Font.TRUETYPE_FONT, Fonts.class.getResourceAsStream("/information/fonts/DejaVuSansMono.ttf"));
-		return font.deriveFont(size);
-	}
-	private static Font getDejaVuSansMonoBold(float size) throws FontFormatException, IOException{
-		Font font = Font.createFont(Font.TRUETYPE_FONT, Fonts.class.getResourceAsStream("/information/fonts/DejaVuSansMono-Bold.ttf"));
-		return font.deriveFont(size);
-	}
-	*/
-
 }

@@ -271,6 +271,7 @@ public class ImageCreator implements Runnable {
 			
 			return false; // not saved the file
 		} catch (Exception e) {
+			LOGGER.severe("Error in creating ImageSet");
 			e.printStackTrace();
 			return false;
 		}
@@ -303,8 +304,9 @@ public class ImageCreator implements Runnable {
 	 * @param color the color of text
 	 * @param font the font of text
 	 * @return the int the height of needed space for text
+	 * @throws Exception the exception
 	 */
-	private int drawImagetitle(Graphics2D g2d, int x, int y, String label, Color color, Font font){
+	private int drawImagetitle(Graphics2D g2d, int x, int y, String label, Color color, Font font) throws Exception{
 	      g2d.setFont(font);
 	      FontMetrics fontMetrics = g2d.getFontMetrics();
 	      int stringWidth = fontMetrics.stringWidth(label);
@@ -325,8 +327,9 @@ public class ImageCreator implements Runnable {
 	 * @param color the color of text
 	 * @param font the font
 	 * @return the int height of needed space for label
+	 * @throws Exception the exception
 	 */
-	private int drawMarkingLayerLabel(Graphics2D g2d, int x, int y, String label, Color color, Font font){
+	private int drawMarkingLayerLabel(Graphics2D g2d, int x, int y, String label, Color color, Font font) throws Exception{
 	      g2d.setFont(font);
 	      FontMetrics fontMetrics = g2d.getFontMetrics();
 	      int stringWidth = fontMetrics.stringWidth(label); // get width of text
@@ -425,8 +428,9 @@ public class ImageCreator implements Runnable {
 	 *
 	 * @param mLayers the list of MarkingLayers
 	 * @return the maximum shape size
+	 * @throws Exception the exception
 	 */
-	private int getMaxShapeSize(ArrayList<MarkingLayer> mLayers){
+	private int getMaxShapeSize(ArrayList<MarkingLayer> mLayers) throws Exception{
 		int max_size=0;
 		for (Iterator<MarkingLayer> iterator = mLayers.iterator(); iterator.hasNext();) {
 			MarkingLayer markingLayer = (MarkingLayer) iterator.next();
@@ -442,8 +446,9 @@ public class ImageCreator implements Runnable {
 	 * @param il the ImageLayer
 	 * @param selected_mLayers List of IDs of selected MarkingLayers
 	 * @return the printing layer list
+	 * @throws Exception the exception
 	 */
-	private ArrayList<MarkingLayer> getPrintingLayerList(ImageLayer il, ArrayList<Integer> selected_mLayers){
+	private ArrayList<MarkingLayer> getPrintingLayerList(ImageLayer il, ArrayList<Integer> selected_mLayers) throws Exception{
 		ArrayList<MarkingLayer> layersToDraw = new ArrayList<MarkingLayer>();
 		for (Iterator<Integer> iterator = selected_mLayers.iterator(); iterator.hasNext();) {
 			int selected_mLayerID = (int) iterator.next();
@@ -466,8 +471,9 @@ public class ImageCreator implements Runnable {
 	 * @param c the c
 	 * @param sdpList the sdp list
 	 * @return the SD pat position
+	 * @throws Exception the exception
 	 */
-	private SingleDrawImagePanel getSDPatPosition(int r, int c, ArrayList<SingleDrawImagePanel> sdpList){
+	private SingleDrawImagePanel getSDPatPosition(int r, int c, ArrayList<SingleDrawImagePanel> sdpList) throws Exception{
 		Iterator<SingleDrawImagePanel> sdpIterator=sdpList.iterator();
 		while(sdpIterator.hasNext()){
 			SingleDrawImagePanel sdp=(SingleDrawImagePanel)sdpIterator.next();
@@ -486,8 +492,9 @@ public class ImageCreator implements Runnable {
 	 * @param sdpList the SingleDrawImagePanel list
 	 * @param imageDimension the image dimension to be exported
 	 * @param path the path of exported Image
+	 * @throws Exception the exception
 	 */
-	public void initImageSetProperties(int gap, int rows, int columns, ArrayList<SingleDrawImagePanel> sdpList, Dimension imageDimension, String path){
+	public void initImageSetProperties(int gap, int rows, int columns, ArrayList<SingleDrawImagePanel> sdpList, Dimension imageDimension, String path) throws Exception{
 		this.gap=gap;
 		this.rows=rows;
 		this.columns=columns;
@@ -502,8 +509,9 @@ public class ImageCreator implements Runnable {
 	 * Checks if is continue creating.
 	 *
 	 * @return true, if is continue creating
+	 * @throws Exception the exception
 	 */
-	public boolean isContinueCreating() {
+	public boolean isContinueCreating() throws Exception {
 		return continueCreating;
 	}
 
@@ -511,8 +519,9 @@ public class ImageCreator implements Runnable {
 	 * Checks if is image set created successfully.
 	 *
 	 * @return true, if is image set created successfully
+	 * @throws Exception the exception
 	 */
-	public boolean isImageSetCreatedSuccessfully() {
+	public boolean isImageSetCreatedSuccessfully()throws Exception{
 		return imageSetCreatedSuccessfully;
 	}
 
@@ -521,8 +530,13 @@ public class ImageCreator implements Runnable {
 	 */
 	@Override
 	public void run() {
-		this.imageSetCreatedSuccessfully= createImageSet();
-		this.setContinueCreating(false);
+		try {
+			this.imageSetCreatedSuccessfully= createImageSet();
+			this.setContinueCreating(false);
+		} catch (Exception e) {
+			LOGGER.severe("Error in starting creating Image Set !");
+			e.printStackTrace();
+		}
 
 	}
 
@@ -530,8 +544,9 @@ public class ImageCreator implements Runnable {
 	 * Sets the continue creating.
 	 *
 	 * @param continueCreating the new continue creating
+	 * @throws Exception the exception
 	 */
-	public void setContinueCreating(boolean continueCreating) {
+	public void setContinueCreating(boolean continueCreating) throws Exception {
 		this.continueCreating = continueCreating;
 	}
 
@@ -540,8 +555,9 @@ public class ImageCreator implements Runnable {
 	 * Starts Thread of ImageSetCreator.
 	 *
 	 * @return true, if successful
+	 * @throws Exception the exception
 	 */
-	public boolean startImageSetCreatorThread(){
+	public boolean startImageSetCreatorThread() throws Exception{
 		this.setContinueCreating(true);
 		this.imageSetCreatorThread.start();
 		return isImageSetCreatedSuccessfully();
@@ -553,8 +569,9 @@ public class ImageCreator implements Runnable {
 	 * @param bi the bi
 	 * @param imagePath the image path
 	 * @return true, if successful
+	 * @throws Exception the exception
 	 */
-	private boolean writeToFile(BufferedImage bi, String imagePath) {
+	private boolean writeToFile(BufferedImage bi, String imagePath) throws Exception {
 		try {
 			// if tif write in own method
 			String extension=Utils.getExtension(imagePath);
@@ -577,8 +594,9 @@ public class ImageCreator implements Runnable {
 	 * @param imagePath the image path
 	 * @param extension the extension of file
 	 * @return true, if successful
+	 * @throws Exception the exception
 	 */
-	private boolean writeToNormalFile(BufferedImage bi, String imagePath, String extension){
+	private boolean writeToNormalFile(BufferedImage bi, String imagePath, String extension) throws Exception{
 
 	    try {
 
@@ -599,8 +617,9 @@ public class ImageCreator implements Runnable {
 	 * @param bi the BufferedImage
 	 * @param path the path
 	 * @return true, if successful
+	 * @throws Exception the exception
 	 */
-	private boolean  writeToTIff(BufferedImage bi, String path){
+	private boolean  writeToTIff(BufferedImage bi, String path) throws Exception{
 
 		try {
 			TIFFEncodeParam params = new TIFFEncodeParam();

@@ -397,7 +397,7 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	 * @throws InterruptedException
 	 */
 	@SuppressWarnings("static-access")
-	private void createImage() throws InterruptedException{
+	private void createImage() throws InterruptedException, Exception{
 		if(this.savingPathJLabel.getText() != null){
 			int imageWidth=Integer.parseInt(this.widthField.getText().trim());
 			int imageHeight=Integer.parseInt(this.heigthField.getText().trim());
@@ -1295,8 +1295,11 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 		try {
 				createImage();
 		} catch (InterruptedException e) {
-			LOGGER.severe("Error in creating image!");
+			LOGGER.severe("Error in creating image! Execution interrupted!");
 			e.printStackTrace();
+		}
+		catch(Exception ex){
+			LOGGER.severe("Error in creating image!");
 		}
 
 	}

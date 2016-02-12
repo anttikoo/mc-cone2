@@ -527,8 +527,9 @@ public boolean isGridON(){
 	 * Sets the grid properties.
 	 *
 	 * @param gProperties the new grid properties
+	 * @throws Exception the exception
 	 */
-	public void setGridProperties(GridProperties gProperties) {
+	public void setGridProperties(GridProperties gProperties)  throws Exception{
 		if(gProperties != null){
 			
 			GridProperties gridProperty=new GridProperties(gProperties.getPresentImageDimension());

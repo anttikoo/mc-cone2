@@ -128,6 +128,11 @@ private SAXParser saxParser;
 		    	LOGGER.severe("Error in importing markings for array of ImageLayers " +e.getClass().toString() + " :" +e.getMessage());
 		    	return null;
 		    }
+		    catch(Exception ex){
+		    	LOGGER.severe("Error in importing markings for array of ImageLayers ");
+		    	ex.printStackTrace();
+		    	return null;
+		    }
 	}
 
 		/**
@@ -170,6 +175,11 @@ private SAXParser saxParser;
 		    	LOGGER.severe("Error in importing markings for single ImageLayers " +e.getClass().toString() + " :" +e.getMessage());
 		        return null;
 		    }
+		    catch(Exception ex){
+		    	LOGGER.severe("Error in reading xml and updating ImageLayer!");
+		    	ex.printStackTrace();
+		    	return null;
+		    }
 		}
 		
 	    /**
@@ -183,6 +193,7 @@ private SAXParser saxParser;
 			saxParser = saxParserFactory.newSAXParser();
 
 			} catch (ParserConfigurationException | SAXException e) {
+				LOGGER.severe("Error in initializing xml parser!");
 		        e.printStackTrace();
 		    }
 		}

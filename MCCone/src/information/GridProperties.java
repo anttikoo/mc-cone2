@@ -51,11 +51,16 @@ public class GridProperties {
 	 * Instantiates a new grid properties.
 	 */
 	public GridProperties(){
-		setGridON(false);
-		this.rowLineY = new ArrayList<Integer>();
-		this.columnLineX = new ArrayList<Integer>();
-		this.positionedRectangleList=new ArrayList<PositionedRectangle>();
-		this.outerOfGridRectangleList=new ArrayList<Rectangle>();
+		try {
+			setGridON(false);
+			this.rowLineY = new ArrayList<Integer>();
+			this.columnLineX = new ArrayList<Integer>();
+			this.positionedRectangleList=new ArrayList<PositionedRectangle>();
+			this.outerOfGridRectangleList=new ArrayList<Rectangle>();
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing GridProperties !");
+			e.printStackTrace();
+		}
 
 	}
 
@@ -65,15 +70,20 @@ public class GridProperties {
 	 * @param iDimension the i dimension
 	 */
 	public GridProperties(Dimension iDimension){
-		setGridON(false);
-		this.rowLineY = new ArrayList<Integer>();
-		this.columnLineX = new ArrayList<Integer>();
-		this.positionedRectangleList=new ArrayList<PositionedRectangle>();
-		this.outerOfGridRectangleList=new ArrayList<Rectangle>();
-		if(iDimension != null){
-			this.setPresentImageDimension(iDimension);
-			this.horizontalLineLength=iDimension.width;
-			this.verticalLineLength=iDimension.height;
+		try {
+			setGridON(false);
+			this.rowLineY = new ArrayList<Integer>();
+			this.columnLineX = new ArrayList<Integer>();
+			this.positionedRectangleList=new ArrayList<PositionedRectangle>();
+			this.outerOfGridRectangleList=new ArrayList<Rectangle>();
+			if(iDimension != null){
+				this.setPresentImageDimension(iDimension);
+				this.horizontalLineLength=iDimension.width;
+				this.verticalLineLength=iDimension.height;
+			}
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing GridProperties !");
+			e.printStackTrace();
 		}
 	}
 
@@ -81,8 +91,9 @@ public class GridProperties {
 	 * Adds the column line at horizonal position x.
 	 *
 	 * @param x the x
+	 * @throws Exception the exception
 	 */
-	public void addColumnLineX(int x){
+	public void addColumnLineX(int x) throws Exception{
 		this.columnLineX.add(x);
 	}
 
@@ -91,8 +102,9 @@ public class GridProperties {
 	 * Adds the row line at vertical position y.
 	 *
 	 * @param y the y
+	 * @throws Exception the exception
 	 */
-	public void addRowLineY(int y){
+	public void addRowLineY(int y) throws Exception{
 		this.rowLineY.add(y);
 	}
 
@@ -101,8 +113,9 @@ public class GridProperties {
  * Adds the single outer of grid rectangle.
  *
  * @param rec the Rectangle
+ * @throws Exception the exception
  */
-public void addSingleOuterOfGridRectangle(Rectangle rec){
+public void addSingleOuterOfGridRectangle(Rectangle rec)  throws Exception{
 	this.outerOfGridRectangleList.add(rec);
 }
 
@@ -112,15 +125,18 @@ public void addSingleOuterOfGridRectangle(Rectangle rec){
 	 * Adds the single positioned rectangle.
 	 *
 	 * @param positionedRectangle the positioned rectangle
+	 * @throws Exception the exception
 	 */
-	public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle) {
+	public void addSinglePositionedRectangle(PositionedRectangle positionedRectangle)  throws Exception {
 			this.positionedRectangleList.add(positionedRectangle);
 		}
 	
 	/**
 	 * Calculates outer rectangles showing space outside of GRID.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void calculateOuterRectangles(){
+	public void calculateOuterRectangles()  throws Exception{
 		this.outerOfGridRectangleList=new ArrayList<Rectangle>();
 		if(rowLineY != null && rowLineY.size()>0 && columnLineX != null && columnLineX.size()>0 && verticalLineLength >0 && horizontalLineLength >0){
 			int upY=this.rowLineY.get(0);
@@ -184,9 +200,11 @@ public void addSingleOuterOfGridRectangle(Rectangle rec){
 	/**
 	 * Changes the selection of rectangle at given imagePoint. If rectangle is originally unselected it will be selected vice versa.
 	 * If there are only one selected rectangle in grid, it can't be unselected, because always has to be at least one rectangle selected.
+	 *
 	 * @param imagePoint Point at image
+	 * @throws Exception the exception
 	 */
-	public void changeSelectionOfPositionedRectangle(Point imagePoint){
+	public void changeSelectionOfPositionedRectangle(Point imagePoint) throws Exception{
 		Iterator<PositionedRectangle> recIterator = positionedRectangleList.iterator();
 		while(recIterator.hasNext()){
 			PositionedRectangle rec =recIterator.next();
@@ -203,7 +221,13 @@ public void addSingleOuterOfGridRectangle(Rectangle rec){
 		}
 	}
 	
-	public boolean checkRandomPercentBySelectedRectangles(){
+	/**
+	 * Check random percent by selected rectangles.
+	 *
+	 * @return true, if successful
+	 * @throws Exception the exception
+	 */
+	public boolean checkRandomPercentBySelectedRectangles()  throws Exception{
 		int selectedRectangles = countSelectedRectangles();
 		
 		if(selectedRectangles >0){
@@ -223,8 +247,9 @@ public void addSingleOuterOfGridRectangle(Rectangle rec){
 	 * Counts amount of selected rectangles.
 	 *
 	 * @return the int
+	 * @throws Exception the exception
 	 */
-	private int countSelectedRectangles(){
+	private int countSelectedRectangles() throws Exception{
 		if(this.positionedRectangleList != null && this.positionedRectangleList.size()>0){
 			int counter=0;
 			Iterator<PositionedRectangle> recIterator = positionedRectangleList.iterator();
@@ -244,8 +269,9 @@ public void addSingleOuterOfGridRectangle(Rectangle rec){
 	 * Returns the column line horizontal values.
 	 *
 	 * @return the column line x values
+	 * @throws Exception the exception
 	 */
-	public ArrayList<Integer> getColumnLineXs() {
+	public ArrayList<Integer> getColumnLineXs()  throws Exception{
 		return columnLineX;
 	}
 
@@ -253,8 +279,9 @@ public void addSingleOuterOfGridRectangle(Rectangle rec){
 	 * Returns the grid column count.
 	 *
 	 * @return the grid column count
+	 * @throws Exception the exception
 	 */
-	public int getGridColumnCount(){
+	public int getGridColumnCount()  throws Exception{
 		if(this.columnLineX != null && this.columnLineX.size()>0)
 		return this.columnLineX.size()-1;
 		else

@@ -938,9 +938,11 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Returns all Markinglayers.
+	 *
 	 * @return ArrayList<MarkingLayer> All MarkingLayers
+	 * @throws Exception the exception
 	 */
-	public ArrayList<MarkingLayer> getAllMarkingLayers(){
+	public ArrayList<MarkingLayer> getAllMarkingLayers() throws Exception{
 		return this.taskManager.getAllMarkingLayers();
 	}
 
@@ -1017,8 +1019,9 @@ private void addMouseListenerForJButton(JButton button){
 	 *
 	 * @param iLayerID ID of ImageLayer.
 	 * @return the ImageLayer by id
+	 * @throws Exception the exception
 	 */
-	public ImageLayer getImageLayerByID(int iLayerID){
+	public ImageLayer getImageLayerByID(int iLayerID) throws Exception{
 		return this.taskManager.getImageLayerByID(iLayerID);
 	}
 
@@ -1027,8 +1030,9 @@ private void addMouseListenerForJButton(JButton button){
 	 *
 	 * @param markingLayerID ID of MarkingLayer.
 	 * @return the ImageLayer by ID of MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public ImageLayer getImageLayerByMarkingLayerID(int markingLayerID){
+	public ImageLayer getImageLayerByMarkingLayerID(int markingLayerID) throws Exception{
 		return this.taskManager.getImageLayerByMarkingLayerID(markingLayerID);
 	}
 	
@@ -1040,8 +1044,9 @@ private void addMouseListenerForJButton(JButton button){
 	 * @param iLayerID ImageLayerID
 	 * @param mLayerID MarkingLayerID
 	 * @return the MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public MarkingLayer getMarkingLayer(int iLayerID, int mLayerID){
+	public MarkingLayer getMarkingLayer(int iLayerID, int mLayerID) throws Exception{
 		return this.taskManager.getMarkingLayer(iLayerID, mLayerID);
 	}
 
@@ -1049,22 +1054,26 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Mediates call to TaskManager to update markings of several ImageLayers by giving as parameter a File (.xml) where from the markings are imported.
+	 *
 	 * @param xmlFile File which contains the markings
 	 * @param imageLayerList ArrayList of ImageLayer where markings are added
 	 * @return ArrayList of ImageLayers where has the markings added
+	 * @throws Exception the exception
 	 */
-	public ArrayList<ImageLayer> getMarkingOfXML(File xmlFile, ArrayList<ImageLayer>imageLayerList){
+	public ArrayList<ImageLayer> getMarkingOfXML(File xmlFile, ArrayList<ImageLayer>imageLayerList) throws Exception{
 	    return	taskManager.getMarkingsOfXML(xmlFile, imageLayerList);
 
 	}
 
 	/**
 	 * Mediates call to TaskManager to update markings of one ImageLayers by giving as parameter a File (.xml) where from the markings are imported.
+	 *
 	 * @param xmlFile File which contains the markings
 	 * @param imageLayer object where markings are added
 	 * @return MarkingLayer object where has the markings added
+	 * @throws Exception the exception
 	 */
-	public ImageLayer getMarkingOfXML(File xmlFile, ImageLayer imageLayer){
+	public ImageLayer getMarkingOfXML(File xmlFile, ImageLayer imageLayer) throws Exception{
 	    return	taskManager.getMarkingsOfXML(xmlFile, imageLayer);
 
 	}
@@ -1100,9 +1109,11 @@ private void addMouseListenerForJButton(JButton button){
 
 	/**
 	 * Returns present dimension used by opened images.
+	 *
 	 * @return Dimension present dimension used by opened images.
+	 * @throws Exception the exception
 	 */
-	public Dimension getPresentImageDimension() {
+	public Dimension getPresentImageDimension() throws Exception {
 		return this.taskManager.getPresentImageDimension();
 	}
 
@@ -1188,10 +1199,12 @@ private void addMouseListenerForJButton(JButton button){
 	
 	/**
 	 * Checks is given image name already in use.
+	 *
 	 * @param imageName String imageName, which duplicate using is checked.
 	 * @return boolean true if name is already used. Otherwise false.
+	 * @throws Exception the exception
 	 */
-	public boolean imageNameAlreadyUsed(String imageName){
+	public boolean imageNameAlreadyUsed(String imageName) throws Exception{
 		return taskManager.imageNameAlreadyUsed(imageName);
 	}
 

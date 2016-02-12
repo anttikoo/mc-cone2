@@ -34,25 +34,37 @@ public class PreCountThreadManager {
 	 * @param mLayerID the ID of MarkingLayer
 	 */
 	public PreCountThreadManager(PreCounterThread preCounter, ProgressBallsDialog progressBalls , int iLayerID, int mLayerID){
-		this.setiLayerID(iLayerID);
-		this.setmLayerID(mLayerID);
-		this.progressBallsDialog=progressBalls;
-		this.preCounter= preCounter;
-		this.preCounter.setManager(this);
-		this.progressBallsDialog.setManager(this);
+		try {
+			this.setiLayerID(iLayerID);
+			this.setmLayerID(mLayerID);
+			this.progressBallsDialog=progressBalls;
+			this.preCounter= preCounter;
+			this.preCounter.setManager(this);
+			this.progressBallsDialog.setManager(this);
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing Manager for precounting!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Initializes the PreCounterThread.
 	 */
 	public void initPreCounterThread(){
-		this.preCounter.initThread();
+		try {
+			this.preCounter.initThread();
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing Thread of precounting!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Start the counting in PreCounterThread.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void startCounting(){
+	public void startCounting() throws Exception{
 		LOGGER.fine(this.preCounter.getThreadStatus());
 		this.preCounter.startCounting();
 	}
@@ -67,15 +79,25 @@ public class PreCountThreadManager {
 			@Override
 			public void run() {
 			
-				if(preCounter.isCounting())
-					preCounter.cancelOutside();
+				try {
+					if(preCounter.isCounting())
+						preCounter.cancelOutside();
+				} catch (Exception e) {
+					LOGGER.severe("Error in cancelling precounting by user !");
+					e.printStackTrace();
+				}
 			}
 		});
 	SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				if(progressBallsDialog.isShowON())
-					progressBallsDialog.stopPaintingAndClose();
+				try {
+					if(progressBallsDialog.isShowON())
+						progressBallsDialog.stopPaintingAndClose();
+				} catch (Exception e) {
+					LOGGER.severe("Error in stopping progress window!");
+					e.printStackTrace();
+				}
 			}
 		});
 	}
@@ -85,8 +107,9 @@ public class PreCountThreadManager {
 	 *
 	 * @param subImage the sub image
 	 * @return true, if successful
+	 * @throws Exception the exception
 	 */
-	public boolean setNewSubImage(BufferedImage subImage){
+	public boolean setNewSubImage(BufferedImage subImage) throws Exception{
 		if(this.preCounter != null){
 			this.preCounter.setSubImage(subImage);
 			return true;
@@ -98,8 +121,9 @@ public class PreCountThreadManager {
 	 * Sets the ProgressBallsDialog.
 	 *
 	 * @param pbd the new ProgressBallsDialog
+	 * @throws Exception the exception
 	 */
-	public void setProgressBallDialog(ProgressBallsDialog pbd){
+	public void setProgressBallDialog(ProgressBallsDialog pbd) throws Exception{
 		this.progressBallsDialog=pbd;
 	}
 
@@ -107,8 +131,9 @@ public class PreCountThreadManager {
 	 * Returns the ID of MarkingLayer.
 	 *
 	 * @return the ID of MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public int getmLayerID() {
+	public int getmLayerID() throws Exception {
 		return mLayerID;
 	}
 
@@ -116,8 +141,9 @@ public class PreCountThreadManager {
 	 * Sets the ID of MarkingLayer.
 	 *
 	 * @param mLayerID the new ID of MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public void setmLayerID(int mLayerID) {
+	public void setmLayerID(int mLayerID)  throws Exception{
 		this.mLayerID = mLayerID;
 	}
 
@@ -125,8 +151,9 @@ public class PreCountThreadManager {
 	 * Returns the ID of ImageLayer.
 	 *
 	 * @return the ID of ImageLayer
+	 * @throws Exception the exception
 	 */
-	public int getiLayerID() {
+	public int getiLayerID() throws Exception {
 		return iLayerID;
 	}
 
@@ -134,8 +161,9 @@ public class PreCountThreadManager {
 	 * Sets the ID of ImageLayer.
 	 *
 	 * @param iLayerID the new ID of ImageLayer
+	 * @throws Exception the exception
 	 */
-	public void setiLayerID(int iLayerID) {
+	public void setiLayerID(int iLayerID)  throws Exception{
 		this.iLayerID = iLayerID;
 	}
 

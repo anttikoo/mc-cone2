@@ -1,5 +1,7 @@
 package information;
 
+import java.util.logging.Logger;
+
 /**
  * The Class ColorChannelVectors. Collects data from colors separated to red, green and blue.
  */
@@ -31,6 +33,9 @@ public class ColorChannelVectors {
 	
 	/** The size. Size of vector. */
 	private int size; 
+	
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
 	/**
 	 * Instantiates a new color channel vectors.
@@ -93,22 +98,28 @@ public class ColorChannelVectors {
 	 */
 	public double getKvalueAt(int start_x, int end_x){
 		
-		if(start_x < end_x && start_x >=0 && end_x <this.size){
-			
-			double redK = (red_ma[end_x]-red_ma[start_x])/(end_x-start_x);
-			if(redK<0)
-				redK *=-1;
-			double greenK = (green_ma[end_x]-green_ma[start_x])/(end_x-start_x);
-			if(greenK<0)
-				greenK *=-1;
-			double blueK = (blue_ma[end_x]-blue_ma[start_x])/(end_x-start_x);
-			if(blueK<0)
-				blueK *=-1;
-			return (redK+greenK + blueK);
-			
-		}
-		else 
+		try {
+			if(start_x < end_x && start_x >=0 && end_x <this.size){
+				
+				double redK = (red_ma[end_x]-red_ma[start_x])/(end_x-start_x);
+				if(redK<0)
+					redK *=-1;
+				double greenK = (green_ma[end_x]-green_ma[start_x])/(end_x-start_x);
+				if(greenK<0)
+					greenK *=-1;
+				double blueK = (blue_ma[end_x]-blue_ma[start_x])/(end_x-start_x);
+				if(blueK<0)
+					blueK *=-1;
+				return (redK+greenK + blueK);
+				
+			}
+			else 
+				return 0;
+		} catch (Exception e) {
+			LOGGER.severe("Error in gettin k value from color channel!");
+			e.printStackTrace();
 			return 0;
+		}
 		
 	}
 	
@@ -117,8 +128,9 @@ public class ColorChannelVectors {
 	 *
 	 * @param x the position in vector
 	 * @return the double red value
+	 * @throws Exception the exception
 	 */
-	public double getRedAt(int x){
+	public double getRedAt(int x) throws Exception{
 		return this.red_ma[x];
 	}
 	
@@ -126,8 +138,9 @@ public class ColorChannelVectors {
 	 * Returns the size of vector.
 	 *
 	 * @return the size
+	 * @throws Exception the exception
 	 */
-	public int getSize() {
+	public int getSize() throws Exception {
 		return size;
 	}
 	
@@ -135,8 +148,9 @@ public class ColorChannelVectors {
 	 * Sets the vector for full colors. Contains whole colors as Integer.
 	 *
 	 * @param fullColorInt_original the vector for new full color
+	 * @throws Exception the exception
 	 */
-	public void setFullColorInt_original(int[] fullColorInt_original) {
+	public void setFullColorInt_original(int[] fullColorInt_original) throws Exception {
 		this.fullColorInt_original = fullColorInt_original;
 	}
 	
@@ -147,8 +161,9 @@ public class ColorChannelVectors {
 	 * @param r the red value
 	 * @param g the green value
 	 * @param b the blue value
+	 * @throws Exception the exception
 	 */
-	public void setMoveAveragedData(double[] a, double[] r, double[] g, double[] b){	
+	public void setMoveAveragedData(double[] a, double[] r, double[] g, double[] b) throws Exception{	
 		this.alpha_ma=a;
 		this.red_ma=r;
 		this.green_ma=g;
@@ -197,8 +212,9 @@ public class ColorChannelVectors {
 	 * @param g the green value
 	 * @param b the blue value
 	 * @param i the index
+	 * @throws Exception the exception
 	 */
-	public void setSingleDataPoint(double a, double r, double g, double b, int i){	
+	public void setSingleDataPoint(double a, double r, double g, double b, int i) throws Exception{	
 		this.alpha_ma[i]=a;
 		this.red_ma[i]=r;
 		this.green_ma[i]=g;
@@ -212,8 +228,9 @@ public class ColorChannelVectors {
 	 * @param g the green value
 	 * @param b the blue value
 	 * @param i the index
+	 * @throws Exception the exception
 	 */
-	public void setSingleDataPoint(double r, double g, double b, int i){	
+	public void setSingleDataPoint(double r, double g, double b, int i) throws Exception{	
 		
 		this.red_ma[i]=r;
 		this.green_ma[i]=g;
@@ -224,8 +241,9 @@ public class ColorChannelVectors {
 	 * Sets the size.
 	 *
 	 * @param size the new size
+	 * @throws Exception the exception
 	 */
-	public void setSize(int size) {
+	public void setSize(int size) throws Exception {
 		this.size = size;
 	}
 	

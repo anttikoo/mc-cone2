@@ -66,8 +66,9 @@ public class TaskManager {
 	 * Adds the ImageLayer.
 	 *
 	 * @param layer the ImageLayer
+	 * @throws Exception the exception
 	 */
-	public void addImageLayer(ImageLayer layer){
+	public void addImageLayer(ImageLayer layer)  throws Exception{
 		informationCenter.addImageLayer(layer);
 		setPresentImageDimensionFromSingleImageLayer(layer);
 	}
@@ -76,8 +77,9 @@ public class TaskManager {
 	 * Adds the ImageLayers.
 	 *
 	 * @param layers the list of ImageLayers
+	 * @throws Exception the exception
 	 */
-	public void addImageLayers(ArrayList<ImageLayer> layers){
+	public void addImageLayers(ArrayList<ImageLayer> layers)  throws Exception{
 		this.informationCenter.addImageLayers(layers);
 		setPresentImageDimensionFromImageLayerList(layers);
 		this.informationCenter.updatePresentImageDimensionOfMarkingPanels();
@@ -91,8 +93,9 @@ public class TaskManager {
 	 *
 	 * @param pointAtScreen the point at screen
 	 * @return true, if successfully save the point
+	 * @throws Exception the exception
 	 */
-	public boolean addSingleMarking(Point pointAtScreen){
+	public boolean addSingleMarking(Point pointAtScreen)  throws Exception{
 		return this.layerVisualManager.addSingleMarkingCoordinate(pointAtScreen, this.informationCenter.getSelectedMarkingLayer());
 	}
 
@@ -100,16 +103,20 @@ public class TaskManager {
 	 * Change grid cell selection.
 	 *
 	 * @param p the Point
+	 * @throws Exception the exception
 	 */
-	public void changeGridCellSelection(Point p){
+	public void changeGridCellSelection(Point p)  throws Exception{
 		if(this.informationCenter.getSelectedMarkingLayer() != null &&
 				this.informationCenter.getSelectedMarkingLayer().getGridProperties() != null && this.informationCenter.getSelectedMarkingLayer().getGridProperties().isGridON()){
 			this.layerVisualManager.changeSelectedRectangleOfGridProperty(this.informationCenter.getSelectedMarkingLayer().getGridProperties(), p);
 		}
 	}
+	
 	/**
 	 * Changes selectedImageLayer in InformationCenter and selected BufferedImage object of LayerVisualManager.
+	 *
 	 * @param iLayerID Identifier (int) of ImageLayer that is set as selected
+	 * @throws Exception the exception
 	 */
 	public void changeSelectedImageLayer(int iLayerID) throws Exception{
 
@@ -119,8 +126,10 @@ public class TaskManager {
 
 	/**
 	 * Sets PreCountManager-object to null.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void cleanPrecountingManager(){
+	public void cleanPrecountingManager() throws Exception{
 		this.preCountThreadManager = null;
 	}
 
@@ -143,8 +152,9 @@ public class TaskManager {
 	 *
 	 * @param imageLayerID the ID of ImageLayer
 	 * @return the MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public MarkingLayer createNewMarkingLayer(int imageLayerID){
+	public MarkingLayer createNewMarkingLayer(int imageLayerID)  throws Exception{
 		return informationCenter.createNewMarkingLayer(imageLayerID);
 
 	}
@@ -163,8 +173,9 @@ public class TaskManager {
 	 * Returns the all MarkingLayers.
 	 *
 	 * @return the all MarkingLayers
+	 * @throws Exception the exception
 	 */
-	public ArrayList<MarkingLayer> getAllMarkingLayers(){
+	public ArrayList<MarkingLayer> getAllMarkingLayers()  throws Exception{
 		return informationCenter.getAllMarkingLayers();
 	}
 	
@@ -172,8 +183,9 @@ public class TaskManager {
 	 * Returns the converted grid properties.
 	 *
 	 * @return the converted grid properties
+	 * @throws Exception the exception
 	 */
-	public GridProperties getConvertedGridProperties(){
+	public GridProperties getConvertedGridProperties() throws Exception{
 		MarkingLayer ml =getSelectedMarkingLayer();
 		if(ml != null)
 			return this.layerVisualManager.convertLayerGridPropertiesToPanel(ml.getGridProperties());
@@ -198,8 +210,9 @@ public class TaskManager {
 	 *
 	 * @param iLayerID ID of ImageLayer
 	 * @return the ImageLayer by id
+	 * @throws Exception the exception
 	 */
-	public ImageLayer getImageLayerByID(int iLayerID) {
+	public ImageLayer getImageLayerByID(int iLayerID)  throws Exception{
 		return informationCenter.getImageLayerByID(iLayerID);
 	}
 
@@ -208,8 +221,9 @@ public class TaskManager {
 	 *
 	 * @param markingLayerID ID of MarkingLayer.
 	 * @return the ImageLayer by MarkingLayer id
+	 * @throws Exception the exception
 	 */
-	public ImageLayer getImageLayerByMarkingLayerID(int markingLayerID) {
+	public ImageLayer getImageLayerByMarkingLayerID(int markingLayerID)  throws Exception{
 		return informationCenter.getImageLayerByMarkingLayerID(markingLayerID);
 	}
 
@@ -217,8 +231,9 @@ public class TaskManager {
 	 * Returns the list of ImageLayers.
 	 *
 	 * @return the list of ImageLayers
+	 * @throws Exception the exception
 	 */
-	public ArrayList<ImageLayer> getImageLayerList() {
+	public ArrayList<ImageLayer> getImageLayerList()  throws Exception{
 		return informationCenter.getImageLayerList();
 	}
 
@@ -227,8 +242,9 @@ public class TaskManager {
 	 *
 	 * @param mLayerID the ID of MarkingLayer
 	 * @return the MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public MarkingLayer getMarkingLayer(int mLayerID){
+	public MarkingLayer getMarkingLayer(int mLayerID) throws Exception{
 		return this.informationCenter.getMarkingLayer(mLayerID);
 	}
 
@@ -238,8 +254,9 @@ public class TaskManager {
 	 * @param iLayerID the ID of ImageLayer
 	 * @param mLayerID the ID of MarkingLayer
 	 * @return the MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public MarkingLayer getMarkingLayer(int iLayerID, int mLayerID){
+	public MarkingLayer getMarkingLayer(int iLayerID, int mLayerID) throws Exception{
 		return this.informationCenter.getMarkingLayer(iLayerID, mLayerID);
 	}
 
@@ -249,8 +266,9 @@ public class TaskManager {
 	 * @param xmlFile the xml file
 	 * @param imageLayerList the list of ImageLayers
 	 * @return the markings of xml
+	 * @throws Exception the exception
 	 */
-	public ArrayList<ImageLayer> getMarkingsOfXML(File xmlFile, ArrayList<ImageLayer> imageLayerList){
+	public ArrayList<ImageLayer> getMarkingsOfXML(File xmlFile, ArrayList<ImageLayer> imageLayerList) throws Exception{
 		return xmlManager.getMarkingsOfXML(xmlFile, imageLayerList);
 
 	}
@@ -261,8 +279,9 @@ public class TaskManager {
 	 * @param xmlFile the xml file
 	 * @param imageLayer the ImageLayer
 	 * @return the markings of xml
+	 * @throws Exception the exception
 	 */
-	public ImageLayer getMarkingsOfXML(File xmlFile, ImageLayer imageLayer){
+	public ImageLayer getMarkingsOfXML(File xmlFile, ImageLayer imageLayer) throws Exception{
 		return xmlManager.getMarkingsOfXML(xmlFile, imageLayer);
 	}
 
@@ -270,8 +289,9 @@ public class TaskManager {
 	 * Returns the PreCountThreadManager.
 	 *
 	 * @return the PreCountThreadManager
+	 * @throws Exception the exception
 	 */
-	public PreCountThreadManager getPrecountThreadManager(){
+	public PreCountThreadManager getPrecountThreadManager() throws Exception{
 		return this.preCountThreadManager;
 	}
 
@@ -279,8 +299,9 @@ public class TaskManager {
 	 * Returns the present folder.
 	 *
 	 * @return the present folder
+	 * @throws Exception the exception
 	 */
-	public String getPresentFolder(){
+	public String getPresentFolder() throws Exception{
 		return informationCenter.getPresentFolder();
 	}
 	
@@ -288,8 +309,9 @@ public class TaskManager {
 	 * Returns the present image dimension.
 	 *
 	 * @return the present image dimension
+	 * @throws Exception the exception
 	 */
-	public Dimension getPresentImageDimension() {
+	public Dimension getPresentImageDimension() throws Exception {
 		return this.informationCenter.getPresentImageDimension();
 	}
 
@@ -297,8 +319,9 @@ public class TaskManager {
 	 * Returns the refreshed image.
 	 *
 	 * @return the refreshed image
+	 * @throws Exception the exception
 	 */
-	public PositionedImage getRefreshedImage(){
+	public PositionedImage getRefreshedImage() throws Exception{
 		return this.layerVisualManager.getRefreshedImage();
 
 	}
@@ -310,8 +333,9 @@ public class TaskManager {
 	 * @param image_height the image height
 	 * @param iPanelDimension the dimension of ImagePanel
 	 * @return the scaling mode FIT_TO_WIDTH or FIT_TO_HEIGHT
+	 * @throws Exception the exception
 	 */
-	public Scalr.Mode getScalingMode(int image_width, int image_height, Dimension iPanelDimension){
+	public Scalr.Mode getScalingMode(int image_width, int image_height, Dimension iPanelDimension) throws Exception{
 		return this.layerVisualManager.getScalingMode(image_width, image_height, iPanelDimension);
 	}
 
@@ -319,8 +343,9 @@ public class TaskManager {
 	 * Returns the screen coordinates of selected MarkingLayer.
 	 *
 	 * @return the screen coordinates of selected MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public ArrayList<Point> getScreenCoordinatesOfSelectedMarkingLayer(){
+	public ArrayList<Point> getScreenCoordinatesOfSelectedMarkingLayer() throws Exception{
 		return this.layerVisualManager.getScreenPointsOfMarkingLayer(this.informationCenter.getSelectedMarkingLayer());
 	}
 
@@ -328,8 +353,9 @@ public class TaskManager {
 	 * Returns the screen coordinates of visible MarkingLayers.
 	 *
 	 * @return the screen coordinates of visible MarkingLayers
+	 * @throws Exception the exception
 	 */
-	public ArrayList<ScreenCoordinatesOfMarkingLayer> getScreenCoordinatesOfVisibleMarkingLayers(){
+	public ArrayList<ScreenCoordinatesOfMarkingLayer> getScreenCoordinatesOfVisibleMarkingLayers() throws Exception{
 		return this.layerVisualManager.getScreenPointsOfMarkingLayers(this.informationCenter.getVisibleMarkingLayerList());
 	}
 
@@ -337,8 +363,9 @@ public class TaskManager {
 	 * Returns the selected ImageLayer.
 	 *
 	 * @return the selected ImageLayer
+	 * @throws Exception the exception
 	 */
-	public ImageLayer getSelectedImageLayer(){
+	public ImageLayer getSelectedImageLayer() throws Exception{
 		return this.informationCenter.getSelectedImageLayer();
 	}
 
@@ -347,8 +374,9 @@ public class TaskManager {
 	 *
 	 * @param upOrDownID the up or down id
 	 * @return the selected ImageLayer at up or down
+	 * @throws Exception the exception
 	 */
-	public int getSelectedImageLayerAtUpOrDown(int upOrDownID){
+	public int getSelectedImageLayerAtUpOrDown(int upOrDownID) throws Exception{
 		if(upOrDownID == ID.MOVE_DOWN){
 			return this.informationCenter.getSelectedImageLayerOneDown();
 		}
@@ -361,8 +389,9 @@ public class TaskManager {
 	 * Returns the image path of selected ImageLayer.
 	 *
 	 * @return the image path of selected ImageLayer
+	 * @throws Exception the exception
 	 */
-	public String getSelectedImagePath(){
+	public String getSelectedImagePath() throws Exception{
 		ImageLayer layer=informationCenter.getSelectedImageLayer();
 		if(layer != null)
 			return layer.getImageFilePath();
@@ -374,8 +403,9 @@ public class TaskManager {
 	 * Returns the selected MarkingLayer.
 	 *
 	 * @return the selected MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public MarkingLayer getSelectedMarkingLayer(){
+	public MarkingLayer getSelectedMarkingLayer() throws Exception{
 		return this.informationCenter.getSelectedMarkingLayer();
 	}
 
@@ -384,8 +414,9 @@ public class TaskManager {
 	 *
 	 * @param upOrDownID the up or down id
 	 * @return the selected MarkingLayer at up or down
+	 * @throws Exception the exception
 	 */
-	public int getSelectedMarkingLayerAtUpOrDown(int upOrDownID){
+	public int getSelectedMarkingLayerAtUpOrDown(int upOrDownID) throws Exception{
 		if(upOrDownID == ID.MOVE_DOWN){
 			return this.informationCenter.getSelectedMarkingLayerOneDown();
 		}
@@ -399,8 +430,9 @@ public class TaskManager {
 	 * Returns the shape size multiplier.
 	 *
 	 * @return the shape size multiplier
+	 * @throws Exception the exception
 	 */
-	public double getShapeSizeMultiplier(){
+	public double getShapeSizeMultiplier() throws Exception{
 
 		return this.layerVisualManager.getSizeMultiplier();
 	}
@@ -409,8 +441,9 @@ public class TaskManager {
 	 * Returns the single grid size list.
 	 *
 	 * @return the single grid size list
+	 * @throws Exception the exception
 	 */
-	public ArrayList<SingleGridSize> getSingleGridSizeList() {
+	public ArrayList<SingleGridSize> getSingleGridSizeList() throws Exception {
 		return this.informationCenter.getSingleGridSizeList();
 	}
 
@@ -420,8 +453,9 @@ public class TaskManager {
 	 * @param middlepoint the middlepoint
 	 * @param size the size
 	 * @return the sub image
+	 * @throws Exception the exception
 	 */
-	private BufferedImage getSubImage(Point middlepoint, int size){
+	private BufferedImage getSubImage(Point middlepoint, int size) throws Exception{
 		return this.layerVisualManager.getSubImage(middlepoint, size);
 	}
 
@@ -430,8 +464,9 @@ public class TaskManager {
 	 * Returns the visible MarkingLayers.
 	 *
 	 * @return the visible MarkingLayers
+	 * @throws Exception the exception
 	 */
-	public ArrayList<MarkingLayer> getVisibleMarkingLayers(){
+	public ArrayList<MarkingLayer> getVisibleMarkingLayers() throws Exception{
 		return informationCenter.getVisibleMarkingLayerList();
 	}
 
@@ -441,8 +476,9 @@ public class TaskManager {
 	 * @param midP the mid p
 	 * @param zoomValue the zoom value
 	 * @return the zoomed image
+	 * @throws Exception the exception
 	 */
-	public PositionedImage getZoomedImage(Point midP, double zoomValue){
+	public PositionedImage getZoomedImage(Point midP, double zoomValue) throws Exception{
 		return this.layerVisualManager.getZoomedImage(midP, zoomValue);
 	}
 	
@@ -451,8 +487,9 @@ public class TaskManager {
 	 * Checks is any ImageLayers stored at InformationCenter.
 	 *
 	 * @return true, if found
+	 * @throws Exception the exception
 	 */
-	public boolean hasAnyImageLayers(){
+	public boolean hasAnyImageLayers() throws Exception{
 		if(informationCenter.getImageLayerList() != null && informationCenter.getImageLayerList().size()>0)
 			return true;
 		else
@@ -464,8 +501,9 @@ public class TaskManager {
 	 * Checks is any MarkingLayers stored in ImageLayers at InformationCenter.
 	 *
 	 * @return true, if found
+	 * @throws Exception the exception
 	 */
-	public boolean hasAnyMarkinglayers(){
+	public boolean hasAnyMarkinglayers() throws Exception{
 		if(informationCenter.getAllMarkingLayers() != null && informationCenter.getAllMarkingLayers().size()>0)
 			return true;
 		
@@ -477,8 +515,9 @@ public class TaskManager {
 	 *
 	 * @param imageName the image name
 	 * @return true, if successful
+	 * @throws Exception the exception
 	 */
-	public boolean imageNameAlreadyUsed(String imageName){
+	public boolean imageNameAlreadyUsed(String imageName) throws Exception{
 		return informationCenter.imageNameAlreadyUsed(imageName);
 	}
 
@@ -502,8 +541,9 @@ public class TaskManager {
 	 * Checks if is made changes.
 	 *
 	 * @return true, if is made changes
+	 * @throws Exception the exception
 	 */
-	public boolean isMadeChanges(){
+	public boolean isMadeChanges() throws Exception{
 		return this.informationCenter.isMadeChanges();
 	}
 
@@ -512,8 +552,9 @@ public class TaskManager {
 	 *
 	 * @param iLayerID the ID of ImageLayer
 	 * @return true, if is selected ImageLayer
+	 * @throws Exception the exception
 	 */
-	public boolean isSelectedImageLayer(int iLayerID){
+	public boolean isSelectedImageLayer(int iLayerID) throws Exception{
 		return this.informationCenter.isSelectedImageLayer(iLayerID);
 	}
 
@@ -522,8 +563,9 @@ public class TaskManager {
 	 *
 	 * @param mLayerID the ID of MarkingLayer
 	 * @return true, if is selected MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public boolean isSelectedMarkingLayer(int mLayerID){
+	public boolean isSelectedMarkingLayer(int mLayerID) throws Exception{
 		return this.informationCenter.isSelectedMarkingLayer(mLayerID);
 	}
 
@@ -531,8 +573,9 @@ public class TaskManager {
 	 * Checks if is selected MarkingLayer visible.
 	 *
 	 * @return true, if is selected MarkingLayer visible
+	 * @throws Exception the exception
 	 */
-	public boolean isSelectedMarkingLayerVisible(){
+	public boolean isSelectedMarkingLayerVisible() throws Exception{
 		if(this.informationCenter.getSelectedMarkingLayer() == null)
 			return false;
 		return this.informationCenter.getSelectedMarkingLayer().isVisible();
@@ -543,8 +586,9 @@ public class TaskManager {
 	 *
 	 * @param direction the direction
 	 * @return true, if successful moving
+	 * @throws Exception the exception
 	 */
-	public boolean moveSelectedMarkingLayer(int direction){
+	public boolean moveSelectedMarkingLayer(int direction) throws Exception{
 		return this.informationCenter.moveSelectedMarkingLayer(direction);
 	
 	}
@@ -556,8 +600,9 @@ public class TaskManager {
 	 * @param middlePoint the middle point
 	 * @param size the size
 	 * @param pbd the ProgressBallsDialog
+	 * @throws Exception the exception
 	 */
-	public void precountCells(Point middlePoint, int size, ProgressBallsDialog pbd){
+	public void precountCells(Point middlePoint, int size, ProgressBallsDialog pbd) throws Exception{
 		BufferedImage subImage = getSubImage(middlePoint, size);
 		
 		if(subImage != null && this.informationCenter.getSelectedImageLayer() != null && this.informationCenter.getSelectedMarkingLayer() != null){
@@ -608,8 +653,10 @@ public class TaskManager {
 
 	/**
 	 * Refreshes the graphical user interface.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void refreshLayersAndGUI(){
+	public void refreshLayersAndGUI() throws Exception{
 		this.gui.refreshLayersAndGUI();
 	}
 
@@ -617,8 +664,9 @@ public class TaskManager {
 	 * Removes the ImageLayer.
 	 *
 	 * @param layerID the ID of ImageLayer
+	 * @throws Exception the exception
 	 */
-	public void removeImageLayer(int layerID){
+	public void removeImageLayer(int layerID) throws Exception{
 		informationCenter.removeImageLayer(layerID);
 	}
 
@@ -627,8 +675,9 @@ public class TaskManager {
 	 *
 	 * @param imageLayerID the ID of ImageLayer
 	 * @param markingLayerID the id of MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public void removeMarkingLayer(int imageLayerID, int markingLayerID){
+	public void removeMarkingLayer(int imageLayerID, int markingLayerID) throws Exception{
 		informationCenter.removeMarkingLayer(imageLayerID, markingLayerID);
 	}
 
@@ -637,8 +686,9 @@ public class TaskManager {
 	 *
 	 * @param pointAtScreen the point at screen
 	 * @return true, if successful
+	 * @throws Exception the exception
 	 */
-	public boolean removeSingleMarking(Point pointAtScreen){
+	public boolean removeSingleMarking(Point pointAtScreen) throws Exception{
 		return this.layerVisualManager.removeSingleMarkingCoordinate(pointAtScreen, this.informationCenter.getSelectedMarkingLayer());
 	}
 
@@ -647,8 +697,9 @@ public class TaskManager {
 	 * Sets the list of ImageLayers.
 	 *
 	 * @param layers the new list of ImageLayers
+	 * @throws Exception the exception
 	 */
-	public void setImageLayerList(ArrayList<ImageLayer> layers){
+	public void setImageLayerList(ArrayList<ImageLayer> layers) throws Exception{
 		this.informationCenter.setImageLayerList(layers);
 		setPresentImageDimensionFromImageLayerList(layers);
 		this.informationCenter.updatePresentImageDimensionOfMarkingPanels();
@@ -659,15 +710,18 @@ public class TaskManager {
 	 * Sets the image panel dimension.
 	 *
 	 * @param vpd the new image panel dimension
+	 * @throws Exception the exception
 	 */
-	public void setImagePanelDimension(Dimension vpd){
+	public void setImagePanelDimension(Dimension vpd) throws Exception{
 		this.layerVisualManager.setImagePanelDimension(vpd);
 	}
 
 	/**
 	 * Sets the boolean madeChanges to true.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void setMadeChange(){
+	public void setMadeChange() throws Exception{
 		this.informationCenter.setMadeChanges(true);
 	}
 
@@ -677,8 +731,9 @@ public class TaskManager {
 	 * @param iLayerID the ID of ImageLayer
 	 * @param mLayerID the ID of MarkingLayer
 	 * @param markingName the name of MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public void setMarkingLayerName(int iLayerID, int mLayerID, String markingName){
+	public void setMarkingLayerName(int iLayerID, int mLayerID, String markingName) throws Exception{
 		informationCenter.setMarkingLayerName(iLayerID, mLayerID, markingName);
 		
 	}
@@ -688,8 +743,9 @@ public class TaskManager {
 	 *
 	 * @param mLayerID the ID of MarkingLayer
 	 * @return the MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public MarkingLayer setMarkingLayerSelected(int mLayerID){
+	public MarkingLayer setMarkingLayerSelected(int mLayerID) throws Exception{
 		MarkingLayer sMarkingLayer=this.informationCenter.getMarkingLayer(mLayerID);
 		if(sMarkingLayer != null){
 			this.informationCenter.setSelectedMarkingLayer(sMarkingLayer);
@@ -704,8 +760,9 @@ public class TaskManager {
 	 *
 	 * @param mLayerID the m layer id
 	 * @param visible the visible
+	 * @throws Exception the exception
 	 */
-	public void setMarkingLayerVisibility(int mLayerID, boolean visible){
+	public void setMarkingLayerVisibility(int mLayerID, boolean visible) throws Exception{
 		this.informationCenter.setMarkingLayerVisibility(mLayerID, visible);
 	}
 
@@ -713,8 +770,9 @@ public class TaskManager {
 	 * Sets the present folder.
 	 *
 	 * @param folder the new present folder
+	 * @throws Exception the exception
 	 */
-	public void setPresentFolder(String folder){
+	public void setPresentFolder(String folder) throws Exception{
 		this.informationCenter.setPresentFolder(folder);
 	}
 
@@ -722,8 +780,9 @@ public class TaskManager {
 	 * Sets the present image dimension from list of ImageLayers.
 	 *
 	 * @param layers the list of ImageLayers
+	 * @throws Exception the exception
 	 */
-	private void setPresentImageDimensionFromImageLayerList(ArrayList<ImageLayer> layers){
+	private void setPresentImageDimensionFromImageLayerList(ArrayList<ImageLayer> layers) throws Exception{
 		boolean added=false;
 		if(layers != null && layers.size()>0){
 			Iterator<ImageLayer> iIterator=layers.iterator();
@@ -739,8 +798,9 @@ public class TaskManager {
 	 *
 	 * @param layer the ImageLayer
 	 * @return true, if successful
+	 * @throws Exception the exception
 	 */
-	private boolean setPresentImageDimensionFromSingleImageLayer(ImageLayer layer){
+	private boolean setPresentImageDimensionFromSingleImageLayer(ImageLayer layer) throws Exception{
 		if(layer != null && layer.getImageFilePath() != null && layer.getImageFilePath().length()>0){
 			File imagefile = new File(layer.getImageFilePath());
 			if(imagefile != null){
@@ -770,8 +830,9 @@ public class TaskManager {
 	 * Sets the ImageLayer selected if not exist yet.
 	 *
 	 * @return true, if successful
+	 * @throws Exception the exception
 	 */
-	public boolean setSelectedImageLayerIfNotExist(){
+	public boolean setSelectedImageLayerIfNotExist() throws Exception{
 		return this.informationCenter.setSelectedImageLayerIfNotExist();
 	}
 
@@ -779,8 +840,9 @@ public class TaskManager {
 	 * Sets the selected MarkingLayer coordinates.
 	 *
 	 * @param coordinates the new selected MarkingLayer coordinates
+	 * @throws Exception the exception
 	 */
-	public void setSelectedMarkingLayerCoordinates(ArrayList<Point> coordinates){
+	public void setSelectedMarkingLayerCoordinates(ArrayList<Point> coordinates) throws Exception{
 		this.informationCenter.getSelectedMarkingLayer().setCoordinateList(coordinates);
 	}
 
@@ -789,8 +851,9 @@ public class TaskManager {
 	 *
 	 * @param title the title
 	 * @param message the message
+	 * @throws Exception the exception
 	 */
-	public  void showMessageToUser(String title, String message){
+	public  void showMessageToUser(String title, String message) throws Exception{
 		ShadyMessageDialog dialog = new ShadyMessageDialog(this.gui, title, message, ID.OK, this.gui);
 		dialog.showDialog();
 		dialog=null;
@@ -802,6 +865,8 @@ public class TaskManager {
 
 	/**
 	 * Sets the selected image to layerVisualManager.
+	 *
+	 * @throws Exception the exception
 	 */
 	public void updateImageOfSelectedImageLayer() throws Exception{
 		ImageLayer selectedLayer = this.informationCenter.getSelectedImageLayer();
@@ -813,8 +878,10 @@ public class TaskManager {
 
 	/**
 	 * Update selected MarkingPanel and ImageLayerInfos.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void updateSelectedMarkingPanelAndImageLayerInfos(){
+	public void updateSelectedMarkingPanelAndImageLayerInfos() throws Exception{
 		// updates selectedMarkingPanel and ImageLayerInfos
 		gui.updateCoordinatesOfSelectedMarkingPanel(); 
 
