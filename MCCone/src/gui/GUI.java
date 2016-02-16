@@ -1604,6 +1604,7 @@ public class GUI extends JFrame{
 			layersListJScrollPane.setBackground(Color_schema.imagePanel_bg);
 			layersListJScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 			layersListJScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			layersListJScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
 			//attach Panels to right side panel of JSplittedPane
 			rightPanel.add(layersLabelJPanel, BorderLayout.PAGE_START);

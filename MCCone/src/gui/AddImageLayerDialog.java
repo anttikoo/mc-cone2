@@ -850,6 +850,7 @@ private JPanel initImageViewPanel(){
 		imageScrollingPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		imageScrollingPane.setPreferredSize(new Dimension((int)backPanel.getPreferredSize().getWidth()-20,(int)backPanel.getPreferredSize().getHeight()-140));
 		imageScrollingPane.setMaximumSize(new Dimension((int)backPanel.getPreferredSize().getWidth()-20,(int)backPanel.getPreferredSize().getHeight()-140));
+		imageScrollingPane.getVerticalScrollBar().setUnitIncrement(16);
 		
 		// SETUP Button and it's JPanel for adding selected pahths to list
 		JPanel imageButtonJPanel = new JPanel();
