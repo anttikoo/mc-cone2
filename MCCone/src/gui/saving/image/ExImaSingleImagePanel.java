@@ -2,6 +2,8 @@ package gui.saving.image;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import gui.saving.SaverDialog;
 import gui.saving.SingleImagePanel;
 import gui.saving.SingleMarkingPanel;
@@ -15,6 +17,9 @@ public class ExImaSingleImagePanel extends SingleImagePanel{
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -2085833168256742639L;
+	
+	/** The Constant LOGGER. */
+	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
 	/**
 	 * Instantiates a new Panel.
@@ -73,16 +78,22 @@ public class ExImaSingleImagePanel extends SingleImagePanel{
 	 * @see gui.saving.SingleImagePanel#initProperFilePathForSaving(information.ImageLayer)
 	 */
 	protected String initProperFilePathForSaving(ImageLayer iLayer){
-		if(iLayer != null){
-				if(iLayer.getExportImagePath() != null && iLayer.getExportImagePath().length()>0)
-					return iLayer.getExportImagePath();
+		try {
+			if(iLayer != null){
+					if(iLayer.getExportImagePath() != null && iLayer.getExportImagePath().length()>0)
+						return iLayer.getExportImagePath();
 
-				else if(iLayer.getImageFilePath() != null && iLayer.getImageFilePath().length()>0){
-					return  iLayer.getFolderOfImage(); // just give folder
+					else if(iLayer.getImageFilePath() != null && iLayer.getImageFilePath().length()>0){
+						return  iLayer.getFolderOfImage(); // just give folder
 
-				}
-		}
+					}
+			}
+				return System.getProperty("user.home");
+		} catch (Exception e) {
+			LOGGER.severe("Error in !");
+			e.printStackTrace();
 			return System.getProperty("user.home");
+		}
 
 	}
 	

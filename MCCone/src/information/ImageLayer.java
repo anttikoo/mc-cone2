@@ -35,6 +35,8 @@ public class ImageLayer {
 	/** The is selected. */
 	private boolean isSelected=false;
 	
+	private boolean madeChanges=true;
+	
 
 
 	/**
@@ -43,9 +45,14 @@ public class ImageLayer {
 	 * @param imagePath the image path
 	 */
 	public ImageLayer(String imagePath){
-		this.setLayerID(-1); // initialize the layerID to negative by default
-		this.setImageFilePath(imagePath);
-		this.markingLayerList = new ArrayList<MarkingLayer>();
+		try {
+			this.setLayerID(-1); // initialize the layerID to negative by default
+			this.setImageFilePath(imagePath);
+			this.markingLayerList = new ArrayList<MarkingLayer>();
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing ImageLayer!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -72,6 +79,7 @@ public class ImageLayer {
 			LOGGER.fine("create marking 4 " + ml.getLayerID() + " " + ml.getLayerName() + " size" + this.markingLayerList.size());
 
 			sortMarkingLayers();
+			setMadeChanges(true); // set that has made changes to this ImageLayer
 		} catch (Exception e) {
 			LOGGER.severe("Error in adding new MarkingLayer " +e.getClass().toString() + " :" +e.getMessage());
 			e.printStackTrace();
@@ -104,8 +112,9 @@ public class ImageLayer {
 	 * Returns the export image path.
 	 *
 	 * @return the export image path
+	 * @throws Exception the exception
 	 */
-	public String getExportImagePath() {
+	public String getExportImagePath() throws Exception {
 		return exportImagePath;
 	}
 
@@ -145,8 +154,9 @@ public class ImageLayer {
   	 * Returns the image file name.
   	 *
   	 * @return the image file name
+  	 * @throws Exception the exception
   	 */
-  	public String getImageFileName(){
+  	public String getImageFileName() throws Exception{
 		return getImageFileName(this.imageFilePath);
 	}
   	
@@ -190,8 +200,9 @@ public class ImageLayer {
 	 * Returns the image file path.
 	 *
 	 * @return the image file path
+	 * @throws Exception the exception
 	 */
-	public String getImageFilePath() {
+	public String getImageFilePath() throws Exception{
 		return imageFilePath;
 	}
 
@@ -218,8 +229,9 @@ public class ImageLayer {
 	 * Returns the ID of ImageLayer .
 	 *
 	 * @return the layer id
+	 * @throws Exception the exception
 	 */
-	public int getLayerID() {
+	public int getLayerID() throws Exception {
 		return layerID;
 	}
 	
@@ -253,8 +265,9 @@ public class ImageLayer {
 	 * Returns the all  MarkingLayers.
 	 *
 	 * @return the marking layers
+	 * @throws Exception the exception
 	 */
-	public ArrayList<MarkingLayer> getMarkingLayers(){
+	public ArrayList<MarkingLayer> getMarkingLayers() throws Exception{
 		return this.markingLayerList;
 	}
 
@@ -262,8 +275,9 @@ public class ImageLayer {
 	 * Returns the file path where markings are saved (xml-file) previously.
 	 *
 	 * @return the markings file path
+	 * @throws Exception the exception
 	 */
-	public String getMarkingsFilePath() {
+	public String getMarkingsFilePath() throws Exception {
 		return markingsFilePath;
 	}
 
@@ -294,8 +308,9 @@ public class ImageLayer {
 	 *
 	 * @param mLayerID ID of MarkingLayer
 	 * @return true, if found MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public boolean hasMarkingLayer(int mLayerID){
+	public boolean hasMarkingLayer(int mLayerID) throws Exception{
 		if(getMarkingLayer(mLayerID) != null)
 			return true;
 		return false;
@@ -308,10 +323,26 @@ public class ImageLayer {
 	 * @return true, if successful
 	 */
 	public boolean hasSameImageName(String iPath){
-		if(iPath != null && iPath.length() >0 )
-			if(getImageFileName().equals(getImageFileName(iPath)))
-				return true;
-		return false;
+		try {
+			if(iPath != null && iPath.length() >0 )
+				if(getImageFileName().equals(getImageFileName(iPath)))
+					return true;
+			return false;
+		} catch (Exception e) {
+			LOGGER.severe("Error in comparing names of images!");
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Checks if is made changes.
+	 *
+	 * @return true, if is made changes
+	 * @throws Exception the exception
+	 */
+	public boolean isMadeChanges()throws Exception {
+		return madeChanges;
 	}
 
 	/**
@@ -338,6 +369,8 @@ public class ImageLayer {
 		}
 	}
 
+
+
 	/**
 	 * Checks if is ImageLayer selected.
 	 *
@@ -347,8 +380,6 @@ public class ImageLayer {
 		return isSelected;
 	}
 
-
-
 	/**
 	 * Checks if is visible marking layers.
 	 *
@@ -356,20 +387,26 @@ public class ImageLayer {
 	 */
 		
 	public boolean isVisibleMarkingLayers() {
-		if(this.markingLayerList != null && this.markingLayerList.size()>0){
-			Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
-			while(iIterator.hasNext()){
-				MarkingLayer ml = (MarkingLayer)iIterator.next();
-				if(ml.isVisible()){ // MarkingLayer visibility
-					return true;
-				}
-			}						
-		}
-		else{
+		try {
+			if(this.markingLayerList != null && this.markingLayerList.size()>0){
+				Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
+				while(iIterator.hasNext()){
+					MarkingLayer ml = (MarkingLayer)iIterator.next();
+					if(ml.isVisible()){ // MarkingLayer visibility
+						return true;
+					}
+				}						
+			}
+			else{
+				return false;
+			}
+			
+			return false;
+		} catch (Exception e) {
+			LOGGER.severe("Error in checking is any visible MarkingLayers in ImageLayer!");
+			e.printStackTrace();
 			return false;
 		}
-		
-		return false;
 	}
 
 	/**
@@ -403,14 +440,17 @@ public class ImageLayer {
 		}
 	}
 
+
+
 	/**
 	 * Removes the all marking layers from ImageLayer.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void removeAllMarkingLayers(){
+	public void removeAllMarkingLayers() throws Exception{
 		this.markingLayerList.clear();
+		setMadeChanges(true); // set that has made changes to this ImageLayer
 	}
-
-
 
 	/**
 	 * Removes the extension from file path.
@@ -450,32 +490,36 @@ public class ImageLayer {
 					MarkingLayer ml = (MarkingLayer)iIterator.next();
 					if(ml.getLayerName().equals(markinglayer.getLayerName())){ // MarkingLayer name
 						iIterator.remove();
+						setMadeChanges(true); // set that has made changes to this ImageLayer
 					}
 
 				}
 				sortMarkingLayers();
+				
 			}
 		} catch (Exception e) {
 			LOGGER.severe("Error in removing MarkingLayer!");
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Sets the export image path.
 	 *
 	 * @param exportImagePath the new export image path
+	 * @throws Exception the exception
 	 */
-	public void setExportImagePath(String exportImagePath) {
+	public void setExportImagePath(String exportImagePath) throws Exception{
 		this.exportImagePath = exportImagePath;
 	}
-	
+
 	/**
 	 * Sets the image file path.
 	 *
 	 * @param imageFilePath the new image file path
+	 * @throws Exception the exception
 	 */
-	public void setImageFilePath(String imageFilePath) {
+	public void setImageFilePath(String imageFilePath) throws Exception {
 		this.imageFilePath = imageFilePath;
 	}
 
@@ -483,26 +527,40 @@ public class ImageLayer {
 	 * Sets the ImageLayer ID.
 	 *
 	 * @param layerID the new layer id
+	 * @throws Exception the exception
 	 */
-	public void setLayerID(int layerID) {
+	public void setLayerID(int layerID) throws Exception{
 		this.layerID = layerID;
+		setMadeChanges(true); // set that has made changes to this ImageLayer
+	}
+
+	public void setMadeChanges(boolean madeChanges) {
+		try {
+			this.madeChanges = madeChanges;
+		} catch (Exception e) {
+			LOGGER.severe("Error in adding information has any changes made!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Sets the list of MarkingLayers.
 	 *
 	 * @param markingLayerList the new marking layer list
+	 * @throws Exception the exception
 	 */
-	public void setMarkingLayerList(ArrayList<MarkingLayer> markingLayerList) {
+	public void setMarkingLayerList(ArrayList<MarkingLayer> markingLayerList) throws Exception{
 		this.markingLayerList = markingLayerList;
+		setMadeChanges(true); // set that has made changes to this ImageLayer
 	}
-
+	
 	/**
 	 * Sets the markings file path.
 	 *
 	 * @param markingsFilePath the new markings file path
+	 * @throws Exception the exception
 	 */
-	public void setMarkingsFilePath(String markingsFilePath) {
+	public void setMarkingsFilePath(String markingsFilePath) throws Exception{
 		this.markingsFilePath = markingsFilePath;
 	}
 
@@ -510,18 +568,21 @@ public class ImageLayer {
 	 * Sets the ImageLayer as selected.
 	 *
 	 * @param isSelected the new selected
+	 * @throws Exception the exception
 	 */
-	public void setSelected(boolean isSelected) {
+	public void setSelected(boolean isSelected) throws Exception{
 		this.isSelected = isSelected;
 	}
-	
-	public void sortMarkingLayers(){
+
+	/**
+	 * Sort marking layers.
+	 *
+	 * @throws Exception the exception
+	 */
+	public void sortMarkingLayers() throws Exception{
 		if(this.markingLayerList != null && this.markingLayerList.size()>0)
 			Collections.sort(this.markingLayerList, new MarkingLayerComparator());
 	}
-
-	
-
 
 
 }

@@ -1227,10 +1227,10 @@ private JPanel initImageViewPanel(){
 		private int oneMarkingHeight=40;
 
 		private ImageAndMarkingPanel(ImageLayer imageLayer){
-			this.path = imageLayer.getImageFilePath();
-			this.markingLayerList=imageLayer.getMarkingLayers();
-			try {
 
+			try {
+				this.path = imageLayer.getImageFilePath();
+				this.markingLayerList=imageLayer.getMarkingLayers();
 				int markingListHeight =0;
 				if(this.markingLayerList !=null && this.markingLayerList.size()>0)
 					markingListHeight = oneMarkingHeight*this.markingLayerList.size();

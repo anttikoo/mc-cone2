@@ -28,6 +28,7 @@ import operators.CoordinateComparator;
  */
 public class MarkingLayer{
 
+	/** The Constant LOGGER. */
 	private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	
 	/** The coordinate list. */
@@ -79,14 +80,19 @@ public class MarkingLayer{
 	 * @param name the name of MarkingLayer
 	 */
 	public MarkingLayer(String name){
-		this.setLayerID(-1); // initialize the id to negative value
-		this.setLayerName(name);
-		this.setColor(new Color(100,255,0)); // should change to get color which is not used yet
-		this.setShapeID(ID.SHAPE_CIRCLE); // initial value -> changed later
-		coordinateList = new ArrayList<Point>();
-		this.size=20;	// initial value -> changed later
-		this.thickness=2; // initial value -> changed later
-		this.opacity=1.0F; // initial value -> changed later
+		try {
+			this.setLayerID(-1); // initialize the id to negative value
+			this.setLayerName(name);
+			this.setColor(new Color(100,255,0)); // should change to get color which is not used yet
+			this.setShapeID(ID.SHAPE_CIRCLE); // initial value -> changed later
+			this.coordinateList = new ArrayList<Point>();
+			this.size=20;	// initial value -> changed later
+			this.thickness=2; // initial value -> changed later
+			this.opacity=1.0F; // initial value -> changed later
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing MarkingLayer!");
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -98,14 +104,19 @@ public class MarkingLayer{
 	 * @param color the color of marking
 	 */
 	public MarkingLayer(String name, int shape, Color color){
-		this.setLayerID(-1); // initialize the id to negative value
-		this.setLayerName(name);
-		this.setColor(color); // should change to get color which is not used yet
-		this.setShapeID(shape); // initial value -> changed later
-		coordinateList = new ArrayList<Point>();
-		this.size=20;	// initial value -> changed later
-		this.thickness=2; // initial value -> changed later
-		this.opacity=1.0F; // initial value -> changed later
+		try {
+			this.setLayerID(-1); // initialize the id to negative value
+			this.setLayerName(name);
+			this.setColor(color); // should change to get color which is not used yet
+			this.setShapeID(shape); // initial value -> changed later
+			this.coordinateList = new ArrayList<Point>();
+			this.size=20;	// initial value -> changed later
+			this.thickness=2; // initial value -> changed later
+			this.opacity=1.0F; // initial value -> changed later
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing MarkingLayer!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -507,6 +518,7 @@ public boolean isSelected() {
 					this.coordinateList.remove(candidatePoint);
 					// sort the coordinate list although the order shouldn't been changed
 					Collections.sort(this.coordinateList, new CoordinateComparator());
+					setMadeChanges(true); // set that has made changes to this MarkingLayer
 					return true;
 
 
@@ -524,9 +536,12 @@ public boolean isSelected() {
 	 * Sets the marking color.
 	 *
 	 * @param color the new color
+	 * @throws Exception the exception
 	 */
-	public void setColor(Color color) {
+	public void setColor(Color color) throws Exception {
+		
 		this.color = color;
+		setMadeChanges(true); // set that has made changes to this MarkingLayer
 	}
 
 	/**
@@ -538,6 +553,7 @@ public boolean isSelected() {
 		if(coordinateList != null && coordinateList.size()>0){
 			this.coordinateList = makeCopyPoints(coordinateList);
 			Collections.sort(this.coordinateList, new CoordinateComparator());
+			setMadeChanges(true);
 		}
 	}
 
@@ -548,6 +564,7 @@ public boolean isSelected() {
 	 */
 	public void setDrawGridToImage(boolean drawGridToImage) {
 		this.drawGridToImage = drawGridToImage;
+		setMadeChanges(true); // set that has made changes to this MarkingLayer
 	}
 
 	/**
@@ -568,6 +585,7 @@ public boolean isSelected() {
 			gridProperty.setRandomPercent(gProperties.getRandomProcent());
 	
 			this.gridProperties = gridProperty;
+			setMadeChanges(true); // set that has made changes to this MarkingLayer
 		}
 	}
 
@@ -575,49 +593,69 @@ public boolean isSelected() {
 	 * Sets the ID of this MarkingLayer.
 	 *
 	 * @param layerID the new layer id
+	 * @throws Exception the exception
 	 */
-	public void setLayerID(int layerID) {
+	public void setLayerID(int layerID) throws Exception{
 		this.layerID = layerID;
 		this.order=this.layerID;
+		setMadeChanges(true); // set that has made changes to this MarkingLayer
 	}
 
 	/**
 	 * Sets the name of this MarkingLayer.
 	 *
 	 * @param layerName the name of this MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public void setLayerName(String layerName) {
+	public void setLayerName(String layerName) throws Exception{
 		this.layerName = layerName;
+		setMadeChanges(true); // set that has made changes to this MarkingLayer
 	}
 
-	public void setMadeChanges(boolean madeChanges) {
-		this.madeChanges = madeChanges;
+	/**
+	 * Sets the made changes.
+	 *
+	 * @param madeChanges the new made changes
+	 * @throws Exception the exception
+	 */
+	public void setMadeChanges(boolean madeChanges){
+		try {
+			this.madeChanges = madeChanges;
+		} catch (Exception e) {
+			LOGGER.severe("Error in saving information, is any changes made!");
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Sets the opacity.
 	 *
 	 * @param opacity the new opacity
+	 * @throws Exception the exception
 	 */
-	public void setOpacity(float opacity) {
+	public void setOpacity(float opacity) throws Exception{
 		this.opacity = opacity;
+		setMadeChanges(true); // set that has made changes to this MarkingLayer
 	}
 	
 	/**
 	 * Sets the order.
 	 *
 	 * @param order the new order
+	 * @throws Exception the exception
 	 */
-	public void setOrder(int order) {
+	public void setOrder(int order) throws Exception{
 		this.order = order;
+		
 	}
 
 	/**
 	 * Sets the MarkingLayer as selected/unselected.
 	 *
 	 * @param selected the new state is MarkingLayer selected
+	 * @throws Exception the exception
 	 */
-	public void setSelected(boolean selected) {
+	public void setSelected(boolean selected) throws Exception{
 		this.isSelected = selected;
 	}
 
@@ -625,26 +663,31 @@ public boolean isSelected() {
 	 * Sets the shape id.
 	 *
 	 * @param shape the new shape id
+	 * @throws Exception the exception
 	 */
-	public void setShapeID(int shape) {
+	public void setShapeID(int shape) throws Exception{
 		this.shapeID = shape;
+		setMadeChanges(true); // set that has made changes to this MarkingLayer
 	}
 
 	/**
 	 * Sets the size.
 	 *
 	 * @param size the new size
+	 * @throws Exception the exception
 	 */
-	public void setSize(int size) {
+	public void setSize(int size) throws Exception{
 		this.size = size;
+		setMadeChanges(true); // set that has made changes to this MarkingLayer
 	}
 
 	/**
 	 * Sets the string color.
 	 *
 	 * @param colorS the new string color
+	 * @throws Exception the exception
 	 */
-	public void setStringColor(String colorS){
+	public void setStringColor(String colorS) throws Exception{
 		this.color = new Color(Integer.parseInt(colorS));
 	}
 
@@ -668,6 +711,7 @@ public boolean isSelected() {
 							try{
 								Point p = new Point(Integer.parseInt(sv[0].trim()), Integer.parseInt(sv[1].trim()));
 								this.coordinateList.add(p);
+								
 							}
 							catch(Exception ex){
 								// problem in converting from string to Point
@@ -677,6 +721,7 @@ public boolean isSelected() {
 					}
 
 				}
+				setMadeChanges(true); // set that has made changes to this MarkingLayer
 
 				}
 			LOGGER.warning(" MarkingLayer: Problems in converting String to Point. " + errors + " values not converted");
@@ -693,15 +738,18 @@ public boolean isSelected() {
 	 *
 	 * @param thickness the new thickness
 	 */
-	public void setThickness(int thickness) {
+	public void setThickness(int thickness) throws Exception {
 		this.thickness = thickness;
+		setMadeChanges(true); // set that has made changes to this MarkingLayer
 	}
 
 	/**
 	 * Sets the visibility of markings.
+	 *
 	 * @param isVisible the new visible
+	 * @throws Exception the exception
 	 */
-	public void setVisible(boolean isVisible) {
+	public void setVisible(boolean isVisible) throws Exception{
 		this.isVisible = isVisible;
 	}
 

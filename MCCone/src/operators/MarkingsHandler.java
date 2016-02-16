@@ -88,7 +88,12 @@ public class MarkingsHandler extends DefaultHandler {
 
         if (isColor) {
             //age element, set Employee age
-            this.selectedMarkingLayer.setStringColor(new String(ch, start, length));
+            try {
+				this.selectedMarkingLayer.setStringColor(new String(ch, start, length));
+			} catch (Exception e) {
+				LOGGER.severe("Error in reading color for MarkingLayer!");
+				e.printStackTrace();
+			}
             isColor = false;
         } else if (isSingleCoordinate) {
             this.selectedMarkingLayer.addStringPoint(new String(ch, start, length));
