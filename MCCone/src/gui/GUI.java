@@ -2200,6 +2200,22 @@ public class GUI extends JFrame{
 	public void setMadeChanges(boolean mc) throws Exception{
 		this.taskManager.setMadeChange(); //
 	}
+	
+	/**
+	 * Sets the successfully made savings to MarkingLayers.
+	 *
+	 * @param mLayerIDs the ids of MarkingLayers where successfully made savings
+	 * @throws Exception the exception
+	 */
+	public void setSuccessfullyMadeSavings(ArrayList<Integer> mLayerIDs){
+		try {
+			this.taskManager.setSuccessfullyMadeSavings(mLayerIDs);
+		} catch (Exception e) {
+			LOGGER.severe("Error in setting successfully made savings to ImageLayers and MarkingLayers!");
+			e.printStackTrace();
+		}
+		
+	}
 
 
 

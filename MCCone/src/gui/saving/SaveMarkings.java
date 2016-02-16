@@ -299,7 +299,8 @@ public class SaveMarkings extends SaverDialog{
 
 				setSuccesfullSavingBackgrounds(successFullysavedLayers);
 				if(successFullysavedLayers.size()>0){
-					gui.setMadeChanges(false); // the user has saved at least one MarkingLayer -> no asking to save when quitting MC-Cone (if no changes made before quit)
+			//		gui.setMadeChanges(false); // the user has saved at least one MarkingLayer -> no asking to save when quitting MC-Cone (if no changes made before quit)
+					gui.setSuccessfullyMadeSavings(successFullysavedLayers);
 					if(notInformedSuccessfullSaving){
 						dialog = new ShadyMessageDialog(this, "Saving succesfull", "Successfully saved markings are shown green.  ", ID.OK, this);
 						dialog.showDialog();

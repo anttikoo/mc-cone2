@@ -342,7 +342,11 @@ public class ImageLayer {
 	 * @throws Exception the exception
 	 */
 	public boolean isMadeChanges()throws Exception {
-		return madeChanges;
+		if(madeChanges)
+			return madeChanges;
+		else
+			return isUnsavedMarkingLayers();
+	
 	}
 
 	/**
@@ -378,6 +382,30 @@ public class ImageLayer {
 	 */
 	public boolean isSelected() {
 		return isSelected;
+	}
+	
+	/**
+	 * Checks if is unsaved marking layers.
+	 *
+	 * @return boolean is any unsaved MarkingLayer in list
+	 */
+	private boolean isUnsavedMarkingLayers(){
+		try {
+			if(this.markingLayerList != null && this.markingLayerList.size()>0){
+				Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
+				while(iIterator.hasNext()){
+					MarkingLayer ml = (MarkingLayer)iIterator.next();
+					if(ml.isMadeChanges()){ // MarkingLayer visibility
+						return true;
+					}
+				}
+			}
+			return false; // all saved or no any markingLayers
+		} catch (Exception e) {
+			LOGGER.severe("Error in checking is unsaved MarkingLayers!");
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/**
@@ -572,6 +600,40 @@ public class ImageLayer {
 	 */
 	public void setSelected(boolean isSelected) throws Exception{
 		this.isSelected = isSelected;
+	}
+	
+	/**
+	 * Marks the successfully made savings.
+	 *
+	 * @param mLayerIDs the new successfully saved marking layers
+	 */
+	public void setSuccessfullySavedMarkingLayers(ArrayList<Integer> mLayerIDs){
+		try {
+			Iterator<Integer> iIterator = mLayerIDs.iterator();
+			while(iIterator.hasNext()){
+				int mID = iIterator.next();
+				if(mID >0){
+					MarkingLayer mLayer = getMarkingLayer(mID);
+					if(mLayer != null)
+						mLayer.setMadeChanges(false); // all saved			
+				}
+
+			}
+			
+			// check is all MarkingLayers saved
+			if(!isUnsavedMarkingLayers()){
+				setMadeChanges(false); // all data of ImageLayer is saved
+			}
+			else{
+				setMadeChanges(true); // some data is not saved
+			}
+		} catch (Exception e) {
+			LOGGER.severe("Error in setting successfull savings to ImageLayer!");
+			e.printStackTrace();
+		}
+		
+		
+		
 	}
 
 	/**

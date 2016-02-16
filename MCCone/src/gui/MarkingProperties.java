@@ -370,7 +370,7 @@ protected void hideDialog(boolean saveChanges){
 		try {
 			// save changes to MarkingLayer and MarkingPanel
 		saveChanges(this.markingLayer);
-		gui.setMadeChanges(true);
+		
 		} catch (Exception e) {
 			LOGGER.severe("Error in saving marking properties to MarkingLayer " +e.getClass().toString() + " :" +e.getMessage());
 			

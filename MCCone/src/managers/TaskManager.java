@@ -845,6 +845,16 @@ public class TaskManager {
 	public void setSelectedMarkingLayerCoordinates(ArrayList<Point> coordinates) throws Exception{
 		this.informationCenter.getSelectedMarkingLayer().setCoordinateList(coordinates);
 	}
+	
+	/**
+	 * Sets the successfully made savings to MarkingLayers.
+	 *
+	 * @param mLayerIDs the ids of MarkingLayers where successfully made savings
+	 * @throws Exception the exception
+	 */
+	public void setSuccessfullyMadeSavings(ArrayList<Integer> mLayerIDs) throws Exception{
+		this.informationCenter.setSuccessfullyMadeSavings(mLayerIDs);
+	}
 
 	/**
 	 * Shows message to user.

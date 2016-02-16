@@ -475,7 +475,7 @@ public class XMLwriteManager {
 					closeOutput();
 				}
 				else{ // file doesn't exist
-					LOGGER.warning("Creating file "+this.layersOfPath.getXmlpath());
+					LOGGER.info("Creating file "+this.layersOfPath.getXmlpath());
 					if(layersOfPath.getFileState() == ID.FILE_NEW_FILE)
 						f.createNewFile();
 					// init only output

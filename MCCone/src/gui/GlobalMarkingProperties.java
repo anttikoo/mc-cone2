@@ -56,7 +56,7 @@ public class GlobalMarkingProperties extends MarkingProperties{
 					}
 					// update the GUI ImageLayerInfo JPanel
 					gui.updateAllMarkingPanelProperties();
-					gui.setMadeChanges(true);
+					
 				}
 		} catch (Exception e) {
 			LOGGER.severe("Error in saving changes in Marking properties");
