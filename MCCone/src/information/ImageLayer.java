@@ -84,13 +84,19 @@ public class ImageLayer {
 	 * @return the ArrayList of IDs of MarkingLayers
 	 */
 	public ArrayList<Integer> getAllMarkingLayerIDs(){
-		ArrayList<Integer> mLayerIDlist= new ArrayList<Integer>();
+		try {
+			ArrayList<Integer> mLayerIDlist= new ArrayList<Integer>();
 
-		Iterator<MarkingLayer> mIterator = getMarkingLayers().iterator();
-		while(mIterator.hasNext()){
-			mLayerIDlist.add(((MarkingLayer)mIterator.next()).getLayerID());
+			Iterator<MarkingLayer> mIterator = getMarkingLayers().iterator();
+			while(mIterator.hasNext()){
+				mLayerIDlist.add(((MarkingLayer)mIterator.next()).getLayerID());
+			}
+			return mLayerIDlist;
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting all MarkingLayer IDs!");
+			e.printStackTrace();
+			return null;
 		}
-		return mLayerIDlist;
 
 	}
 
@@ -267,14 +273,20 @@ public class ImageLayer {
 	 * @return true, if successful
 	 */
 	public boolean hasGridOn(){
-		Iterator<MarkingLayer> mIterator = getMarkingLayers().iterator();
-		while(mIterator.hasNext()){
-			MarkingLayer layer=mIterator.next();
-			if(layer.getGridProperties()!=null && layer.getGridProperties().isGridON())
-				return true;
-		}
+		try {
+			Iterator<MarkingLayer> mIterator = getMarkingLayers().iterator();
+			while(mIterator.hasNext()){
+				MarkingLayer layer=mIterator.next();
+				if(layer.getGridProperties()!=null && layer.getGridProperties().isGridON())
+					return true;
+			}
 
-		return false;
+			return false;
+		} catch (Exception e) {
+			LOGGER.severe("Error in checking is Grid ON!");
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/**
@@ -431,16 +443,21 @@ public class ImageLayer {
 	 * @param markinglayer the markinglayer
 	 */
 	public void removeMarkingLayer(MarkingLayer markinglayer){
-		if(markinglayer !=null && this.markingLayerList != null && this.markingLayerList.size()>0){
-			Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
-			while(iIterator.hasNext()){
-				MarkingLayer ml = (MarkingLayer)iIterator.next();
-				if(ml.getLayerName().equals(markinglayer.getLayerName())){ // MarkingLayer name
-					iIterator.remove();
-				}
+		try {
+			if(markinglayer !=null && this.markingLayerList != null && this.markingLayerList.size()>0){
+				Iterator<MarkingLayer> iIterator = this.markingLayerList.iterator();
+				while(iIterator.hasNext()){
+					MarkingLayer ml = (MarkingLayer)iIterator.next();
+					if(ml.getLayerName().equals(markinglayer.getLayerName())){ // MarkingLayer name
+						iIterator.remove();
+					}
 
+				}
+				sortMarkingLayers();
 			}
-			sortMarkingLayers();
+		} catch (Exception e) {
+			LOGGER.severe("Error in removing MarkingLayer!");
+			e.printStackTrace();
 		}
 	}
 

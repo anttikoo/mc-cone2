@@ -70,7 +70,7 @@ public class MarkingPanel extends JPanel {
 			this.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 			this.shapeDrawer=new ShapeDrawer(mLayer, mLayer.getSize(), mLayer.getThickness(), mLayer.getOpacity(), mLayer.getColor());
 		} catch (Exception e) {
-			LOGGER.severe("Error in initializing MarkingPanel "+mLayer.getLayerName()+"!");
+			LOGGER.severe("Error in initializing MarkingPanel!");
 			e.printStackTrace();
 		}
 	}

@@ -261,6 +261,11 @@ public class AddImageLayerDialog extends JDialog{
 			LOGGER.severe("Error in adding Markings to ImageLayer " +e.getClass().toString() + " :" +e.getMessage());
 			return false;
 		}
+		catch(Exception ex){
+			shadyMessageDialog=null;
+			LOGGER.severe("Error in adding Markings to ImageLayer ");
+			return false;
+		}
 	}
 
 

@@ -68,6 +68,9 @@ public class MarkingLayer{
 	
 	/** The draw grid to image. */
 	private boolean drawGridToImage=false;
+	
+	/** The made changes. Has any changes made that are not saved*/
+	private boolean madeChanges=true;
 
 
 	/**
@@ -122,9 +125,10 @@ public class MarkingLayer{
 		this.coordinateList.add(coordinate);
 
 		Collections.sort(this.coordinateList, new CoordinateComparator());
+		setMadeChanges(true);
 		return true;
 	}
-	
+
 	/**
 	 * Adds a coordinate given by string.
 	 *
@@ -154,22 +158,24 @@ public class MarkingLayer{
 		}
 
 	}
-	
+
 	/**
 	 * Clears coordinate list.
+	 *
+	 * @throws Exception the exception
 	 */
-	public void clearCoordinateList(){
+	public void clearCoordinateList() throws Exception{
 		this.coordinateList.clear();
+		setMadeChanges(true);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#clone()
 	 */
 	protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-
-
+	
 	/**
 	 * Returns the color.
 	 *
@@ -198,23 +204,26 @@ public class MarkingLayer{
 		else
 		return coordinateList;
 	}
-	
+
+
 	/**
 	 * Returns the coordinate list independent is GRID ON.
 	 *
 	 * @return the coordinate list independent is GRID ON.
+	 * @throws Exception the exception
 	 */
-	public ArrayList<Point> getCoordinateListIgnoringGrid() {
+	public ArrayList<Point> getCoordinateListIgnoringGrid() throws Exception {
 
 		return coordinateList;
 	}
-	
+
 	/**
 	 * Counts and returns the amount of coordinates. If GRID is active -> counts proportional number of countings.
 	 *
 	 * @return the Integer counts
+	 * @throws Exception the exception
 	 */
-	public int getCounts(){
+	public int getCounts() throws Exception{
 		if(this.gridProperties != null && this.gridProperties.isGridON()){
 			double multiplyer = this.gridProperties.calculateSelectedRectangleAreaRelation();
 			return (int)Math.round(((double)getCoordinateList().size()*multiplyer)); // round method returns closest long but don't worry: size of coordinatelist can't exceed max integer value
@@ -227,48 +236,58 @@ public class MarkingLayer{
 	 * Returns the grid properties.
 	 *
 	 * @return the grid properties
+	 * @throws Exception the exception
 	 */
-	public GridProperties getGridProperties() {
+	public GridProperties getGridProperties() throws Exception{
 		return gridProperties;
 	}
-
-
+	
 	/**
 	 * Returns the ID of MarkingLayer.
 	 *
 	 * @return the ID of MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public int getLayerID() {
+	public int getLayerID() throws Exception {
 		return layerID;
 	}
-
+	
 	/**
 	 * Returns the name of MarkingLayer.
 	 *
 	 * @return the name of MarkingLayer
+	 * @throws Exception the exception
 	 */
-	public String getLayerName() {
+	public String getLayerName() throws Exception {
 		return layerName;
 	}
 
+
 	/**
-	 * Returns the Manhattan distance between two point. Faster than euclidean distanse.
+	 * Returns the Manhattan distance between two point. Faster than euclidean distance.
 	 *
 	 * @param p1 the Point 1
 	 * @param p2 the point 2
 	 * @return the mManhattan distance
+	 * @throws Exception the exception
 	 */
 	private double getManhattanDistance(Point p1, Point p2){
 
-		int x_distance= p1.x-p2.x;
-		if(x_distance <0)
-			x_distance*=-1;
+		try {
+			int x_distance= p1.x-p2.x;
+			if(x_distance <0)
+				x_distance*=-1;
 
-		int y_distance= p1.y-p2.y;
-		if(y_distance < 0)
-			y_distance*=-1;
+			int y_distance= p1.y-p2.y;
+			if(y_distance < 0)
+				y_distance*=-1;
 
-			return x_distance+y_distance;
+				return x_distance+y_distance;
+		} catch (Exception e) {
+			LOGGER.severe("Error in calculating Manhattan distance!");
+			e.printStackTrace();
+			return Integer.MAX_VALUE;
+		}
 
 	}
 
@@ -277,48 +296,51 @@ public class MarkingLayer{
 	 *
 	 * @return the opacity
 	 */
-	public float getOpacity() {
+	public float getOpacity() throws Exception {
 		return opacity;
 	}
-	
+
 	/**
 	 * Returns the order.
 	 *
 	 * @return the order
+	 * @throws Exception the exception
 	 */
-	public int getOrder() {
+	public int getOrder() throws Exception{
 		return order;
 	}
-
-	
 
 	/**
 	 * Returns the shape id.
 	 *
 	 * @return the shape id
+	 * @throws Exception the exception
 	 */
-	public int getShapeID() {
+	public int getShapeID() throws Exception {
 		return shapeID;
 	}
-
+	
 	/**
 	 * Returns the size.
 	 *
 	 * @return the size
+	 * @throws Exception the exception
 	 */
-	public int getSize() {
+	public int getSize() throws Exception {
 		return size;
 	}
+
+	
 
 	/**
 	 * Returns the string color.
 	 *
 	 * @return the string color
+	 * @throws Exception the exception
 	 */
-	public String getStringColor(){
+	public String getStringColor() throws Exception{
 		return Integer.toString(color.getRGB());
 	}
-
 
 	/**
 	 * Returns the list of Points as String.
@@ -353,6 +375,7 @@ public class MarkingLayer{
 		return this.thickness;
 	}
 
+
 	/**
 	 * Checks if is draw grid to image.
 	 *
@@ -362,28 +385,32 @@ public class MarkingLayer{
 		return drawGridToImage;
 	}
 
+	/**
+	 * Checks if is grid on (active).
+	 *
+	 * @return true, if is grid on (active)
+	 */
+	public boolean isGridON(){
+			if(this.gridProperties != null && gridProperties.isGridON())
+				return true;
+	
+			return false;
+		}
+
+	public boolean isMadeChanges() {
+		return madeChanges;
+	}
+
 
 
 /**
- * Checks if is grid on (active).
+ * Checks if is this MarkingLayer selected.
  *
- * @return true, if is grid on (active)
+ * @return true, if is selected
  */
-public boolean isGridON(){
-		if(this.gridProperties != null && gridProperties.isGridON())
-			return true;
-
-		return false;
-	}
-
-	/**
-	 * Checks if is this MarkingLayer selected.
-	 *
-	 * @return true, if is selected
-	 */
-	public boolean isSelected() {
-		return isSelected;
-	}
+public boolean isSelected() {
+	return isSelected;
+}
 
 	/**
 	 * Checks if is this MarkingLayer visible.
@@ -425,8 +452,6 @@ public boolean isGridON(){
 		}
 	}
 
-
-
 	/**
 	 * Make and returns a copy of list of coordinates.
 	 *
@@ -448,6 +473,8 @@ public boolean isGridON(){
 		}
 		return null;
 	}
+
+
 
 	/**
 	 * Removes the single coordinate from list of coordinates.
@@ -561,6 +588,10 @@ public boolean isGridON(){
 	 */
 	public void setLayerName(String layerName) {
 		this.layerName = layerName;
+	}
+
+	public void setMadeChanges(boolean madeChanges) {
+		this.madeChanges = madeChanges;
 	}
 
 	/**

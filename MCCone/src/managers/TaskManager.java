@@ -859,7 +859,13 @@ public class TaskManager {
 		dialog=null;
 	}
 
-	public void testADDCoordinatesToSecond(ArrayList<Point> coordinates){
+	/**
+	 * FOR TESTING PURPOSES : add coordinates to second.
+	 *
+	 * @param coordinates the coordinates
+	 * @throws Exception the exception
+	 */
+	public void testADDCoordinatesToSecond(ArrayList<Point> coordinates) throws Exception{
 		this.informationCenter.getAllMarkingLayers().get(1).setCoordinateList(coordinates);
 	}
 

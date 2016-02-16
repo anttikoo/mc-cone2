@@ -63,15 +63,20 @@ public class InformationCenter {
 	 *  Class constructor
 	 */
 	public InformationCenter(TaskManager tm){
-		setUpFreeShapes();
-		setUpFreeColors();
-		this.setImageLayerList(new ArrayList<ImageLayer>());
-		this.setSelectedImageLayer(null);
-		this.setVisibleMarkingLayerList(new ArrayList<MarkingLayer>());
-		this.presentFolder= System.getProperty("user.home"); // may not work in some windows ?
-		LOGGER.fine("present folder: "+ this.presentFolder);
-		presentImageDimension =null;
-		singleGridSizeList=null;
+		try {
+			setUpFreeShapes();
+			setUpFreeColors();
+			this.setImageLayerList(new ArrayList<ImageLayer>());
+			this.setSelectedImageLayer(null);
+			this.setVisibleMarkingLayerList(new ArrayList<MarkingLayer>());
+			this.presentFolder= System.getProperty("user.home"); // may not work in some windows ?
+			LOGGER.fine("present folder: "+ this.presentFolder);
+			presentImageDimension =null;
+			singleGridSizeList=null;
+		} catch (Exception e) {
+			LOGGER.severe("Error in initializing InformationCenter!");
+			e.printStackTrace();
+		}
 
 	}
 
@@ -100,8 +105,9 @@ public class InformationCenter {
 	 * Returns the next free shape that is not used lately.
 	 *
 	 * @return the next free shape
+	 * @throws Exception the exception
 	 */
-	private int getNextFreeShape(){
+	private int getNextFreeShape() throws Exception{
 
 		int shape= shapeList[nextFreeShape++];
 		if(nextFreeShape==shapeList.length)
@@ -114,8 +120,9 @@ public class InformationCenter {
 	 * Returns the next free color that is not used lately.
 	 *
 	 * @return the next free color
+	 * @throws Exception the exception
 	 */
-	private Color getNextFreeColor(){
+	private Color getNextFreeColor() throws Exception{
 		Color color= colorList[nextFreeColor++];
 		if(nextFreeColor == colorList.length)
 			nextFreeColor=0;
@@ -126,8 +133,9 @@ public class InformationCenter {
 	 * Returns the list of ImageLayers.
 	 *
 	 * @return the list of ImageLayers
+	 * @throws Exception the exception
 	 */
-	public ArrayList<ImageLayer> getImageLayerList() {
+	public ArrayList<ImageLayer> getImageLayerList()throws Exception {
 		return imageLayerList;
 	}
 
@@ -135,8 +143,9 @@ public class InformationCenter {
 	 * Returns the folder that is used latest.
 	 *
 	 * @return the present folder
+	 * @throws Exception the exception
 	 */
-	public String getPresentFolder() {
+	public String getPresentFolder()throws Exception {
 		return presentFolder;
 	}
 
@@ -154,8 +163,9 @@ public class InformationCenter {
 	 *
 	 * @param dim the dim
 	 * @return true, if is allowed image dimension
+	 * @throws Exception the exception
 	 */
-	public boolean isAllowedImageDimension(Dimension dim){
+	public boolean isAllowedImageDimension(Dimension dim)throws Exception{
 		if(dim == null)
 			return false;
 
@@ -172,8 +182,9 @@ public class InformationCenter {
 	 * Sets the present image dimension.
 	 *
 	 * @param dim the new present image dimension
+	 * @throws Exception the exception
 	 */
-	public void setPresentImageDimension(Dimension dim){
+	public void setPresentImageDimension(Dimension dim) throws Exception{
 		if(this.presentImageDimension == null){
 			this.presentImageDimension=dim;
 			calculateGridsizes();
@@ -182,9 +193,11 @@ public class InformationCenter {
 	}
 
 	/**
-	 * Calculates different sizes of possibly GRIDs by using present image dimension. 
+	 * Calculates different sizes of possibly GRIDs by using present image dimension.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void calculateGridsizes(){
+	private void calculateGridsizes() throws Exception{
 
 		if(this.presentImageDimension != null && this.presentImageDimension.height>0 && this.presentImageDimension.width>0){
 			singleGridSizeList=new ArrayList<SingleGridSize>();
@@ -218,44 +231,50 @@ public class InformationCenter {
 	 * @param iLayerList ArrayList<ImageLayer> contains the ImageLayer objects
 	 */
 	public void setImageLayerList(ArrayList<ImageLayer> iLayerList)  {
-		if(iLayerList != null && iLayerList.size()>0){
-			ImageLayer sil= getSelectedImageLayer();
-			int selectesdILayerID =-1;
-			int selectedMarkingLayerID=-1;
-			if(sil != null)
-				selectesdILayerID =sil.getLayerID();
+		try {
+			if(iLayerList != null && iLayerList.size()>0){
+				ImageLayer sil= getSelectedImageLayer();
+				int selectesdILayerID =-1;
+				int selectedMarkingLayerID=-1;
+				if(sil != null)
+					selectesdILayerID =sil.getLayerID();
 
-			MarkingLayer sml=getSelectedMarkingLayer();
-			if(sml != null)
-				selectedMarkingLayerID=sml.getLayerID();
+				MarkingLayer sml=getSelectedMarkingLayer();
+				if(sml != null)
+					selectedMarkingLayerID=sml.getLayerID();
 
-			this.imageLayerList=new ArrayList<ImageLayer>(); // remove all earlier elements from list
-			this.selectedImageLayer=null;
-			this.selectedMarkingLayer=null;
-			this.visibleMarkingLayerList = new ArrayList<MarkingLayer>();
-			addImageLayers(iLayerList); // add list by checking also the correctness of layers (the have positive layerIDs)
+				this.imageLayerList=new ArrayList<ImageLayer>(); // remove all earlier elements from list
+				this.selectedImageLayer=null;
+				this.selectedMarkingLayer=null;
+				this.visibleMarkingLayerList = new ArrayList<MarkingLayer>();
+				addImageLayers(iLayerList); // add list by checking also the correctness of layers (the have positive layerIDs)
 
-			sil=getImageLayerByID(selectesdILayerID);
-			if(sil != null)
-				setSelectedImageLayer(sil);
-			sml=getMarkingLayer(selectedMarkingLayerID);
-			if(sml != null)
-				setSelectedMarkingLayer(sml);
+				sil=getImageLayerByID(selectesdILayerID);
+				if(sil != null)
+					setSelectedImageLayer(sil);
+				sml=getMarkingLayer(selectedMarkingLayerID);
+				if(sml != null)
+					setSelectedMarkingLayer(sml);
 
-			// set visible markinglayers
-			if(getAllMarkingLayers() != null && getAllMarkingLayers().size()>0){
-			Iterator<MarkingLayer> mlayerIterator = getAllMarkingLayers().iterator();
-				while(mlayerIterator.hasNext()){
-					MarkingLayer ml=mlayerIterator.next();
-					if(ml.isVisible()){
-						addMarkingLayerToVisibleList(ml.getLayerID());
+				// set visible markinglayers
+				if(getAllMarkingLayers() != null && getAllMarkingLayers().size()>0){
+				Iterator<MarkingLayer> mlayerIterator = getAllMarkingLayers().iterator();
+					while(mlayerIterator.hasNext()){
+						MarkingLayer ml=mlayerIterator.next();
+						if(ml.isVisible()){
+							addMarkingLayerToVisibleList(ml.getLayerID());
+						}
 					}
 				}
+				setMadeChanges(true);
 			}
-			setMadeChanges(true);
-		}
-		else
+			else
+				this.imageLayerList = new ArrayList<ImageLayer>();
+		} catch (Exception e) {
+			LOGGER.severe("Error in setting ImageLayerList!");
+			e.printStackTrace();
 			this.imageLayerList = new ArrayList<ImageLayer>();
+		}
 	}
 
 
@@ -350,11 +369,12 @@ public class InformationCenter {
 	}
 
 	/**
-	 * Adds the ImageLayer
+	 * Adds the ImageLayer.
 	 *
 	 * @param il the ImageLayer
+	 * @throws Exception the exception
 	 */
-	public void addImageLayer(ImageLayer il){
+	public void addImageLayer(ImageLayer il) throws Exception{
 		addSingleImageLayer(il);
 		setProperSelectedImageLayer(); // check and set selected ImageLayer if needed
 		setProperSelectedMarkingLayer(); // check and set selected MarkingLayer if needed
@@ -409,23 +429,30 @@ public class InformationCenter {
 	 * Update present image dimension of marking panels.
 	 */
 	public void updatePresentImageDimensionOfMarkingPanels(){
-		if(this.getPresentImageDimension() != null){
-			Iterator<MarkingLayer> mIterator = getAllMarkingLayers().iterator();
-			while(mIterator.hasNext()){
-				MarkingLayer mLayer = mIterator.next();
-				if(mLayer != null && mLayer.getGridProperties() != null){
-					mLayer.getGridProperties().setPresentImageDimension(this.getPresentImageDimension());
+		try {
+			if(this.getPresentImageDimension() != null){
+				Iterator<MarkingLayer> mIterator = getAllMarkingLayers().iterator();
+				while(mIterator.hasNext()){
+					MarkingLayer mLayer = mIterator.next();
+					if(mLayer != null && mLayer.getGridProperties() != null){
+						mLayer.getGridProperties().setPresentImageDimension(this.getPresentImageDimension());
+					}
 				}
 			}
+		} catch (Exception e) {
+			LOGGER.severe("Error in updating present image dimension!");
+			e.printStackTrace();
 		}
 
 	}
 
 	/**
 	 *  Gives next free layerId value and increases the value to given next time.
+	 *
 	 * @return layerID (int) the next free id value
+	 * @throws Exception the exception
 	 */
-	public int getUnReservedLayerID() {
+	public int getUnReservedLayerID()throws Exception {
 		return layerID++;
 	}
 
@@ -547,8 +574,9 @@ public class InformationCenter {
 	 *
 	 * @param mLayerID the MarkingLayer ID
 	 * @return the next marking layer, null if not found
+	 * @throws Exception the exception
 	 */
-	private MarkingLayer getNextMarkingLayer(int mLayerID){
+	private MarkingLayer getNextMarkingLayer(int mLayerID) throws Exception{
 		boolean returnNext=false;
 		ImageLayer im= getImageLayerByMarkingLayerID(mLayerID);
 		
@@ -578,7 +606,7 @@ public class InformationCenter {
 	 * @param mLayerID the MarkingLayer ID
 	 * @return the previous marking layer, null if not found
 	 */
-	private MarkingLayer getPreviousMarkingLayer(int mLayerID){
+	private MarkingLayer getPreviousMarkingLayer(int mLayerID) throws Exception{
 		MarkingLayer previousMarkingLayer=null;
 		ImageLayer im= getImageLayerByMarkingLayerID(mLayerID);
 		
@@ -604,7 +632,7 @@ public class InformationCenter {
 	 * @param direction the direction
 	 * @return true, if successful
 	 */
-	public boolean moveSelectedMarkingLayer(int direction){
+	public boolean moveSelectedMarkingLayer(int direction) throws Exception{
 		
 		MarkingLayer selectedMarkingLayer= getSelectedMarkingLayer();
 		if(selectedMarkingLayer != null){
@@ -803,20 +831,26 @@ public class InformationCenter {
 	 * @return the ImageLayer preceding selected ImageLayer. Negative value returned if not found.
 	 */
 	public int getSelectedImageLayerOneUp(){
-		if(getSelectedImageLayer() != null){
-			int selected_iLayer_id = getSelectedImageLayer().getLayerID();
-			int previous_ID=selected_iLayer_id;
-			Iterator<ImageLayer> iIterator= this.imageLayerList.iterator();
-			while(iIterator.hasNext()){
-				ImageLayer il=iIterator.next();
-				if(il.getLayerID() == selected_iLayer_id)
-					return previous_ID;
-				else{
-					previous_ID=il.getLayerID();
+		try {
+			if(getSelectedImageLayer() != null){
+				int selected_iLayer_id = getSelectedImageLayer().getLayerID();
+				int previous_ID=selected_iLayer_id;
+				Iterator<ImageLayer> iIterator= this.imageLayerList.iterator();
+				while(iIterator.hasNext()){
+					ImageLayer il=iIterator.next();
+					if(il.getLayerID() == selected_iLayer_id)
+						return previous_ID;
+					else{
+						previous_ID=il.getLayerID();
+					}
 				}
 			}
+			return -1; // not found
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting Selected upper ImageLayer!");
+			e.printStackTrace();
+			return -1;
 		}
-		return -1; // not found
 
 	}
 
@@ -826,20 +860,26 @@ public class InformationCenter {
 	 * @return the ImageLayer descending selected ImageLayer. Negative value returned if not found.
 	 */
 	public int getSelectedImageLayerOneDown(){
-		if(getSelectedImageLayer() != null){
-			int selected_iLayer_id = getSelectedImageLayer().getLayerID();
-			for (int i = 0; i < this.imageLayerList.size(); i++) {
-				ImageLayer il=this.imageLayerList.get(i);
-				if(il.getLayerID()== selected_iLayer_id){
-					if(i+1<this.imageLayerList.size()){
-						return this.imageLayerList.get(i+1).getLayerID();
+		try {
+			if(getSelectedImageLayer() != null){
+				int selected_iLayer_id = getSelectedImageLayer().getLayerID();
+				for (int i = 0; i < this.imageLayerList.size(); i++) {
+					ImageLayer il=this.imageLayerList.get(i);
+					if(il.getLayerID()== selected_iLayer_id){
+						if(i+1<this.imageLayerList.size()){
+							return this.imageLayerList.get(i+1).getLayerID();
+						}
+						return -1;
 					}
-					return -1;
-				}
 
+				}
 			}
+			return -1; // not found
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting ImageLayer below!");
+			e.printStackTrace();
+			return -1;
 		}
-		return -1; // not found
 
 	}
 
@@ -850,44 +890,57 @@ public class InformationCenter {
 	 * @return the MarkingLayer preceding selected MarkingLayer. Negative value returned if not found.
 	 */
 	public int getSelectedMarkingLayerOneUp(){
-		if(getSelectedMarkingLayer() != null){
-			int selected_mLayer_id = getSelectedMarkingLayer().getLayerID();
-			int previous_ID=selected_mLayer_id;
-			Iterator<MarkingLayer> iIterator= getAllMarkingLayers().iterator();
-			while(iIterator.hasNext()){
-				MarkingLayer ml=iIterator.next();
-				if(ml.getLayerID() == selected_mLayer_id)
-					return previous_ID;
-				else{
-					previous_ID=ml.getLayerID();
-				}
+		try {
+			if(getSelectedMarkingLayer() != null){
+				int selected_mLayer_id = getSelectedMarkingLayer().getLayerID();
+				int previous_ID=selected_mLayer_id;
+				Iterator<MarkingLayer> iIterator= getAllMarkingLayers().iterator();
+				while(iIterator.hasNext()){
+					MarkingLayer ml=iIterator.next();
+					if(ml.getLayerID() == selected_mLayer_id)
+						return previous_ID;
+					else{
+						previous_ID=ml.getLayerID();
+					}
 
+				}
 			}
+			return -1; // not found
+		} catch (Exception e) {
+			LOGGER.severe("Error in getting selected upper MarkingLayer!");
+			e.printStackTrace();
+			return -1;
 		}
-		return -1; // not found
 
 	}
+	
 	/**
 	 * Returns ID of MarkingLayer which is below selected MarkingLayer in ImageLayerInfo and descending in list of MarkingLayers.
-	 * 
+	 *
 	 * @return the MarkingLayer descending selected MarkingLayer. Negative value returned if not found.
 	 */
 	public int getSelectedMarkingLayerOneDown(){
-		if(getSelectedMarkingLayer() != null){
-			int selected_mLayer_id = getSelectedMarkingLayer().getLayerID();
-			ArrayList<MarkingLayer> allMarkingLayers = getAllMarkingLayers();
-			for (int i = 0; i < allMarkingLayers.size(); i++) {
-				MarkingLayer ml=allMarkingLayers.get(i);
-				if(ml.getLayerID()== selected_mLayer_id){
-					if(i+1<allMarkingLayers.size()){
-						return allMarkingLayers.get(i+1).getLayerID();
+		try {
+			if(getSelectedMarkingLayer() != null){
+				int selected_mLayer_id = getSelectedMarkingLayer().getLayerID();
+				ArrayList<MarkingLayer> allMarkingLayers = getAllMarkingLayers();
+				for (int i = 0; i < allMarkingLayers.size(); i++) {
+					MarkingLayer ml=allMarkingLayers.get(i);
+					if(ml.getLayerID()== selected_mLayer_id){
+						if(i+1<allMarkingLayers.size()){
+							return allMarkingLayers.get(i+1).getLayerID();
+						}
+						return -1;
 					}
-					return -1;
-				}
 
+				}
 			}
+			return -1; // not found
+		} catch (Exception e) {
+			LOGGER.severe("Error in MarkingLayer one below!");
+			e.printStackTrace();
+			return -1;
 		}
-		return -1; // not found
 
 	}
 
@@ -947,8 +1000,10 @@ public class InformationCenter {
 
 	/**
 	 * Sets the proper selected ImageLayer.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void setProperSelectedImageLayer(){
+	private void setProperSelectedImageLayer() throws Exception{
 
 		if(this.getImageLayerList() != null && this.getImageLayerList().size()>0){
 			if(getSelectedImageLayer() == null){
@@ -966,8 +1021,10 @@ public class InformationCenter {
 
 	/**
 	 * Sets the all ImageLayer objects to unselected and object selectedImageLayer as null.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void setAllImageLayersUnSelected(){
+	private void setAllImageLayersUnSelected() throws Exception{
 		if(this.imageLayerList != null && this.imageLayerList.size()>0){
 			Iterator<ImageLayer> iterator = this.imageLayerList.iterator();
 			while (iterator.hasNext()) {
@@ -980,8 +1037,10 @@ public class InformationCenter {
 
 	/**
 	 * Sets the selectedMarkingLayer from selected ImageLayer. If no any markingLayers in selected ImageLayer, then set null.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void setProperSelectedMarkingLayer(){
+	private void setProperSelectedMarkingLayer() throws Exception{
 		ImageLayer selectedIL= getSelectedImageLayer();
 		if(selectedIL != null && selectedIL.getMarkingLayers() != null && selectedIL.getMarkingLayers().size()>0){
 			// check is the selectedMarkingLayer already ok
@@ -1031,8 +1090,10 @@ public class InformationCenter {
 
 	/**
 	 *  Sets all MarkingLayers to unselected.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void setAllMarkingLayersUnselected(){
+	private void setAllMarkingLayersUnselected() throws Exception{
 		ArrayList<MarkingLayer> allMarkingLayers= getAllMarkingLayers();
 		if(allMarkingLayers != null && allMarkingLayers.size()>0){
 			Iterator<MarkingLayer> mIterator = allMarkingLayers.iterator();
@@ -1047,9 +1108,11 @@ public class InformationCenter {
 
 	/**
 	 * Goes through all Imagelayers and return all MarkingLayers of them.
+	 *
 	 * @return array of all MarkingLayers in all ImageLayers
+	 * @throws Exception the exception
 	 */
-	public ArrayList<MarkingLayer> getAllMarkingLayers(){
+	public ArrayList<MarkingLayer> getAllMarkingLayers() throws Exception{
 		try {
 			ArrayList<MarkingLayer> tempMarkingLayerList = new ArrayList<MarkingLayer>();
 
@@ -1078,17 +1141,20 @@ public class InformationCenter {
 	 * Returns the selected ImageLayer.
 	 *
 	 * @return the selected ImageLayer
+	 * @throws Exception the exception
 	 */
-	public ImageLayer getSelectedImageLayer() {
+	public ImageLayer getSelectedImageLayer() throws Exception{
 		return this.selectedImageLayer;
 	}
 
 	/**
 	 * Sets the given ImageLayer as selectedImageLayer and checks is the selectedMarkingLayerProper.
 	 * If selectedMarkingLayer is not proper (not found) the new one is selected from MarkinLayers of selectedImageLayer.
+	 *
 	 * @param selectedImageLayer The ImageLayer to set as selectedImageLayer
+	 * @throws Exception the exception
 	 */
-	private void setSelectedImageLayer(ImageLayer selectedImageLayer) {
+	private void setSelectedImageLayer(ImageLayer selectedImageLayer) throws Exception {
 		this.selectedImageLayer = selectedImageLayer;
 		this.setProperSelectedMarkingLayer();
 	}
@@ -1097,8 +1163,9 @@ public class InformationCenter {
 	 * Returns the list of visible MarkingLayers.
 	 *
 	 * @return the list of visible MarkingLayers
+	 * @throws Exception the exception
 	 */
-	public ArrayList<MarkingLayer> getVisibleMarkingLayerList() {
+	public ArrayList<MarkingLayer> getVisibleMarkingLayerList() throws Exception {
 		return visibleMarkingLayerList;
 	}
 
@@ -1106,8 +1173,9 @@ public class InformationCenter {
 	 * Sets the list of visible MarkingLayers.
 	 *
 	 * @param visibleMarkingLayerList the list of visible MarkingLayers
+	 * @throws Exception the exception
 	 */
-	public void setVisibleMarkingLayerList(ArrayList<MarkingLayer> visibleMarkingLayerList) {
+	public void setVisibleMarkingLayerList(ArrayList<MarkingLayer> visibleMarkingLayerList) throws Exception {
 		this.visibleMarkingLayerList = visibleMarkingLayerList;
 	}
 
@@ -1115,8 +1183,9 @@ public class InformationCenter {
 	 * Adds the MarkingLayer to visible list.
 	 *
 	 * @param mLayerID the ID of MarkingLayer
+	 * @throws Exception the exception
 	 */
-	private void addMarkingLayerToVisibleList(int mLayerID){
+	private void addMarkingLayerToVisibleList(int mLayerID) throws Exception{
 		MarkingLayer markingLayer=getMarkingLayer(mLayerID);
 		// add the MarkingLayer to visibleMarkingLayer list only if not exists
 		if(markingLayer != null && !isInVisibleMarkingList(markingLayer.getLayerID())){
@@ -1130,8 +1199,9 @@ public class InformationCenter {
 	 *
 	 * @param mLayerID the ID of MarkingLayer
 	 * @param visible the boolean for visibility
+	 * @throws Exception the exception
 	 */
-	public void setMarkingLayerVisibility(int mLayerID, boolean visible){
+	public void setMarkingLayerVisibility(int mLayerID, boolean visible) throws Exception{
 		MarkingLayer markingLayer=getMarkingLayer(mLayerID);
 		if(visible){
 			if(markingLayer != null && !isInVisibleMarkingList(markingLayer.getLayerID())){
@@ -1171,8 +1241,10 @@ public class InformationCenter {
 */
 	/**
 	 * Update the list of visible MarkingLayers.
+	 *
+	 * @throws Exception the exception
 	 */
-	private void updateVisibleMarkingLayerList(){
+	private void updateVisibleMarkingLayerList() throws Exception{
 		ArrayList<MarkingLayer> allML = getAllMarkingLayers();
 		this.visibleMarkingLayerList.clear();
 		if(allML != null && allML.size() > 0){
@@ -1188,10 +1260,12 @@ public class InformationCenter {
 
 	/**
 	 * Checks is the given MarkingLayer in list of visible Markings.
+	 *
 	 * @param mlayerID ID for MarkingLayer, which visibility is examined.
 	 * @return true if MarkingLayer is in visible list, false otherwise.
+	 * @throws Exception the exception
 	 */
-	private boolean isInVisibleMarkingList(int mlayerID){
+	private boolean isInVisibleMarkingList(int mlayerID) throws Exception{
 			// if no any visible markings -> return false
 		if(this.visibleMarkingLayerList == null || this.visibleMarkingLayerList.size()==0)
 			return false;
@@ -1208,8 +1282,9 @@ public class InformationCenter {
 	 * Update selected ImageLayer.
 	 *
 	 * @param iLayerID the ID of ImageLayer
+	 * @throws Exception the exception
 	 */
-	public void updateSelectedImageLayer(int iLayerID){
+	public void updateSelectedImageLayer(int iLayerID) throws Exception{
 		ImageLayer im = getImageLayerByID(iLayerID);
 		if(im != null){
 			// set all ImageLayers first unselected
@@ -1224,8 +1299,9 @@ public class InformationCenter {
 	 * Returns the selected MarkingLayer.
 	 *
 	 * @return the selected marking layer
+	 * @throws Exception the exception
 	 */
-	public MarkingLayer getSelectedMarkingLayer() {
+	public MarkingLayer getSelectedMarkingLayer()  throws Exception{
 		return selectedMarkingLayer;
 	}
 
@@ -1233,8 +1309,9 @@ public class InformationCenter {
 	 * Sets the selected MarkingLayer.
 	 *
 	 * @param sMarkingLayer the new selected marking layer
+	 * @throws Exception the exception
 	 */
-	public void setSelectedMarkingLayer(MarkingLayer sMarkingLayer) {
+	public void setSelectedMarkingLayer(MarkingLayer sMarkingLayer)  throws Exception {
 		if(sMarkingLayer != null){
 			setAllMarkingLayersUnselected();
 			this.selectedMarkingLayer = sMarkingLayer;
@@ -1260,8 +1337,9 @@ public class InformationCenter {
 	 * Returns the single grid size list.
 	 *
 	 * @return the single grid size list
+	 * @throws Exception the exception
 	 */
-	public ArrayList<SingleGridSize> getSingleGridSizeList() {
+	public ArrayList<SingleGridSize> getSingleGridSizeList() throws Exception{
 		return singleGridSizeList;
 	}
 
@@ -1270,8 +1348,9 @@ public class InformationCenter {
 	 *
 	 * @param iLayerID the ID of ImageLayer
 	 * @return true, if is selected ImageLayer
+	 * @throws Exception the exception
 	 */
-	public boolean isSelectedImageLayer(int iLayerID){
+	public boolean isSelectedImageLayer(int iLayerID)throws Exception{
 		if(this.selectedImageLayer != null && this.selectedImageLayer.getLayerID()== iLayerID)
 			return true;
 		return false;
@@ -1284,17 +1363,24 @@ public class InformationCenter {
 	 * @return true, if is selected MarkingLayer
 	 */
 	public boolean isSelectedMarkingLayer(int mLayerID){
-		if(this.selectedMarkingLayer!= null && this.selectedMarkingLayer.getLayerID()== mLayerID)
-			return true;
-		return false;
+		try {
+			if(this.selectedMarkingLayer!= null && this.selectedMarkingLayer.getLayerID()== mLayerID)
+				return true;
+			return false;
+		} catch (Exception e) {
+			LOGGER.severe("Error in checking is selected MarkingLayers!");
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/**
 	 * Returns the boolean madeChanges.
 	 *
 	 * @return true, if is made changes
+	 * @throws Exception the exception
 	 */
-	public boolean isMadeChanges() {
+	public boolean isMadeChanges() throws Exception{
 		return madeChanges;
 	}
 
@@ -1302,8 +1388,9 @@ public class InformationCenter {
 	 * Sets the boolean has changes made. This functionality is not fully used. Will be fulfilled in future releases.
 	 *
 	 * @param madeChanges the new boolean for has changes made.
+	 * @throws Exception the exception
 	 */
-	public void setMadeChanges(boolean madeChanges) {
+	public void setMadeChanges(boolean madeChanges) throws Exception{
 		this.madeChanges = madeChanges;
 	}
 

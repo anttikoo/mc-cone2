@@ -707,7 +707,7 @@ public class XMLwriteManager {
 
 				return true;
 		} catch (Exception e) {
-			LOGGER.warning("Error in saving markings of "+mLayer.getLayerName()+ " to xml-file");
+			LOGGER.warning("Error in saving markings to xml-file");
 			return false;
 		}
 
