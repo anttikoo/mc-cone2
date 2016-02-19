@@ -14,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -30,6 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+
 
 
 
@@ -83,6 +86,7 @@ public class ShadyMessageDialog extends JDialog{
 	 */
 	public ShadyMessageDialog(JFrame frame, String title, String message, int typeOfButtons, Component comp){
 		super(frame,true);
+		
 		super.setLocationRelativeTo(comp);
 		try {
 			this.setLocationRelativeTo(comp);
@@ -131,14 +135,14 @@ public class ShadyMessageDialog extends JDialog{
 	private void initDialog(){
 
 		try {
-			this.setResizable(false);		
-			this.setBounds(WindowLocator.getVisibleWindowBounds(parentComponent));
-			this.setUndecorated(true); // no titlebar or buttons
-			this.setBackground(new Color(0,0,0,0)); // transparent color
+			setResizable(false);		
+			setBounds(WindowLocator.getVisibleWindowBounds(parentComponent));
+			setUndecorated(true); // no titlebar or buttons
+			setBackground(new Color(0,0,0,0)); // transparent color
 
-			this.setContentPane(new ContentPane());
-			this.getContentPane().setBackground(Color_schema.dark_30);
-			this.getContentPane().setLayout(new GridBagLayout());
+			setContentPane(new ContentPane());
+			getContentPane().setBackground(Color_schema.dark_30);
+			getContentPane().setLayout(new GridBagLayout());
 
 			dialogBackPanel = new JPanel();
 			dialogBackPanel.setBackground(Color_schema.dark_30);
@@ -253,8 +257,10 @@ public class ShadyMessageDialog extends JDialog{
 			dialogBackPanel.add(messageScrollPane, BorderLayout.CENTER);
 			dialogBackPanel.add(buttonPanel, BorderLayout.PAGE_END);
 			this.add(dialogBackPanel);
-			this.validate();
-			this.repaint();
+		
+		//	this.validate();
+	
+		//this.repaint();
 
 		} catch (Exception e) {
 			LOGGER.severe("Error in initializing Dialog: " +e.getClass().toString() + " :" +e.getMessage());
@@ -381,17 +387,18 @@ public class ShadyMessageDialog extends JDialog{
 	public int showDialog(){
 		try {
 			this.validate();
-			setVisible(true);
-			SwingUtilities.invokeLater(new Runnable() {
+			Timer timer = new Timer();
+			timer.schedule(new TimerTask() {
 				
 				@Override
 				public void run() {
-					
-			//	repaint();
-			
+					//validate();
 					
 				}
-			});
+			}, 500);
+		
+			this.setVisible(true);
+	
 		//	this.repaint();
 			return returnValue;
 		} catch (Exception e) {

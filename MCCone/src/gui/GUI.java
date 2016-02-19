@@ -755,6 +755,7 @@ public class GUI extends JFrame{
 				if(selectionID == ID.NO){
 					return;
 				}
+				dialog=null;
 			}
 
 			// close program
@@ -2499,8 +2500,7 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 			}
 			else{
 				if(osString.contains("mac")){
-				//	SharedVariables.setUsedDimmingModeToSrcOut();
-					SharedVariables.setUsedDimmingModeToSrc();
+					SharedVariables.setUsedDimmingModeToSrcOut();
 					SharedVariables.setOS(ID.OS_MAC);
 				}
 				else{ // unix or linux
