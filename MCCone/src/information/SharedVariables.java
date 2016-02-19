@@ -14,6 +14,7 @@ public class SharedVariables {
 	public static final double GLOBAL_CIRCULARITY = 1.8;
 	public static final int MAX_GAP = 6;
 	public static int operationSystem=ID.OS_WINDOWS;
+	public static int transparencyModeSRC = AlphaComposite.SRC;
 	public static int transparencyModeIN = AlphaComposite.SRC_IN;
 	public static int transparencyModeOVER = AlphaComposite.SRC_OVER;
 	public static int transparencyModeOut= AlphaComposite.SRC_OUT;
@@ -64,6 +65,13 @@ public class SharedVariables {
 	 */
 	public static void setTransParencyOver(int trm){
 		transparencyModeOVER=trm;
+	}
+	
+	/**
+	 * Sets the used dimming mode to srcAtop.
+	 */
+	public static void setUsedDimmingModeToSrc(){
+		usedDimmingMode=transparencyModeSRC;
 	}
 	
 	/**

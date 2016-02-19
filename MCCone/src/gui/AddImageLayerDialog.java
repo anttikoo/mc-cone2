@@ -1034,8 +1034,8 @@ private JPanel initImageViewPanel(){
 		
 	//	OpenImageFilesDialog 
 		visibleDialog=new OpenImageFilesDialog(this, this.getBounds(), this.backPanel.getBounds(), gui.getPresentFolder());
-			
-		visibleDialog.setVisible(true);
+		((OpenImageFilesDialog)visibleDialog).showDialog();
+	//	visibleDialog.setVisible(true);
 		gui.setPresentFolder(((OpenImageFilesDialog)visibleDialog).getPresentFolder());
 		File[] imagefiles = ((OpenImageFilesDialog)visibleDialog).getSelectedFiles();
 		if(imagefiles != null && imagefiles.length>0)
@@ -1120,6 +1120,8 @@ private JPanel initImageViewPanel(){
 	 */
 	public void showDialog() throws Exception{
 		this.setVisible(true);
+		this.repaint();
+	
 		
 	}
 	

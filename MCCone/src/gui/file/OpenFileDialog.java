@@ -41,6 +41,9 @@ import javax.swing.SwingUtilities;
 		/** The Constant serialVersionUID. */
 		private static final long serialVersionUID = 1L;
 
+		/** The Constant LOGGER. */
+		private final static Logger LOGGER = Logger.getLogger("MCCLogger");
+		
 		/** The open dialog back panel. */
 		private JPanel openDialogBackPanel;
 		
@@ -67,34 +70,7 @@ import javax.swing.SwingUtilities;
 		
 		/** The selected files. */
 		protected File[] selectedFiles=null;
-		
-		/** The Constant LOGGER. */
-		private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 
-		/**
-		 * Class constructor for Dialog. The Dialog is JFilechooser which gives to select image files.
-		 *
-		 * @param frame owner JFrame
-		 * @param parentComponentBounds the parent component bounds
-		 * @param backPanelBounds the back panel bounds
-		 * @param presentFolder the present folder
-		 */
-		public OpenFileDialog(JFrame frame, Rectangle parentComponentBounds, Rectangle backPanelBounds, String presentFolder){
-			super(frame, true);
-			try {
-				this.setResizable(false);
-				this.parentComponentBounds=parentComponentBounds;
-				this.parentComponentBackPanelBounds=backPanelBounds;
-				this.presentFolder=getFolderString(presentFolder);
-				initFileDialog();
-			} catch (Exception e) {
-				LOGGER.severe("Error in initializing OpenFileDialog!");
-				e.printStackTrace();
-			}
-		}
-		
-		
-		
 		/**
 		 * Instantiates a new open file dialog.
 		 *
@@ -116,35 +92,207 @@ import javax.swing.SwingUtilities;
 				e.printStackTrace();
 			}
 		}
+		
+		
+		
+		/**
+		 * Class constructor for Dialog. The Dialog is JFilechooser which gives to select image files.
+		 *
+		 * @param frame owner JFrame
+		 * @param parentComponentBounds the parent component bounds
+		 * @param backPanelBounds the back panel bounds
+		 * @param presentFolder the present folder
+		 */
+		public OpenFileDialog(JFrame frame, Rectangle parentComponentBounds, Rectangle backPanelBounds, String presentFolder){
+			super(frame, true);
+			try {
+				this.setResizable(false);
+				this.parentComponentBounds=parentComponentBounds;
+				this.parentComponentBackPanelBounds=backPanelBounds;
+				this.presentFolder=getFolderString(presentFolder);
+				initFileDialog();
+			} catch (Exception e) {
+				LOGGER.severe("Error in initializing OpenFileDialog!");
+				e.printStackTrace();
+			}
+		}
 
 
 		/**
-		 * Initializes the dialog opening a file.
+		 * Adds the actions to file dialog buttons.
+		 *
+		 * @param button the button
+		 * @throws Exception the exception
 		 */
-		private void initFileDialog() throws Exception{
+		protected void addActionsToFileDialogButtons(JButton button) throws Exception{
+			// create code to extended class
+		}
 
-			this.setBounds(this.parentComponentBounds); //sets the size of window same as the parent window size
-			this.setUndecorated(true); // no titlebar or buttons
-			this.setBackground(new Color(0,0,0,0)); // transparent color
-			this.setContentPane(new ContentPane());
-			this.getContentPane().setBackground(Color_schema.dark_30);
-			this.getContentPane().setLayout(new GridBagLayout());
+		/**
+		 * Adds the key listener to JButton.
+		 *
+		 * @param button the button
+		 * @return the j button
+		 * @throws Exception the exception
+		 */
+		private JButton addKeyListenerToButton(final JButton button) throws Exception{
 
-			openDialogBackPanel = new JPanel();
-			openDialogBackPanel.setBackground(new Color(0,0,0));
-			openDialogBackPanel.setLayout(new BorderLayout());
-			openDialogBackPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 5));
-			openDialogBackPanel.setMaximumSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.95), (int)(this.parentComponentBackPanelBounds.getHeight()*0.95)));
-			openDialogBackPanel.setMinimumSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.7), (int)(this.parentComponentBackPanelBounds.getHeight()*0.5)));
-			openDialogBackPanel.setPreferredSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.7), (int)(this.parentComponentBackPanelBounds.getHeight()*0.7)));
-			if(openDialogBackPanel.getPreferredSize().getWidth()<500)
-				openDialogBackPanel.setPreferredSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.95), (int)(this.parentComponentBackPanelBounds.getHeight()*0.95)));
-	
-			JPanel fileChooserPanel = initFileChooserPanel();
-			openDialogBackPanel.add(fileChooserPanel, BorderLayout.CENTER);
-			this.add(openDialogBackPanel);
-			this.validate();
-			this.repaint();
+			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+			inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
+			ActionMap actionMap = 	(button).getActionMap();
+			actionMap.put("enter_pressed", new AbstractAction() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					button.doClick();
+
+				}
+
+			});
+
+			return button;
+		}
+
+		/**
+		 * Converts given File to directory if it is not already one.
+		 *
+		 * @param filePath the file path
+		 * @return the folder of given file
+		 */
+		protected File getFolder(String filePath){
+			try {
+				File f = new File(filePath);
+				if (f.exists()) {
+					if (f.isDirectory()) {
+						// return the folder
+						return f;
+					} else if (f.isFile()) {
+						// the folderPath was a file -> get the folder of that file
+						return new File(f.getParent());
+					}
+				}
+				return null;
+			} catch (Exception e) {
+				LOGGER.severe("Error in getting folder of file " +e.getClass().toString() + " :" +e.getMessage()+ " line: "+ e.getStackTrace()[2].getLineNumber());
+				return null;
+			}
+		}
+
+		/**
+		 * Gets the String of folder name from file path.
+		 *
+		 * @param filePath the file path
+		 * @return the folder string
+		 * @throws Exception the exception
+		 */
+		private String getFolderString(String filePath) throws Exception{
+			return getFolder(filePath).getAbsolutePath();
+		}
+
+		/**
+		 * Gets the most common path from list of previous files.
+		 *
+		 * @param fileGroup list of Files
+		 * @return String the most common path
+		 */
+		protected String getMostCommonPath(File[] fileGroup){
+			try {
+				ArrayList<PathCount> countedPathList = new ArrayList<PathCount>();
+				PathCount biggestPathCount = null;
+				if(fileGroup != null && fileGroup.length>0){
+
+					for (int j = 0; j < fileGroup.length; j++) {
+						if(fileGroup[j] != null){
+							if(fileGroup[j].exists()){ // file exist
+								String folderPath="";
+								if(fileGroup[j].isDirectory()){ // is folder
+									folderPath=fileGroup[j].getAbsolutePath();
+								}
+								else if(fileGroup[j].isFile()){ // is file -> get folder
+									folderPath= (getFolder(fileGroup[j].getAbsolutePath())).getAbsolutePath();
+								}
+								// add folder to list -> returns the PathCount object with highest count value
+								biggestPathCount = updatePathCount(countedPathList, folderPath, biggestPathCount);
+							}
+						}
+					}
+				}
+				else{
+					return null;
+				}
+
+				return biggestPathCount.getFolderPath();
+			} catch (Exception e) {
+				LOGGER.severe("Error in gettin most common folderpath " +e.getClass().toString() + " :" +e.getMessage());
+				return null;
+			}
+
+		}
+
+		/**
+		 * Gets the present folder.
+		 *
+		 * @return the present folder
+		 * @throws Exception the exception
+		 */
+		public String getPresentFolder() throws Exception{
+			return this.presentFolder;
+		}
+
+
+		/**
+		 * Gets the selected files.
+		 *
+		 * @return the selected files
+		 * @throws Exception the exception
+		 */
+		public File[] getSelectedFiles() throws Exception{
+			return this.selectedFiles;
+		}
+
+		/**
+		 * Gets the title of dialog.
+		 *
+		 * @return the window title
+		 * @throws Exception the exception
+		 */
+		protected String getWindowTitle() throws Exception{
+			return "Title";
+		}
+
+		/**
+		 * Calls the hiding method to close dialog.
+		 */
+		protected void hideDialog() throws Exception{
+			SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					hideThis();
+
+				}
+			});
+		}
+
+
+		/**
+		 * Closes dialog.
+		 */
+		public void hideThis(){
+			try{
+			this.setVisible(false); // close dialog
+			this.dispose();
+			}
+			catch(Exception e){
+				this.dispose();
+				LOGGER.severe("Error in hiding FileDIalog.");
+				e.printStackTrace();
+			}
 		}
 
 		/**
@@ -253,73 +401,32 @@ import javax.swing.SwingUtilities;
 		}
 
 		/**
-		 * Gets the title of dialog.
-		 *
-		 * @return the window title
-		 * @throws Exception the exception
+		 * Initializes the dialog opening a file.
 		 */
-		protected String getWindowTitle() throws Exception{
-			return "Title";
-		}
+		private void initFileDialog() throws Exception{
 
-		/**
-		 * Sets the up filechooser settings.
-		 *
-		 * @throws Exception the exception
-		 */
-		protected void setUpFilechooserSettings() throws Exception{
-			//
-		}
+			this.setBounds(this.parentComponentBounds); //sets the size of window same as the parent window size
+			this.setUndecorated(true); // no titlebar or buttons
+			this.setBackground(new Color(0,0,0,0)); // transparent color
+			this.setContentPane(new ContentPane());
+			this.getContentPane().setBackground(Color_schema.dark_30);
+			this.getContentPane().setLayout(new GridBagLayout());
 
-		/**
-		 * Adds the actions to file dialog buttons.
-		 *
-		 * @param button the button
-		 * @throws Exception the exception
-		 */
-		protected void addActionsToFileDialogButtons(JButton button) throws Exception{
-			// create code to extended class
-		}
-
-		/**
-		 * Adds the key listener to JButton.
-		 *
-		 * @param button the button
-		 * @return the j button
-		 * @throws Exception the exception
-		 */
-		private JButton addKeyListenerToButton(final JButton button) throws Exception{
-
-			InputMap inputMap= (button).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-			inputMap.put(KeyStroke.getKeyStroke("pressed ENTER"), "enter_pressed");
-			ActionMap actionMap = 	(button).getActionMap();
-			actionMap.put("enter_pressed", new AbstractAction() {
-
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					button.doClick();
-
-				}
-
-			});
-
-			return button;
-		}
-
-
-		/**
-		 * Gets the selected files.
-		 *
-		 * @return the selected files
-		 * @throws Exception the exception
-		 */
-		public File[] getSelectedFiles() throws Exception{
-			return this.selectedFiles;
+			openDialogBackPanel = new JPanel();
+			openDialogBackPanel.setBackground(new Color(0,0,0));
+			openDialogBackPanel.setLayout(new BorderLayout());
+			openDialogBackPanel.setBorder(BorderFactory.createLineBorder(Color_schema.button_light_border, 5));
+			openDialogBackPanel.setMaximumSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.95), (int)(this.parentComponentBackPanelBounds.getHeight()*0.95)));
+			openDialogBackPanel.setMinimumSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.7), (int)(this.parentComponentBackPanelBounds.getHeight()*0.5)));
+			openDialogBackPanel.setPreferredSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.7), (int)(this.parentComponentBackPanelBounds.getHeight()*0.7)));
+			if(openDialogBackPanel.getPreferredSize().getWidth()<500)
+				openDialogBackPanel.setPreferredSize(new Dimension((int)(this.parentComponentBackPanelBounds.getWidth()*0.95), (int)(this.parentComponentBackPanelBounds.getHeight()*0.95)));
+	
+			JPanel fileChooserPanel = initFileChooserPanel();
+			openDialogBackPanel.add(fileChooserPanel, BorderLayout.CENTER);
+			this.add(openDialogBackPanel);
+			this.validate();
+			this.repaint();
 		}
 
 		/**
@@ -333,54 +440,17 @@ import javax.swing.SwingUtilities;
 		}
 
 		/**
-		 * Gets the present folder.
+		 * Sets the up filechooser settings.
 		 *
-		 * @return the present folder
 		 * @throws Exception the exception
 		 */
-		public String getPresentFolder() throws Exception{
-			return this.presentFolder;
+		protected void setUpFilechooserSettings() throws Exception{
+			//
 		}
-
-
-		/**
-		 * Gets the most common path from list of previous files.
-		 *
-		 * @param fileGroup list of Files
-		 * @return String the most common path
-		 */
-		protected String getMostCommonPath(File[] fileGroup){
-			try {
-				ArrayList<PathCount> countedPathList = new ArrayList<PathCount>();
-				PathCount biggestPathCount = null;
-				if(fileGroup != null && fileGroup.length>0){
-
-					for (int j = 0; j < fileGroup.length; j++) {
-						if(fileGroup[j] != null){
-							if(fileGroup[j].exists()){ // file exist
-								String folderPath="";
-								if(fileGroup[j].isDirectory()){ // is folder
-									folderPath=fileGroup[j].getAbsolutePath();
-								}
-								else if(fileGroup[j].isFile()){ // is file -> get folder
-									folderPath= (getFolder(fileGroup[j].getAbsolutePath())).getAbsolutePath();
-								}
-								// add folder to list -> returns the PathCount object with highest count value
-								biggestPathCount = updatePathCount(countedPathList, folderPath, biggestPathCount);
-							}
-						}
-					}
-				}
-				else{
-					return null;
-				}
-
-				return biggestPathCount.getFolderPath();
-			} catch (Exception e) {
-				LOGGER.severe("Error in gettin most common folderpath " +e.getClass().toString() + " :" +e.getMessage());
-				return null;
-			}
-
+		
+		public void showDialog(){
+			this.setVisible(true);
+			this.repaint();
 		}
 
 		/**
@@ -426,71 +496,6 @@ import javax.swing.SwingUtilities;
 			} catch (Exception e) {
 				LOGGER.severe("Error in updatePathCount " +e.getClass().toString() + " :" +e.getMessage());
 				return null;
-			}
-		}
-
-		/**
-		 * Converts given File to directory if it is not already one.
-		 *
-		 * @param filePath the file path
-		 * @return the folder of given file
-		 */
-		protected File getFolder(String filePath){
-			try {
-				File f = new File(filePath);
-				if (f.exists()) {
-					if (f.isDirectory()) {
-						// return the folder
-						return f;
-					} else if (f.isFile()) {
-						// the folderPath was a file -> get the folder of that file
-						return new File(f.getParent());
-					}
-				}
-				return null;
-			} catch (Exception e) {
-				LOGGER.severe("Error in getting folder of file " +e.getClass().toString() + " :" +e.getMessage()+ " line: "+ e.getStackTrace()[2].getLineNumber());
-				return null;
-			}
-		}
-
-		/**
-		 * Gets the String of folder name from file path.
-		 *
-		 * @param filePath the file path
-		 * @return the folder string
-		 * @throws Exception the exception
-		 */
-		private String getFolderString(String filePath) throws Exception{
-			return getFolder(filePath).getAbsolutePath();
-		}
-
-		/**
-		 * Calls the hiding method to close dialog.
-		 */
-		protected void hideDialog() throws Exception{
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					hideThis();
-
-				}
-			});
-		}
-
-		/**
-		 * Closes dialog.
-		 */
-		public void hideThis(){
-			try{
-			this.setVisible(false); // close dialog
-			this.dispose();
-			}
-			catch(Exception e){
-				this.dispose();
-				LOGGER.severe("Error in hiding FileDIalog.");
-				e.printStackTrace();
 			}
 		}
 

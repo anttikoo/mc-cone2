@@ -2492,14 +2492,15 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 
 		try {
 			String osString=System.getProperty("os.name").toLowerCase();
-			LOGGER.fine("OS:"+osString);
+			LOGGER.info("OS:"+osString);
 			if(osString.contains("win")){
 				SharedVariables.setUsedDimmingModeToSrcOver();
 				SharedVariables.setOS(ID.OS_WINDOWS);
 			}
 			else{
 				if(osString.contains("mac")){
-					SharedVariables.setUsedDimmingModeToSrcOut();
+				//	SharedVariables.setUsedDimmingModeToSrcOut();
+					SharedVariables.setUsedDimmingModeToSrc();
 					SharedVariables.setOS(ID.OS_MAC);
 				}
 				else{ // unix or linux

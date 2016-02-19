@@ -1,11 +1,14 @@
 package gui;
 
+import information.ID;
 import information.SharedVariables;
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
+import java.awt.RenderingHints;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
 
@@ -37,7 +40,7 @@ public class ContentPane extends JPanel{
 		try {
 			this.setLayout(layout);
 			setOpaque(false);
-			this.setBackground(Color_schema.dark_30);
+		//	this.setBackground(Color_schema.dark_30);
 		} catch (Exception e) {
 			LOGGER.severe("ERROR in initializing ContentPane");
 			e.printStackTrace();
@@ -45,6 +48,7 @@ public class ContentPane extends JPanel{
 	}
 	
 
+	
 	    @Override
 	    protected void paintComponent(Graphics g) {
 
@@ -53,29 +57,37 @@ public class ContentPane extends JPanel{
 	        	
 				// Allow super to paint
 				super.paintComponent(g);
+		//		if(SharedVariables.operationSystem != ID.OS_MAC){ // dimming is not working in mac right
 				
-				// Apply our own painting effect
-				Graphics2D g2d = (Graphics2D) g.create();
+						// Apply our own painting effect
+						Graphics2D g2d = (Graphics2D) g.create();
+						
+				        g2d.setRenderingHint(
+				                RenderingHints.KEY_ANTIALIASING,
+				                RenderingHints.VALUE_ANTIALIAS_ON);
+						
+						
+						// 70% transparent Alpha
+					
+						Composite com = AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.8f);
 				
+						g2d.setComposite(com);
 				
-				// 70% transparent Alpha
-			
-				Composite com = AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.8f);
-		
-				g2d.setComposite(com);
-		
-							
-				g2d.setColor(this.getBackground());
-		
-				g2d.fill(getBounds());
+									
+						g2d.setColor(this.getBackground());
+					
+				
+						g2d.fill(getBounds());
 		
 				
 				g2d.dispose();
+			//	}
 			} catch (Exception e) {
 				LOGGER.severe("Error in painting black background of Dialog" + e.getClass().toString() + " : " +e.getMessage());
 			}
 
 	    }
+	    
 	    
 	    
 }

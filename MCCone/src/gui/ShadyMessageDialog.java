@@ -29,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 
 
@@ -134,6 +135,7 @@ public class ShadyMessageDialog extends JDialog{
 			this.setBounds(WindowLocator.getVisibleWindowBounds(parentComponent));
 			this.setUndecorated(true); // no titlebar or buttons
 			this.setBackground(new Color(0,0,0,0)); // transparent color
+
 			this.setContentPane(new ContentPane());
 			this.getContentPane().setBackground(Color_schema.dark_30);
 			this.getContentPane().setLayout(new GridBagLayout());
@@ -378,7 +380,19 @@ public class ShadyMessageDialog extends JDialog{
 	 */
 	public int showDialog(){
 		try {
+			this.validate();
 			setVisible(true);
+			SwingUtilities.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					
+			//	repaint();
+			
+					
+				}
+			});
+		//	this.repaint();
 			return returnValue;
 		} catch (Exception e) {
 			LOGGER.severe("Error in showing message dialog!");
