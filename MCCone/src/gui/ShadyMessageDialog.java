@@ -5,6 +5,7 @@ import information.ID;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -135,14 +136,14 @@ public class ShadyMessageDialog extends JDialog{
 	private void initDialog(){
 
 		try {
-			setResizable(false);		
-			setBounds(WindowLocator.getVisibleWindowBounds(parentComponent));
-			setUndecorated(true); // no titlebar or buttons
-			setBackground(new Color(0,0,0,0)); // transparent color
-
-			setContentPane(new ContentPane());
-			getContentPane().setBackground(Color_schema.dark_30);
-			getContentPane().setLayout(new GridBagLayout());
+			this.setResizable(false);		
+			this.setBounds(WindowLocator.getVisibleWindowBounds(parentComponent));
+			this.setUndecorated(true); // no titlebar or buttons
+			this.setBackground(new Color(0,0,0,0)); // transparent color
+			this.setContentPane(new ContentPane());
+			this.getContentPane().setLayout(new GridBagLayout());
+			this.getContentPane().setBackground(Color_schema.dark_30);
+		
 
 			dialogBackPanel = new JPanel();
 			dialogBackPanel.setBackground(Color_schema.dark_30);
@@ -387,15 +388,8 @@ public class ShadyMessageDialog extends JDialog{
 	public int showDialog(){
 		try {
 			this.validate();
-			Timer timer = new Timer();
-			timer.schedule(new TimerTask() {
-				
-				@Override
-				public void run() {
-					//validate();
-					
-				}
-			}, 500);
+		//	this.repaint();
+	
 		
 			this.setVisible(true);
 	

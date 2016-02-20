@@ -69,6 +69,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import managers.TaskManager;
@@ -738,6 +740,7 @@ public class GUI extends JFrame{
 			// saving process
 			if(this.taskManager.getImageLayerList() != null && this.taskManager.getImageLayerList().size() >0 && this.taskManager.isMadeChanges()){
 				ShadyMessageDialog dialog=new ShadyMessageDialog(this,"Exiting MC-Cone", "Changes has been made. Save Markings?", ID.YES_NO_CANCEL, this);
+			
 				int selectionID = dialog.showDialog();
 				if(selectionID == ID.YES){
 					saveMarkings();

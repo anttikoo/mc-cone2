@@ -70,7 +70,7 @@ public class ContentPane extends JPanel{
 						// 70% transparent Alpha
 					
 						Composite com = AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.8f);
-				
+
 						g2d.setComposite(com);
 				
 									
@@ -82,6 +82,7 @@ public class ContentPane extends JPanel{
 				
 				g2d.dispose();
 			//	}
+				
 			} catch (Exception e) {
 				LOGGER.severe("Error in painting black background of Dialog" + e.getClass().toString() + " : " +e.getMessage());
 			}
