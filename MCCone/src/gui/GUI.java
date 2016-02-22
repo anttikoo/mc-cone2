@@ -1896,6 +1896,8 @@ public class GUI extends JFrame{
 
 	/**
 	 * Hides the highlight of marking.
+	 *
+	 * @throws Exception the exception
 	 */
 	public void removeHighLightPoint() throws Exception{
 		this.highlightPanel.updateHighlightPoint(null);
@@ -2174,7 +2176,7 @@ public class GUI extends JFrame{
 	/**
 	 * Sets the PositionedImage to ImagePanel, which is painted.
 	 *
-	 * @param pi @see PositionedImage the image to set to ImagePanel.
+	 * @param pi PositionedImage the image to set to ImagePanel.
 	 * @throws Exception the exception
 	 */
 	public void setImage(PositionedImage pi) throws Exception{
@@ -2755,7 +2757,7 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	 * Updates ImageLayerInfos and MarkingPanels.
 	 *
 	 * @param point Point where mouse was pressed the JButton to call this method.
-	 * @param mLayerList ArrayList<MarkingLayer> of all MarkingLayers.
+	 * @param mLayerList ArrayList of all MarkingLayers.
 	 * @throws Exception the exception
 	 */
 	public void showGridPropertiesPanelForAllMarkingLayers(Point point, ArrayList<MarkingLayer> mLayerList) throws Exception{
