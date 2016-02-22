@@ -3,8 +3,6 @@ package gui.saving.image;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.util.logging.Logger;
-
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;

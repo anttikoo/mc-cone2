@@ -1709,7 +1709,8 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 		private JComboBox comboBox;
 	    @SuppressWarnings("unused")
 		final DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
-	    private int row;
+	    @SuppressWarnings("unused")
+		private int row;
 
 	    @SuppressWarnings("rawtypes")
 		private ComboRenderer(JComboBox fontsBox) {

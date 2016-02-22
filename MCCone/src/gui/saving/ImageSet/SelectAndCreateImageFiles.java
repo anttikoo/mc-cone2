@@ -6,14 +6,12 @@ import java.awt.Component;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import operators.ImageCreator;
 import gui.GUI;
 import gui.saving.ExportResults;
-import gui.saving.SingleImagePanel;
 import gui.saving.image.ExImaSingleImagePanel;
 
 /**

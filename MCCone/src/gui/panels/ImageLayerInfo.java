@@ -1260,16 +1260,16 @@ public String getImageLayerName() throws Exception {
 			return marking_layer_name;
 		}
 
-		/**
+		/*
 		 * Checks if is grid on.
 		 *
 		 * @return true, if is grid on
 		 * @throws Exception the exception
-		 */
+		 
 		public boolean isGridON()throws Exception {
 			return isGridON;
 		}
-
+*/
 		/**
 		 * Checks if is marking layer selected.
 		 *

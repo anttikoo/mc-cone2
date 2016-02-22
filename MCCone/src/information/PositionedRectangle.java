@@ -7,6 +7,9 @@ import java.awt.Rectangle;
  */
 public class PositionedRectangle extends Rectangle{
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -1677210619511129932L;
+
 	/** The row position. */
 	private int row;
 	

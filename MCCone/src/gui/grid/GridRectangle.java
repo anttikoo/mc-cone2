@@ -1,19 +1,15 @@
 package gui.grid;
 
 import gui.Color_schema;
-import gui.ContentPane;
 import information.Fonts;
 import information.SharedVariables;
-
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.logging.Logger;
-
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 // TODO: Auto-generated Javadoc
