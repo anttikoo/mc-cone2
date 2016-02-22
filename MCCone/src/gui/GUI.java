@@ -2192,16 +2192,7 @@ public class GUI extends JFrame{
 	}
 
 
-	/**
-	 * Sets the made changes. Used when user does any changes that could be saved -> true; or false when user saves all opened works.
-	 * This method and procedure is still under development. Fill be finalized in future updates.
-	 *
-	 * @param mc boolean has made changes
-	 * @throws Exception the exception
-	 */
-	public void setMadeChanges(boolean mc) throws Exception{
-		this.taskManager.setMadeChange(); //
-	}
+
 	
 	/**
 	 * Sets the successfully made savings to MarkingLayers.

@@ -354,7 +354,7 @@ public class SelectFileDialog extends JDialog{
 			    for(int i = 0; i < components.length; i++) {
 			        Component child = findJTextField(components[i]);
 			        if (child != null){ 
-			        	System.out.println(child.getClass().toString());
+			        	//System.out.println(child.getClass().toString());
 			        	return findJTextField(child);           	
 			        }
 			    }

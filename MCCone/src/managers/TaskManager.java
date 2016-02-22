@@ -716,14 +716,7 @@ public class TaskManager {
 		this.layerVisualManager.setImagePanelDimension(vpd);
 	}
 
-	/**
-	 * Sets the boolean madeChanges to true.
-	 *
-	 * @throws Exception the exception
-	 */
-	public void setMadeChange() throws Exception{
-		this.informationCenter.setMadeChanges(true);
-	}
+
 
 	/**
 	 * Sets the name of MarkingLayer.

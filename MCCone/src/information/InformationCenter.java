@@ -55,8 +55,6 @@ public class InformationCenter {
 	/** The single grid size list. */
 	private ArrayList<SingleGridSize> singleGridSizeList;
 	
-	/** Shows has made any changes. Using this is not completed. */
-	private boolean madeChanges=false;
 
 
 	/**
@@ -91,7 +89,7 @@ public class InformationCenter {
 		setProperSelectedImageLayer(); // check and set selected ImageLayer if needed
 		setProperSelectedMarkingLayer(); // check and set selected MarkingLayer if needed
 		updateVisibleMarkingLayerList(); // if made changes may need to change visibility of MarkingLayers
-		setMadeChanges(true); 
+	
 	}
 
 	/**
@@ -113,7 +111,7 @@ public class InformationCenter {
 				setProperSelectedMarkingLayer();
 				updateVisibleMarkingLayerList();
 				
-				setMadeChanges(true);
+				
 
 
 			}
@@ -167,7 +165,7 @@ public class InformationCenter {
 					this.imageLayerList.add(layer);
 
 				}
-				setMadeChanges(true);
+			
 			}
 			else{
 				LOGGER.warning("Warning: imageLayer has no image name. Not added to list");
@@ -226,7 +224,7 @@ public class InformationCenter {
 						
 					}
 				}
-				setMadeChanges(true);
+			
 				
 			}
 		} catch (Exception e) {
@@ -256,7 +254,7 @@ public class InformationCenter {
 					setProperSelectedMarkingLayer();
 				// in beginning the MarkingLayer is visible -> set to visibleLayerlist
 				addMarkingLayerToVisibleList(ml.getLayerID());
-				setMadeChanges(true); // made changes -> save it
+				
 								
 				return ml;
 			}
@@ -903,7 +901,7 @@ public class InformationCenter {
 				// remove ImageLayer
 				this.imageLayerList.remove(im);
 				im=null;
-				setMadeChanges(true); // made changes -> save it
+			
 					//is the removed ImageLayer selectedImageLayer
 					// set the next imageLayer as selected and if no imagelayer -> null
 				if(this.selectedImageLayer.getLayerID()== imageLayerID){
@@ -968,7 +966,7 @@ public class InformationCenter {
 								this.setSelectedMarkingLayer(null);
 							m_iterator.remove();
 							ma=null;
-							setMadeChanges(true); // made changes -> save it
+							
 							break search; // stop going through more ImageLayers
 						}
 
@@ -1064,7 +1062,7 @@ public class InformationCenter {
 						}
 					}
 				}
-				setMadeChanges(true);
+				
 			}
 			else
 				this.imageLayerList = new ArrayList<ImageLayer>();
@@ -1075,15 +1073,7 @@ public class InformationCenter {
 		}
 	}
 
-	/**
-	 * Sets the boolean has changes made. This functionality is not fully used. Will be fulfilled in future releases.
-	 *
-	 * @param madeChanges the new boolean for has changes made.
-	 * @throws Exception the exception
-	 */
-	public void setMadeChanges(boolean madeChanges) throws Exception{
-		this.madeChanges = madeChanges;
-	}
+	
 
 	/**
 	 * Sets the name of MarkingLayer.
@@ -1098,7 +1088,7 @@ public class InformationCenter {
 				ImageLayer im = getImageLayerByID(iLayerID);
 				if(im != null && im.getMarkingLayers() != null){
 					im.getMarkingLayer(mLayerID).setLayerName(markingName);
-					setMadeChanges(true);
+				
 				}
 			}
 		} catch (Exception e) {
