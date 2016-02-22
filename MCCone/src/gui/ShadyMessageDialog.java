@@ -5,7 +5,6 @@ import information.ID;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -15,15 +14,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -31,8 +25,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 
 
 
@@ -257,11 +249,10 @@ public class ShadyMessageDialog extends JDialog{
 			dialogBackPanel.add(titlePanel, BorderLayout.PAGE_START);
 			dialogBackPanel.add(messageScrollPane, BorderLayout.CENTER);
 			dialogBackPanel.add(buttonPanel, BorderLayout.PAGE_END);
-			this.add(dialogBackPanel);
 		
-		//	this.validate();
-	
-		//this.repaint();
+			this.getContentPane().add(dialogBackPanel);
+		
+
 
 		} catch (Exception e) {
 			LOGGER.severe("Error in initializing Dialog: " +e.getClass().toString() + " :" +e.getMessage());

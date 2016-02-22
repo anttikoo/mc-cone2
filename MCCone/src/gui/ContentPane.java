@@ -1,9 +1,7 @@
 package gui;
 
-import information.ID;
 import information.SharedVariables;
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -31,6 +29,7 @@ public class ContentPane extends JPanel{
 	 */
 	public ContentPane() {
 	        setOpaque(false);
+	       
 	    }
 	
 	 /**
@@ -54,34 +53,34 @@ public class ContentPane extends JPanel{
 
 	        try {
 	        	
-	        	
+	       
 				// Allow super to paint
 				super.paintComponent(g);
-		//		if(SharedVariables.operationSystem != ID.OS_MAC){ // dimming is not working in mac right
+	
 				
-						// Apply our own painting effect
-						Graphics2D g2d = (Graphics2D) g.create();
-						
-				        g2d.setRenderingHint(
-				                RenderingHints.KEY_ANTIALIASING,
-				                RenderingHints.VALUE_ANTIALIAS_ON);
-						
-						
-						// 70% transparent Alpha
-					
-						Composite com = AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.8f);
+				// Apply our own painting effect
+				Graphics2D g2d = (Graphics2D) g.create();
+				
+		        g2d.setRenderingHint(
+		                RenderingHints.KEY_ANTIALIASING,
+		                RenderingHints.VALUE_ANTIALIAS_ON);
+				
+				
+				// 70% transparent Alpha
+			
+				Composite com = AlphaComposite.getInstance(SharedVariables.usedDimmingMode, 0.8f);
 
-						g2d.setComposite(com);
-				
-									
-						g2d.setColor(this.getBackground());
-					
-				
-						g2d.fill(getBounds());
+				g2d.setComposite(com);
+		
+							
+				g2d.setColor(this.getBackground());
+			
+		
+				g2d.fill(getBounds());
 		
 				
 				g2d.dispose();
-			//	}
+			
 				
 			} catch (Exception e) {
 				LOGGER.severe("Error in painting black background of Dialog" + e.getClass().toString() + " : " +e.getMessage());
