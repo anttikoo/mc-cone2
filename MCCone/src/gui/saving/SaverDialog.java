@@ -286,6 +286,7 @@ private Component parentComponent=null;
 	 * Returns the present folder, where saving will be made.
 	 *
 	 * @return the present folder
+	 * @throws Exception the exception
 	 */
 	public String getPresentFolder() throws Exception{
 		return gui.getPresentFolder();
@@ -327,6 +328,7 @@ private Component parentComponent=null;
 	 * @param fileValidity the file validity
 	 * @param pathLabel the file saving path label
 	 * @param showMessage the message shown to user
+	 * @throws Exception the exception
 	 */
 	public void informUserFromFileValidity(int fileValidity, JLabel pathLabel, boolean showMessage) throws Exception{
 		setSaveButtonEnabledByFileValidity(fileValidity);

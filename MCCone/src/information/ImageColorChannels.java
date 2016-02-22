@@ -29,8 +29,8 @@ public class ImageColorChannels {
 	/**
 	 * Instantiates a new ImageColorChannel.
 	 *
-	 * @param h the height of image -> matrix.
-	 * @param w the width of image -> matrix.
+	 * @param h the height of image: matrix.
+	 * @param w the width of image: matrix.
 	 */
 	public ImageColorChannels(int h, int w){
 		this.setAlpha(new int[h][w]);
@@ -64,7 +64,7 @@ public class ImageColorChannels {
 	 * @param value the blue value
 	 * @throws Exception the exception
 	 */
-	public void addBlue(int r, int c, int value){
+	public void addBlue(int r, int c, int value) throws Exception{
 		this.blue[r][c]=value;
 	}
 	
@@ -77,7 +77,7 @@ public class ImageColorChannels {
 	 * @param value the green value
 	 * @throws Exception the exception
 	 */
-	public void addGreen(int r, int c, int value){
+	public void addGreen(int r, int c, int value) throws Exception{
 		this.green[r][c]=value;
 	}
 	

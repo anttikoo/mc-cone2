@@ -20,7 +20,6 @@ public class GetResources {
 	 *
 	 * @param path the path
 	 * @return the ImageIcon
-	 * @throws Exception the exception
 	 */
 	public static ImageIcon getImageIcon(String path){
 

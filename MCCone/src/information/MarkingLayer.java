@@ -229,7 +229,7 @@ public class MarkingLayer{
 	}
 
 	/**
-	 * Counts and returns the amount of coordinates. If GRID is active -> counts proportional number of countings.
+	 * Counts and returns the amount of coordinates. If GRID is active: counts proportional number of countings.
 	 *
 	 * @return the Integer counts
 	 * @throws Exception the exception
@@ -306,6 +306,7 @@ public class MarkingLayer{
 	 * Returns the opacity.
 	 *
 	 * @return the opacity
+	 * @throws Exception the exception
 	 */
 	public float getOpacity() throws Exception {
 		return opacity;
@@ -737,6 +738,7 @@ public boolean isSelected() {
 	 * Sets the thickness.
 	 *
 	 * @param thickness the new thickness
+	 * @throws Exception the exception
 	 */
 	public void setThickness(int thickness) throws Exception {
 		this.thickness = thickness;

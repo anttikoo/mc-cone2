@@ -127,9 +127,11 @@ public class AddImageLayerDialog extends JDialog{
 	}
 	
 	/**
-	 * Class constructor which shows already open ImageLayers enabling managing markings
+	 * Class constructor which shows already open ImageLayers enabling managing markings.
+	 *
 	 * @param frame Owner JFrame
 	 * @param gui GUI object where from this class is called.
+	 * @param iList the list of ImageLayers
 	 */
 	public AddImageLayerDialog(JFrame frame, GUI gui, ArrayList<ImageLayer> iList){
 
@@ -457,7 +459,7 @@ public class AddImageLayerDialog extends JDialog{
 	/**
 	 * Returns the size of BackPanel.
 	 *
-	 * @return @see Rectangle size of BackPanel
+	 * @return Rectangle the size of BackPanel
 	 * @throws Exception the exception
 	 */
 	public Rectangle getBackPanelSize() throws Exception{
@@ -1069,7 +1071,7 @@ private JPanel initImageViewPanel(){
 	/**
 	 * Sets the allowed ImageDimension = present dimension of image(s) in main GUI.
 	 *
-	 * @param importAllowedImageDimension @see Dimension allowed dimension
+	 * @param importAllowedImageDimension the allowed dimension
 	 * @throws Exception the exception
 	 */
 	public void setImportAllowedImageDimension(Dimension importAllowedImageDimension) throws Exception {

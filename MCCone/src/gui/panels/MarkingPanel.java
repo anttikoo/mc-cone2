@@ -77,7 +77,9 @@ public class MarkingPanel extends JPanel {
 
 	/**
 	 *  Calculates closest Point from coordinatelist to given point. Calculates Manhattan distance.
-	 * @param p Point where coordinatelist Points are compared
+	 *
+	 * @param p Point where the list of coordinate Points are compared
+	 * @param distanceParameter the distance parameter
 	 * @return return the closest point from coordinateList if the distance is small enough: @see information.SharedVariables.DISTANCE_TO_REMOVE.
 	 */
 	public Point getClosestMarkingPoint(Point p, int distanceParameter){

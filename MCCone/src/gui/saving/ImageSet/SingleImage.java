@@ -192,7 +192,7 @@ public class SingleImage extends JComponent implements MouseListener{
 	 *
 	 * @param panelDimension the panel dimension
 	 * @return the dimension
-	 * @throws ex the Exeption
+	 * @throws Exception the exception
 	 */
 	public Dimension setImageDimension(Dimension panelDimension) throws Exception{
 		if(this.originalImage != null){

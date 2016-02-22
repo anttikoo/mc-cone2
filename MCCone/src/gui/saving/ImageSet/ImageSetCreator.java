@@ -1442,7 +1442,9 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 
 	/**
 	 * Sets variable of position where ImagePanel is moved to other grid position.
+	 *
 	 * @param movingPosition int[] Position in grid wherefrom panel is moved.
+	 * @throws Exception the exception
 	 */
 	public void setMovingPosition(int[] movingPosition) throws Exception{
 		this.movingPosition = movingPosition;
@@ -1451,6 +1453,8 @@ public class ImageSetCreator extends JDialog implements MouseListener, Runnable{
 	
 	/**
 	 * Sets the panel position of this dialog and its child components.
+	 *
+	 * @throws Exception the exception
 	 */
 	public void setPanelPosition() throws Exception{
 		this.setBounds(this.gui.getVisibleWindowBounds());

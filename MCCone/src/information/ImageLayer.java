@@ -160,6 +160,8 @@ public class ImageLayer {
   	
 	/**
 	 * Method returns the name part of file if file exists.
+	 *
+	 * @param path the path
 	 * @return the file name without full path of file.
 	 */
 	public String getImageFileName(String path){

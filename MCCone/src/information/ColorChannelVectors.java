@@ -90,7 +90,7 @@ public class ColorChannelVectors {
 	/**
 	 * Counts and returns the sum of slopes of  for red, green and blue vectors. 
 	 * A slope for every color vector is counted by:  ( colorInt(at position end)- colorInt(at position start)) / (end - start).
-	 * If single slope is negative -> multiplied with -1.
+	 * If single slope is negative: multiplied with -1.
 	 *
 	 * @param start_x the position at start
 	 * @param end_x the the position at end

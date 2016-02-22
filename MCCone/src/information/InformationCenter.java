@@ -58,7 +58,9 @@ public class InformationCenter {
 
 
 	/**
-	 *  Class constructor
+	 *  Class constructor.
+	 *
+	 * @param tm the tm
 	 */
 	public InformationCenter(TaskManager tm){
 		try {
@@ -94,7 +96,7 @@ public class InformationCenter {
 
 	/**
 	 * Adds List of ImageLayer objects to InformationCenter.imageLayerList
-	 * @param layers Arraylist<ImageLayer> list of ImageLayers that are added
+	 * @param layers Arraylist of ImageLayers that are added
 	 */
 	public void addImageLayers(ArrayList<ImageLayer> layers){
 		try {

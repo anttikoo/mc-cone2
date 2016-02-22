@@ -7,7 +7,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * XML Handler for validating xml file. Parses the file, but doesn't save the information anywhere. 
- * If everything fine -> no errors and file validated.
+ * If everything fine: no errors and file validated.
  * @author Antti Kurronen
  *
  */

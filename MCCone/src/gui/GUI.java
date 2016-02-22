@@ -631,7 +631,9 @@ public class GUI extends JFrame{
 
 	/**
 	 * Changes the selected ImageLayer one up or down in ImageLayerlist.
+	 *
 	 * @param directionID int ID.MOVE_DOWN or ID.MOVE.UP
+	 * @throws Exception the exception
 	 */
 	public void changeSelectedImageLayerUpOrDown(int directionID) throws Exception{
 		setSelectedImageLayerAndImage(this.taskManager.getSelectedImageLayerAtUpOrDown(directionID),ID.IMAGELAYER_CHANGE_IMAGELAYER);
@@ -770,8 +772,9 @@ public class GUI extends JFrame{
 
 	/**
 	 * Creates new MarkingLayer to under ImageLayer by given ID. Creates also a new MarkingPanel and refreshes the ImageLayerInfos. 
+	 *
 	 * @param imageLayerID int ID of ImageLayer
-	 * @throws Exception
+	 * @throws Exception the exception
 	 */
 	public void createNewMarkingLayer(int imageLayerID) throws Exception{
 		MarkingLayer ml= taskManager.createNewMarkingLayer(imageLayerID);
@@ -906,7 +909,7 @@ public class GUI extends JFrame{
 	/**
 	 * Returns all Markinglayers.
 	 *
-	 * @return ArrayList<MarkingLayer> All MarkingLayers
+	 * @return ArrayList of all MarkingLayers
 	 * @throws Exception the exception
 	 */
 	public ArrayList<MarkingLayer> getAllMarkingLayers() throws Exception{
@@ -1739,9 +1742,10 @@ public class GUI extends JFrame{
 
 	/**
 	 * Checks that given image file dimension is same as the dimension of previously used images. ONLY ONE IMAGE DIMENSION IS ALLOWED.
+	 *
 	 * @param file File image file which size is determined
 	 * @return boolean true if allowed dimension. Otherwise false.
-	 * @throws Exception
+	 * @throws Exception the exception
 	 */
 	public boolean isAllowedImageDimension(File file) throws Exception{
 		return this.taskManager.isAllowedImageDimension(file);
@@ -1769,9 +1773,11 @@ public class GUI extends JFrame{
 		}
 	}
 
-	/** Starts the progress to add one ImageLayer: User gives the image and possible markings from file in new Dialog window.
+	/**
+	 *  Starts the progress to add one ImageLayer: User gives the image and possible markings from file in new Dialog window.
 	 * ImageLayer(s) are created and when done, GUI layers, ImagePanel and ImageLayerInfo is updated
-	 * @throws Exception
+	 *
+	 * @param fileList the list of files
 	 */
 	public void openAddImageLayerDialog(File[] fileList){
 		try {

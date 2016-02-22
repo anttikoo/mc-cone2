@@ -27,7 +27,7 @@ import gui.ProgressBallsDialog;
  * For example red value for some pixel is 200, then the value is spread for 3 values down and 3 values up (197,198,199,200,201,201,202).
  * When color channel values are determined the original image will be processed.
  *  Not all pixels will be determined. The gap value tells how many pixels are let as undetermined between determined pixels.
- *  If determined pixels match with colorList color -> collected. The collected pixel positions are grouped to form individual cell positions.
+ *  If determined pixels match with colorList color: collected. The collected pixel positions are grouped to form individual cell positions.
  *  
  */
 public class PreCounterThread implements Runnable{

@@ -33,8 +33,10 @@ public class ContentPane extends JPanel{
 	    }
 	
 	 /**
-	 * Class constructor.s
-	 */
+ 	 * Class constructor.s
+ 	 *
+ 	 * @param layout the GridBagLayout
+ 	 */
 	public ContentPane(GridBagLayout layout) {
 		try {
 			this.setLayout(layout);

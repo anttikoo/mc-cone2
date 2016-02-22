@@ -31,7 +31,7 @@ import information.ScreenCoordinatesOfMarkingLayer;
  * The view of image at ImagePanel is a relative part of original image (relativeViewRectangle), which is scaled to ImagePanel.
  * When making changes (zoom, move, etc.) has the point at ImagePanel be converted to Point in relativeView and then converted to point 
  * at original image. In same way the image that will be shown in ImagePanel will be first calculated at present relative view and then
- * taken the right sized and positioned image from original image -> scaled to the ImagePanel.
+ * taken the right sized and positioned image from original image: scaled to the ImagePanel.
  * @author Antti Kurronen
  *
  */

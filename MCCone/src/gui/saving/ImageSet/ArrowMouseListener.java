@@ -18,7 +18,7 @@ import javax.swing.text.PlainDocument;
  * The class that is interested in processing a arrowMouse
  * event implements this interface, and the object created
  * with that class is registered with a component using the
- * component's <code>addArrowMouseListener<code> method. When
+ * component's addArrowMouseListenermethod. When
  * the arrowMouse event occurs, that object's appropriate
  * method is invoked.
  *
@@ -397,6 +397,8 @@ public class ArrowMouseListener implements MouseListener {
 
 	/**
 	 * Updates JTextFields of width and height.
+	 *
+	 * @throws Exception the exception
 	 */
 	public void updateResolutions() throws Exception{
 		updateField(0,this.widthField, this.heightField, false);

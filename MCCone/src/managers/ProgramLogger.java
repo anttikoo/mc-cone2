@@ -35,7 +35,8 @@ public class ProgramLogger {
    *  Log messages are saved to text file and in document of LogFrame where log messages can be read.
    *
    * @param logFrame Logwindow is needed for constructing the TextFileFormatter
-   * @throws IOException
+   * @param saveToFile the save to file
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   static public void setup(LogFrame logFrame, boolean saveToFile) throws IOException {
 
