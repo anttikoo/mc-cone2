@@ -18,7 +18,7 @@ import gui.saving.ImageSet.ImageSetCreator;
  * The class that is interested in processing a GUIcomponent
  * event implements this interface, and the object created
  * with that class is registered with a component using the
- * component's <code>addGUIcomponentListener<code> method. When
+ * component's addGUIcomponentListener method. When
  * the GUIcomponent event occurs, that object's appropriate
  * method is invoked.
  *
@@ -117,6 +117,7 @@ private final static Logger LOGGER = Logger.getLogger("MCCLogger");
 	 * Gets the child dialog.
 	 *
 	 * @return the child dialog
+	 * @throws Exception the exception
 	 */
 	public JDialog getChildDialog() throws Exception{
 		return childDialog;

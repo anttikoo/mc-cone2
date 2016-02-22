@@ -7,9 +7,11 @@ import javax.swing.SwingUtilities;
  * @author Antti Kurronen
  */
 public class MCCone {
+	
 	/**
-	 *  Main method starts the GUI
-	 * @param args
+	 *  Main method starts the GUI.
+	 *
+	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
 		

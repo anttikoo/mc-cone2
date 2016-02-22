@@ -617,7 +617,6 @@ public boolean isSelected() {
 	 * Sets the made changes.
 	 *
 	 * @param madeChanges the new made changes
-	 * @throws Exception the exception
 	 */
 	public void setMadeChanges(boolean madeChanges){
 		try {

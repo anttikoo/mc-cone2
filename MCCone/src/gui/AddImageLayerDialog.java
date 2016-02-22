@@ -152,8 +152,10 @@ public class AddImageLayerDialog extends JDialog{
 
 	/**
 	 * Class constructor for creating new ImageLayers from given image files.
+	 *
 	 * @param frame Owner JFrame
 	 * @param gui GUI object where from this class is called.
+	 * @param imageFiles the image files
 	 */
 	public AddImageLayerDialog(JFrame frame, GUI gui, File[] imageFiles){
 

@@ -852,8 +852,8 @@ public class GUIListener extends MouseInputAdapter {
 	}
 
 	/** 
-	 * When mouse clicked over ImagePanel and ctrl is pressed down the zooming is launched. Left-button -> zoom in; right-button -> zoom out.
-	 * If mouse was pressed on glasspane (Precounting running) -> the event is forwarded to method forwardGlassPaneEvent.
+	 * When mouse clicked over ImagePanel and ctrl is pressed down the zooming is launched. Left-button: zoom in; right-button: zoom out.
+	 * If mouse was pressed on glasspane (Precounting running): he event is forwarded to method forwardGlassPaneEvent.
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -944,11 +944,11 @@ public class GUIListener extends MouseInputAdapter {
 	/**
 	 * Mediates the MousePressed Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
 	 * Computation of events of ImagePanel depends on which keys are pressed down or which threads are running at same time:
-	 * CTRL-down -> do nothing
-	 * SPACE-down -> dragging -> set init dragging point.
-	 * SHIFT-down -> select/unselect grid cell.
-	 * MOUSE-LEFT-button -> add marking
-	 * MOUSE-RIGHT-button -> remove marking and it's highlight point.
+	 * CTRL-down: do nothing
+	 * SPACE-down: dragging: set init dragging point.
+	 * SHIFT-down: select/unselect grid cell.
+	 * MOUSE-LEFT-button: add marking
+	 * MOUSE-RIGHT-button: remove marking and it's highlight point.
 	 * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
 	 */
 	@Override
@@ -998,7 +998,7 @@ public class GUIListener extends MouseInputAdapter {
 
 	/**
 	 * Mediates the MouseReleased Event to wanted procedure. Events of PrecountGlassPane are forwarded to forwardGlassPaneEvent(..).
-	 * In ImagePanel made releasing sets previous dragging point as null. -> No More dragging.
+	 * In ImagePanel made releasing sets previous dragging point as null: No More dragging.
 	 * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
 	 */
 	@Override

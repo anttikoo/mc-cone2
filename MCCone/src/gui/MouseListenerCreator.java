@@ -100,8 +100,9 @@ public class MouseListenerCreator {
 
 	/**
 	 * Adds MouseListener to JButton, which has normal type, for example OK, YES, etc.
+	 *
 	 * @param button JButton, where the Listener is added.
-	 * @throws Exception
+	 * @throws Exception the exception
 	 */
 	public static void addMouseListenerToNormalButtons(JButton button) throws Exception{
 

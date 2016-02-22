@@ -15,7 +15,7 @@ import javax.swing.event.MouseInputAdapter;
  * The class that is interested in processing a slider
  * event implements this interface, and the object created
  * with that class is registered with a component using the
- * component's <code>addSliderListener<code> method. When
+ * component's addSliderListener method. When
  * the slider event occurs, that object's appropriate
  * method is invoked. A sliding Timer is started when sliding started. This
  * Timer restricts the updating of the image to every 100 ms.

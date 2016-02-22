@@ -1752,9 +1752,9 @@ public class GUI extends JFrame{
 	}
 	
 
-	/** Starts the progress to add ImageLayers or import MarkingLayers to ImageLayers if any ImageLayer present: User gives the image and/or markings from file in new Dialog window.
+	/**
+	 *  Starts the progress to add ImageLayers or import MarkingLayers to ImageLayers if any ImageLayer present: User gives the image and/or markings from file in new Dialog window.
 	 * ImageLayer(s) are created or updated and when done, GUI layers, ImagePanel and ImageLayerInfo is updated
-	 * @throws Exception
 	 */
 	public void manageImageLayersAndMarkings(){
 		try {
@@ -1954,9 +1954,10 @@ public class GUI extends JFrame{
 	/**
 	 * Removes the MarkingLayer and corresponding MarkingPanel by given MarkingLayer ID. 
 	 * Confirm dialog will be shown. ImageLayerInfo will be updated.
+	 *
 	 * @param imageLayerID int ID of ImageLayer which MarkingLayer is removed.
 	 * @param mLayerID int ID of MarkingLayer, which is removed .
-	 * @param markingLayerName
+	 * @param markingLayerName the marking layer name
 	 */
 	public void removeMarkingLayer(int imageLayerID, int mLayerID, String markingLayerName){
 
@@ -2181,7 +2182,7 @@ public class GUI extends JFrame{
 	}
 
 	/**
-	 * Replaces the array of ImageLayer s in InformationCenter with new list. After updating the list -> the GUI is updated.
+	 * Replaces the array of ImageLayer s in InformationCenter with new list. After updating the list: the GUI is updated.
 	 *
 	 * @param iLayerList Array of ImageLayer s.
 	 * @throws Exception the exception
@@ -2204,7 +2205,6 @@ public class GUI extends JFrame{
 	 * Sets the successfully made savings to MarkingLayers.
 	 *
 	 * @param mLayerIDs the ids of MarkingLayers where successfully made savings
-	 * @throws Exception the exception
 	 */
 	public void setSuccessfullyMadeSavings(ArrayList<Integer> mLayerIDs){
 		try {
@@ -2394,7 +2394,7 @@ private void setPropertiesOfMarkingPanel(int mLayerID) throws Exception{
  * Method updates the ImagePanel of GUI. This method is called always when selected (visible) ImageLayer is changed by user.
  * If ImageLayer is already selected is the visibility of  MarkingLayers changed if this method is called by eye-icon. 
  *
- * @param iLayerID ID of ImageLayer that will be the selected ImageLayer (-> visible)
+ * @param iLayerID ID of ImageLayer that will be the selected ImageLayer (visible)
  * @param selectionChangeType the selection change type
  */
 public void setSelectedImageLayerAndImage(int iLayerID, int selectionChangeType) {
@@ -2716,7 +2716,7 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	/**
 	 * Opens a GridProperties Panel Dialog for modifying the Grid Properties of all MarkingLayers in given list of MarkingLayers.
 	 * @param point Point where mouse was pressed the JButton to call this method.
-	 * @param mLayerList ArrayList<MarkingLayer> of all MarkingLayers.
+	 * @param mLayerList ArrayList of all MarkingLayers.
 	 */
 	public void showGridPropertiesPanel(Point point, ArrayList<MarkingLayer> mLayerList){
 		
@@ -3173,7 +3173,7 @@ public void setSelectedMarkingLayer(int mLayerID) throws Exception{
 	 * Organizes the zooming of image in or out to given point and given zoom multiplier. Determines and refreshes also the markings, grid and highlight.
 	 *
 	 * @param midPoint Point where zooming will focus
-	 * @param zoomValue double multiplier how much is zoomed (1.25 -> 25% zoom)
+	 * @param zoomValue double multiplier how much is zoomed (1.25 corresponds to 25% zoom)
 	 * @param processinID int ID quality of Image (ID.IMAGE_PROCESSING_BEST_QUALITY, etc.)
 	 * @throws Exception the exception
 	 */

@@ -314,7 +314,6 @@ public class ProgressBallsDialog extends ShadyMessageDialog implements Runnable 
 	 * Sets the show on.
 	 *
 	 * @param showON the new show on
-	 * @throws Exception the exception
 	 */
 	public void setShowON(boolean showON){
 		try {

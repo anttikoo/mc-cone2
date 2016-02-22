@@ -856,6 +856,7 @@ public class InformationCenter {
 	 *
 	 * @param direction the direction
 	 * @return true, if successful
+	 * @throws Exception the exception
 	 */
 	public boolean moveSelectedMarkingLayer(int direction) throws Exception{
 		
@@ -1025,8 +1026,8 @@ public class InformationCenter {
 
 	/**
 	 * Sets new list of ImageLayers: replaces the older one after checking correctness of new ImageLayers by method addImageLayers.
-	 * If null parameter is given -> creates new empty list
-	 * @param iLayerList ArrayList<ImageLayer> contains the ImageLayer objects
+	 * If null parameter is given: creates new empty list
+	 * @param iLayerList ArrayList containing the ImageLayer objects
 	 */
 	public void setImageLayerList(ArrayList<ImageLayer> iLayerList)  {
 		try {
